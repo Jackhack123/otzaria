@@ -72,7 +72,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
       dataString = removeVolwels(dataString);
     }
 
-    // החלפת שמות קדושים אם נדרש
+    // Replace holy names if required
     final shouldReplaceHolyNames =
         Settings.getValue<bool>('key-replace-holy-names') ?? true;
     if (shouldReplaceHolyNames) {
@@ -116,7 +116,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                 alignment: pw.Alignment.bottomCenter,
                 margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
                 child: pw.Text(
-                    'עמוד ${context.pageNumber} מתוך ${context.pagesCount} - הודפס מתוכנת אוצריא',
+                    'עמוד ${context.pageNumber} of ${context.pagesCount} - Printed from Otzaria application',
                     style: pw.Theme.of(context)
                         .defaultTextStyle
                         .copyWith(color: PdfColors.grey)));
@@ -143,19 +143,19 @@ class _PrintingScreenState extends State<PrintingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('הדפסה'),
+        title: const Text('Print'),
         actions: [
           IconButton(
             onPressed: () async {
               final path = await FilePicker.platform.saveFile(
-                  dialogTitle: "שמירת קובץ PDF", allowedExtensions: ['pdf']);
+                  dialogTitle: "Save PDF File", allowedExtensions: ['pdf']);
               if (path != null) {
                 final file = File('$path.pdf');
                 await file.writeAsBytes(await pdf);
               }
             },
             icon: const Icon(FluentIcons.save_24_regular),
-            tooltip: 'שמירה כקובץ PDF',
+            tooltip: 'Save as PDF',
           ),
           IconButton(
             onPressed: () async {
@@ -168,7 +168,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
               );
             },
             icon: const Icon(FluentIcons.print_24_regular),
-            tooltip: 'הדפסה',
+            tooltip: 'Print',
           ),
         ],
       ),
@@ -185,7 +185,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                   ),
                   child: Column(
                     children: [
-                      Text('טווח הדפסה',
+                      Text('Print Range',
                           style: Theme.of(context).textTheme.labelLarge),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -203,7 +203,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                           },
                         ),
                       ),
-                      Text('גודל גופן',
+                      Text('Font Size',
                           style: Theme.of(context).textTheme.labelLarge),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -218,7 +218,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                           },
                         ),
                       ),
-                      Text('שוליים',
+                      Text('Margins',
                           style: Theme.of(context).textTheme.labelLarge),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -233,7 +233,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                           },
                         ),
                       ),
-                      Text('גופן',
+                      Text('Font',
                           style: Theme.of(context).textTheme.labelLarge),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -264,7 +264,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                       Text('פריסה',
                           style: Theme.of(context).textTheme.labelLarge),
                       DropDownSettingsTile<PdfPageFormat>(
-                          title: 'גודל עמוד',
+                          title: 'גודל Page',
                           settingKey: 'key-page-sizw',
                           selected: format,
                           values: formats,
@@ -273,7 +273,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                             setState(() {});
                           }),
 
-                      // Text('גודל עמוד',
+                      // Text('גודל Page',
                       //     style: Theme.of(context).textTheme.labelLarge),
                       // Padding(
                       //   padding: const EdgeInsets.all(8.0),

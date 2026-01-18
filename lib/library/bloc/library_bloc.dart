@@ -55,14 +55,14 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   
   /// מחזיר את ספר הטקסט הראשון בקטגוריה
   Book? _getFirstTextBook(Category category) {
-    // חיפוש ספר טקסט בקטגוריה הנוכחית
+    // Search ספר טקסט בקטגוריה הנוכחית
     for (final book in category.books) {
       if (book is TextBook) {
         return book;
       }
     }
     
-    // אם לא נמצא, חיפוש בתת-קטגוריות
+    // אם לא נמצא, Search בתת-קטגוריות
     for (final subCategory in category.subCategories) {
       final book = _getFirstTextBook(subCategory);
       if (book != null) {
@@ -95,11 +95,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         TantivyDataProvider.instance.reopenIndex();
       } catch (e) {
         // אם יש בעיה עם פתיחת האינדקס מחדש, נמשיך בלי זה
-        // הספרייה עדיין תתרענן אבל החיפוש עלול לא לעבוד עד להפעלה מחדש
+        // הספרייה עדיין תתרענן Avל החיפוש עלול לא לעבוד עד להפעלה מחדש
         developer.log('Warning: Could not reopen search index', name: 'LibraryBloc', error: e);
       }
       
-      // חזרה לאותה תיקייה שהיתה פתוחה קודם
+      // Review לאותה תיקייה שהיתה פתוחה קודם
       final targetCategory = _findCategoryByPath(library, currentCategoryPath);
       
       emit(state.copyWith(

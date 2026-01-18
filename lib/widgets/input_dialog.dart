@@ -21,8 +21,8 @@ class InputDialog extends StatefulWidget {
     this.hintText,
     this.initialValue = '',
     this.keyboardType,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'שמור',
+    this.cancelText = 'Cancel',
+    this.confirmText = 'Save',
     this.confirmColor,
   });
 
@@ -32,7 +32,7 @@ class InputDialog extends StatefulWidget {
 
 class _InputDialogState extends State<InputDialog> {
   late final TextEditingController _controller;
-  int _focusedButtonIndex = 1; // 0 = ביטול, 1 = אישור (ברירת מחדל)
+  int _focusedButtonIndex = 1; // 0 = Cancel, 1 = Confirm (ברירת מחדל)
   final FocusNode _textFieldFocusNode = FocusNode();
 
   @override
@@ -91,7 +91,7 @@ class _InputDialogState extends State<InputDialog> {
           return KeyEventResult.handled;
         }
 
-        // Escape - ביטול
+        // Escape - Cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           Navigator.of(context).pop();
           return KeyEventResult.handled;
@@ -187,8 +187,8 @@ Future<String?> showInputDialog({
   String? hintText,
   String initialValue = '',
   TextInputType? keyboardType,
-  String cancelText = 'ביטול',
-  String confirmText = 'שמור',
+  String cancelText = 'Cancel',
+  String confirmText = 'Save',
   Color? confirmColor,
 }) {
   return showDialog<String>(

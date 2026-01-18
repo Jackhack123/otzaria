@@ -47,7 +47,7 @@ class SearchRepository {
     debugPrint('🔍 Final createSpellingWithPrefixPattern result: $finalPattern');
     final index = await TantivyDataProvider.instance.engine;
 
-    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות חיפוש
+    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות Search
     final hasCustomSpacing = customSpacing != null && customSpacing.isNotEmpty;
     final hasAlternativeWords =
         alternativeWords != null && alternativeWords.isNotEmpty;

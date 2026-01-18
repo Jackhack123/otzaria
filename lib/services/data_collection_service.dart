@@ -184,7 +184,7 @@ class DataCollectionService {
 
     if (libraryVersion == 'unknown') {
       result['available'] = false;
-      result['errors'].add('לא ניתן לקרוא את גירסת הספרייה');
+      result['errors'].add('Cannot read library version');
     }
 
     // Check book ID
@@ -193,7 +193,7 @@ class DataCollectionService {
 
     if (bookId == null) {
       result['available'] = false;
-      result['errors'].add('לא ניתן למצוא את הספר במאגר הנתונים');
+      result['errors'].add('Book not found in database');
     }
 
     return result;

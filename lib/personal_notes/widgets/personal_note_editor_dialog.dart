@@ -17,7 +17,7 @@ class PersonalNoteEditorDialog extends StatefulWidget {
 }
 
 class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
-  int _focusedButtonIndex = 1; // 0 = ביטול, 1 = שמור (ברירת מחדל)
+  int _focusedButtonIndex = 1; // 0 = Cancel, 1 = Save (ברירת מחדל)
   final FocusNode _textFieldFocusNode = FocusNode();
 
   @override
@@ -80,7 +80,7 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
           return KeyEventResult.handled;
         }
 
-        // Escape - ביטול
+        // Escape - Cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           Navigator.of(context).pop();
           return KeyEventResult.handled;
@@ -107,12 +107,12 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
         ),
         actions: [
           _buildButton(
-            text: 'ביטול',
+            text: 'Cancel',
             isFocused: _focusedButtonIndex == 0,
             onPressed: () => Navigator.of(context).pop(),
           ),
           _buildButton(
-            text: 'שמור',
+            text: 'Save',
             isFocused: _focusedButtonIndex == 1,
             isConfirm: true,
             onPressed: _submit,

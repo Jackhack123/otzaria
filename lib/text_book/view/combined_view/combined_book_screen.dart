@@ -25,7 +25,7 @@ import 'package:otzaria/utils/html_link_handler.dart';
 import 'package:otzaria/utils/text_with_inline_links.dart';
 
 class CombinedView extends StatefulWidget {
-  CombinedView({
+  const CombinedView({
     super.key,
     required this.data,
     required this.openBookCallback,
@@ -158,7 +158,7 @@ class _CombinedViewState extends State<CombinedView> {
       return ctx.ContextMenu(
         entries: [
           ctx.MenuItem(
-            label: 'העתק',
+            label: 'Copy',
             icon: FluentIcons.copy_24_regular,
             enabled: _savedSelectedText != null &&
                 _savedSelectedText!.trim().isNotEmpty,
@@ -187,7 +187,7 @@ class _CombinedViewState extends State<CombinedView> {
       maxHeight: screenHeight * 0.9,
       entries: [
         ctx.MenuItem(
-            label: 'חיפוש',
+            label: 'Search',
             icon: FluentIcons.search_24_regular,
             onSelected: () => widget.openLeftPaneTab(1)),
         ctx.MenuItem.submenu(
@@ -303,9 +303,9 @@ class _CombinedViewState extends State<CombinedView> {
           onSelected: () => _createNoteFromSelection(),
         ),
         const ctx.MenuDivider(),
-        // העתקה
+        // Copyה
         ctx.MenuItem(
-          label: 'העתק',
+          label: 'Copy',
           icon: FluentIcons.copy_24_regular,
           enabled: _savedSelectedText != null &&
               _savedSelectedText!.trim().isNotEmpty,
@@ -345,7 +345,7 @@ class _CombinedViewState extends State<CombinedView> {
     _showNoteEditor(text, 0, text.length);
   }
 
-  /// העתקת פסקה לפי אינדקס (משתמש ב־widget.data[index] ומייצר גם HTML)
+  /// Copyת פסקה לפי אינדקס (משתמש ב־widget.data[index] ומייצר גם HTML)
   Future<void> _copyParagraphByIndex(int index) async {
     if (index < 0 || index >= widget.data.length) return;
 
@@ -393,7 +393,7 @@ class _CombinedViewState extends State<CombinedView> {
     await SystemClipboard.instance?.write([item]);
   }
 
-  /// העתקת הטקסט המוצג במסך ללוח
+  /// Copyת הטקסט המוצג במסך ללוח
   void _copyVisibleText() async {
     final state = context.read<TextBookBloc>().state;
     if (state is! TextBookLoaded || state.visibleIndices.isEmpty) return;
@@ -456,7 +456,7 @@ $textWithBreaks
 ''';
   }
 
-  /// העתקת טקסט מעוצב (HTML) ללוח
+  /// Copyת טקסט מעוצב (HTML) ללוח
   Future<void> _copyFormattedText() async {
     // משתמש בטקסט השמור שנבחר לפני פתיחת התפריט
     final plainText = _savedSelectedText;

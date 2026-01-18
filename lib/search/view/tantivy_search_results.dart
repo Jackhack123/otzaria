@@ -221,7 +221,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
       snippetEnd = (absoluteLastMatch + minPadding).clamp(0, plainText.length);
     }
 
-    // התאמה לגבולות מילים - אבל לא על חשבון ההתאמות!
+    // התאמה לגבולות מילים - Avל לא על חשבון ההתאמות!
     // וידוא שלא חותכים מילה בהתחלה
     if (snippetStart > 0 && snippetStart < absoluteFirstMatch) {
       // מחפשים רווח לפני הנקודה הנוכחית
@@ -350,13 +350,13 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
       return const Center(child: CircularProgressIndicator());
     }
     if (state.searchQuery.isEmpty) {
-      return const Center(child: Text("לא בוצע חיפוש"));
+      return const Center(child: Text("לא בוצע Search"));
     }
     if (state.results.isEmpty) {
       return const Center(
           child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: Text('אין תוצאות'),
+        child: Text('No results'),
       ));
     }
 

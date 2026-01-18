@@ -306,7 +306,7 @@ class _CommentaryListBaseState extends State<CommentaryListBase> {
               ),
             ),
           ] else ...[
-            // כפתור סגירה/פתיחה גלובלית כאשר אין תיבת חיפוש - מוצג רק אם יש מפרשים פעילים
+            // כפתור סגירה/פתיחה גלובלית כאשר אין תיבת Search - מוצג רק אם יש מפרשים פעילים
             if (state.activeCommentators.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

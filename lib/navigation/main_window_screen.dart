@@ -172,7 +172,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
           message: formatShortcut(searchShortcut),
           child: const Icon(FluentIcons.search_24_regular),
         ),
-        label: 'חיפוש',
+        label: 'Search',
       ),
       NavigationDestination(
         tooltip: '',
@@ -429,6 +429,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       case Screen.about:
         return null;
     }
+    return null;
   }
 
   void _handleSearchTabOpen(BuildContext context) {
@@ -454,7 +455,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
     );
 
     if (!hasSearchTab) {
-      tabsBloc.add(AddTab(SearchingTab("חיפוש", "")));
+      tabsBloc.add(AddTab(SearchingTab("Search", "")));
     } else {
       final currentScreen = navigationBloc.state.currentScreen;
       final isAlreadySearchTab =
@@ -483,7 +484,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       case Screen.library:
         return 0;
       case Screen.find:
-        return -1; // לא נבחר
+        return -1; // Not selected
       case Screen.reading:
         return 2;
       case Screen.search:

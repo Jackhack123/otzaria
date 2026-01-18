@@ -150,11 +150,11 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
       final state = context.read<TextBookBloc>().state as TextBookLoaded;
 
       if (!dataProvider.hasData) {
-        UiSnack.showError('נתוני שמור וזכור לא נטענו');
+        UiSnack.showError('נתוני Save וזכור לא נטענו');
         return;
       }
 
-      // חיפוש הספר - נחפש גם לפי שם קצר
+      // Search הספר - נחפש גם לפי שם קצר
       final searchResults = dataProvider.searchBooks(bookTitle);
 
       // זיהוי קטגוריה לפי נתיב הספר
@@ -198,11 +198,11 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
         debugPrint('Extracted book name from title: $searchName');
       }
 
-      // חיפוש הספר המתאים לפי הקטגוריה המזוהה
+      // Search הספר המתאים לפי הקטגוריה המזוהה
       BookSearchResult? bookResult;
 
       if (detectedCategory != null) {
-        // חיפוש בקטגוריה הספציפית שזוהתה מהנתיב
+        // Search בקטגוריה הספציפית שזוהתה מהנתיב
         try {
           bookResult = searchResults.firstWhere(
             (result) =>
@@ -258,14 +258,14 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
         debugPrint('Current ref is H1 (book title), looking for next H2...');
         final toc = await state.book.tableOfContents;
 
-        // חיפוש הכותרת הבאה שגדולה מהאינדקס הנוכחי
+        // Search הכותרת הבאה שגדולה מהאינדקס הנוכחי
         for (final entry in toc) {
           if (entry.index > currentIndex) {
             currentRef = entry.text;
             debugPrint('Found next H2: $currentRef');
             break;
           }
-          // חיפוש גם בכותרות המשנה
+          // Search גם בכותרות המשנה
           for (final child in entry.children) {
             if (child.index > currentIndex) {
               currentRef = '${entry.text}, ${child.text}';
@@ -298,7 +298,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
       // מציאת הפריט הרלוונטי בשמור וזכור
       final learnableItems = bookDetails.learnableItems;
 
-      // חיפוש הפריט המתאים לפי שם הכותרת (כפי שהיא מופיעה בטקסט)
+      // Search הפריט המתאים לפי שם הכותרת (כפי שהיא מופיעה בטקסט)
       LearnableItem? targetItem;
 
       // נחפש לפי שם הכותרת הנוכחית
@@ -316,7 +316,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
       }
 
       try {
-        // חיפוש לפי displayLabel או partName שמכיל את שם הכותרת
+        // Search לפי displayLabel או partName שמכיל את שם הכותרת
         targetItem = learnableItems.firstWhere(
           (item) {
             // בדיקה לפי displayLabel
@@ -336,7 +336,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
           },
         );
       } catch (e) {
-        // אם לא מצאנו בחיפוש מדויק, ננסה חיפוש חלקי
+        // אם לא מצאנו בחיפוש מדויק, ננסה Search חלקי
         try {
           targetItem = learnableItems.firstWhere(
             (item) {
@@ -524,7 +524,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
 
     // וודא שהמיקום הנוכחי נשמר בטאב
 
-    // אם יש טקסט חיפוש (searchText), נתחיל בלשונית 'חיפוש' (שנמצאת במקום ה-1)
+    // אם יש טקסט Search (searchText), נתחיל בלשונית 'Search' (שנמצאת במקום ה-1)
     // אחרת, נתחיל בלשונית 'ניווט' (שנמצאת במקום ה-0)
     final int initialIndex = widget.tab.searchText.isNotEmpty ? 1 : 0;
 
@@ -666,11 +666,11 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
                         ActionButtonData(
                           widget: IconButton(
                             icon: const Icon(FluentIcons.search_24_regular),
-                            tooltip: 'חיפוש',
+                            tooltip: 'Search',
                             onPressed: null,
                           ),
                           icon: FluentIcons.search_24_regular,
-                          tooltip: 'חיפוש',
+                          tooltip: 'Search',
                           onPressed: null,
                         ),
                         ActionButtonData(
@@ -938,7 +938,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
       ActionButtonData(
         widget: _buildSearchButton(context, state),
         icon: FluentIcons.search_24_regular,
-        tooltip: 'חיפוש',
+        tooltip: 'Search',
         onPressed: () {
           context.read<TextBookBloc>().add(const ToggleLeftPane(true));
           tabController.index = 1;
@@ -1056,7 +1056,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
         },
       ),
 
-      // 4) שמור וזכור - סמן כנלמד או הוסף למעקב
+      // 4) Save וזכור - סמן כנלמד או הוסף למעקב
       ActionButtonData(
         widget: _buildShamorZachorButton(context, state),
         icon: _isBookTrackedInShamorZachor(state.book.title)
@@ -1064,7 +1064,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
             : FluentIcons.add_circle_24_regular,
         tooltip: _isBookTrackedInShamorZachor(state.book.title)
             ? 'סמן כנלמד בשמור וזכור'
-            : 'הוסף למעקב לימוד בשמור וזכור',
+            : 'הוסף למעקב Study בשמור וזכור',
         onPressed: () {
           if (_isBookTrackedInShamorZachor(state.book.title)) {
             _markShamorZachorProgress(state.book.title);
@@ -1090,11 +1090,11 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
         onPressed: () => _showReportBugDialog(context, state),
       ),
 
-      // 7) הדפסה
+      // 7) Print
       ActionButtonData(
         widget: _buildPrintButton(context, state),
         icon: FluentIcons.print_24_regular,
-        tooltip: 'הדפסה',
+        tooltip: 'Print',
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => PrintingScreen(
@@ -1358,7 +1358,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
             )
           : const Icon(FluentIcons.add_circle_24_regular, size: 24),
       tooltip:
-          isTracked ? 'סמן כנלמד בשמור וזכור' : 'הוסף למעקב לימוד בשמור וזכור',
+          isTracked ? 'סמן כנלמד בשמור וזכור' : 'הוסף למעקב Study בשמור וזכור',
     );
   }
 
@@ -1371,7 +1371,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
       // Check if provider supports dynamic loading
       if (!dataProvider.useDynamicLoader) {
         UiSnack.showError(
-            'הוספת ספרים מותאמת אישית דורשת את הגרסה החדשה של שמור וזכור');
+            'הוספת ספרים מותאמת אישית דורשת את הגרסה החדשה של Save וזכור');
         return;
       }
 
@@ -1613,7 +1613,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
         await _handlePhoneReport(result);
       }
     } finally {
-      // נקה את הנתונים הכבדים מהזיכרון בכל מקרה (דיווח או ביטול)
+      // Clear את הנתונים הכבדים מהזיכרון בכל מקרה (דיווח או Cancel)
       _clearHeavyDataFromMemory();
     }
   }
@@ -1707,7 +1707,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'הטקסט שנבחר:',
+                  'Selected text:',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(reportData.selectedText),
@@ -1724,7 +1724,7 @@ class _TextBookViewerBlocState extends State<TextBookViewerBloc>
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ביטול'),
+              child: const Text('Cancel'),
               onPressed: () => Navigator.of(context).pop(ReportAction.cancel),
             ),
             TextButton(
@@ -1883,7 +1883,7 @@ $detailsSection
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('סגור'),
+            child: const Text('Close'),
           ),
           TextButton(
             onPressed: () {
@@ -2039,7 +2039,7 @@ $detailsSection
             }
           }
         } catch (e) {
-          // אם יש שגיאה בפירוק השורה, נמשיך לשורה הבאה
+          // אם יש Error בפירוק השורה, נמשיך לשורה הבאה
           debugPrint('Error parsing CSV line: $line, Error: $e');
           continue;
         }
@@ -2190,7 +2190,7 @@ $detailsSection
                           controller: tabController,
                           tabs: const [
                             Tab(text: 'ניווט'),
-                            Tab(text: 'חיפוש'),
+                            Tab(text: 'Search'),
                             Tab(text: 'מפרשים'),
                           ],
                           labelColor: Theme.of(context).colorScheme.primary,
@@ -2478,7 +2478,7 @@ class _TabbedReportDialogState extends State<_TabbedReportDialog>
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('סגור'),
+              child: const Text('Close'),
             ),
           ],
         ),
@@ -2663,7 +2663,7 @@ class _RegularReportTabState extends State<_RegularReportTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('סמן את הטקסט שבו נמצאת הטעות:'),
+          const Text('Select the text with the error:'),
           const SizedBox(height: 8),
           ConstrainedBox(
             constraints: BoxConstraints(
@@ -2777,7 +2777,7 @@ class _RegularReportTabState extends State<_RegularReportTab> {
                 children: [
                   TextButton(
                     onPressed: widget.onCancel,
-                    child: const Text('ביטול'),
+                    child: const Text('Cancel'),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
@@ -2825,7 +2825,7 @@ class _RegularReportTabState extends State<_RegularReportTab> {
                             height: 16,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : Text(isPhoneDisabled ? 'דיווח לא זמין' : 'שלח דיווח'),
+                        : Text(isPhoneDisabled ? 'דיווח Not available' : 'שלח דיווח'),
                   ),
                 ],
               );
@@ -2904,7 +2904,7 @@ bool _handleGlobalKeyEvent(
         }
         break;
 
-      // חיפוש בספר (Ctrl+F כברירת מחדל)
+      // Search בספר (Ctrl+F כברירת מחדל)
       case LogicalKeyboardKey.keyF:
         if (searchInBookShortcut.contains('ctrl+f')) {
           context.read<TextBookBloc>().add(const ToggleLeftPane(true));
@@ -2918,7 +2918,7 @@ bool _handleGlobalKeyEvent(
         }
         break;
 
-      // הדפסה (Ctrl+P כברירת מחדל)
+      // Print (Ctrl+P כברירת מחדל)
       case LogicalKeyboardKey.keyP:
         if (printShortcut.contains('ctrl+p')) {
           Navigator.of(context).push(
@@ -2996,7 +2996,7 @@ bool _handleGlobalKeyEvent(
   // מקשי פונקציה ללא Ctrl
   if (event is KeyDownEvent && !HardwareKeyboard.instance.isControlPressed) {
     switch (event.logicalKey) {
-      // F11 - מסך מלא
+      // F11 - Fullscreen
       case LogicalKeyboardKey.f11:
         if (!Platform.isAndroid && !Platform.isIOS) {
           final settingsBloc = context.read<SettingsBloc>();

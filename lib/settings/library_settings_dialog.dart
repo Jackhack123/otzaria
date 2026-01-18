@@ -5,7 +5,7 @@ import 'package:otzaria/settings/settings_event.dart';
 import 'package:otzaria/settings/settings_state.dart';
 import 'package:otzaria/widgets/generic_settings_dialog.dart';
 
-/// פונקציה גלובלית להצגת דיאלוג הגדרות ספרייה
+/// פונקציה גלובלית להצגת דיאלוג Library Settings
 /// ניתן לקרוא לה מכל מקום באפליקציה
 void showLibrarySettingsDialog(BuildContext context) {
   showDialog(
@@ -13,14 +13,14 @@ void showLibrarySettingsDialog(BuildContext context) {
     builder: (context) => BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, currentSettingsState) {
         return GenericSettingsDialog(
-          title: 'הגדרות ספרייה',
+          title: 'Library Settings',
           width: 500,
           items: [
             SwitchSettingsItem(
-              title: 'האם להציג ספרים מאתרים חיצוניים?',
+              title: 'Display books from external sources?',
               subtitle: currentSettingsState.showExternalBooks
-                  ? 'יוצגו גם ספרים מאתרים חיצוניים'
-                  : 'יוצגו רק ספרים מספריית אוצריא',
+                  ? 'Books from external sources will be displayed'
+                  : 'Only Otzaria library books will be displayed',
               value: currentSettingsState.showExternalBooks,
               onChanged: (value) {
                 context
@@ -34,7 +34,7 @@ void showLibrarySettingsDialog(BuildContext context) {
               dependentItems: currentSettingsState.showExternalBooks
                   ? [
                       CheckboxSettingsItem(
-                        title: 'הצג ספרים מאוצר החכמה',
+                        title: 'Show books from Otzar HaChochma',
                         value: currentSettingsState.showOtzarHachochma,
                         onChanged: (bool? value) {
                           if (value != null) {
@@ -45,7 +45,7 @@ void showLibrarySettingsDialog(BuildContext context) {
                         },
                       ),
                       CheckboxSettingsItem(
-                        title: 'הצג ספרים מהיברובוקס',
+                        title: 'Show books from Hebrew Books',
                         value: currentSettingsState.showHebrewBooks,
                         onChanged: (bool? value) {
                           if (value != null) {

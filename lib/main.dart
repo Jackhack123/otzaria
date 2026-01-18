@@ -250,7 +250,7 @@ Future<void> initialize() async {
 /// Creates the necessary directory structure for the application.
 ///
 /// Sets up two main directories:
-/// - Main library directory ('אוצריא')
+/// - Main library directory ('Otzaria')
 /// - Index directory for search functionality
 Future<void> createDirs() async {
   await AppPaths.createNecessaryDirectories();

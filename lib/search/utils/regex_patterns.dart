@@ -281,12 +281,12 @@ class SearchRegexPatterns {
     return '(${patterns.join('|')})';
   }
 
-  /// פונקציה שמחליטה איזה סוג חיפוש להשתמש בהתבסס על אפשרויות המשתמש
+  /// פונקציה שמחליטה איזה סוג Search להשתמש בהתבסס על אפשרויות המשתמש
   ///
   /// הלוגיקה:
-  /// - אם נבחרו גם קידומות וגם סיומות רגילות -> חיפוש "חלק ממילה"
-  /// - אם נבחרו קידומות דקדוקיות וסיומות דקדוקיות -> חיפוש מורפולוגי מלא
-  /// - אחרת -> חיפוש לפי האפשרות הספציפית שנבחרה
+  /// - אם נבחרו גם קידומות וגם סיומות רגילות -> Search "חלק ממילה"
+  /// - אם נבחרו קידומות דקדוקיות וסיומות דקדוקיות -> Search מורפולוגי מלא
+  /// - אחרת -> Search לפי האפשרות הספציפית שנבחרה
 // lib/search/utils/regex_patterns.dart
 
   static String createSearchPattern(
@@ -343,7 +343,7 @@ class SearchRegexPatterns {
       }
     }
 
-    // --- לוגיקה עבור חיפושים ללא "כתיב מלא/חסר" ---
+    // --- לוגיקה עבור Searchים ללא "כתיב מלא/חסר" ---
     // סדר העדיפויות חשוב גם כאן
     if (hasPrefix && hasSuffix) {
       return createPartialWordPattern(word);
@@ -361,7 +361,7 @@ class SearchRegexPatterns {
       return createPartialWordPattern(word);
     }
 
-    // ברירת מחדל - חיפוש מדויק
+    // Default - Search מדויק
     return RegExp.escape(word);
   }
 }

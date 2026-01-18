@@ -97,7 +97,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       if (!tab.pdfViewerController.isReady) return null;
       final page = tab.pdfViewerController.pageNumber ?? 1;
       return Bookmark(
-        ref: '${tab.title} עמוד $page',
+        ref: '${tab.title} Page $page',
         book: tab.book,
         index: page,
       );

@@ -26,7 +26,7 @@ void showReadingSettingsDialog(BuildContext context) {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // כותרת: הגדרות גופן ועיצוב
+                  // כותרת: הגדרות Font ועיצוב
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -36,20 +36,20 @@ void showReadingSettingsDialog(BuildContext context) {
                           Theme.of(context).colorScheme.surfaceContainerHighest,
                     ),
                     child: const Text(
-                      'הגדרות גופן ועיצוב',
+                      'הגדרות Font ועיצוב',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       textAlign: TextAlign.start,
                     ),
                   ),
 
-                  // גודל גופן והגופן בשורה אחת
+                  // Font Size והגופן בשורה אחת
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // גודל גופן - 2/4
+                        // Font Size - 2/4
                         Expanded(
                           flex: 2,
                           child: StatefulBuilder(
@@ -66,7 +66,7 @@ void showReadingSettingsDialog(BuildContext context) {
                                       const SizedBox(width: 12),
                                       Expanded(
                                         child: Text(
-                                          'גודל גופן התחלתי',
+                                          'גודל Font התחלתי',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium,
@@ -103,7 +103,7 @@ void showReadingSettingsDialog(BuildContext context) {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        // גופן טקסט ראשי - 1/4
+                        // Font טקסט ראשי - 1/4
                         Expanded(
                           flex: 1,
                           child: StatefulBuilder(
@@ -191,7 +191,7 @@ void showReadingSettingsDialog(BuildContext context) {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        // גופן מפרשים - 1/4
+                        // Font מפרשים - 1/4
                         Expanded(
                           flex: 1,
                           child: StatefulBuilder(
@@ -424,7 +424,7 @@ void showReadingSettingsDialog(BuildContext context) {
                     title: const Text('פתיחת סרגל צד כברירת מחדל'),
                     subtitle: Text(settingsState.defaultSidebarOpen
                         ? 'סרגל הצד יפתח אוטומטית'
-                        : 'סרגל הצד ישאר סגור'),
+                        : 'סרגל הצד ישאר Close'),
                     value: settingsState.defaultSidebarOpen,
                     onChanged: settingsState.pinSidebar
                         ? null
@@ -436,7 +436,7 @@ void showReadingSettingsDialog(BuildContext context) {
                   ),
                   const Divider(),
 
-                  // ברירת מחדל להצגת מפרשים
+                  // Default להצגת מפרשים
                   StatefulBuilder(
                     builder: (context, setState) {
                       final splitedView =
@@ -456,7 +456,7 @@ void showReadingSettingsDialog(BuildContext context) {
                     },
                   ),
 
-                  // הגדרות העתקה
+                  // הגדרות Copyה
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -466,14 +466,14 @@ void showReadingSettingsDialog(BuildContext context) {
                           Theme.of(context).colorScheme.surfaceContainerHighest,
                     ),
                     child: const Text(
-                      'הגדרות העתקה',
+                      'הגדרות Copyה',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       textAlign: TextAlign.start,
                     ),
                   ),
 
-                  // העתקה עם כותרות ועיצוב בשורה אחת
+                  // Copyה עם כותרות ועיצוב בשורה אחת
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: StatefulBuilder(
@@ -481,7 +481,7 @@ void showReadingSettingsDialog(BuildContext context) {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // העתקה עם כותרות - 1/2
+                            // Copyה עם כותרות - 1/2
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,7 +539,7 @@ void showReadingSettingsDialog(BuildContext context) {
                               ),
                             ),
                             const SizedBox(width: 24),
-                            // עיצוב העתקה - 1/2
+                            // עיצוב Copyה - 1/2
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -551,7 +551,7 @@ void showReadingSettingsDialog(BuildContext context) {
                                       const SizedBox(width: 8),
                                       Expanded(
                                         child: Text(
-                                          'עיצוב העתקה',
+                                          'עיצוב Copyה',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium,
@@ -795,7 +795,7 @@ void showReadingSettingsDialog(BuildContext context) {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('סגור'),
+              child: const Text('Close'),
             ),
           ],
         );

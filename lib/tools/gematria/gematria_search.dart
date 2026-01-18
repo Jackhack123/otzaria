@@ -223,7 +223,7 @@ class GimatriaSearch {
               if (found.length >= fileLimit) return found;
             }
           } else {
-            // חיפוש רגיל - כל קטע
+            // Search רגיל - כל קטע
             final wordValues = words.map((w) => gimatria(w, method: gematriaMethod)).toList();
             for (int start = 0; start < words.length; start++) {
               int acc = 0;

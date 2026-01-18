@@ -8,7 +8,7 @@ class CopyUtils {
   static String extractBookName(TextBook book) => book.title.trim();
 
   /// מחלץ את הנתיב ההיררכי הנוכחי:
-  /// 1) ניסיון קפדני מתוך התוכן עצמו: רק תגיות <h1>..<h6>
+  /// 1) ניסיון קפדני of התוכן עצמו: רק תגיות <h1>..<h6>
   /// 2) נפילה ל-TOC: לוקחים את הכותרת האחרונה לכל רמה (1..6) עד currentIndex
   static Future<String> extractCurrentPath(
     TextBook book,
@@ -16,7 +16,7 @@ class CopyUtils {
     List<String>? bookContent,
   }) async {
     try {
-      // --- שלב 1: ניסיון קפדני מתוך התוכן ---
+      // --- שלב 1: ניסיון קפדני of התוכן ---
       final fromContent =
           _extractPathFromContentStrict(bookContent, currentIndex);
       if (fromContent.isNotEmpty) return fromContent;
@@ -112,8 +112,8 @@ class CopyUtils {
     return result;
   }
 
-  /// העתקת טקסט מעוצב ללוח עם HTML
-  /// מטפל בהמרת \n ל-<br>, עיצוב HTML עם גופן וגודל, וכתיבה ללוח עם חיווי באפליקציה
+  /// Copyת טקסט מעוצב ללוח עם HTML
+  /// מטפל בהמרת \n ל-<br>, עיצוב HTML עם Font וגודל, וכתיבה ללוח עם חיווי באפליקציה
   static Future<void> copyStyledToClipboard({
     required String plainText,
     required String htmlText,
@@ -140,7 +140,7 @@ $textWithBreaks
       item.add(Formats.htmlText(htmlContent)); // טקסט עם עיצוב
 
       await clipboard.write([item]);
-      UiSnack.show('הטקסט המעוצב הועתק ללוח');
+      UiSnack.show('הטקסט המעוצב Copied to clipboard');
     } catch (e) {
       UiSnack.showError('שגיאה בהעתקה: $e');
     }

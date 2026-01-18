@@ -60,9 +60,9 @@ class OtzarBookDialog extends StatelessWidget {
                         book.heShortDesc ?? 'לא קיים'),
                     _buildInfoRow(context, FluentIcons.person_24_regular, 'מחבר',
                         book.author ?? 'לא ידוע'),
-                    _buildInfoRow(context, FluentIcons.location_24_regular, 'מקום הדפסה',
+                    _buildInfoRow(context, FluentIcons.location_24_regular, 'מקום Print',
                         book.pubPlace ?? 'לא ידוע'),
-                    _buildInfoRow(context, FluentIcons.calendar_24_regular, 'שנת הדפסה',
+                    _buildInfoRow(context, FluentIcons.calendar_24_regular, 'שנת Print',
                         book.pubDate ?? 'לא ידוע'),
                     _buildInfoRow(
                         context, FluentIcons.apps_24_regular, 'נושאים', book.topics),
@@ -149,7 +149,7 @@ class OtzarBookDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(context).colorScheme.secondary,
           ),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
       ],
     );

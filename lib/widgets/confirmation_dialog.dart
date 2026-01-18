@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// דיאלוג אישור עם תמיכה באנטר וחיצים
+/// דיאלוג Confirm עם תמיכה באנטר וחיצים
 class ConfirmationDialog extends StatefulWidget {
   final String title;
   final String content;
@@ -14,8 +14,8 @@ class ConfirmationDialog extends StatefulWidget {
     super.key,
     required this.title,
     required this.content,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'אישור',
+    this.cancelText = 'Cancel',
+    this.confirmText = 'Confirm',
     this.confirmColor,
     this.isDangerous = false,
   });
@@ -25,7 +25,7 @@ class ConfirmationDialog extends StatefulWidget {
 }
 
 class _ConfirmationDialogState extends State<ConfirmationDialog> {
-  int _focusedButtonIndex = 1; // 0 = ביטול, 1 = אישור (ברירת מחדל)
+  int _focusedButtonIndex = 1; // 0 = Cancel, 1 = Confirm (ברירת מחדל)
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
           return KeyEventResult.handled;
         }
 
-        // Escape - ביטול
+        // Escape - Cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           Navigator.of(context).pop(false);
           return KeyEventResult.handled;
@@ -108,13 +108,13 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
   }
 }
 
-/// הצגת דיאלוג אישור
+/// הצגת דיאלוג Confirm
 Future<bool?> showConfirmationDialog({
   required BuildContext context,
   required String title,
   required String content,
-  String cancelText = 'ביטול',
-  String confirmText = 'אישור',
+  String cancelText = 'Cancel',
+  String confirmText = 'Confirm',
   Color? confirmColor,
   bool isDangerous = false,
   bool barrierDismissible = true,

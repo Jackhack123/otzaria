@@ -158,7 +158,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('סגור'),
+              child: const Text('Close'),
             ),
           ],
         );

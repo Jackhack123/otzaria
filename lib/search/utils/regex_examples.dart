@@ -55,7 +55,7 @@ class RegexExamples {
     final root = SearchRegexPatterns.extractRoot(word);
     debugPrint('שורש: $root'); // 'ספר'
     
-    // יצירת דפוסי חיפוש
+    // יצירת דפוסי Search
     final prefixPattern = SearchRegexPatterns.createPrefixPattern('ספר');
     debugPrint('דפוס קידומות: $prefixPattern');
     
@@ -70,15 +70,15 @@ class RegexExamples {
   static void advancedSearch() {
     const word = 'ראשי';
     
-    // חיפוש עם קידומות רגילות
+    // Search עם קידומות רגילות
     final prefixSearch = SearchRegexPatterns.createPrefixSearchPattern(word);
     debugPrint('חיפוש קידומות: $prefixSearch');
     
-    // חיפוש עם סיומות רגילות
+    // Search עם סיומות רגילות
     final suffixSearch = SearchRegexPatterns.createSuffixSearchPattern(word);
     debugPrint('חיפוש סיומות: $suffixSearch');
     
-    // חיפוש חלק ממילה (משמש גם לקידומות+סיומות יחד)
+    // Search חלק ממילה (משמש גם לקידומות+סיומות יחד)
     final partialSearch = SearchRegexPatterns.createPartialWordPattern(word);
     debugPrint('חיפוש חלקי (או קידומות+סיומות): $partialSearch');
     debugPrint('דוגמה: "$word" ימצא "בראשית" כי "ראשי" נמצא בתוך המילה');
@@ -109,7 +109,7 @@ class RegexExamples {
     debugPrint('ציטוטים: ${quotes.map((m) => m.group(0)).toList()}'); // ['"זה ציטוט"']
   }
   
-  /// דוגמה מקיפה לעיבוד טקסט חיפוש
+  /// דוגמה מקיפה לעיבוד טקסט Search
   static Map<String, dynamic> processSearchQuery(String query) {
     final result = <String, dynamic>{};
     
@@ -129,7 +129,7 @@ class RegexExamples {
         'isEnglish': SearchRegexPatterns.isEnglish(word),
       };
       
-      // הוספת דפוסי חיפוש
+      // הוספת דפוסי Search
       analysis['patterns'] = {
         'prefix': SearchRegexPatterns.createPrefixPattern(word),
         'suffix': SearchRegexPatterns.createSuffixPattern(word),
@@ -171,7 +171,7 @@ class RegexExamples {
         hasGrammaticalPrefixes: true, hasGrammaticalSuffixes: true);
     debugPrint('קידומות + סיומות דקדוקיות: $grammatical');
     
-    // חיפוש מדויק
+    // Search מדויק
     final exact = SearchRegexPatterns.createSearchPattern(word);
     debugPrint('חיפוש מדויק: $exact');
   }
@@ -187,16 +187,16 @@ class RegexExamples {
     debugPrint('\n=== מורפולוגיה עברית ===');
     hebrewMorphology();
     
-    debugPrint('\n=== חיפוש מתקדם ===');
+    debugPrint('\n=== Search מתקדם ===');
     advancedSearch();
     
     debugPrint('\n=== תבניות מיוחדות ===');
     specialPatterns();
     
-    debugPrint('\n=== פונקציה חכמה לבחירת סוג חיפוש ===');
+    debugPrint('\n=== פונקציה חכמה לבחירת סוג Search ===');
     smartSearchPattern();
     
-    debugPrint('\n=== עיבוד שאילתת חיפוש ===');
+    debugPrint('\n=== עיבוד שאילתת Search ===');
     final analysis = processSearchQuery('ובספרים הקדושים');
     debugPrint('ניתוח: $analysis');
   }

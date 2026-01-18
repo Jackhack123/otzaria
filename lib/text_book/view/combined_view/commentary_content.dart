@@ -101,7 +101,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
 
               return BlocBuilder<SettingsBloc, SettingsState>(
                 builder: (context, settingsState) {
-                  // החלפת שמות קדושים אם נדרש
+                  // Replace holy names if required
                   String displayText = text;
                   if (settingsState.replaceHolyNames) {
                     displayText = utils.replaceHolyNames(displayText);

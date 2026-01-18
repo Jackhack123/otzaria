@@ -2,15 +2,15 @@ import 'package:search_engine/search_engine.dart';
 
 /// מצבי החיפוש השונים
 enum SearchMode {
-  advanced, // חיפוש מתקדם
-  exact, // חיפוש מדוייק
-  fuzzy, // חיפוש מקורב
+  advanced, // Search מתקדם
+  exact, // Search מדוייק
+  fuzzy, // Search מקורב
 }
 
 /// מחלקה שמרכזת את כל הגדרות החיפוש במקום אחד
 /// כוללת הגדרות קיימות והגדרות עתידיות לרגקס
 class SearchConfiguration {
-  // הגדרות חיפוש קיימות
+  // הגדרות Search קיימות
   final int distance;
   final SearchMode searchMode;
   final ResultsOrder sortBy;
@@ -25,14 +25,14 @@ class SearchConfiguration {
   final bool unicode;
 
   const SearchConfiguration({
-    // ערכי ברירת מחדל קיימים
+    // ערכי Default קיימים
     this.distance = 2,
     this.searchMode = SearchMode.advanced,
     this.sortBy = ResultsOrder.catalogue,
     this.numResults = 100,
     this.currentFacets = const ["/"],
 
-    // ערכי ברירת מחדל לרגקס
+    // ערכי Default לרגקס
     this.regexEnabled = false,
     this.caseSensitive = false,
     this.multiline = false,

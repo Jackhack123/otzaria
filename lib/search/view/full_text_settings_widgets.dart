@@ -311,7 +311,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
           TextSpan(
             text: '(${prefixes.join(',')})',
             style: TextStyle(
-              fontSize: 10, // גופן קטן יותר לקיצורים
+              fontSize: 10, // Font קטן יותר לקיצורים
               fontWeight: FontWeight.normal,
               color: Theme.of(context).primaryColor,
             ),
@@ -325,7 +325,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
         TextSpan(
           text: word,
           style: const TextStyle(
-            fontSize: 16, // גופן גדול יותר למילים
+            fontSize: 16, // Font גדול יותר למילים
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -354,7 +354,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
             TextSpan(
               text: altWord,
               style: const TextStyle(
-                fontSize: 16, // גופן גדול יותר למילים
+                fontSize: 16, // Font גדול יותר למילים
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -370,7 +370,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
           TextSpan(
             text: '(${suffixes.join(',')})',
             style: TextStyle(
-              fontSize: 10, // גופן קטן יותר לקיצורים
+              fontSize: 10, // Font קטן יותר לקיצורים
               fontWeight: FontWeight.normal,
               color: Theme.of(context).primaryColor,
             ),
@@ -405,7 +405,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
             TextSpan(
               text: subscriptValue,
               style: TextStyle(
-                fontSize: 14, // גופן מעט יותר גדול למספר המרווח
+                fontSize: 14, // Font מעט יותר גדול למספר המרווח
                 fontWeight: FontWeight.normal,
                 color: Theme.of(context).primaryColor,
               ),
@@ -419,7 +419,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
             const TextSpan(
               text: ' + ',
               style: TextStyle(
-                fontSize: 16, // גופן גדול יותר ל-+
+                fontSize: 16, // Font גדול יותר ל-+
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),

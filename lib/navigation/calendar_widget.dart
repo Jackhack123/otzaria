@@ -14,18 +14,18 @@ class CalendarWidget extends StatelessWidget {
 
   // העברנו את רשימות הקבועים לכאן כדי שיהיו זמינים
   final List<String> hebrewMonths = const [
-    'ניסן',
-    'אייר',
-    'סיון',
-    'תמוז',
-    'אב',
-    'אלול',
-    'תשרי',
+    'Nisan',
+    'Iyar',
+    'Sivan',
+    'Tammuz',
+    'Av',
+    'Elul',
+    'Tishrei',
     'חשון',
-    'כסלו',
-    'טבת',
-    'שבט',
-    'אדר'
+    'Kislev',
+    'Tevet',
+    'Shevat',
+    'Adar'
   ];
 
   final List<String> hebrewDays = const [
@@ -940,10 +940,10 @@ class CalendarWidget extends StatelessWidget {
       }
     }
 
-    // הוספת זמני חנוכה
+    // הוספת זמני Hanukkah
     if (jewishCalendar.isChanukah()) {
       timesList.add(
-          {'name': 'הדלקת נרות חנוכה', 'time': dailyTimes['chanukahCandles']});
+          {'name': 'הדלקת נרות Hanukkah', 'time': dailyTimes['chanukahCandles']});
     }
 
     // הוספת זמני קידוש לבנה
@@ -1039,7 +1039,7 @@ class CalendarWidget extends StatelessWidget {
       bavliTractate = dafYomiBavli.getMasechta();
       bavliDaf = dafYomiBavli.getDaf();
     } catch (e) {
-      bavliTractate = 'לא זמין';
+      bavliTractate = 'Not available';
       bavliDaf = 0;
     }
 
@@ -1052,7 +1052,7 @@ class CalendarWidget extends StatelessWidget {
       yerushalmiTractate = dafYomiYerushalmi.getMasechta();
       yerushalmiDaf = dafYomiYerushalmi.getDaf();
     } catch (e) {
-      yerushalmiTractate = 'לא זמין';
+      yerushalmiTractate = 'Not available';
       yerushalmiDaf = 0;
     }
 
@@ -1124,7 +1124,7 @@ class CalendarWidget extends StatelessWidget {
         timeName.contains('צאת השבת') ||
         timeName.contains('ספירת העומר') ||
         timeName.contains('תענית') ||
-        timeName.contains('חנוכה') ||
+        timeName.contains('Hanukkah') ||
         timeName.contains('קידוש לבנה');
   }
 
@@ -1143,19 +1143,19 @@ class CalendarWidget extends StatelessWidget {
       case JewishCalendar.SIMCHAS_TORAH:
         return 'שמחת תורה';
       case JewishCalendar.PESACH:
-        return 'חג הפסח';
+        return 'Passover';
       case JewishCalendar.SHAVUOS:
-        return 'חג השבועות';
+        return 'Shavuot';
       case JewishCalendar.CHANUKAH:
-        return 'חנוכה';
+        return 'Hanukkah';
       case 17: // HOSHANA_RABBA
-        return 'הושענא רבה';
+        return 'Hoshana Rabba';
       case 2: // CHOL_HAMOED_PESACH
-        return 'חול המועד פסח';
+        return 'Chol HaMoed Pesach';
       case 16: // CHOL_HAMOED_SUCCOS
-        return 'חול המועד סוכות';
+        return 'Chol HaMoed Sukkot';
       default:
-        return 'חג';
+        return 'Holiday';
     }
   }
 
@@ -1352,7 +1352,7 @@ class CalendarWidget extends StatelessWidget {
     if (monthIndex != -1) return monthIndex + 1;
 
     // טיפול בשמות חלופיים
-    if (cleanMonth == 'חשוון' || cleanMonth == 'מרחשוון') return 8;
+    if (cleanMonth == 'Heshvan' || cleanMonth == 'מרחשוון') return 8;
     if (cleanMonth == 'סיוון') return 3;
 
     throw Exception('Invalid month name');
@@ -1371,7 +1371,7 @@ class CalendarWidget extends StatelessWidget {
     // המר את שאר האותיות למספר
     int yearFromLetters = _hebrewNumberToInt(cleanYear);
 
-    // אם לא היתה 'ה' בהתחלה, אבל קיבלנו מספר שנראה כמו שנה,
+    // אם לא היתה 'ה' בהתחלה, Avל קיבלנו מספר שנראה כמו שנה,
     // נניח אוטומטית שהכוונה היא לאלף הנוכחי (5000)
     if (baseYear == 0 && yearFromLetters > 0) {
       baseYear = 5000;
@@ -1403,7 +1403,7 @@ class CalendarWidget extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
                         labelText: 'הזן תאריך',
-                        hintText: 'דוגמאות: 15/3/2025, כ״ה אדר תשפ״ה',
+                        hintText: 'דוגמאות: 15/3/2025, כ״ה Adar תשפ״ה',
                         border: OutlineInputBorder(),
                         helperText:
                             'ניתן להזין תאריך לועזי (יום/חודש/שנה) או עברי',
@@ -1461,7 +1461,7 @@ class CalendarWidget extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: const Text('ביטול'),
+                  child: const Text('Cancel'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -1515,7 +1515,7 @@ class CalendarWidget extends StatelessWidget {
       } catch (e) {/* אם נכשל, נמשיך לנסות לפרש כעברי */}
     }
 
-    // 2. נסה לפרש כתאריך עברי (למשל: י"ח אלול תשפ"ה)
+    // 2. נסה לפרש כתאריך עברי (למשל: י"ח Elul תשפ"ה)
     try {
       final parts = cleanInput.split(RegExp(r'\s+'));
       if (parts.length < 2 || parts.length > 3) return null;
@@ -1754,7 +1754,7 @@ class CalendarWidget extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: const Text('ביטול'),
+                  child: const Text('Cancel'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -1766,7 +1766,7 @@ class CalendarWidget extends StatelessWidget {
 
                     // --- לוגיקת שמירה מעודכנת ---
                     final int? recurringYears;
-                    // אם האירוע חוזר, אבל לא "תמיד", ננסה לקרוא את מספר השנים
+                    // אם האירוע חוזר, Avל לא "תמיד", ננסה לקרוא את מספר השנים
                     if (isRecurring && !recurForever) {
                       recurringYears =
                           int.tryParse(yearsController.text.trim());
@@ -2145,7 +2145,7 @@ class _TimesAndEventsTabViewState extends State<_TimesAndEventsTabView>
                                 IconButton(
                                   icon: const Icon(
                                       FluentIcons.dismiss_24_regular),
-                                  tooltip: 'נקה חיפוש',
+                                  tooltip: 'נקה Search',
                                   onPressed: () {
                                     context
                                         .read<CalendarCubit>()
@@ -2279,13 +2279,13 @@ class _DayExtras extends StatelessWidget {
         yomTovIndex == JewishCalendar.CHOL_HAMOED_PESACH) {
       l.removeWhere((e) => e.contains('חול המועד')); // הסרת הטקסט הכללי
       final dayOfCholHamoed = jc.getJewishDayOfMonth() - 15;
-      l.add('${_numberToHebrewLetter(dayOfCholHamoed)} דחוה"מ');
+      l.add('${_numberToHebrewLetter(dayOfCholHamoed)} Chol HaMoed');
     }
 
-    // פירוט ימי חנוכה (דורס את הטקסט הכללי "חנוכה")
+    // פירוט ימי Hanukkah (דורס את הטקסט הכללי "Hanukkah")
     if (yomTovIndex == JewishCalendar.CHANUKAH) {
-      // החלפנו את l.remove ל-l.removeWhere כדי לתפוס כל טקסט עם המילה "חנוכה"
-      l.removeWhere((e) => e.contains('חנוכה'));
+      // החלפנו את l.remove ל-l.removeWhere כדי לתפוס כל טקסט עם המילה "Hanukkah"
+      l.removeWhere((e) => e.contains('Hanukkah'));
 
       // והוספנו את הטקסט המדויק שלנו
       final dayOfChanukah = jc.getDayOfChanukah();

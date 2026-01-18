@@ -241,7 +241,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts> {
           trimmed.codeUnitAt(0) >= 48 &&
           trimmed.codeUnitAt(0) <= 57) {
         final digit = int.parse(trimmed);
-        // שימוש במקשי מספרים המוגדרים מראש
+        // Use predefined number keys
         switch (digit) {
           case 0:
             keys.add(LogicalKeyboardKey.digit0);
@@ -329,7 +329,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts> {
       else if (trimmed.startsWith('f') && trimmed.length <= 3) {
         final num = int.tryParse(trimmed.substring(1));
         if (num != null && num >= 1 && num <= 12) {
-          // שימוש במקשי F המוגדרים מראש
+          // Use predefined F keys
           switch (num) {
             case 1:
               keys.add(LogicalKeyboardKey.f1);
@@ -377,8 +377,8 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts> {
 
   Map<ShortcutActivator, VoidCallback> _buildShortcutBindings(
       BuildContext context, Map<String, String> shortcutSettings) {
-    // קריאת ערכי הקיצורים מההגדרות בכל פעם שהפונקציה נקראת
-    // ניווט כללי
+    // Read shortcut values from settings each time function is called
+    // General navigation
     final libraryShortcut =
         shortcutSettings['key-shortcut-open-library-browser'] ?? 'ctrl+l';
     final findRefShortcut =
@@ -557,7 +557,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts> {
     );
 
     if (!hasSearchTab) {
-      tabsBloc.add(AddTab(SearchingTab("חיפוש", "")));
+      tabsBloc.add(AddTab(SearchingTab("Search", "")));
     } else {
       final currentScreen = navigationBloc.state.currentScreen;
       final isAlreadySearchTab = currentScreen == Screen.search &&

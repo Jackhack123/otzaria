@@ -183,7 +183,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                         3) {
                       return const Center(
                         child: Text(
-                          'אין תוצאות',
+                          'No results',
                           style: TextStyle(fontSize: 16),
                         ),
                       );
@@ -243,7 +243,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
       ],
     );

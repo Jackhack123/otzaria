@@ -3,9 +3,9 @@ import 'package:otzaria/search/utils/regex_patterns.dart';
 
 /// מחלקת שירות לריכוז לוגיקת בניית שאילתות החיפוש.
 ///
-/// מחלקה זו מאחדת את הלוגיקה המשותפת לבניית שאילתות חיפוש מתקדמות,
-/// הכוללת מילים חילופיות ואפשרויות חיפוש שונות.
-/// משמשת הן עבור חיפוש והן עבור ספירת תוצאות.
+/// מחלקה זו מאחדת את הלוגיקה המשותפת לבניית שאילתות Search מתקדמות,
+/// הכוללת מילים חילופיות ואפשרויות Search שונות.
+/// משמשת הן עבור Search והן עבור ספירת תוצאות.
 class SearchQueryBuilder {
   SearchQueryBuilder._();
 
@@ -27,7 +27,7 @@ class SearchQueryBuilder {
     return maxSpacing;
   }
 
-  /// בונה query מתקדם עם מילים חילופיות ואפשרויות חיפוש
+  /// בונה query מתקדם עם מילים חילופיות ואפשרויות Search
   static List<String> buildAdvancedQuery(
       List<String> words,
       Map<int, List<String>>? alternativeWords,
@@ -98,7 +98,7 @@ class SearchQueryBuilder {
     return regexTerms;
   }
 
-  /// מכין את הפרמטרים לשאילתת חיפוש
+  /// מכין את הפרמטרים לשאילתת Search
   static Map<String, dynamic> prepareQueryParams(
       String query,
       bool fuzzy,
@@ -112,7 +112,7 @@ class SearchQueryBuilder {
         .where((w) => w.isNotEmpty)
         .toList();
 
-    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות חיפוש
+    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות Search
     final hasCustomSpacing = customSpacing != null && customSpacing.isNotEmpty;
     final hasAlternativeWords =
         alternativeWords != null && alternativeWords.isNotEmpty;
@@ -126,18 +126,18 @@ class SearchQueryBuilder {
     final int effectiveSlop;
 
     if (hasAlternativeWords || hasSearchOptions) {
-      // יש מילים חילופיות או אפשרויות חיפוש - נבנה queries מתקדמים
+      // יש מילים חילופיות או אפשרויות Search - נבנה queries מתקדמים
       regexTerms = SearchQueryBuilder.buildAdvancedQuery(
           words, alternativeWords, searchOptions);
       effectiveSlop = hasCustomSpacing
           ? SearchQueryBuilder.getMaxCustomSpacing(customSpacing, words.length)
           : (fuzzy ? distance : 0);
     } else if (fuzzy) {
-      // חיפוש מקורב - נשתמש במילים בודדות
+      // Search מקורב - נשתמש במילים בודדות
       regexTerms = words;
       effectiveSlop = distance;
     } else if (words.length == 1) {
-      // מילה אחת - חיפוש פשוט
+      // מילה אחת - Search פשוט
       regexTerms = [query];
       effectiveSlop = 0;
     } else if (hasCustomSpacing) {
@@ -146,7 +146,7 @@ class SearchQueryBuilder {
       effectiveSlop =
           SearchQueryBuilder.getMaxCustomSpacing(customSpacing, words.length);
     } else {
-      // חיפוש מדוייק של כמה מילים
+      // Search מדוייק של כמה מילים
       regexTerms = words;
       effectiveSlop = distance;
     }
@@ -166,7 +166,7 @@ class SearchQueryBuilder {
   /// מחשב את maxExpansions בהתבסס על סוג החיפוש
   static int calculateMaxExpansions(bool fuzzy, int termCount,
       {Map<String, Map<String, bool>>? searchOptions, List<String>? words}) {
-    // בדיקה אם יש חיפוש עם סיומות או קידומות ואיזה מילים
+    // בדיקה אם יש Search עם סיומות או קידומות ואיזה מילים
     bool hasSuffixOrPrefix = false;
     int shortestWordLength = 10; // ערך התחלתי גבוה
 
@@ -188,7 +188,7 @@ class SearchQueryBuilder {
     }
 
     if (fuzzy) {
-      return 50; // חיפוש מקורב
+      return 50; // Search מקורב
     } else if (hasSuffixOrPrefix) {
       // התאמת המגבלה לפי אורך המילה הקצרה ביותר עם אפשרויות מתקדמות
       if (shortestWordLength <= 1) {
@@ -201,7 +201,7 @@ class SearchQueryBuilder {
         return 5000; // מילה ארוכה - הגבלה מלאה
       }
     } else if (termCount > 1) {
-      return 100; // חיפוש של כמה מילים - צריך expansions גבוה יותר
+      return 100; // Search של כמה מילים - צריך expansions גבוה יותר
     } else {
       return 10; // מילה אחת - expansions נמוך
     }

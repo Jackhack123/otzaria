@@ -16,7 +16,7 @@ class CustomShortcutDialog extends StatefulWidget {
 
 class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
   final Set<LogicalKeyboardKey> _pressedKeys = {};
-  String _displayText = 'לחץ על המקשים...';
+  String _displayText = 'Press the keys...';
   bool _isRecording = false;
 
   @override
@@ -144,7 +144,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
   void _updateDisplay() {
     if (_pressedKeys.isEmpty) {
       setState(() {
-        _displayText = 'לחץ על המקשים...';
+        _displayText = 'Press the keys...';
       });
       return;
     }
@@ -184,7 +184,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
       },
       child: AlertDialog(
         title: const Text(
-          'הגדרת קיצור מקשים מותאם אישית',
+          'Custom Keyboard Shortcut',
           textAlign: TextAlign.right,
         ),
         content: SizedBox(
@@ -194,7 +194,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'לחץ על "התחל הקלטה" ואז לחץ על צירוף המקשים הרצוי',
+                'Click "Start Recording" and then press the desired key combination',
                 textAlign: TextAlign.right,
                 style: TextStyle(fontSize: 14),
               ),
@@ -256,11 +256,11 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
                     setState(() {
                       _pressedKeys.clear();
                       _isRecording = true;
-                      _displayText = 'לחץ על המקשים...';
+                      _displayText = 'Press the keys...';
                     });
                   },
                   icon: const Icon(Icons.fiber_manual_record),
-                  label: const Text('התחל הקלטה'),
+                  label: const Text('Start Recording'),
                 ),
             ],
           ),
@@ -268,7 +268,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ביטול'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: _pressedKeys.isEmpty
@@ -277,7 +277,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
                     final shortcut = _formatKeysToShortcut(_pressedKeys);
                     Navigator.pop(context, shortcut);
                   },
-            child: const Text('אישור'),
+            child: const Text('Confirm'),
           ),
         ],
       ),

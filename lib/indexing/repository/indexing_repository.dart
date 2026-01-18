@@ -177,8 +177,8 @@ class IndexingRepository {
         }
         final bookmark = await refFromPageNumber(i + 1, outline, title);
         final ref = bookmark.isNotEmpty
-            ? '$title, $bookmark, עמוד ${i + 1}'
-            : '$title, עמוד ${i + 1}';
+            ? '$title, $bookmark, Page ${i + 1}'
+            : '$title, Page ${i + 1}';
         index.addDocument(
             id: BigInt.from(DateTime.now().microsecondsSinceEpoch),
             title: title,

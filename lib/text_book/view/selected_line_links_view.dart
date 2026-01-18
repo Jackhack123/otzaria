@@ -39,7 +39,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
   bool _searchInContent = false;
   Future<List<Link>>? _filteredLinksFuture;
   String _lastSearchKey = '';
-  final Set<String> _linksWithSearchResults = {}; // קישורים עם תוצאות חיפוש
+  final Set<String> _linksWithSearchResults = {}; // קישורים עם תוצאות Search
 
   @override
   void dispose() {
@@ -57,7 +57,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
 
         return Column(
           children: [
-            // שדה חיפוש
+            // שדה Search
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -178,7 +178,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
     );
   }
 
-  // פונקציה אסינכרונית לסינון הקישורים עם חיפוש בתוכן
+  // פונקציה אסינכרונית לסינון הקישורים עם Search בתוכן
   Future<List<Link>> _filterLinksAsync(List<Link> links) async {
     _linksWithSearchResults.clear(); // איפוס רשימת הקישורים עם תוצאות
 
@@ -194,13 +194,13 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       final title = link.heRef.toLowerCase();
       final bookTitle = utils.getTitleFromPath(link.path2).toLowerCase();
 
-      // חיפוש בכותרת ושם הספר
+      // Search בכותרת ושם הספר
       if (title.contains(query) || bookTitle.contains(query)) {
         filteredLinks.add(link);
         continue;
       }
 
-      // חיפוש בתוכן אם הופעל
+      // Search בתוכן אם הופעל
       if (_searchInContent) {
         try {
           final content = await link.content;
@@ -222,7 +222,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
             }
           }
         } catch (e) {
-          // אם יש שגיאה בטעינת התוכן, מוסיף בכל זאת אם מתאים לכותרת
+          // אם יש Error בטעינת התוכן, מוסיף בכל זאת אם מתאים לכותרת
           // (כבר בדקנו את זה למעלה)
         }
       }
@@ -355,12 +355,12 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       builder: (context, settingsState) {
         String cleanContent = utils.stripHtmlIfNeeded(content);
 
-        // החלפת שמות קדושים אם נדרש
+        // Replace holy names if required
         if (settingsState.replaceHolyNames) {
           cleanContent = utils.replaceHolyNames(cleanContent);
         }
 
-        // אם יש חיפוש בתוכן והקישור הזה מכיל תוצאות, מדגיש
+        // אם יש Search בתוכן והקישור הזה מכיל תוצאות, מדגיש
         if (_searchQuery.isNotEmpty && _searchInContent) {
           final keyStr = '${link.path2}_${link.index2}';
           if (_linksWithSearchResults.contains(keyStr)) {

@@ -51,7 +51,7 @@ class _ShortcutDropDownTileState extends State<ShortcutDropDownTile> {
     final availableShortcuts = <String, String>{};
 
     // הוספת אופציה להתאמה אישית
-    availableShortcuts['__custom__'] = 'התאמה אישית...';
+    availableShortcuts['__custom__'] = 'Custom...';
 
     for (final entry in widget.allShortcuts.entries) {
       // Include if: it's the current value OR it's not used by others
@@ -93,21 +93,21 @@ class _ShortcutDropDownTileState extends State<ShortcutDropDownTile> {
           );
 
           if (customShortcut != null && customShortcut.isNotEmpty) {
-            // שמירת הקיצור המותאם אישית
+            // Save custom shortcut
             await Settings.setValue<String>(widget.settingKey, customShortcut);
             finalValue = customShortcut;
           } else {
-            // המשתמש ביטל, אל תמשיך
+            // User cancelled, do not continue
             finalValue = null;
           }
         }
 
         if (finalValue == null || !mounted) return;
 
-        // עדכון ה-BLoC
+        // Update BLoC
         settingsBloc.add(UpdateShortcut(widget.settingKey, finalValue));
 
-        // בדיקת קונפליקטים
+        // Check for conflicts
         final conflicts = ShortcutValidator.checkConflicts();
         if (conflicts.isNotEmpty && conflicts.containsKey(finalValue)) {
           final conflictingKeys = conflicts[finalValue]!;

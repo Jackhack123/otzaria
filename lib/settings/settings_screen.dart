@@ -215,8 +215,8 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                           BlocBuilder<SettingsBloc, SettingsState>(
                             builder: (context, settingsState) {
                               return SimpleSettingsTile(
-                                title: 'מסך מלא',
-                                subtitle: 'החלף מצב מסך מלא',
+                                title: 'Fullscreen',
+                                subtitle: 'החלף מצב Fullscreen',
                                 leading: Icon(settingsState.isFullscreen
                                     ? FluentIcons
                                         .full_screen_minimize_24_regular
@@ -304,7 +304,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                             const Padding(
                               padding: EdgeInsets.only(bottom: 8.0, right: 8.0),
                               child: Text(
-                                'ניווט כללי',
+                                'General navigation',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -340,7 +340,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                               ShortcutDropDownTile(
                                 selected: 'ctrl+q',
                                 settingKey: 'key-shortcut-open-new-search',
-                                title: 'חלון חיפוש חדש',
+                                title: 'חלון Search חדש',
                                 leading:
                                     const Icon(FluentIcons.search_24_regular),
                                 allShortcuts: shortcuctsList,
@@ -379,7 +379,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                               ),
                               ShortcutDropDownTile(
                                 settingKey: 'key-shortcut-switch-workspace',
-                                title: 'החלף שולחן עבודה',
+                                title: 'Switch workspace',
                                 allShortcuts: shortcuctsList,
                                 selected: 'ctrl+k',
                                 leading:
@@ -417,7 +417,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                               ),
                               ShortcutDropDownTile(
                                 settingKey: 'key-shortcut-print',
-                                title: 'הדפסה',
+                                title: 'Print',
                                 allShortcuts: shortcuctsList,
                                 selected: 'ctrl+p',
                                 leading:
@@ -584,7 +584,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                             SwitchSettingsTile(
                               settingKey: 'key-backup-shamor-zachor',
                               title: 'זכור ושמור',
-                              subtitle: 'ספרים ומעקב לימוד',
+                              subtitle: 'ספרים ומעקב Study',
                               leading: const Icon(FluentIcons.book_24_regular),
                               defaultValue: true,
                               activeColor: Theme.of(context).cardColor,
@@ -801,7 +801,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                         BlocBuilder<IndexingBloc, IndexingState>(
                           builder: (context, indexingState) {
                             return SimpleSettingsTile(
-                              title: "אינדקס חיפוש",
+                              title: "אינדקס Search",
                               subtitle: indexingState is IndexingInProgress
                                   ? "בתהליך עדכון:${indexingState.booksProcessed}/${indexingState.totalBooks}"
                                   : "האינדקס מעודכן",
@@ -1214,7 +1214,7 @@ class _MarginSliderPreviewState extends State<MarginSliderPreview> {
                 child: SizedBox(
                   width: previewTextWidth,
                   child: Text(
-                    'מאימתי קורין את שמע בערבין משעה שהכהנים נכנסים לאכול בתרומתן עד סוף האשמורה הראשונה דברי רבי אליעזר וחכמים אומרים עד חצות רבן גמליאל אומר עד שיעלה עמוד השחר מעשה ובאו בניו מבית המשתה אמרו לו לא קרינו את שמע אמר להם אם לא עלה עמוד השחר חייבין אתם לקרות ולא זו בלבד אמרו אלא כל מה שאמרו חכמים עד חצות מצותן עד שיעלה עמוד השחר',
+                    'מאימתי קורין את שמע בערבין משעה שהכהנים נכנסים לאכול בתרומתן עד סוף האשמורה הראשונה דברי רבי אליעזר וחכמים אומרים עד חצות רבן גמליאל אומר עד שיעלה Page השחר מעשה ובאו בניו מבית המשתה אמרו לו לא קרינו את שמע אמר להם אם לא עלה Page השחר חייבין אתם לקרות ולא זו בלבד אמרו אלא כל מה שאמרו חכמים עד חצות מצותן עד שיעלה Page השחר',
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.right,
                     textDirection: TextDirection.rtl,

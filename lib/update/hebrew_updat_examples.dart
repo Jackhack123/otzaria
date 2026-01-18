@@ -9,7 +9,7 @@ import 'hebrew_updat_widgets.dart';
 ///
 /// 1. hebrewFlatChip - רכיב לחיצה פשוט בעברית (כמו flatChip המקורי)
 /// 2. hebrewFloatingExtendedChipWithSilentDownload - רכיב מורחב עם הורדה שקטה
-/// 3. hebrewDefaultDialog - דיאלוג ברירת מחדל בעברית
+/// 3. hebrewDefaultDialog - דיאלוג Default בעברית
 ///
 /// דוגמאות שימוש:
 

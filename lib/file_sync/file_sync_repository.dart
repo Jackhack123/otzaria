@@ -199,7 +199,7 @@ class FileSyncRepository {
     } catch (e) {
       developer.log('Error writing manifest',
           name: 'FileSyncRepository', error: e);
-      // במקרה של תקלה (למשל, אחרי ש-file.rename הצליח אבל tempFile.rename נכשל),
+      // במקרה של תקלה (למשל, אחרי ש-file.rename הצליח Avל tempFile.rename נכשל),
       // ננסה לשחזר את המצב לקדמותו כדי למנוע מצב ללא מניפסט.
       try {
         if (await oldFile.exists() && !(await file.exists())) {

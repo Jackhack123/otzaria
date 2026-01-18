@@ -131,11 +131,11 @@ class _ReadingScreenState extends State<ReadingScreen>
                           color: Colors.grey.shade400,
                           margin: const EdgeInsets.symmetric(horizontal: 2),
                         ),
-                        // קבוצת שולחן עבודה
+                        // קבוצת Workspace
                         IconButton(
                           icon: const Icon(FluentIcons.add_square_24_regular),
                           tooltip:
-                              'החלף שולחן עבודה (${workspaceShortcut.toUpperCase()})',
+                              'החלף Workspace (${workspaceShortcut.toUpperCase()})',
                           onPressed: () => _showSaveWorkspaceDialog(context),
                         ),
                       ],
@@ -144,7 +144,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                     centerTitle: true,
                     title: const Text('עיון'),
                     actions: [
-                      // כפתור מסך מלא
+                      // כפתור Fullscreen
                       BlocBuilder<SettingsBloc, SettingsState>(
                         builder: (context, settingsState) {
                           return IconButton(
@@ -152,8 +152,8 @@ class _ReadingScreenState extends State<ReadingScreen>
                                 ? FluentIcons.full_screen_minimize_24_regular
                                 : FluentIcons.full_screen_maximize_24_regular),
                             tooltip: settingsState.isFullscreen
-                                ? 'צא ממסך מלא'
-                                : 'מסך מלא',
+                                ? 'Exit fullscreen'
+                                : 'Fullscreen',
                             onPressed: () async {
                               final newFullscreenState =
                                   !settingsState.isFullscreen;
@@ -282,11 +282,11 @@ class _ReadingScreenState extends State<ReadingScreen>
                         color: Colors.grey.shade400,
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                       ),
-                      // קבוצת שולחן עבודה עם אנימציה
+                      // קבוצת Workspace עם אנימציה
                       IconButton(
                         icon: const Icon(FluentIcons.add_square_24_regular),
                         tooltip:
-                            'החלף שולחן עבודה (${workspaceShortcut.toUpperCase()})',
+                            'החלף Workspace (${workspaceShortcut.toUpperCase()})',
                         onPressed: () => _showSaveWorkspaceDialog(context),
                       ),
                     ],
@@ -319,7 +319,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                       const SizedBox(
                           width: _kAppBarControlsWidth -
                               (_kActionButtonsCount * _kActionButtonWidth)),
-                    // כפתור מסך מלא - פעיל תמיד
+                    // כפתור Fullscreen - פעיל תמיד
                     BlocBuilder<SettingsBloc, SettingsState>(
                       builder: (context, settingsState) {
                         return IconButton(
@@ -327,8 +327,8 @@ class _ReadingScreenState extends State<ReadingScreen>
                               ? FluentIcons.full_screen_minimize_24_regular
                               : FluentIcons.full_screen_maximize_24_regular),
                           tooltip: settingsState.isFullscreen
-                              ? 'צא ממסך מלא'
-                              : 'מסך מלא',
+                              ? 'Exit fullscreen'
+                              : 'Fullscreen',
                           onPressed: () async {
                             final newFullscreenState =
                                 !settingsState.isFullscreen;
@@ -419,7 +419,7 @@ class _ReadingScreenState extends State<ReadingScreen>
       child: ContextMenuRegion(
         contextMenu: ContextMenu(
           entries: [
-            MenuItem(label: 'סגור', onSelected: () => closeTab(tab, context)),
+            MenuItem(label: 'Close', onSelected: () => closeTab(tab, context)),
             MenuItem(
                 label: 'סגור הכל',
                 onSelected: () => closeAllTabs(state, context)),
@@ -660,7 +660,7 @@ class _ReadingScreenState extends State<ReadingScreen>
     // הוסף את הספר החדש
     final updatedBooks = [...currentPinnedBooksJson, bookData];
 
-    // שמור את הרשימה המעודכנת כ-JSON
+    // Save את הרשימה המעודכנת כ-JSON
     final booksString = jsonEncode(updatedBooks);
     Settings.setValue<String>('key-pinned-books', booksString);
 

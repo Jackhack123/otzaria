@@ -46,7 +46,7 @@ class _SearchOptionsDropdownState extends State<SearchOptionsDropdown> {
     return IconButton(
       icon: Icon(
           _isExpanded ? FluentIcons.chevron_up_24_regular : FluentIcons.chevron_down_24_regular),
-      tooltip: 'אפשרויות חיפוש',
+      tooltip: 'אפשרויות Search',
       onPressed: _toggleExpanded,
     );
   }
@@ -199,7 +199,7 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
       alignment: Alignment.topCenter,
       child: Visibility(
         visible: widget.isVisible,
-        maintainState: true, // שומר את המצב של ה-Checkboxes גם כשהמגירה סגורה
+        maintainState: true, // שומר את המצב של ה-Checkboxes גם כשהמגירה Closeה
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(

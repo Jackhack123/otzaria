@@ -209,7 +209,7 @@ class _ConflictResolutionDialogState extends State<ConflictResolutionDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ביטול'),
+            child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {

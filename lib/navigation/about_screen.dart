@@ -471,7 +471,7 @@ class _AboutScreenState extends State<AboutScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('סגור'),
+              child: const Text('Close'),
             ),
           ],
         ),
@@ -643,7 +643,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'אוצריא',
+                            'Otzaria',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -868,7 +868,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'אוצריא',
+                    'Otzaria',
                     style: TextStyle(
                       fontSize: isVerySmall ? 20 : 24,
                       fontWeight: FontWeight.bold,

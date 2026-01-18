@@ -33,7 +33,7 @@ class BookPreviewPanel extends StatefulWidget {
 class _BookPreviewPanelState extends State<BookPreviewPanel> {
   TextBookTab? _currentTextTab;
   PdfViewerController? _pdfController;
-  double _fontSize = 18.0; // ברירת מחדל לגודל פונט
+  double _fontSize = 18.0; // Default לגודל פונט
 
   @override
   void didUpdateWidget(BookPreviewPanel oldWidget) {

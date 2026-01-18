@@ -24,7 +24,7 @@ class SearchConfigurationDisplay extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('הגדרות חיפוש נוכחיות:',
+                Text('הגדרות Search נוכחיות:',
                     style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 8),
 
@@ -77,7 +77,7 @@ class RegexSettingsPanel extends StatelessWidget {
                 Text('הגדרות רגקס:',
                     style: Theme.of(context).textTheme.titleMedium),
                 SwitchListTile(
-                  title: const Text('הפעל חיפוש רגקס'),
+                  title: const Text('הפעל Search רגקס'),
                   value: config.regexEnabled,
                   onChanged: (_) =>
                       context.read<SearchBloc>().add(ToggleRegex()),
@@ -171,7 +171,7 @@ class SearchConfigurationManager {
   /// טעינת הגדרות (דוגמה - צריך להתאים לשיטת הטעינה בפרויקט)
   static Future<SearchConfiguration> loadConfiguration() async {
     // כאן תהיה הטעינה מ-SharedPreferences או ממקום אחר
-    // לעת עתה מחזיר הגדרות ברירת מחדל
+    // לעת עתה מחזיר הגדרות Default
     return const SearchConfiguration();
   }
 }

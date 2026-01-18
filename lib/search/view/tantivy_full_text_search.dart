@@ -115,7 +115,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              "לא בוצע חיפוש",
+                              "לא בוצע Search",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey.shade600,
@@ -136,7 +136,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                       const Center(
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text('אין תוצאות'),
+                          child: Text('No results'),
                         ),
                       )
                     else
@@ -220,7 +220,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                               return SizedBox(width: width);
                             },
                           ),
-                          // מילות חיפוש + בקרות
+                          // מילות Search + בקרות
                           Expanded(
                             child: BlocBuilder<SearchBloc, SearchState>(
                               builder: (context, searchState) {
@@ -230,7 +230,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
 
                                 return Row(
                                   children: [
-                                    // הודעת "מוצגות תוצאות של חיפוש" - רק בחיפוש מתקדם
+                                    // הודעת "מוצגות תוצאות של Search" - רק בחיפוש מתקדם
                                     if (searchState.isAdvancedSearchEnabled)
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -240,7 +240,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
-                                              'מוצגות תוצאות של חיפוש: ',
+                                              'מוצגות תוצאות של Search: ',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Theme.of(context)
@@ -329,7 +329,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                                               ),
                                               const SizedBox(height: 16),
                                               Text(
-                                                "לא בוצע חיפוש",
+                                                "לא בוצע Search",
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey.shade600,
@@ -337,7 +337,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                                               ),
                                               const SizedBox(height: 8),
                                               Text(
-                                                "לחץ על כפתור 'חיפוש' בתפריט כדי להתחיל",
+                                                "לחץ על כפתור 'Search' בתפריט כדי להתחיל",
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey.shade500,
@@ -351,7 +351,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
                                         return const Center(
                                           child: Padding(
                                             padding: EdgeInsets.all(8.0),
-                                            child: Text('אין תוצאות'),
+                                            child: Text('No results'),
                                           ),
                                         );
                                       }
@@ -385,7 +385,7 @@ class _TantivyFullTextSearchState extends State<TantivyFullTextSearch>
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
       child: IconButton(
-        tooltip: "הגדרות חיפוש",
+        tooltip: "הגדרות Search",
         icon: const Icon(FluentIcons.navigation_24_regular),
         onPressed: () {
           widget.tab.isLeftPaneOpen.value = !widget.tab.isLeftPaneOpen.value;

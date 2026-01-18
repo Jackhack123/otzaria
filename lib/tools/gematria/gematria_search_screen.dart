@@ -24,7 +24,7 @@ class GematriaSearchScreenState extends State<GematriaSearchScreen> {
   bool _isSearching = false;
   int? _lastGematriaValue; // ערך הגימטריה האחרון שחיפשנו
   bool _hasMoreResults = false; // האם יש יותר תוצאות מהמקסימום
-  bool _hasSearched = false; // האם בוצע חיפוש בפועל
+  bool _hasSearched = false; // האם בוצע Search בפועל
 
   // סדר ספרי התנ"ך
   static const List<String> _tanachOrder = [
@@ -137,7 +137,7 @@ class GematriaSearchScreenState extends State<GematriaSearchScreen> {
       // קבלת נתיב הספרייה מההגדרות
       final libraryPath = Settings.getValue<String>('key-library-path') ?? '.';
 
-      // חיפוש בתיקיות ספציפיות בלבד
+      // Search בתיקיות ספציפיות בלבד
       final searchPaths = torahOnly
           ? ['$libraryPath/אוצריא/תנך/תורה']
           : [
@@ -297,7 +297,7 @@ class GematriaSearchScreenState extends State<GematriaSearchScreen> {
         return;
       }
       
-      // רצה בצע חיפוש מחדש אם יש טקסט חיפוש ובוצע חיפוש לפחות פעם אחת
+      // רצה בצע Search מחדש אם יש טקסט Search ובוצע Search לפחות פעם אחת
       if (_searchController.text.trim().isNotEmpty && _hasSearched) {
         debugPrint('🔧 Performing automatic search after settings change');
         _performSearch();
@@ -331,7 +331,7 @@ class GematriaSearchScreenState extends State<GematriaSearchScreen> {
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        tooltip: 'נקה',
+                        tooltip: 'Clear',
                         icon: const Icon(FluentIcons.dismiss_24_regular),
                         onPressed: () {
                           _searchController.clear();

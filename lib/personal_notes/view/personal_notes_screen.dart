@@ -99,7 +99,7 @@ class _PersonalNotesManagerScreenState extends State<PersonalNotesManagerScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'אירעה שגיאה בעת טעינת רשימת ההערות:\n${_booksError!}',
+              'אירעה Error בעת טעינת רשימת ההערות:\n${_booksError!}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),

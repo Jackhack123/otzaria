@@ -100,12 +100,12 @@ class _LibraryBrowserState extends State<LibraryBrowser>
               return Center(child: Text('Error: ${state.error}'));
             }
 
-            // אם אין ספרייה ולא בטעינה - הצג שגיאה
+            // אם אין ספרייה ולא בטעינה - הצג Error
             if (state.library == null && !state.isLoading) {
               return const Center(child: Text('No library data available'));
             }
 
-            // גם אם אין ספרייה אבל בטעינה - הצג את המסך עם שכבת טעינה
+            // גם אם אין ספרייה Avל בטעינה - הצג את המסך עם שכבת טעינה
             return Stack(
               children: [
                 // תוכן הספרייה - תמיד מוצג (גם אם הספרייה null)
@@ -151,7 +151,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                   body: LayoutBuilder(
                     builder: (context, constraints) {
                       final screenWidth = constraints.maxWidth;
-                      // ברירת מחדל: שליש ברשת, שני שליש ברשימה
+                      // Default: שליש ברשת, שני שליש ברשימה
                       final previewWidth = _viewMode == ViewMode.list
                           ? (screenWidth * 2 / 3)
                           : (screenWidth / 3);
@@ -162,7 +162,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                           Expanded(
                             child: Column(
                               children: [
-                                // שורת חיפוש והגדרות
+                                // שורת Search והגדרות
                                 _buildSearchBar(state),
                                 if (context
                                         .read<FocusRepository>()
@@ -526,7 +526,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
 
     // תצוגת רשימה - גם בחיפוש וגם בלי
     if (state.searchResults != null) {
-      // במצב חיפוש ברשימה - הצג רק את הספרים
+      // במצב Search ברשימה - הצג רק את הספרים
       return _buildSearchListView(state.searchResults!);
     }
 
@@ -663,7 +663,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     context.read<LibraryBloc>().add(SelectBookForPreview(book));
   }
 
-  /// בניית תצוגת רשימה לתוצאות חיפוש
+  /// בניית תצוגת רשימה לתוצאות Search
   Widget _buildSearchListView(List<Book> books) {
     return ListView.builder(
       itemCount: books.length,
@@ -1041,7 +1041,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           icon: const Icon(FluentIcons.arrow_up_24_regular),
           tooltip: 'חזרה לתיקיה הקודמת',
           onPressed: () {
-            // בתצוגת רשימה - סגור את הקטגוריה האחרונה שנפתחה
+            // בתצוגת רשימה - Close את הקטגוריה האחרונה שנפתחה
             if (_viewMode == ViewMode.list && _expandedCategories.isNotEmpty) {
               setState(() {
                 _expandedCategories.remove(_expandedCategories.last);
@@ -1061,7 +1061,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         icon: FluentIcons.arrow_up_24_regular,
         tooltip: 'חזרה לתיקיה הקודמת',
         onPressed: () {
-          // בתצוגת רשימה - סגור את הקטגוריה האחרונה שנפתחה
+          // בתצוגת רשימה - Close את הקטגוריה האחרונה שנפתחה
           if (_viewMode == ViewMode.list && _expandedCategories.isNotEmpty) {
             setState(() {
               _expandedCategories.remove(_expandedCategories.last);
@@ -1079,7 +1079,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         },
       ),
 
-      // חזרה לתיקיה ראשית
+      // Review לתיקיה ראשית
       ActionButtonData(
         widget: IconButton(
           icon: const Icon(FluentIcons.home_24_regular),
@@ -1087,7 +1087,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           onPressed: () {
             setState(() {
               _depth = 0;
-              _expandedCategories.clear(); // נקה את העץ הפתוח
+              _expandedCategories.clear(); // Clear את העץ הפתוח
             });
             context.read<LibraryBloc>().add(LoadLibrary());
             context.read<FocusRepository>().librarySearchController.clear();
@@ -1100,7 +1100,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         onPressed: () {
           setState(() {
             _depth = 0;
-            _expandedCategories.clear(); // נקה את העץ הפתוח
+            _expandedCategories.clear(); // Clear את העץ הפתוח
           });
           context.read<LibraryBloc>().add(LoadLibrary());
           context.read<FocusRepository>().librarySearchController.clear();
@@ -1181,7 +1181,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         onPressed: () => _showBookmarksDialog(context),
       ),
 
-      // החלף שולחן עבודה
+      // Switch workspace
       ActionButtonData(
         widget: SizedBox(
           width: 180,
@@ -1190,7 +1190,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           ),
         ),
         icon: FluentIcons.grid_24_regular,
-        tooltip: 'החלף שולחן עבודה',
+        tooltip: 'Switch workspace',
         onPressed: () => _showSwitchWorkspaceDialog(context),
       ),
     ];
@@ -1203,13 +1203,13 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     SettingsState settingsState,
   ) {
     return [
-      // 1) חזור לתיקיה קודמת, חזרה לתיקיה ראשית (החשובים ביותר)
+      // 1) חזור לתיקיה קודמת, Review לתיקיה ראשית (החשובים ביותר)
       ActionButtonData(
         widget: IconButton(
           icon: const Icon(FluentIcons.arrow_up_24_regular),
           tooltip: 'חזרה לתיקיה הקודמת',
           onPressed: () {
-            // בתצוגת רשימה - סגור את הקטגוריה האחרונה שנפתחה
+            // בתצוגת רשימה - Close את הקטגוריה האחרונה שנפתחה
             if (_viewMode == ViewMode.list && _expandedCategories.isNotEmpty) {
               setState(() {
                 _expandedCategories.remove(_expandedCategories.last);
@@ -1229,7 +1229,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         icon: FluentIcons.arrow_up_24_regular,
         tooltip: 'חזרה לתיקיה הקודמת',
         onPressed: () {
-          // בתצוגת רשימה - סגור את הקטגוריה האחרונה שנפתחה
+          // בתצוגת רשימה - Close את הקטגוריה האחרונה שנפתחה
           if (_viewMode == ViewMode.list && _expandedCategories.isNotEmpty) {
             setState(() {
               _expandedCategories.remove(_expandedCategories.last);
@@ -1254,7 +1254,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           onPressed: () {
             setState(() {
               _depth = 0;
-              _expandedCategories.clear(); // נקה את העץ הפתוח
+              _expandedCategories.clear(); // Clear את העץ הפתוח
             });
             context.read<LibraryBloc>().add(LoadLibrary());
             context.read<FocusRepository>().librarySearchController.clear();
@@ -1267,7 +1267,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         onPressed: () {
           setState(() {
             _depth = 0;
-            _expandedCategories.clear(); // נקה את העץ הפתוח
+            _expandedCategories.clear(); // Clear את העץ הפתוח
           });
           context.read<LibraryBloc>().add(LoadLibrary());
           context.read<FocusRepository>().librarySearchController.clear();
@@ -1303,7 +1303,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         onPressed: () => _showBookmarksDialog(context),
       ),
 
-      // 3) החלף שולחן עבודה
+      // 3) Switch workspace
       ActionButtonData(
         widget: SizedBox(
           width: 180,
@@ -1312,7 +1312,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           ),
         ),
         icon: FluentIcons.grid_24_regular,
-        tooltip: 'החלף שולחן עבודה',
+        tooltip: 'Switch workspace',
         onPressed: () => _showSwitchWorkspaceDialog(context),
       ),
 

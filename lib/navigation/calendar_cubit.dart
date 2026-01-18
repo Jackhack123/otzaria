@@ -146,7 +146,7 @@ class CalendarCubit extends Cubit<CalendarState> {
       events =
           eventsList.map((eventMap) => CustomEvent.fromJson(eventMap)).toList();
     } catch (e) {
-      // אם יש שגיאה בטעינה, נתחיל עם רשימה ריקה
+      // אם יש Error בטעינה, נתחיל עם רשימה ריקה
       events = [];
     }
 
@@ -186,13 +186,13 @@ class CalendarCubit extends Cubit<CalendarState> {
       dailyTimes: newTimes,
       inIsrael: inIsrael,
     ));
-    // שמור את הבחירה בהגדרות
+    // Save את הבחירה בהגדרות
     await _settingsRepository.updateSelectedCity(newCity);
   }
 
   Future<void> changeCalendarType(CalendarType type) async {
     emit(state.copyWith(calendarType: type));
-    // שמור את הבחירה בהגדרות
+    // Save את הבחירה בהגדרות
     await _settingsRepository.updateCalendarType(_calendarTypeToString(type));
   }
 
@@ -490,7 +490,7 @@ class CalendarCubit extends Cubit<CalendarState> {
       final eventsJson = jsonEncode(events.map((e) => e.toJson()).toList());
       await _settingsRepository.updateCalendarEvents(eventsJson);
     } catch (e) {
-      // במקרה של שגיאה, נדפיס הודעה לקונסול
+      // במקרה של Error, נדפיס הודעה לקונסול
       debugPrint('שגיאה בשמירת אירועים: $e');
     }
   }
@@ -705,7 +705,7 @@ const Map<String, Map<String, Map<String, double>>> cityCoordinates = {
     'רמלה': {'lat': 31.9297, 'lng': 34.8667, 'elevation': 108.0},
     'רמת גן': {'lat': 32.0719, 'lng': 34.8244, 'elevation': 80.0},
     'רעננה': {'lat': 32.1847, 'lng': 34.8706, 'elevation': 45.0},
-    'תל אביב': {'lat': 32.0853, 'lng': 34.7818, 'elevation': 5.0},
+    'תל Avיב': {'lat': 32.0853, 'lng': 34.7818, 'elevation': 5.0},
     'תפרח': {'lat': 31.3889, 'lng': 34.6861, 'elevation': 160.0},
   },
   'ארצות הברית': {
@@ -796,7 +796,7 @@ const Map<String, Map<String, Map<String, double>>> cityCoordinates = {
     'רייקיאוויק': {'lat': 64.1466, 'lng': -21.9426, 'elevation': 61.0},
   },
   'ארגנטינה': {
-    'בואנוס איירס': {'lat': -34.6118, 'lng': -58.3960, 'elevation': 25.0},
+    'בואנוס Iyarס': {'lat': -34.6118, 'lng': -58.3960, 'elevation': 25.0},
   },
   'ברזיל': {
     'ריו דה ז\'נרו': {'lat': -22.9068, 'lng': -43.1729, 'elevation': 2.0},
@@ -1036,7 +1036,7 @@ void _addSpecialTimes(Map<String, String> times, JewishCalendar jewishCalendar,
     }
   }
 
-  // זמני חנוכה - הדלקת נרות
+  // זמני Hanukkah - הדלקת נרות
   if (jewishCalendar.isChanukah()) {
     final chanukahCandleLighting =
         _calculateChanukahCandleLighting(zmanimCalendar);
@@ -1145,7 +1145,7 @@ DateTime? _calculateKidushLevanaLatest(
   return null;
 }
 
-// חישוב זמן הדלקת נרות חנוכה - אחרי צאת הכוכבים
+// חישוב זמן הדלקת נרות Hanukkah - אחרי צאת הכוכבים
 DateTime? _calculateChanukahCandleLighting(
     ComplexZmanimCalendar zmanimCalendar) {
   return zmanimCalendar.getTzais();

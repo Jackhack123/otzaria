@@ -91,8 +91,8 @@ class UiSnack {
   }
 
   /// Common messages constants (to avoid hardcoded strings)
-  static const String textCopied = 'הטקסט הועתק ללוח';
-  static const String formattedTextCopied = 'הטקסט המעוצב הועתק ללוח';
+  static const String textCopied = 'הטקסט Copied to clipboard';
+  static const String formattedTextCopied = 'הטקסט המעוצב Copied to clipboard';
   static const String copyError = 'שגיאה בהעתקה';
   static const String formattedCopyError = 'שגיאה בהעתקה מעוצבת';
   static const String sectionNotFound = 'Section not found';

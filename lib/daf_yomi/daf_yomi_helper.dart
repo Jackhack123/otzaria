@@ -52,7 +52,7 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
     final allBooks = library.getAllBooks();
     Book? book;
 
-    // חיפוש מדויק יותר - גם בשם המלא וגם בחיפוש חלקי
+    // Search מדויק יותר - גם בשם המלא וגם בחיפוש חלקי
     for (var bookInLibrary in allBooks) {
       if (bookInLibrary.title == tractate ||
           bookInLibrary.title.contains(tractate) ||
@@ -80,7 +80,7 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
   Book? book;
   final allBooksInCategory = talmudCategory.getAllBooks();
 
-  // חיפוש מדויק יותר
+  // Search מדויק יותר
   for (var bookInCategory in allBooksInCategory) {
     if (bookInCategory.title == tractate ||
         bookInCategory.title.contains(tractate) ||

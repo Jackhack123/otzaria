@@ -45,7 +45,7 @@ class HtmlLinkHandler {
         throw Exception('נתיב לא תקין בקישור');
       }
 
-      // המרת האינדקס למספר (index2 מגיע כ-1-based, אבל אנחנו צריכים 0-based)
+      // המרת האינדקס למספר (index2 מגיע כ-1-based, Avל אנחנו צריכים 0-based)
       final index = int.tryParse(indexStr);
       if (index == null) {
         throw Exception('אינדקס לא תקין בקישור');
@@ -176,7 +176,7 @@ class HtmlLinkHandler {
       debugPrint('שגיאה בטיפול בקישור: $e');
       debugPrint('Stack trace: $stackTrace');
 
-      // הצגת הודעת שגיאה למשתמש
+      // הצגת הודעת Error למשתמש
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -202,7 +202,7 @@ class HtmlLinkHandler {
         throw Exception('לא ניתן לנווט - הספר לא נטען');
       }
 
-      // חיפוש הכותרת בתוכן הספציפי
+      // Search הכותרת בתוכן הספציפי
       final index = await _findHeaderIndex(state.book, headerName);
 
       if (index != null) {
@@ -246,7 +246,7 @@ class HtmlLinkHandler {
     Function(TextBookTab) openBookCallback,
   ) async {
     try {
-      // חיפוש הספר בספרייה
+      // Search הספר בספרייה
       final library = await DataRepository.instance.library;
 
       // קבלת רשימת כל הספרים לבדיקה
@@ -260,7 +260,7 @@ class HtmlLinkHandler {
 
         if (anyBook != null) {
           throw Exception(
-              'הספר "$bookTitle" נמצא אבל הוא מטיפוס ${anyBook.runtimeType}, לא TextBook');
+              'הספר "$bookTitle" נמצא Avל הוא מטיפוס ${anyBook.runtimeType}, לא TextBook');
         }
 
         // הצגת רשימת ספרים זמינים למשתמש
@@ -283,7 +283,7 @@ class HtmlLinkHandler {
         if (headerIndex != null) {
           startIndex = headerIndex;
         } else {
-          // אם לא נמצאה הכותרת, נציג אזהרה אבל עדיין נפתח את הספר
+          // אם לא נמצאה הכותרת, נציג אזהרה Avל עדיין נפתח את הספר
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -334,15 +334,15 @@ class HtmlLinkHandler {
       // קבלת תוכן הספציפי
       final tableOfContents = await book.tableOfContents;
 
-      // חיפוש בתוכן העניינים - קודם חיפוש מדויק
+      // Search בתוכן העניינים - קודם Search מדויק
       for (final entry in tableOfContents) {
         if (isHeaderMatch(entry.text, headerName)) {
           return entry.index;
         }
       }
 
-      // אם לא נמצא, ננסה לחפש רק לפי מספר הדף (בלי עמוד)
-      // זה עוזר כשהקישור כולל עמוד שלא קיים בתוכן העניינים
+      // אם לא נמצא, ננסה לחפש רק לפי מספר הדף (בלי Page)
+      // זה עוזר כשהקישור כולל Page שלא קיים בתוכן העניינים
       final pageOnlyMatch = _extractPageNumber(headerName);
       if (pageOnlyMatch != null) {
         for (final entry in tableOfContents) {
@@ -357,7 +357,7 @@ class HtmlLinkHandler {
       final content = await book.text;
       final lines = content.split('\n');
 
-      // חיפוש מדויק
+      // Search מדויק
       for (int i = 0; i < lines.length; i++) {
         final line = lines[i];
         final cleanLine = line.replaceAll(RegExp(r'<[^>]*>'), '').trim();
@@ -367,7 +367,7 @@ class HtmlLinkHandler {
         }
       }
 
-      // חיפוש לפי דף בלבד
+      // Search לפי דף בלבד
       if (pageOnlyMatch != null) {
         for (int i = 0; i < lines.length; i++) {
           final line = lines[i];

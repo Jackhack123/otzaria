@@ -516,7 +516,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
             TextButton.icon(
               onPressed: _hasUnsavedChanges ? _save : null,
               icon: const Icon(FluentIcons.save_24_regular),
-              label: const Text('שמור'),
+              label: const Text('Save'),
             ),
             TextButton.icon(
               onPressed: _saveAndClose,
@@ -706,7 +706,7 @@ class _SearchDialogState extends State<_SearchDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
         ElevatedButton(
           onPressed: _performSearch,
@@ -782,7 +782,7 @@ class _LinkInsertDialogState extends State<_LinkInsertDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ביטול'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {

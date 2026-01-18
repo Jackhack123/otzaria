@@ -28,7 +28,7 @@ class PersonalNotesStorage {
   Future<String> notesDirectoryPath() async {
     final libraryPath = await AppPaths.getLibraryPath();
     final notesDir = Directory(
-      p.join(libraryPath, 'אוצריא', _notesFolderName),
+      p.join(libraryPath, 'Otzaria', _notesFolderName),
     );
 
     if (!await notesDir.exists()) {

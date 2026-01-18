@@ -42,21 +42,21 @@ class _WorkspaceIconButtonState extends State<WorkspaceIconButton>
       curve: Curves.easeOutCubic,
     ));
 
-    // טוען את workspaces כשהwidget נוצר
+    // Load workspaces when widget is created
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<WorkspaceBloc>().add(LoadWorkspaces());
       }
     });
 
-    // האזנה לשינויים בקיצורים
+    // Listen for shortcut changes
     // context.watch<SettingsBloc>().state.shortcuts;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // האזנה לשינויים בקיצורים
+    // Listen for shortcut changes
     context.watch<SettingsBloc>().state.shortcuts;
   }
 
@@ -84,7 +84,7 @@ class _WorkspaceIconButtonState extends State<WorkspaceIconButton>
         final currentWorkspaceName = workspaceState.workspaces.isNotEmpty &&
                 workspaceState.currentWorkspace != null
             ? workspaceState.workspaces[workspaceState.currentWorkspace!].name
-            : 'ברירת מחדל';
+            : 'Default';
 
         return _buildButtonWidget(context, currentWorkspaceName);
       },
@@ -97,18 +97,18 @@ class _WorkspaceIconButtonState extends State<WorkspaceIconButton>
       fontWeight: FontWeight.w500,
     );
 
-    // חישוב רוחב הטקסט
+    // Calculate text width
     final textWidth = _calculateTextWidth(workspaceName, textStyle);
 
-    // חישוב הרוחב הכולל: אייקון (20) + רווח (8) + טקסט + padding (24)
+    // Calculate total width: אייקון (20) + רווח (8) + טקסט + padding (24)
     final expandedWidth = (20 + 8 + textWidth + 24 + 8).clamp(40.0, 180.0);
 
-    // קריאת קיצור המקשים הדינמי
+    // Read dynamic keyboard shortcut
     final workspaceShortcut =
         Settings.getValue<String>('key-shortcut-switch-workspace') ?? 'ctrl+k';
 
     return Tooltip(
-      message: 'החלף שולחן עבודה (${workspaceShortcut.toUpperCase()})',
+      message: 'החלף Workspace (${workspaceShortcut.toUpperCase()})',
       child: MouseRegion(
         onEnter: (_) {
           setState(() {

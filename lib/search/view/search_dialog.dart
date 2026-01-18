@@ -20,8 +20,8 @@ import 'package:otzaria/navigation/bloc/navigation_bloc.dart';
 import 'package:otzaria/navigation/bloc/navigation_event.dart';
 import 'package:otzaria/navigation/bloc/navigation_state.dart';
 
-/// דיאלוג חיפוש מתקדם - מכיל את כל פקדי החיפוש וההגדרות
-/// כשמבצעים חיפוש, הדיאלוג נסגר ונפתחת לשונית תוצאות
+/// דיאלוג Search מתקדם - מכיל את כל פקדי החיפוש וההגדרות
+/// כשמבצעים Search, הדיאלוג נסגר ונפתחת לשונית תוצאות
 class SearchDialog extends StatefulWidget {
   final SearchingTab? existingTab;
 
@@ -51,7 +51,7 @@ class _SearchDialogState extends State<SearchDialog> {
         Settings.getValue<String>('key-last-search-mode') ?? 'advanced';
 
     // יצירת טאב עם ההקלדה האחרונה
-    _searchTab = SearchingTab("חיפוש", lastTyping);
+    _searchTab = SearchingTab("Search", lastTyping);
 
     // הגדרת מצב החיפוש האחרון
     final searchMode = lastMode == 'advanced'
@@ -123,7 +123,7 @@ class _SearchDialogState extends State<SearchDialog> {
     );
   }
 
-  // שמירת חיפוש להיסטוריה (מקסימום 5)
+  // שמירת Search להיסטוריה (מקסימום 5)
   void _saveSearchToHistory(String query) {
     // שמירה כ-String מופרד בפסיקים
     final historyString = Settings.getValue<String>('key-search-history') ?? '';
@@ -144,7 +144,7 @@ class _SearchDialogState extends State<SearchDialog> {
     Settings.setValue<String>('key-search-history', history.join('|||'));
   }
 
-  // קבלת היסטוריית חיפושים
+  // קבלת היסטוריית Searchים
   List<String> _getSearchHistory() {
     final historyString = Settings.getValue<String>('key-search-history') ?? '';
     if (historyString.isEmpty) return [];
@@ -232,7 +232,7 @@ class _SearchDialogState extends State<SearchDialog> {
         }
       }
     } else {
-      // אם אין מילה נוכחית, נקה את הרשימה
+      // אם אין מילה נוכחית, Clear את הרשימה
       if (_currentAlternatives.isNotEmpty) {
         _currentAlternatives.clear();
       }
@@ -291,7 +291,7 @@ class _SearchDialogState extends State<SearchDialog> {
     // שם הלשונית: "חיפוש: [מילות החיפוש]"
     final newSearchTab = SearchingTab("חיפוש: $query", query);
 
-    // העתקת כל ההגדרות מהטאב הנוכחי לטאב החדש
+    // Copyת כל ההגדרות מהטאב הנוכחי לטאב החדש
     newSearchTab.searchOptions.addAll(_searchTab.searchOptions);
     newSearchTab.alternativeWords.addAll(_searchTab.alternativeWords);
     newSearchTab.spacingValues.addAll(_searchTab.spacingValues);
@@ -887,14 +887,14 @@ class _SearchDialogState extends State<SearchDialog> {
                   const Icon(FluentIcons.search_24_filled, size: 28),
                   const SizedBox(width: 12),
                   const Text(
-                    'חיפוש',
+                    'Search',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(FluentIcons.dismiss_24_regular),
                     onPressed: () => Navigator.of(context).pop(),
-                    tooltip: 'סגור',
+                    tooltip: 'Close',
                   ),
                 ],
               ),
@@ -995,7 +995,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                                 ),
                                               ),
                                             ),
-                                            // כפתור חיפוש - מצד ימין
+                                            // כפתור Search - מצד ימין
                                             Positioned(
                                               right: 10,
                                               top: 8,
@@ -1044,7 +1044,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                                             .history_24_regular,
                                                     size: 24,
                                                   ),
-                                                  tooltip: 'היסטוריית חיפושים',
+                                                  tooltip: 'היסטוריית Searchים',
                                                   padding: EdgeInsets.zero,
                                                   constraints:
                                                       const BoxConstraints(),
@@ -1091,7 +1091,7 @@ class _SearchDialogState extends State<SearchDialog> {
 
                             const SizedBox(height: 16),
 
-                            // אפשרויות חיפוש עם הטיפ
+                            // אפשרויות Search עם הטיפ
                             BlocBuilder<SearchBloc, SearchState>(
                               builder: (context, state) {
                                 if (!state.isAdvancedSearchEnabled) {

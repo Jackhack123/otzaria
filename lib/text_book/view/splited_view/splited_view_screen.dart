@@ -70,7 +70,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
       print('DEBUG: Split view - returning 0 (commentaries)');
       return 0;
     } else {
-      // תצוגה משולבת - טוען שמור או ברירת מחדל קישורים (1)
+      // תצוגה משולבת - טוען Save או Default קישורים (1)
       final saved = Settings.getValue<int>('key-sidebar-tab-index-combined');
       print('DEBUG: Combined view - saved: $saved, returning: ${saved ?? 1}');
       return saved ?? 1;
@@ -116,7 +116,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
   ContextMenu _buildContextMenu(TextBookLoaded state) {
     return ContextMenu(
       entries: [
-        MenuItem(label: 'חיפוש', onSelected: () => widget.openLeftPaneTab(1)),
+        MenuItem(label: 'Search', onSelected: () => widget.openLeftPaneTab(1)),
         const MenuDivider(),
         MenuItem(
           label: 'בחר את כל הטקסט',
@@ -152,7 +152,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
           return const Center(child: CircularProgressIndicator());
         }
         
-        // אם החלונית סגורה - מציגים combined view עם כפתור צף
+        // אם החלונית Closeה - מציגים combined view עם כפתור צף
         if (!_paneOpen) {
           return Stack(
             children: [

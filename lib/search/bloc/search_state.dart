@@ -11,7 +11,7 @@ class SearchState {
   final String searchQuery;
   final int totalResults;
 
-  // מידע על ספירות לכל facet - מתעדכן עם כל חיפוש
+  // מידע על ספירות לכל facet - מתעדכן עם כל Search
   final Map<String, int> facetCounts;
 
   // הגדרות החיפוש מרוכזות במחלקה נפרדת

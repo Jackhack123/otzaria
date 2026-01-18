@@ -38,7 +38,7 @@ String _preferredWindowsFormat() {
 
     return 'zip'; // גרסה ניידת/ידנית
   } catch (e) {
-    // במקרה של שגיאה, ברירת מחדל היא EXE
+    // במקרה של Error, Default היא EXE
     return 'exe';
   }
 }
@@ -136,7 +136,7 @@ class MyUpdatWidget extends StatelessWidget {
               // קבלת פרטי ה-release
               dynamic release;
               if (isDev) {
-                // ערוץ dev - חיפוש לפי התחלת גרסה
+                // ערוץ dev - Search לפי התחלת גרסה
                 final data = await http.get(Uri.parse(
                     "https://api.github.com/repos/$repo/otzaria/releases"));
                 final releases = jsonDecode(data.body) as List;
@@ -234,12 +234,12 @@ class MyUpdatWidget extends StatelessWidget {
                 // משתמשי MSIX לא יכולים להשתמש ב-ZIP כ-fallback
                 assetUrl = pickWindows(order, allowZipFallback: pref != 'msix');
                 
-                // אם זיהינו MSIX אבל לא מצאנו קובץ MSIX - זרוק שגיאה ברורה
+                // אם זיהינו MSIX Avל לא מצאנו קובץ MSIX - זרוק Error ברורה
                 if (pref == 'msix' && assetUrl == null) {
                   throw Exception('MSIX installation detected but no MSIX asset found in this release');
                 }
               } else if (platform == 'macos') {
-                // macOS - חיפוש קובץ zip
+                // macOS - Search קובץ zip
                 for (final a in assets) {
                   final n = (a["name"] as String).toLowerCase();
                   if ((n.contains('macos') ||
@@ -299,7 +299,7 @@ class MyUpdatWidget extends StatelessWidget {
                 if (response.statusCode == 200) {
                   return response.body;
                 } else {
-                  return 'שגיאה בטעינת יומן השינויים.\nקוד שגיאה: ${response.statusCode}';
+                  return 'שגיאה בטעינת יומן השינויים.\nקוד Error: ${response.statusCode}';
                 }
               } catch (e) {
                 return 'שגיאה בטעינת יומן השינויים: $e';

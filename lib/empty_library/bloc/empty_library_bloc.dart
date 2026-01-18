@@ -186,7 +186,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           add(DownloadProgressUpdated(
               progress: contentLength > 0 ? receivedBytes / contentLength : 0,
               currentOperation:
-                  'מוריד: ${downloadedMB.toStringAsFixed(2)} MB מתוך ${(contentLength / (1024 * 1024)).toStringAsFixed(2)} MB',
+                  'מוריד: ${downloadedMB.toStringAsFixed(2)} MB of ${(contentLength / (1024 * 1024)).toStringAsFixed(2)} MB',
               downloadedMB: downloadedMB,
               downloadSpeed: state.downloadSpeed));
         },

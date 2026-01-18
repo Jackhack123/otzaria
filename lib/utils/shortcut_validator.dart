@@ -49,17 +49,17 @@ class ShortcutValidator {
     'key-shortcut-close-tab': 'סגור ספר נוכחי',
     'key-shortcut-close-all-tabs': 'סגור כל הספרים',
     'key-shortcut-open-reading-screen': 'עיון',
-    'key-shortcut-open-new-search': 'חלון חיפוש חדש',
+    'key-shortcut-open-new-search': 'חלון Search חדש',
     'key-shortcut-open-settings': 'הגדרות',
     'key-shortcut-open-more': 'כלים',
     'key-shortcut-open-bookmarks': 'סימניות',
     'key-shortcut-open-history': 'היסטוריה',
     'key-shortcut-search-in-book': 'חיפוש בספר',
     'key-shortcut-edit-section': 'עריכת קטע',
-    'key-shortcut-print': 'הדפסה',
+    'key-shortcut-print': 'Print',
     'key-shortcut-add-bookmark': 'הוספת סימניה',
     'key-shortcut-add-note': 'הוספת הערה',
-    'key-shortcut-switch-workspace': 'החלף שולחן עבודה',
+    'key-shortcut-switch-workspace': 'Switch workspace',
   };
 
   /// Check for conflicts in current shortcuts

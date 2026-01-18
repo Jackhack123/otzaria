@@ -70,7 +70,7 @@ Widget hebrewFlatChip({
 
   if (UpdatStatus.error == status) {
     return Tooltip(
-      message: 'אירעה שגיאה בעדכון. אנא נסה שוב.',
+      message: 'אירעה Error בעדכון. אנא נסה שוב.',
       child: TextButton.icon(
         onPressed: startUpdate,
         icon: const Icon(FluentIcons.warning_24_regular),
@@ -188,7 +188,7 @@ Widget hebrewFloatingExtendedChipWithSilentDownload({
   return Container();
 }
 
-/// דיאלוג ברירת מחדל בעברית - דומה ל-defaultDialog
+/// דיאלוג Default בעברית - דומה ל-defaultDialog
 void hebrewDefaultDialog({
   required BuildContext context,
   required String? latestVersion,
@@ -254,7 +254,7 @@ void hebrewDefaultDialog({
   );
 }
 
-/// פונקציה שעוטפת את _flatChipAutoHideError אבל עם הרכיב העברי
+/// פונקציה שעוטפת את _flatChipAutoHideError Avל עם הרכיב העברי
 Widget hebrewFlatChipAutoHideError({
   required BuildContext context,
   required String? latestVersion,

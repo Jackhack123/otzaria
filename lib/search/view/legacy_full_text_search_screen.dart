@@ -192,7 +192,7 @@ class TextFileSearchScreenState extends State<TextFileSearchScreen>
         ? Padding(
             padding: const EdgeInsets.all(15.0),
             child: Text(
-                'נסרקו ${widget.searcher.bookIndex} מתוך ${widget.searcher.booksToSearch.length} ספרים.  נמצאו ${searchResults.length} תוצאות בתוך ${DateTimeRange(start: widget.searcher.searchStarted!, end: widget.searcher.searchFinished!).duration.inSeconds} שניות'),
+                'נסרקו ${widget.searcher.bookIndex} of ${widget.searcher.booksToSearch.length} ספרים.  נמצאו ${searchResults.length} תוצאות בתוך ${DateTimeRange(start: widget.searcher.searchStarted!, end: widget.searcher.searchFinished!).duration.inSeconds} שניות'),
           )
         : const SizedBox.shrink();
   }
@@ -204,7 +204,7 @@ class TextFileSearchScreenState extends State<TextFileSearchScreen>
         ? const Expanded(
             child: Center(
               child: Text(
-                "אין תוצאות חיפוש",
+                "אין תוצאות Search",
                 style: TextStyle(
                   fontSize: 20.0,
                 ),

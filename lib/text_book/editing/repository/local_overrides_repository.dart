@@ -306,7 +306,7 @@ $content''';
       // Check if there's a links file for this book
       // This would typically be in the book's directory with a .links extension
       final libraryPath = Settings.getValue<String>('key-library-path') ?? '.';
-      final bookPath = path.join(libraryPath, 'אוצריא');
+      final bookPath = path.join(libraryPath, 'Otzaria');
       
       // Look for links file - this is a simplified check
       // In practice, you'd need to check the actual book structure

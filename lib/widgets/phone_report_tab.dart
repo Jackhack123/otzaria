@@ -45,7 +45,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
   void initState() {
     super.initState();
     _selectedText = widget.initialSelectedText;
-    // אתחול מספר השורה עם הערך ההתחלתי שקיבלנו
+    // Initialize line number with the initial value received
     _updatedLineNumber = widget.lineNumber;
   }
 
@@ -58,19 +58,19 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
     final errors = <String>[];
 
     if (_selectedText == null || _selectedText!.isEmpty) {
-      errors.add('יש לבחור טקסט שבו נמצאת השגיאה');
+      errors.add('Must select text containing the error');
     }
 
     if (_selectedErrorType == null) {
-      errors.add('יש לבחור סוג שגיאה');
+      errors.add('Must select error type');
     }
 
     if (widget.bookId == null) {
-      errors.add('לא ניתן למצוא את הספר במאגר הנתונים');
+      errors.add('Book not found in database');
     }
 
     if (widget.libraryVersion == 'unknown') {
-      errors.add('לא ניתן לקרוא את גירסת הספרייה');
+      errors.add('Cannot read library version');
     }
 
     return errors;
@@ -108,7 +108,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'הוראות לדיווח טלפוני:',
+              'Phone report instructions:',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -136,7 +136,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'סמן את הטקסט שבו נמצאת הטעות:',
+          'Select the text with the error:',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -147,7 +147,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
           height: 200,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            // הוספת מסגרת
+            // Add border
             border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(8),
           ),
@@ -234,7 +234,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'הטקסט שנבחר:',
+                  'Selected text:',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -259,7 +259,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'בחר סוג שגיאה:',
+          'Select error type:',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -270,7 +270,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
           initialValue: _selectedErrorType,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'בחר סוג שגיאה...',
+            hintText: 'Select error type...',
           ),
           isExpanded: true,
           items: ErrorType.errorTypes.map((errorType) {
@@ -372,7 +372,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       children: [
         TextButton(
           onPressed: widget.onCancel,
-          child: const Text('ביטול'),
+          child: const Text('Cancel'),
         ),
       ],
     );

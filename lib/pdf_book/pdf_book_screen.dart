@@ -495,7 +495,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
                                       color: Colors.grey.shade400,
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 2)),
-                                  Expanded(child: _buildCustomTab('חיפוש', 1)),
+                                  Expanded(child: _buildCustomTab('Search', 1)),
                                   Container(
                                       height: 24,
                                       width: 1,
@@ -639,7 +639,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('ביטול'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -783,11 +783,11 @@ class _PdfBookScreenState extends State<PdfBookScreen>
       ActionButtonData(
         widget: IconButton(
           icon: const Icon(FluentIcons.search_24_regular),
-          tooltip: 'חיפוש',
+          tooltip: 'Search',
           onPressed: _ensureSearchTabIsActive,
         ),
         icon: FluentIcons.search_24_regular,
-        tooltip: 'חיפוש',
+        tooltip: 'Search',
         onPressed: _ensureSearchTabIsActive,
       ),
 
@@ -835,7 +835,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
       ActionButtonData(
         widget: PageNumberDisplay(controller: widget.tab.pdfViewerController),
         icon: FluentIcons.text_font_24_regular,
-        tooltip: 'מספר עמוד',
+        tooltip: 'מספר Page',
         onPressed: null, // לא ניתן ללחיצה
       ),
 
@@ -899,7 +899,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
         onPressed: () => _handleBookmarkPress(context),
       ),
 
-      // 2) הדפסה
+      // 2) Print
       ActionButtonData(
         widget: IconButton(
           icon: const Icon(FluentIcons.print_24_regular),
@@ -942,7 +942,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
         : 1;
     bool bookmarkAdded = Provider.of<BookmarkBloc>(context, listen: false)
         .addBookmark(
-            ref: '${widget.tab.title} עמוד $index',
+            ref: '${widget.tab.title} Page $index',
             book: widget.tab.book,
             index: index);
     if (mounted) {

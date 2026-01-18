@@ -69,7 +69,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
     final bool drawerWasOpen = _searchOptionsOverlay != null;
     final text = widget.tab.queryController.text;
 
-    // אם שדה החיפוש התרוקן, נקה הכל ונסגור את המגירה
+    // אם שדה החיפוש התרוקן, Clear הכל ונסגור את המגירה
     if (text.trim().isEmpty) {
       widget.tab.searchOptions.clear();
       if (drawerWasOpen) {
@@ -258,7 +258,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
         wordInfo['word'].isEmpty) {
       return const Center(
         child: Text(
-          'הקלד או הצב את הסמן על מילה כלשהיא, כדי לבחור אפשרויות חיפוש',
+          'הקלד או הצב את הסמן על מילה כלשהיא, כדי לבחור אפשרויות Search',
           style: TextStyle(fontSize: 12, color: Colors.grey),
           textAlign: TextAlign.center,
         ),

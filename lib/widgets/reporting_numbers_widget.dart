@@ -34,7 +34,7 @@ class ReportingNumbersWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'מספרי הדיווח:',
+              'Report Numbers:',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -53,14 +53,14 @@ class ReportingNumbersWidget extends StatelessWidget {
                       children: [
                         _buildNumberRow(
                           context,
-                          'מספר גירסה',
+                          'Version number',
                           libraryVersion,
                         ),
                         const SizedBox(height: 8),
                         _buildNumberRow(
                           context,
-                          'מספר ספר',
-                          bookId?.toString() ?? 'לא זמין',
+                          'Book number',
+                          bookId?.toString() ?? 'Not available',
                           enabled: bookId != null,
                         ),
                       ],
@@ -82,14 +82,14 @@ class ReportingNumbersWidget extends StatelessWidget {
                       children: [
                         _buildNumberRow(
                           context,
-                          'מספר שורה',
+                          'Line Number',
                           lineNumber.toString(),
                         ),
                         const SizedBox(height: 8),
                         _buildNumberRow(
                           context,
-                          'מספר שגיאה',
-                          errorId?.toString() ?? 'לא נבחר',
+                          'Error Number',
+                          errorId?.toString() ?? 'Not selected',
                           enabled: errorId != null,
                         ),
                       ],
@@ -132,7 +132,7 @@ class ReportingNumbersWidget extends StatelessWidget {
         IconButton(
           onPressed: enabled ? () => _copyToClipboard(context, value) : null,
           icon: const Icon(FluentIcons.copy_24_regular, size: 18),
-          tooltip: 'העתק',
+          tooltip: 'Copy',
           visualDensity: VisualDensity.compact,
         ),
       ],
@@ -149,7 +149,7 @@ class ReportingNumbersWidget extends StatelessWidget {
           children: [
             // 1. הכותרת שתוצג בצד ימין
             Text(
-              'קו אוצריא:',
+              'Otzaria Line:',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -183,7 +183,7 @@ class ReportingNumbersWidget extends StatelessWidget {
             IconButton(
               onPressed: () => _copyToClipboard(context, _phoneNumber),
               icon: const Icon(FluentIcons.copy_24_regular, size: 18),
-              tooltip: 'העתק מספר טלפון',
+              tooltip: 'Copy phone number',
               visualDensity: VisualDensity.compact,
             ),
 
@@ -193,7 +193,7 @@ class ReportingNumbersWidget extends StatelessWidget {
               IconButton(
                 onPressed: () => _makePhoneCall(context),
                 icon: const Icon(FluentIcons.phone_24_regular, size: 18),
-                tooltip: 'התקשר',
+                tooltip: 'Call',
                 visualDensity: VisualDensity.compact,
               ),
             ],
@@ -203,7 +203,7 @@ class ReportingNumbersWidget extends StatelessWidget {
 
         // טקסט המשנה נשאר כמו שהיה
         Text(
-          'לפירוט נוסף, השאר הקלטה ברורה!',
+          'For more details, leave a clear recording!',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontStyle: FontStyle.italic,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -222,7 +222,7 @@ class ReportingNumbersWidget extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        UiSnack.showError('שגיאה בהעתקה ללוח',
+        UiSnack.showError('Error copying to clipboard',
             backgroundColor: Theme.of(context).colorScheme.error);
       }
     }
@@ -235,13 +235,13 @@ class ReportingNumbersWidget extends StatelessWidget {
         await launchUrl(phoneUri);
       } else {
         if (context.mounted) {
-          UiSnack.showError('לא ניתן לפתוח את אפליקציית הטלפון',
+          UiSnack.showError('Cannot open phone application',
               backgroundColor: Theme.of(context).colorScheme.error);
         }
       }
     } catch (e) {
       if (context.mounted) {
-        UiSnack.showError('שגיאה בפתיחת אפליקציית הטלפון',
+        UiSnack.showError('Error opening phone application',
             backgroundColor: Theme.of(context).colorScheme.error);
       }
     }

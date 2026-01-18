@@ -147,7 +147,7 @@ class _WorkspaceSwitcherDialogState extends State<WorkspaceSwitcherDialog> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'שולחן עבודה חדש',
+                  'New Workspace',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -270,12 +270,12 @@ class _WorkspaceSwitcherDialogState extends State<WorkspaceSwitcherDialog> {
               onPressed: () {
                 // Remove the workspace
                 if (isActive) {
-                  UiSnack.showError('לא ניתן למחוק שולחן עבודה פעיל',
+                  UiSnack.showError('Cannot delete active workspace',
                       backgroundColor: Theme.of(context).colorScheme.error);
                   return;
                 }
                 context.read<WorkspaceBloc>().add(RemoveWorkspace(workspace));
-                UiSnack.show('שולחן העבודה נמחק');
+                UiSnack.show('Workspace deleted');
               },
             ),
           ),

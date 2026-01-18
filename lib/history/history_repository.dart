@@ -29,7 +29,7 @@ class HistoryRepository extends BaseListRepository<Bookmark> {
     if (tab is PdfBookTab) {
       int index = tab.pdfViewerController.pageNumber ?? 1;
       addHistoryItem(Bookmark(
-        ref: '${tab.title} עמוד $index',
+        ref: '${tab.title} Page $index',
         book: tab.book,
         index: index,
       ));

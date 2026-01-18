@@ -38,7 +38,7 @@ class _WindowControlsState extends State<WindowControls> {
             IconButton(
               onPressed: () => windowManager.minimize(),
               icon: const Icon(FluentIcons.subtract_24_regular),
-              tooltip: 'מזער',
+              tooltip: 'Minimize',
             ),
             IconButton(
               onPressed: () async {
@@ -51,12 +51,12 @@ class _WindowControlsState extends State<WindowControls> {
               icon: Icon(settingsState.isFullscreen
                   ? FluentIcons.full_screen_minimize_24_regular
                   : FluentIcons.full_screen_maximize_24_regular),
-              tooltip: settingsState.isFullscreen ? 'צא ממסך מלא' : 'מסך מלא',
+              tooltip: settingsState.isFullscreen ? 'Exit fullscreen' : 'Fullscreen',
             ),
             IconButton(
               onPressed: () => windowManager.close(),
               icon: const Icon(FluentIcons.dismiss_24_regular),
-              tooltip: 'סגור',
+              tooltip: 'Close',
             ),
           ],
         );

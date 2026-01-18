@@ -13,7 +13,7 @@ class SearchingTab extends OpenedTab {
   final ItemScrollController scrollController = ItemScrollController();
   List<Book> allBooks = [];
 
-  // אפשרויות חיפוש לכל מילה (מילה_אינדקס -> אפשרויות)
+  // אפשרויות Search לכל מילה (מילה_אינדקס -> אפשרויות)
   final Map<String, Map<String, bool>> searchOptions = {};
 
   // מילים חילופיות לכל מילה (אינדקס_מילה -> רשימת מילים חילופיות)
@@ -63,7 +63,7 @@ class SearchingTab extends OpenedTab {
   String _cacheKey(String facet) {
     final f = _normalizeFacet(facet);
     final q = (searchBloc.state.searchQuery).trim();
-    final bVer = searchBloc.state.booksToSearch.length.toString(); // מספר ספרים
+    final bVer = searchBloc.state.booksToSearch.length.toString(); // Book numberים
     return '$f|q=$q|o=${_optionsHash()}|b=$bVer';
   }
 

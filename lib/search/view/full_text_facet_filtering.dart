@@ -400,7 +400,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
                       categoryPath: category.path);
                 }
 
-                // אם אין תוצאות עם ה-facet המלא, ננסה עם topics בלבד
+                // אם No results עם ה-facet המלא, ננסה עם topics בלבד
                 return FutureBuilder<int>(
                   key: ValueKey('${state.searchQuery}_$topicsOnlyFacet'),
                   future: widget.tab.countForFacetCached(topicsOnlyFacet),
@@ -409,7 +409,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
                       final topicsCount = topicsSnapshot.data!;
 
                       if (topicsCount > 0 || topicsCount == -1) {
-                        // יש תוצאות בקטגוריה, אבל לא בספר הספציפי
+                        // יש תוצאות בקטגוריה, Avל לא בספר הספציפי
                         // לא נציג את הספר כי זה יגרום להצגת ספרים ללא תוצאות
                         return const SizedBox.shrink();
                       }

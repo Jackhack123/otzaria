@@ -72,7 +72,7 @@ class _SearchPaneBaseState extends State<SearchPaneBase> {
                   prefixIcon: const Icon(FluentIcons.search_24_regular),
                   suffixIcon: value.text.isNotEmpty
                       ? IconButton(
-                          tooltip: 'נקה',
+                          tooltip: 'Clear',
                           onPressed: () {
                             widget.searchController.clear();
                             widget.onSearchTextChanged?.call('');
@@ -112,7 +112,7 @@ class _SearchPaneBaseState extends State<SearchPaneBase> {
         const SizedBox(height: 4),
         Expanded(
           child: widget.isNoResults
-              ? const Center(child: Text('אין תוצאות'))
+              ? const Center(child: Text('No results'))
               : widget.resultsWidget,
         ),
       ],

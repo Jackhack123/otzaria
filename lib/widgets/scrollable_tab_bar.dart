@@ -24,7 +24,7 @@ class ScrollableTabBarWithArrows extends StatefulWidget {
 
 class _ScrollableTabBarWithArrowsState
     extends State<ScrollableTabBarWithArrows> {
-  // נאתר את ה-ScrollPosition של ה-TabBar (isScrollable:true)
+  // Locate ScrollPosition של ה-TabBar (isScrollable:true)
   ScrollPosition? _tabBarPosition;
   BuildContext? _scrollContext;
   bool _canScrollLeft = false;
@@ -50,7 +50,7 @@ class _ScrollableTabBarWithArrowsState
     final state = Scrollable.maybeOf(ctx);
     if (state == null) return;
     final newPos = state.position;
-    // וידוא שמדובר בציר אופקי
+    // Ensure it is horizontal axis
     final isHorizontal = newPos.axisDirection == AxisDirection.left ||
         newPos.axisDirection == AxisDirection.right;
     if (!isHorizontal) return;
@@ -115,7 +115,7 @@ class _ScrollableTabBarWithArrowsState
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // חץ שמאלי – משמרים מקום קבוע כדי למנוע קפיצות ברוחב
+        // Left arrow - maintain fixed space to prevent width jumps
         SizedBox(
           width: 36,
           height: 32,
@@ -133,7 +133,7 @@ class _ScrollableTabBarWithArrowsState
                   minWidth: 32,
                   minHeight: 32,
                 ),
-                tooltip: 'גלול שמאלה',
+                tooltip: 'Scroll left',
               ),
             ),
           ),
@@ -162,7 +162,7 @@ class _ScrollableTabBarWithArrowsState
               },
               child: Builder(
                 builder: (scrollCtx) {
-                  // נשמור context כדי לאמץ את ה-ScrollPosition לאחר הבניה
+                  // Save context to adopt ScrollPosition לאחר הבניה
                   if (!identical(_scrollContext, scrollCtx)) {
                     _scrollContext = scrollCtx;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -189,7 +189,7 @@ class _ScrollableTabBarWithArrowsState
             ),
           ),
         ),
-        // חץ ימני – משמרים מקום קבוע כדי למנוע קפיצות ברוחב
+        // Right arrow - maintain fixed space כדי למנוע קפיצות ברוחב
         SizedBox(
           width: 36,
           height: 32,
@@ -207,7 +207,7 @@ class _ScrollableTabBarWithArrowsState
                   minWidth: 32,
                   minHeight: 32,
                 ),
-                tooltip: 'גלול ימינה',
+                tooltip: 'Scroll right',
               ),
             ),
           ),

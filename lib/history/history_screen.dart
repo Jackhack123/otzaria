@@ -72,7 +72,7 @@ class HistoryView extends StatelessWidget {
             if (item.isSearch) {
               final tabsBloc = ctx.read<TabsBloc>();
               // Always create a new search tab instead of reusing existing one
-              final searchTab = SearchingTab('חיפוש', null);
+              final searchTab = SearchingTab('Search', null);
               tabsBloc.add(AddTab(searchTab));
 
               // Restore search query and options
