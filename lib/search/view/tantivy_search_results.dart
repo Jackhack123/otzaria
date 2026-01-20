@@ -516,16 +516,19 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
                             ),
                             const SizedBox(height: 8),
                             // הטקסט שנמצא
-                            RichText(
-                              textAlign: TextAlign.right,
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                  height: 1.5,
+                            SizedBox(
+                              width: double.infinity,
+                              child: RichText(
+                                textAlign: TextAlign.right,
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                    height: 1.5,
+                                  ),
+                                  children: snippetSpans,
                                 ),
-                                children: snippetSpans,
                               ),
                             ),
                           ],

@@ -48,56 +48,91 @@ class TantivyDataProvider {
     String indexPath = await AppPaths.getIndexPath();
     String refIndexPath = await AppPaths.getRefIndexPath();
 
-    engine = Future.value(SearchEngine(path: indexPath));
-
     try {
-      refEngine = ReferenceSearchEngine(path: refIndexPath);
-    } catch (e) {
-      if (e.toString() ==
-          "PanicException(Failed to create index: SchemaError(\"An index exists but the schema does not match.\"))") {
-        resetIndex(indexPath);
-        reopenIndex();
-      } else {
-        rethrow;
+      // Ensure directories exist with proper permissions
+      final indexDir = Directory(indexPath);
+      final refIndexDir = Directory(refIndexPath);
+      
+      if (!await indexDir.exists()) {
+        await indexDir.create(recursive: true);
       }
-    }
-    //test the engine
-    engine.then((value) {
+      if (!await refIndexDir.exists()) {
+        await refIndexDir.create(recursive: true);
+      }
+
+      engine = Future.value(SearchEngine(path: indexPath));
+
       try {
-        // Test the search engine
-        value
-            .search(
-                regexTerms: ['a'],
-                limit: 10,
-                slop: 0,
-                maxExpansions: 10,
-                facets: ["/"],
-                order: ResultsOrder.catalogue)
-            .then((results) {
-          // Engine test successful
-        }).catchError((e) {
-          // Log engine test error
-        });
+        refEngine = ReferenceSearchEngine(path: refIndexPath);
       } catch (e) {
-        // Log sync engine test error
-        if (e.toString() ==
-            "PanicException(Failed to create index: SchemaError(\"An index exists but the schema does not match.\"))") {
-          resetIndex(indexPath);
+        final errorStr = e.toString();
+        if (errorStr.contains("SchemaError") || 
+            errorStr.contains("lock") || 
+            errorStr.contains("Permission denied")) {
+          debugPrint('🔴 Index error detected: $errorStr. Attempting recovery...');
+          await resetIndex(indexPath);
+          await resetIndex(refIndexPath);
+          await Future.delayed(const Duration(milliseconds: 500));
           reopenIndex();
+          return;
         } else {
           rethrow;
         }
       }
-    });
+      
+      //test the engine
+      engine.then((value) {
+        try {
+          // Test the search engine
+          value
+              .search(
+                  regexTerms: ['a'],
+                  limit: 10,
+                  slop: 0,
+                  maxExpansions: 10,
+                  facets: ["/"],
+                  order: ResultsOrder.catalogue)
+              .then((results) {
+            // Engine test successful
+            debugPrint('✅ Search engine test successful');
+          }).catchError((e) {
+            debugPrint('⚠️ Engine test error: $e');
+            final errorStr = e.toString();
+            if (errorStr.contains("lock") || errorStr.contains("Permission denied")) {
+              debugPrint('🔴 Lock/Permission error in engine test. Attempting recovery...');
+              resetIndex(indexPath);
+              reopenIndex();
+            }
+          });
+        } catch (e) {
+          debugPrint('❌ Sync engine test error: $e');
+          final errorStr = e.toString();
+          if (errorStr.contains("SchemaError")) {
+            resetIndex(indexPath);
+            reopenIndex();
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('🔴 Fatal error in reopenIndex: $e');
+      rethrow;
+    }
     try {
+      final boxPath = await AppPaths.getIndexPath();
+      final boxDir = Directory(boxPath);
+      if (!await boxDir.exists()) {
+        await boxDir.create(recursive: true);
+      }
+      
       booksDone = Hive.box(
         name: 'books_indexed',
-        directory: await AppPaths.getIndexPath(),
+        directory: boxPath,
       )
           .get('key-books-done', defaultValue: [])
           .map<String>((e) => e.toString())
           .toList() as List<String>;
     } catch (e) {
+      debugPrint('⚠️ Error loading books_indexed from Hive: $e');
       booksDone = [];
     }
   }

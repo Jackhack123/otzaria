@@ -429,7 +429,6 @@ class MainWindowScreenState extends State<MainWindowScreen>
       case Screen.about:
         return null;
     }
-    return null;
   }
 
   void _handleSearchTabOpen(BuildContext context) {

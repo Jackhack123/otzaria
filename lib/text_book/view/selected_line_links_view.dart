@@ -370,12 +370,14 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
 
         // אם יש תגי HTML (הדגשה), משתמש ב-HtmlWidget
         if (cleanContent.contains('<font color=')) {
-          return HtmlWidget(
-            cleanContent,
-            textStyle: TextStyle(
-              fontSize: widget.fontSize * 0.75,
-              height: 1.5,
-              fontFamily: 'FrankRuhlCLM',
+          return SingleChildScrollView(
+            child: HtmlWidget(
+              cleanContent,
+              textStyle: TextStyle(
+                fontSize: widget.fontSize * 0.75,
+                height: 1.5,
+                fontFamily: 'FrankRuhlCLM',
+              ),
             ),
           );
         } else {
