@@ -87,6 +87,17 @@ begin
   ZipPath := ExpandConstant('{tmp}\otzaria_latest.zip');
   ExtractPath := ExpandConstant('{app}');
   
+  // בדיקה אם קובץ ה-ZIP קיים
+  if not FileExists(ZipPath) then
+  begin
+    WizardForm.StatusLabel.Caption := 'הערה: ספריית הספרים לא כללה בהתקנה זו.';
+    MsgBox('הערה: קובץ ספריית הספרים (otzaria_latest.zip) לא נמצא.' + #13#10 +
+           'ניתן להוריד את הספרים דרך תפריט הגדרות בתוך האפליקציה.', 
+           mbInformation, MB_OK);
+    Result := True; // לא נחשב כשגיאה
+    Exit;
+  end;
+  
   // חילוץ קובץ ZIP שנמצא במתקין
   WizardForm.StatusLabel.Caption := 'מחלץ את ספריית האוצריא...';
   try
@@ -127,7 +138,8 @@ Source: "..\build\windows\x64\runner\Release\*"; \
     DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; קובץ ZIP של הספרייה - יורד על ידי הworkflow לשורש הפרויקט
-Source: "..\otzaria_latest.zip"; DestDir: "{tmp}"; Flags: deleteafterinstall
+; ממוקם ב-{tmp} כך שיוחזר אחרי ההתקנה
+Source: "..\otzaria_latest.zip"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: FileExists(ExpandConstant('{src}\..\otzaria_latest.zip'))
 
 Source: "uninstall_msix.ps1"; DestDir: "{app}"; Flags: ignoreversion
-Source: "VisualCppRedist_AIO_x86_x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
+Source: "VisualCppRedist_AIO_x86_x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: FileExists(ExpandConstant('{src}\VisualCppRedist_AIO_x86_x64.exe'))

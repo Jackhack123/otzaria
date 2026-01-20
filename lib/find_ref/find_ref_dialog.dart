@@ -134,7 +134,9 @@ class _FindRefDialogState extends State<FindRefDialog> {
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText:
-                          'הקלד מקור מדוייק, לדוגמה: בראשית פרק א או שוע אוח יב   ',
+                          'הקלד מקור: בראשית א:א, שוע (שולחן ערוך), משנה ברורה',
+                      helperText:
+                          'תמיכה בחיפוש משוער - דוגמה: קלידו "שוע" למציאת "שולחן ערוך"',
                       suffixIcon: IconButton(
                         icon: const Icon(FluentIcons.dismiss_24_regular),
                         onPressed: () {
