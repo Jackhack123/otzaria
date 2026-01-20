@@ -13,7 +13,7 @@ class SelectionDialog<T> extends StatefulWidget {
     required this.title,
     required this.items,
     this.initialValue,
-    this.searchHint = 'חיפוש...',
+    this.searchHint = 'Search...',
   });
 
   @override
@@ -90,7 +90,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ביטול'),
+            child: const Text('Cancel'),
           ),
         ],
       );
@@ -103,7 +103,7 @@ Future<T?> showSelectionDialog<T>({
   required String title,
   required List<SelectionItem<T>> items,
   T? initialValue,
-  String searchHint = 'חיפוש...',
+  String searchHint = 'Search...',
   bool barrierDismissible = true,
 }) {
   return showDialog<T>(

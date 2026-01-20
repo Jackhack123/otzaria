@@ -62,8 +62,8 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('אזהרה'),
-        content: const Text('ההערה לא נשמרה, לסגור?'),
+        title: const Text('Warning'),
+        content: const Text('Note was not saved, close?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -228,7 +228,7 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
                       autofocus: true,
                       keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
-                        hintText: 'כתוב כאן\n(Alt+Enter לשמירה)',
+                        hintText: 'Write here\n(Alt+Enter to save)',
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(4),
                       ),

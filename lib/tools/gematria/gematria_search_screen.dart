@@ -319,7 +319,7 @@ class GematriaSearchScreenState extends State<GematriaSearchScreen> {
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        tooltip: 'נקה',
+                        tooltip: 'Clear',
                         icon: const Icon(FluentIcons.dismiss_24_regular),
                         onPressed: () {
                           _searchController.clear();

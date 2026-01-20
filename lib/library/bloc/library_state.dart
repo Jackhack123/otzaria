@@ -27,7 +27,7 @@ class LibraryState extends Equatable {
     // יצירת ספרייה ראשונית עם כל הקטגוריות הידועות
     final placeholderCategories = [
       Category(
-          title: 'תנך',
+          title: 'Bible',
           description: '',
           shortDescription: '',
           order: 1,
@@ -35,7 +35,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'משנה',
+          title: 'Mishna',
           description: '',
           shortDescription: '',
           order: 2,
@@ -43,7 +43,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'תלמוד בבלי',
+          title: 'Babylonian Talmud',
           description: '',
           shortDescription: '',
           order: 3,
@@ -51,7 +51,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'תלמוד ירושלמי',
+          title: 'Jerusalem Talmud',
           description: '',
           shortDescription: '',
           order: 4,

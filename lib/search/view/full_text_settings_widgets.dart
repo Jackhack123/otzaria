@@ -42,7 +42,7 @@ class SearchModeToggle extends StatelessWidget {
             inactiveFgColor: Colors.white,
             initialLabelIndex: currentIndex,
             totalSwitches: 3,
-            labels: const ['חיפוש מתקדם', 'חיפוש מדוייק', 'חיפוש מקורב'],
+            labels: const ['Advanced Search', 'Exact Search', 'Fuzzy Search'],
             radiusStyle: true,
             onToggle: (index) {
               SearchMode newMode;

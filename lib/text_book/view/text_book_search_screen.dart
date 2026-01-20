@@ -456,7 +456,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
           _searchMode = SearchMode.exact;
         });
       },
-      hintText: 'חפש כאן...',
+      hintText: 'Search here...',
       onAdvancedSearch: () {
         // Create a temporary SearchingTab to hold the state
         final tempTab = SearchingTab("חיפוש", searchTextController.text);

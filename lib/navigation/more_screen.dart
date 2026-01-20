@@ -28,7 +28,7 @@ class _MoreScreenState extends State<MoreScreen> with TickerProviderStateMixin {
   late final List<Widget> _pages;
 
   // Title for the ShamorZachor section (dynamic from the package)
-  String _shamorZachorTitle = 'זכור ושמור';
+  String _shamorZachorTitle = 'Guard & Remember';
 
   /// Update the ShamorZachor title
   void _updateShamorZachorTitle(String title) {
@@ -126,12 +126,12 @@ class _MoreScreenState extends State<MoreScreen> with TickerProviderStateMixin {
                     destinations: [
                       NavigationRailDestination(
                         icon: const Icon(Icons.calendar_month_outlined),
-                        label: _buildCenteredLabel('לוח שנה'),
+                        label: _buildCenteredLabel('Calendar'),
                       ),
                       NavigationRailDestination(
                         icon: const ImageIcon(
                             AssetImage('assets/icon/זכור ושמור.png')),
-                        label: _buildCenteredLabel('זכור ושמור'),
+                        label: _buildCenteredLabel('Guard & Remember'),
                       ),
                       NavigationRailDestination(
                         icon: const Icon(Icons.straighten),

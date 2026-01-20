@@ -195,7 +195,7 @@ class ReportingNumbersWidget extends StatelessWidget {
             IconButton(
               onPressed: () => _copyToClipboard(context, _phoneNumber),
               icon: const Icon(FluentIcons.copy_24_regular, size: 18),
-              tooltip: 'העתק מספר טלפון',
+              tooltip: 'Copy phone number',
               visualDensity: VisualDensity.compact,
             ),
 
@@ -205,7 +205,7 @@ class ReportingNumbersWidget extends StatelessWidget {
               IconButton(
                 onPressed: () => _makePhoneCall(context),
                 icon: const Icon(FluentIcons.phone_24_regular, size: 18),
-                tooltip: 'התקשר',
+                tooltip: 'Call',
                 visualDensity: VisualDensity.compact,
               ),
             ],

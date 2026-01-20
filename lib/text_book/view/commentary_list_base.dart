@@ -567,7 +567,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                         child: RtlTextField(
                           controller: _searchController,
                           decoration: InputDecoration(
-                            hintText: 'חפש בתוך המפרשים המוצגים...',
+                            hintText: 'Search within displayed commentators...',
                             prefixIcon:
                                 const Icon(FluentIcons.search_24_regular),
                             suffixIcon: _searchQuery.isNotEmpty

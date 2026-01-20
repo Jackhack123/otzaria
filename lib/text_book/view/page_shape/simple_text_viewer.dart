@@ -93,7 +93,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     return ctx.ContextMenu(
       entries: [
         ctx.MenuItem(
-          label: const Text('חיפוש'),
+          label: const Text('Search'),
           icon: const Icon(FluentIcons.search_24_regular),
           onSelected: (_) {
             // בצורת הדף אין חיפוש - אפשר להוסיף בעתיד
@@ -103,21 +103,21 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
         const ctx.MenuDivider(),
         // הערות אישיות
         ctx.MenuItem(
-          label: const Text('הוסף הערה אישית '),
+          label: const Text('Add Personal Note '),
           icon: const Icon(FluentIcons.note_add_24_regular),
           onSelected: (_) => _createNoteForCurrentLine(index),
         ),
         const ctx.MenuDivider(),
         // העתקה
         ctx.MenuItem(
-          label: const Text('העתק'),
+          label: const Text('Copy'),
           icon: const Icon(FluentIcons.copy_24_regular),
           enabled: _savedSelectedText != null &&
               _savedSelectedText!.trim().isNotEmpty,
           onSelected: (_) => _copyFormattedText(),
         ),
         ctx.MenuItem(
-          label: const Text('העתק את כל הפסקה'),
+          label: const Text('Copy Entire Paragraph'),
           icon: const Icon(FluentIcons.document_copy_24_regular),
           enabled: index >= 0 && index < widget.content.length,
           onSelected: (_) => _copyParagraphByIndex(index),
@@ -125,14 +125,14 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
         const ctx.MenuDivider(),
         // עריכת פסקה
         ctx.MenuItem(
-          label: const Text('ערוך פסקה זו'),
+          label: const Text('Edit This Paragraph'),
           icon: const Icon(FluentIcons.edit_24_regular),
           onSelected: (_) => _editParagraph(index),
         ),
         const ctx.MenuDivider(),
         // שיתוף קישורים
         ctx.MenuItem.submenu(
-          label: const Text('שתף קישור ישיר'),
+          label: const Text('Share Direct Link'),
           icon: const Icon(FluentIcons.share_24_regular),
           items: [
             ctx.MenuItem(

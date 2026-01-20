@@ -73,7 +73,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
     emit(const EmptyLibraryLoading(
         isDownloading: true,
-        currentOperation: 'פותח קובץ...',
+        currentOperation: 'Opening file...',
         downloadProgress: 0));
 
     try {
@@ -110,7 +110,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         emit(EmptyLibraryError(errorMessage: 'שגיאה בחילוץ: $e'));
       }
     } catch (e) {
-      emit(EmptyLibraryError(errorMessage: 'שגיאה בבחירת הקובץ: $e'));
+      emit(EmptyLibraryError(errorMessage: 'Error selecting file: $e'));
     }
   }
 
@@ -247,7 +247,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
                     extractedFiles++;
                   } catch (e) {
                     debugPrint('Error extracting $filename: $e');
-                    throw Exception('שגיאה בחילוץ הקובץ $filename: $e');
+                    throw Exception('File extraction error $filename: $e');
                   }
                 }
               }
@@ -261,14 +261,14 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
                     onExtracting: (zipEntry, progress) {
                       add(DownloadProgressUpdated(
                           progress: progress,
-                          currentOperation: 'מחלץ: ${zipEntry.name}',
+                          currentOperation: 'Extracting: ${zipEntry.name}',
                           downloadedMB: state.downloadedMB,
                           downloadSpeed: state.downloadSpeed));
                       return flutter_archive.ZipFileOperation.includeItem;
                     });
               } catch (e) {
                 debugPrint('$e');
-                throw Exception('שגיאה בחילוץ הקובץ: $e');
+                throw Exception('File extraction error: $e');
               }
             }
 
@@ -281,11 +281,11 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
             emit(EmptyLibraryDownloaded());
           } catch (e) {
-            emit(EmptyLibraryError(errorMessage: 'שגיאה בחילוץ: $e'));
+            emit(EmptyLibraryError(errorMessage: 'File extraction error: $e'));
           }
         },
         onError: (error) {
-          emit(EmptyLibraryError(errorMessage: 'שגיאה בהורדה: $error'));
+          emit(EmptyLibraryError(errorMessage: 'Download error: $error'));
         },
         cancelOnError: true,
       );

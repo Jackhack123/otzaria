@@ -386,7 +386,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
                         left: 8,
                       ),
                       child: pw.Text(
-                        title ?? 'מפרשים',
+                        title ?? 'Commentators',
                         style: pw.TextStyle(
                           fontSize: max(10.0, fontSize * 0.9),
                           fontWeight: pw.FontWeight.bold,
@@ -511,7 +511,7 @@ class _PrintingScreenState extends State<PrintingScreen> {
         );
 
         if (linksForLine.isNotEmpty) {
-          blocks.add({'kind': 'commentaryTitle', 'title': 'מפרשים'});
+blocks.add({'kind': 'commentaryTitle', 'title': 'Commentators'});
 
           // קיבוץ לפי מפרש (כמו בתצוגת PDF): כותרת לכל מפרש, ומתחתיה כל הקטעים שלו
           String? currentGroupTitle;

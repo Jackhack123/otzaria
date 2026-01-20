@@ -267,7 +267,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('הגדרות צורת הדף'),
+      title: const Text('Page Layout Settings'),
       content: SizedBox(
         width: 450,
         child: SingleChildScrollView(
@@ -330,7 +330,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                           final confirm = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('חזרה להגדרות גלובליות'),
+                              title: const Text('Back to Global Settings'),
                               content: const Text(
                                 'האם לאפס את הגדרות התצוגה הספציפיות לספר זה ולחזור להגדרות הגלובליות?',
                               ),
@@ -535,9 +535,9 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ),
               const SizedBox(height: 16),
               SwitchListTile(
-                title: const Text('הדגש פרשנים קשורים'),
+                title: const Text('Highlight Related Commentaries'),
                 subtitle:
-                    const Text('הדגשת קטעים בפרשנים הקשורים לשורה שנבחרה'),
+                    const Text('Highlight passages in commentaries related to selected line'),
                 value: _highlightRelatedCommentators,
                 onChanged: (value) {
                   setState(() {
@@ -710,7 +710,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(_hasChanges),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
       ],
     );
@@ -968,7 +968,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
   Widget _buildFilteredList() {
     if (_filteredCommentators.isEmpty) {
       return const Center(
-        child: Text('לא נמצאו מפרשים'),
+        child: Text('No commentaries available'),
       );
     }
 

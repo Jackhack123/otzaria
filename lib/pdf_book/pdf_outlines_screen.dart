@@ -226,7 +226,7 @@ class _OutlineViewState extends State<OutlineView>
               widget.focusNode.requestFocus();
             },
             decoration: InputDecoration(
-              hintText: 'חיפוש סימניה...',
+                hintText: 'Search bookmark...',
               prefixIcon: const Icon(FluentIcons.search_24_regular),
               suffixIcon: searchController.text.isNotEmpty
                   ? IconButton(

@@ -328,7 +328,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
           message: formatShortcut(libraryShortcut),
           child: const Icon(FluentIcons.library_24_regular),
         ),
-        label: 'ספרייה',
+        label: 'Library',
       ),
       NavigationDestination(
         tooltip: '',
@@ -337,7 +337,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
           message: formatShortcut(findShortcut),
           child: const Icon(FluentIcons.book_search_24_regular),
         ),
-        label: 'איתור',
+        label: 'Find',
       ),
       NavigationDestination(
         tooltip: '',
@@ -346,7 +346,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
           message: formatShortcut(browseShortcut),
           child: const Icon(FluentIcons.book_open_24_regular),
         ),
-        label: 'עיון',
+        label: 'Browse',
       ),
       NavigationDestination(
         tooltip: '',

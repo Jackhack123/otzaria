@@ -89,7 +89,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
       child: RtlTextField(
         controller: _filterQuery,
         decoration: InputDecoration(
-          hintText: 'איתור ספר…',
+          hintText: 'Search book...',
           prefixIcon: const Icon(FluentIcons.filter_24_regular),
           suffixIcon: IconButton(
             onPressed: _clearFilter,

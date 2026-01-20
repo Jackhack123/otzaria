@@ -80,12 +80,12 @@ class _SearchPaneBaseState extends State<SearchPaneBase> {
                       if (widget.onAdvancedSearch != null)
                         IconButton(
                           icon: const Icon(FluentIcons.settings_24_regular),
-                          tooltip: 'חיפוש מתקדם',
+                          tooltip: 'Advanced Search',
                           onPressed: widget.onAdvancedSearch,
                         ),
                       if (value.text.isNotEmpty)
                         IconButton(
-                          tooltip: 'נקה',
+                          tooltip: 'Clear',
                           onPressed: () {
                             widget.searchController.clear();
                             widget.onSearchTextChanged?.call('');

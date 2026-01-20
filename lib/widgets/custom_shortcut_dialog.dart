@@ -132,7 +132,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
                     });
                   },
                   icon: const Icon(Icons.stop),
-                  label: const Text('עצור הקלטה'),
+                  label: const Text('Stop Recording'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.error,
                     foregroundColor: Theme.of(context).colorScheme.onError,
@@ -148,7 +148,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
                     });
                   },
                   icon: const Icon(Icons.fiber_manual_record),
-                  label: const Text('התחל הקלטה'),
+                  label: const Text('Start Recording'),
                 ),
             ],
           ),

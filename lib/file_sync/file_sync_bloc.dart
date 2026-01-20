@@ -34,7 +34,7 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
     if (_isOffline) {
       emit(state.copyWith(
         status: FileSyncStatus.initial,
-        message: 'מצב אופליין מופעל',
+        message: 'Offline mode enabled',
       ));
       return;
     }
@@ -47,7 +47,7 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
 
     emit(state.copyWith(
       status: FileSyncStatus.syncing,
-      message: 'מסנכרן...',
+      message: 'Syncing...',
     ));
 
     // Set up a timer to update progress periodically

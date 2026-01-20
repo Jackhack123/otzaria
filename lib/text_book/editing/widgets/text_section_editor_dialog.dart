@@ -537,12 +537,12 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
             TextButton.icon(
               onPressed: _hasUnsavedChanges ? _save : null,
               icon: const Icon(FluentIcons.save_24_regular),
-              label: const Text('שמור'),
+              label: const Text('Save'),
             ),
             TextButton.icon(
               onPressed: _saveAndClose,
               icon: const Icon(FluentIcons.save_arrow_right_24_regular),
-              label: const Text('שמור וצא'),
+              label: const Text('Save & Exit'),
             ),
           ],
         ),
@@ -702,7 +702,7 @@ class _SearchDialogState extends State<_SearchDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('חיפוש בטקסט'),
+      title: const Text('Search in Text'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -727,11 +727,11 @@ class _SearchDialogState extends State<_SearchDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
         ElevatedButton(
           onPressed: _performSearch,
-          child: const Text('חפש'),
+          child: const Text('Search'),
         ),
       ],
     );
@@ -772,7 +772,7 @@ class _LinkInsertDialogState extends State<_LinkInsertDialog> {
         ),
       },
       child: AlertDialog(
-        title: const Text('הוסף קישור'),
+        title: const Text('Add Link'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

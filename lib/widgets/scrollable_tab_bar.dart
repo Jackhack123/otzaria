@@ -161,7 +161,7 @@ class _ScrollableTabBarWithArrowsState
             canScroll: _canScrollLeft,
             onPressed: _scrollLeft,
             icon: FluentIcons.chevron_left_24_regular,
-            tooltip: 'גלול שמאלה',
+            tooltip: 'Scroll Left',
           ),
         // TabBar משופר עם עיצוב יפה יותר
         Expanded(
@@ -221,7 +221,7 @@ class _ScrollableTabBarWithArrowsState
             canScroll: _canScrollRight,
             onPressed: _scrollRight,
             icon: FluentIcons.chevron_right_24_regular,
-            tooltip: 'גלול ימינה',
+            tooltip: 'Scroll Right',
           ),
       ],
     );

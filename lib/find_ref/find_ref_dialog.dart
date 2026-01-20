@@ -79,7 +79,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
             const SizedBox(width: 8),
             const Expanded(
               child: Text(
-                'אינדקס המקורות בתהליך בנייה. תוצאות החיפוש עלולות להיות חלקיות.',
+                'Source index is being built. Search results may be partial.',
                 textAlign: TextAlign.right,
                 style: TextStyle(color: Colors.black87),
               ),
@@ -101,7 +101,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
 
     return AlertDialog(
       title: const Text(
-        'איתור מקורות',
+        'Find Source',
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
@@ -147,7 +147,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText:
-                          'הקלד מקור מדוייק, לדוגמה: בראשית פרק א או שוע אוח יב   ',
+                          'Type source precisely, for example: genesis chapter 1 or shulchan aruch orach chaim 12',
                       suffixIcon: IconButton(
                         icon: const Icon(FluentIcons.dismiss_24_regular),
                         onPressed: () {
@@ -196,7 +196,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                         3) {
                       return const Center(
                         child: Text(
-                          'אין תוצאות',
+                          'No results',
                           style: TextStyle(fontSize: 16),
                         ),
                       );
@@ -256,7 +256,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('Close'),
         ),
       ],
     );

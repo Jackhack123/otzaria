@@ -809,7 +809,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 foregroundColor: Colors.white,
               ),
               icon: const Icon(FluentIcons.shield_task_24_filled, size: 18),
-              label: const Text('לחץ לפרטים'),
+              label: const Text('Click for Details'),
             ),
           ),
         ],
@@ -1073,12 +1073,12 @@ class _AboutScreenState extends State<AboutScreen> {
                       ElevatedButton.icon(
                         onPressed: () => _showChangelogDialog(context),
                         icon: const Icon(FluentIcons.history_24_regular),
-                        label: const Text('יומן שינויים בתוכנה'),
+                        label: const Text('App Changelog'),
                       ),
                       ElevatedButton.icon(
                         onPressed: () => _showLibraryChangelogDialog(context),
                         icon: const Icon(FluentIcons.library_24_regular),
-                        label: const Text('יומן שינויים בספרייה'),
+                        label: const Text('Library Changelog'),
                       ),
                     ],
                   ),

@@ -306,8 +306,8 @@ $detailsSection
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('דיווח נשלח בהצלחה'),
-        content: const Text('הדיווח נשלח בהצלחה לצוות אוצריא. תודה על הדיווח!'),
+        title: const Text('Report Sent Successfully'),
+        content: const Text('Report was sent successfully to Otzaria team. Thank you for reporting!'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
@@ -585,7 +585,7 @@ class _TabbedReportDialogState extends State<TabbedReportDialog>
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 16),
-            Text('טוען נתוני דיווח...'),
+            Text('Loading report data...'),
           ],
         ),
       );
@@ -858,7 +858,7 @@ class _RegularReportTabState extends State<RegularReportTab> {
                       }
                     : null,
                 icon: const Icon(FluentIcons.save_24_regular, size: 18),
-                label: const Text('לא מחובר לרשת? שמור לדיווח מאוחר'),
+                label: const Text('Not connected to network? Save for later reporting'),
               ),
               // הכפתור "שלח בדוא"ל" מוסתר במצב אופליין
               if (!isOfflineMode)
@@ -875,13 +875,13 @@ class _RegularReportTabState extends State<RegularReportTab> {
                         }
                       : null,
                   icon: const Icon(FluentIcons.mail_24_regular, size: 18),
-                  label: const Text('שלח בדוא"ל'),
+                  label: const Text('Send by Email'),
                 ),
               // הכפתור "שלח ישירות לאוצריא" מוסתר במצב אופליין
               if (!isPhoneDisabled && !isOfflineMode)
                 OutlinedButton(
                   onPressed: null,
-                  child: const Text('שלח ישירות לאוצריא (לא פעיל זמנית)'),
+                  child: const Text('Send Directly to Otzaria (Currently Inactive)'),
                 ),
             ],
           ),

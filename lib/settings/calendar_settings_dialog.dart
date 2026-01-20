@@ -5,11 +5,11 @@ import 'package:otzaria/navigation/calendar_cubit.dart';
 import 'package:otzaria/settings/settings_repository.dart';
 import 'package:otzaria/widgets/rtl_text_field.dart';
 
-/// פונקציה גלובלית להצגת דיאלוג הגדרות לוח שנה
-/// ניתן לקרוא לה מכל מקום באפליקציה
+/// Global function to display calendar settings dialog
+/// Can be called from anywhere in the application
 void showCalendarSettingsDialog(BuildContext context,
     {CalendarCubit? calendarCubit}) {
-  // אם נמסר Cubit במפורש נשתמש בו, אחרת ננסה לקרוא מה-context
+  // If Cubit is passed explicitly, use it, otherwise try to read from context
   CalendarCubit? existingCubit = calendarCubit;
   bool shouldCloseAfter = false;
 
@@ -17,7 +17,7 @@ void showCalendarSettingsDialog(BuildContext context,
     try {
       existingCubit = context.read<CalendarCubit>();
     } catch (e) {
-      // אם אין CalendarCubit זמין, ניצור חדש
+      // If no CalendarCubit is available, create a new one
       final settingsRepository = SettingsRepository();
       existingCubit = CalendarCubit(settingsRepository: settingsRepository);
       shouldCloseAfter = true;
@@ -41,7 +41,7 @@ void showCalendarSettingsDialog(BuildContext context,
   });
 }
 
-/// דיאלוג הגדרות לוח שנה עם אפשרות להרחבה לבחירת עיר
+/// Calendar Settings Dialog with option to expand for city selection
 class _CalendarSettingsDialog extends StatefulWidget {
   final CalendarCubit calendarCubit;
 
@@ -61,7 +61,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
       bloc: widget.calendarCubit,
       builder: (context, state) {
         return AlertDialog(
-          title: const Text('הגדרות לוח שנה'),
+          title: const Text('Calendar Settings'),
           content: SizedBox(
             width: 400,
             child: SingleChildScrollView(
@@ -70,7 +70,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'סוג לוח:',
+                    'Calendar Type:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   RadioGroup<CalendarType>(
@@ -84,15 +84,15 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                       mainAxisSize: MainAxisSize.min,
                       children: const [
                         RadioListTile<CalendarType>(
-                          title: Text('לוח עברי'),
+                          title: Text('Hebrew Calendar'),
                           value: CalendarType.hebrew,
                         ),
                         RadioListTile<CalendarType>(
-                          title: Text('לוח לועזי'),
+                          title: Text('Gregorian Calendar'),
                           value: CalendarType.gregorian,
                         ),
                         RadioListTile<CalendarType>(
-                          title: Text('לוח משולב'),
+                          title: Text('Combined Calendar'),
                           value: CalendarType.combined,
                         ),
                       ],
@@ -105,7 +105,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'עיר:',
+                        'City:',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -131,7 +131,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                       ),
                     ],
                   ),
-                  // הרחבה לחיפוש עיר
+                  // Expand for city search
                   AnimatedSize(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
@@ -156,11 +156,11 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                   const Divider(),
                   const SizedBox(height: 16),
                   const Text(
-                    'התראות:',
+                    'Notifications:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   SwitchListTile(
-                    title: const Text('הפעל התראות על אירועים'),
+                    title: const Text('Enable Notifications for Events'),
                     value: state.calendarNotificationsEnabled,
                     onChanged: (value) {
                       widget.calendarCubit
@@ -174,7 +174,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SwitchListTile(
-                            title: const Text('השמע צליל בהתראה'),
+                            title: const Text('Play Sound in Notification'),
                             value: state.calendarNotificationSound,
                             onChanged: (value) {
                               widget.calendarCubit
@@ -183,16 +183,16 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
                           ),
                           DropdownButtonFormField<int>(
                             decoration: const InputDecoration(
-                              labelText: 'זמן תזכורת לפני האירוע',
+                              labelText: 'Reminder Time Before Event',
                             ),
                             initialValue: state.calendarNotificationTime,
                             items: const [
-                              DropdownMenuItem(value: 60, child: Text('שעה')),
+                              DropdownMenuItem(value: 60, child: Text('1 Hour')),
                               DropdownMenuItem(
-                                  value: 720, child: Text('12 שעות')),
-                              DropdownMenuItem(value: 1440, child: Text('יום')),
+                                  value: 720, child: Text('12 Hours')),
+                              DropdownMenuItem(value: 1440, child: Text('1 Day')),
                               DropdownMenuItem(
-                                  value: 2880, child: Text('יומיים')),
+                                  value: 2880, child: Text('2 Days')),
                             ],
                             onChanged: (value) {
                               if (value != null) {
@@ -212,7 +212,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('סגור'),
+              child: const Text('Close'),
             ),
           ],
         );
@@ -221,7 +221,7 @@ class _CalendarSettingsDialogState extends State<_CalendarSettingsDialog> {
   }
 }
 
-/// Widget לחיפוש ובחירת עיר (מוטמע בתוך הדיאלוג)
+/// Widget for searching and selecting a city (embedded within the dialog)
 class _CitySearchWidget extends StatefulWidget {
   final String currentCity;
   final ValueChanged<String> onCitySelected;
@@ -319,7 +319,7 @@ class _CitySearchWidgetState extends State<_CitySearchWidget> {
               controller: _searchController,
               autofocus: true,
               decoration: const InputDecoration(
-                hintText: 'הקלד שם עיר...',
+                hintText: 'Type city name...',
                 prefixIcon: Icon(FluentIcons.search_24_regular),
                 border: OutlineInputBorder(),
                 isDense: true,
@@ -330,7 +330,7 @@ class _CitySearchWidgetState extends State<_CitySearchWidget> {
           SizedBox(
             height: 300,
             child: _filteredCities.isEmpty
-                ? const Center(child: Text('לא נמצאו ערים'))
+                ? const Center(child: Text('No cities found'))
                 : ListView(children: items),
           ),
         ],

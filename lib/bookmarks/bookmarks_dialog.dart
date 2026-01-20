@@ -8,7 +8,7 @@ class BookmarksDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReusableItemsDialog(
-      title: 'סימניות',
+      title: 'Bookmarks',
       child: const BookmarkView(),
     );
   }

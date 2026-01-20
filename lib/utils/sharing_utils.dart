@@ -95,7 +95,7 @@ class SharingUtils {
     final link = generateBookLink(tab);
     await copyLinkToClipboard(
       link,
-      'קישור ישיר לספר "${tab.title}" הועתק ללוח',
+      'Direct link to book "${tab.title}" copied to clipboard',
       showSnackBar,
       showErrorSnackBar,
     );
@@ -110,7 +110,7 @@ class SharingUtils {
     final link = generateSectionLink(tab);
     await copyLinkToClipboard(
       link,
-      'קישור ישיר למקטע הנוכחי ב"${tab.title}" הועתק ללוח',
+      'Direct link to current section in "${tab.title}" copied to clipboard',
       showSnackBar,
       showErrorSnackBar,
     );
@@ -127,7 +127,7 @@ class SharingUtils {
     
     await copyLinkToClipboard(
       link,
-      'קישור ישיר עם הדגשה ב"${tab.title}" הועתק ללוח',
+      'Direct link with highlight in "${tab.title}" copied to clipboard',
       showSnackBar,
       showErrorSnackBar,
     );

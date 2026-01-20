@@ -2388,7 +2388,7 @@ class _TimesAndEventsTabViewState extends State<_TimesAndEventsTabView>
                                 context, widget.state),
                             icon: const Icon(FluentIcons.add_24_regular,
                                 size: 16),
-                            label: const Text('צור אירוע'),
+                            label: const Text('Create Event'),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 8),

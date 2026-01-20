@@ -178,7 +178,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                     ),
                     titleSpacing: 0,
                     centerTitle: true,
-                    title: const Text('עיון'),
+                    title: const Text('Browse'),
                     actions: [
                       // כפתור מסך מלא
                       BlocBuilder<SettingsBloc, SettingsState>(
@@ -232,7 +232,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                                   );
                             },
                             icon: const Icon(FluentIcons.library_24_regular),
-                            label: const Text('דפדף בספרייה'),
+                            label: const Text('Browse Library'),
                           ),
                         ),
                       ],
@@ -515,17 +515,17 @@ class _ReadingScreenState extends State<ReadingScreen>
                   context.read<TabsBloc>().add(TogglePinTab(tab)),
             ),
             MenuItem(
-                label: const Text('סגור'),
+                label: const Text('Close'),
                 onSelected: (_) => closeTab(tab, context)),
             MenuItem(
-                label: const Text('סגור הכל'),
+                label: const Text('Close All'),
                 onSelected: (_) => closeAllTabs(state, context)),
             MenuItem(
-              label: const Text('סגור את האחרים'),
+              label: const Text('Close Others'),
               onSelected: (_) => closeAllTabsButCurrent(state, context),
             ),
             MenuItem(
-              label: const Text('שיכפול'),
+              label: const Text('Duplicate'),
               onSelected: (_) => context.read<TabsBloc>().add(CloneTab(tab)),
             ),
             const MenuDivider(),
@@ -558,19 +558,19 @@ class _ReadingScreenState extends State<ReadingScreen>
             // אפשרויות לטאב משולב
             if (tab is CombinedTab) ...[
               MenuItem(
-                label: const Text('החלף צדדים'),
+                label: const Text('Swap Sides'),
                 onSelected: (_) =>
                     context.read<TabsBloc>().add(const SwapSideBySideTabs()),
               ),
               MenuItem(
-                label: const Text('חזרה לתצוגה רגילה'),
+                label: const Text('Return to Normal View'),
                 onSelected: (_) =>
                     context.read<TabsBloc>().add(const DisableSideBySideMode()),
               ),
             ],
             const MenuDivider(),
             MenuItem(
-              label: const Text('העתק קישור לספר זה'),
+              label: const Text('Copy Direct Link to Book'),
               onSelected: (_) => _shareBookLink(tab),
             ),
             const MenuDivider(),

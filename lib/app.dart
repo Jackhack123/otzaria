@@ -62,7 +62,7 @@ class App extends StatelessWidget {
             Locale("he", "IL"),
           ],
           locale: const Locale("he", "IL"),
-          title: 'אוצריא',
+          title: 'Otzaria',
           theme: state.isDarkMode
               ? ThemeData.dark(useMaterial3: true).copyWith(
                   scaffoldBackgroundColor: AppColors.darkScaffold,

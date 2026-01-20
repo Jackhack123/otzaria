@@ -330,7 +330,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
     final token = _lastComputedForPage = newPage;
 
     // עדכון מיידי של הכותרת עם מספר העמוד
-    widget.tab.currentTitle.value = 'עמוד $newPage';
+    widget.tab.currentTitle.value = 'Page $newPage';
 
     final title = await refFromPageNumber(
         newPage, widget.tab.outline.value ?? [], widget.tab.book.title);
@@ -441,7 +441,7 @@ class _PdfBookScreenState extends State<PdfBookScreen>
               ),
               leading: IconButton(
                 icon: const Icon(FluentIcons.navigation_24_regular),
-                tooltip: 'חיפוש וניווט',
+                tooltip: 'Search & Navigate',
                 onPressed: () {
                   widget.tab.showLeftPane.value =
                       !widget.tab.showLeftPane.value;

@@ -33,7 +33,7 @@ class _ConflictResolutionDialogState extends State<ConflictResolutionDialog> {
         ),
       },
       child: AlertDialog(
-        title: const Text('קונפליקט בעריכה'),
+        title: const Text('Edit Conflict'),
         content: SizedBox(
           width: double.maxFinite,
           height: 400,
@@ -55,18 +55,18 @@ class _ConflictResolutionDialogState extends State<ConflictResolutionDialog> {
 
                 // Resolution options
                 const RadioListTile<String>(
-                  title: Text('שמור את העריכה שלי'),
+                    title: Text('Save my edit'),
                   subtitle: Text('התעלם מהשינויים במקור'),
                   value: 'keep_override',
                 ),
                 const RadioListTile<String>(
-                  title: Text('השתמש בגרסה החדשה'),
+                    title: Text('Use new version'),
                   subtitle: Text('בטל את העריכה שלי'),
                   value: 'use_new_source',
                 ),
                 const RadioListTile<String>(
-                  title: Text('שמור בנפרד'),
-                  subtitle: Text('שמור את העריכה שלי כגרסה נפרדת'),
+                  title: Text('Save Separately'),
+                  subtitle: Text('Save my edit as separate version'),
                   value: 'save_separate',
                 ),
 

@@ -105,16 +105,16 @@ class HistoryView extends StatelessWidget {
           },
           onDelete: (ctx, originalIndex) {
             ctx.read<HistoryBloc>().add(RemoveHistory(originalIndex));
-            UiSnack.show('נמחק בהצלחה');
+            UiSnack.show('Deleted successfully');
           },
           onClearAll: (ctx) {
             ctx.read<HistoryBloc>().add(ClearHistory());
-            UiSnack.show('כל ההיסטוריה נמחקה');
+            UiSnack.show('All history deleted');
           },
-          hintText: 'חפש בהיסטוריה...',
-          emptyText: 'אין היסטוריה',
-          notFoundText: 'לא נמצאו תוצאות',
-          clearAllText: 'מחק את כל ההיסטוריה',
+          hintText: 'Search history...',
+          emptyText: 'No history',
+          notFoundText: 'No results found',
+          clearAllText: 'Delete all history',
           leadingIconBuilder: (item) =>
               _getLeadingIcon(item.book, item.isSearch),
         );

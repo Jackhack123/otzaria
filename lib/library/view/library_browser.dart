@@ -337,7 +337,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                       borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     ),
                     hintText:
-                        'איתור ספר או מחבר ב${state.currentCategory?.title ?? ""}',
+                        'Search book or author in ${state.currentCategory?.title ?? ""}'
                   ),
                   onChanged: (value) {
                     context.read<LibraryBloc>().add(UpdateSearchQuery(value));
@@ -384,7 +384,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   child: IconButton(
                     icon: const Icon(FluentIcons.eye_24_regular),
-                    tooltip: 'הצג תצוגה מקדימה',
+                    tooltip: 'Show preview',
                     onPressed: () {
                       setState(() {
                         _showPreview = true;
@@ -418,7 +418,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: IconButton(
         icon: const Icon(FluentIcons.settings_24_regular),
-        tooltip: 'הגדרות',
+        tooltip: 'Settings',
         onPressed: () => showLibrarySettingsDialog(context),
         style: IconButton.styleFrom(
           foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -57,7 +57,7 @@ class _EmptyLibraryView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          'לא נמצאה ספרייה',
+          'No library found',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
@@ -78,7 +78,7 @@ class _EmptyLibraryView extends StatelessWidget {
               : () => BlocProvider.of<EmptyLibraryBloc>(context)
                   .add(PickDirectoryRequested()),
           icon: const Icon(FluentIcons.folder_open_24_regular),
-          label: const Text('בחר תיקייה'),
+          label: const Text('Choose Folder'),
         ),
         const SizedBox(height: 32),
         if (Platform.isAndroid)
@@ -88,7 +88,7 @@ class _EmptyLibraryView extends StatelessWidget {
                 : () => BlocProvider.of<EmptyLibraryBloc>(context)
                     .add(PickAndExtractZipRequested()),
             icon: const Icon(FluentIcons.folder_zip_24_regular),
-            label: const Text('בחר קובץ ZIP מהמכשיר'),
+            label: const Text('Choose ZIP File from Device'),
           ),
         const Text(
           'או',
@@ -104,7 +104,7 @@ class _EmptyLibraryView extends StatelessWidget {
                 : () => BlocProvider.of<EmptyLibraryBloc>(context)
                     .add(DownloadLibraryRequested()),
             icon: const Icon(FluentIcons.arrow_download_24_regular),
-            label: const Text('הורד את הספרייה מהאינטרנט (1.5GB)'),
+            label: const Text('Download Library from Internet (1.5GB)'),
           ),
       ],
     );

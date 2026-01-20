@@ -155,16 +155,16 @@ class _MySettingsScreenState extends State<MySettingsScreen>
       key: _networkModeTileKey,
       child: _SettingsTile(
         leading: const Icon(FluentIcons.globe_24_regular),
-        title: 'מצב חיבור לרשת',
+        title: 'Network Mode',
         subtitle: isOffline
             ? 'התוכנה מנותקת לגמרי מהרשת, כל התכונות המקוונות מושבתות'
-            : 'התוכנה יכולה להתחבר לרשת',
+            : 'App can connect to network',
         trailing: SegmentedButton<bool>(
           segments: [
             ButtonSegment<bool>(
               value: false,
               label: const Text(
-                'מקוון',
+                'Online',
                 style: TextStyle(fontSize: 14, letterSpacing: 0),
               ),
               icon: const Icon(FluentIcons.wifi_1_24_regular),
@@ -172,7 +172,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
             ButtonSegment<bool>(
               value: true,
               label: const Text(
-                'מנותק',
+                'Offline',
                 style: TextStyle(fontSize: 14, letterSpacing: 0),
               ),
               icon: const Icon(FluentIcons.wifi_off_24_regular),
@@ -285,7 +285,7 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                 children: [
                   SettingsGroup(
                     titleAlignment: Alignment.centerRight,
-                    title: 'הגדרות עיצוב',
+                    title: 'Appearance',
                     titleTextStyle: const TextStyle(fontSize: 25),
                     children: <Widget>[
                       _buildColumns(3, [
@@ -293,8 +293,8 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                           BlocBuilder<SettingsBloc, SettingsState>(
                             builder: (context, settingsState) {
                               return SimpleSettingsTile(
-                                title: 'מסך מלא',
-                                subtitle: 'החלף מצב מסך מלא',
+                                title: 'Fullscreen',
+                                subtitle: 'Toggle fullscreen mode',
                                 leading: Icon(settingsState.isFullscreen
                                     ? FluentIcons
                                         .full_screen_minimize_24_regular
@@ -800,19 +800,19 @@ class _MySettingsScreenState extends State<MySettingsScreen>
                           if (confirmed == true && context.mounted) {
                             Settings.clearCache();
 
-                            // הודעה למשתמש שנדרשת הפעלה מחדש
+                            // Notification to user that restart is required
                             await showDialog<void>(
                                 context: context,
                                 barrierDismissible: false,
                                 builder: (context) => AlertDialog(
-                                        title: const Text('ההגדרות אופסו'),
+                                        title: const Text('Settings Reset'),
                                         content: const Text(
-                                            'יש לסגור ולהפעיל מחדש את התוכנה כדי שהשינויים יכנסו לתוקף.'),
+                                            'You must close and restart the application for changes to take effect.'),
                                         actions: [
                                           TextButton(
                                               onPressed: () => exit(0),
                                               child:
-                                                  const Text('סגור את התוכנה'))
+                                                  const Text('Close Application'))
                                         ]));
                           }
                         },
@@ -1252,8 +1252,8 @@ class _BackupSettingsSectionState extends State<_BackupSettingsSection> {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: const Text('השחזור הושלם'),
-          content: const Text('הנתונים שוחזרו בהצלחה. יש להפעיל מחדש את התוכנה.'),
+          title: const Text('Restore Complete'),
+          content: const Text('Data has been restored successfully. You must restart the application.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -1263,7 +1263,7 @@ class _BackupSettingsSectionState extends State<_BackupSettingsSection> {
                   windowManager.close();
                 }
               },
-              child: const Text('סגור את התוכנה'),
+              child: const Text('Close Application'),
             ),
           ],
         ),
@@ -1373,15 +1373,15 @@ class _BackupSettingsSectionState extends State<_BackupSettingsSection> {
                 segments: const [
                   ButtonSegment<String>(
                     value: 'none',
-                    label: Text('ללא'),
+                    label: Text('None'),
                   ),
                   ButtonSegment<String>(
                     value: 'weekly',
-                    label: Text('כל שבוע'),
+                    label: Text('Every Week'),
                   ),
                   ButtonSegment<String>(
                     value: 'monthly',
-                    label: Text('כל חודש'),
+                    label: Text('Every Month'),
                   ),
                 ],
                 selected: {autoBackupFrequency},
@@ -1463,12 +1463,12 @@ class _BackupSettingsSectionState extends State<_BackupSettingsSection> {
                 segments: const [
                   ButtonSegment<_BackupMode>(
                     value: _BackupMode.all,
-                    label: Text('גבה הכל'),
+                    label: Text('Backup All'),
                     icon: Icon(FluentIcons.checkmark_circle_24_regular),
                   ),
                   ButtonSegment<_BackupMode>(
                     value: _BackupMode.custom,
-                    label: Text('מותאם אישית'),
+                    label: Text('Custom'),
                     icon: Icon(FluentIcons.options_24_regular),
                   ),
                 ],

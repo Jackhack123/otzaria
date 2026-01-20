@@ -29,15 +29,15 @@ class AppFonts {
   /// רשימת הגופנים המובנים (מוטמעים באפליקציה / רשימת ברירת מחדל)
   /// הערה: לא כוללת גופני מערכת כלל; בדסקטופ הם נטענים/מסוננים אוטומטית.
   static const List<FontInfo> _bundledFonts = [
-    FontInfo(value: 'TaameyDavidCLM', label: 'דוד'),
-    FontInfo(value: 'FrankRuhlCLM', label: 'פרנק-רוהל'),
-    FontInfo(value: 'TaameyAshkenaz', label: 'טעמי אשכנז'),
-    FontInfo(value: 'KeterYG', label: 'כתר'),
-    FontInfo(value: 'Shofar', label: 'שופר'),
-    FontInfo(value: 'NotoSerifHebrew', label: 'נוטו'),
-    FontInfo(value: 'Tinos', label: 'טינוס'),
-    FontInfo(value: 'NotoRashiHebrew', label: 'רש"י'),
-    FontInfo(value: 'Rubik', label: 'רוביק'),
+    FontInfo(value: 'TaameyDavidCLM', label: 'David'),
+    FontInfo(value: 'FrankRuhlCLM', label: 'Frank Ruehl'),
+    FontInfo(value: 'TaameyAshkenaz', label: 'Taamey Ashkenaz'),
+    FontInfo(value: 'KeterYG', label: 'Keter'),
+    FontInfo(value: 'Shofar', label: 'Shofar'),
+    FontInfo(value: 'NotoSerifHebrew', label: 'Noto'),
+    FontInfo(value: 'Tinos', label: 'Tinos'),
+    FontInfo(value: 'NotoRashiHebrew', label: 'Rashi'),
+    FontInfo(value: 'Rubik', label: 'Rubik'),
   ];
 
   static List<FontInfo>? _systemFontsHebrewCache;
