@@ -380,7 +380,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
                 side: BorderSide(color: Colors.grey.shade400),
               ),
               icon: const Icon(Icons.close, size: 18),
-              label: const Text('Do Not Show Again'),,
+              label: const Text('Do Not Show Again'),
             ),
           ),
         ),
