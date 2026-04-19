@@ -12,7 +12,7 @@ class CommentatorsFilterScreen extends StatelessWidget {
     super.key,
     required this.onBack,
     required this.child,
-    this.title = 'בחירת מפרשים',
+    this.title = 'בחירת Commentators',
     this.backgroundColor,
   });
 

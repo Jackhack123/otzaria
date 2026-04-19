@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:otzaria/widgets/rtl_text_field.dart';
 
-/// דיאלוג בחירה מרובה עם חיפוש
+/// דיאלוג בחירה מרובה עם search
 class MultiSelectionDialog<T> extends StatefulWidget {
   final String title;
   final List<MultiSelectionItem<T>> items;
@@ -15,7 +15,7 @@ class MultiSelectionDialog<T> extends StatefulWidget {
     required this.title,
     required this.items,
     this.initialSelectedValues = const [],
-    this.searchHint = 'חיפוש...',
+    this.searchHint = 'search...',
     this.emptyMessage,
   });
 
@@ -80,14 +80,14 @@ class _MultiSelectionDialogState<T> extends State<MultiSelectionDialog<T>> {
               child: widget.items.isEmpty
                   ? Center(
                       child: Text(
-                        widget.emptyMessage ?? 'לא נמצאו פריטים',
+                        widget.emptyMessage ?? 'no נמצאו פריטים',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     )
                   : filteredItems.isEmpty
-                      ? const Center(child: Text('לא נמצאו תוצאות'))
+                      ? const Center(child: Text('no נמצאו results'))
                       : ListView.builder(
                           itemCount: filteredItems.length,
                           itemBuilder: (context, index) {
@@ -120,26 +120,26 @@ class _MultiSelectionDialogState<T> extends State<MultiSelectionDialog<T>> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('ביטול'),
+          child: const Text('cancel'),
         ),
         ElevatedButton(
           onPressed: selectedValues.isEmpty
               ? null
               : () => Navigator.of(context).pop(selectedValues.toList()),
-          child: const Text('אישור'),
+          child: const Text('confirm'),
         ),
       ],
     );
   }
 }
 
-/// פונקציה להצגת דיאלוג בחירה מרובה עם חיפוש
+/// function להצגת דיאלוג בחירה מרובה עם search
 Future<List<T>?> showMultiSelectionDialog<T>({
   required BuildContext context,
   required String title,
   required List<MultiSelectionItem<T>> items,
   List<T> initialSelectedValues = const [],
-  String searchHint = 'חיפוש...',
+  String searchHint = 'search...',
   String? emptyMessage,
   bool barrierDismissible = true,
 }) {
@@ -156,7 +156,7 @@ Future<List<T>?> showMultiSelectionDialog<T>({
   );
 }
 
-/// מחלקה לייצוג פריט בחירה מרובה
+/// class לייצוג פריט בחירה מרובה
 class MultiSelectionItem<T> {
   final String label;
   final String searchValue;

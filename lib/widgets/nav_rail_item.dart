@@ -1,12 +1,12 @@
 // lib/widgets/nav_rail_item.dart
 //
-// NavRailItem — כפתור ניווט אנכי בסגנון Material 3.
+// NavRailItem — button ניווט אנכי בסגנון Material 3.
 //
 // מממש את הסגנון של _buildNavButton ב-MainWindowScreen:
 //  • אייקון (24px) מעל תווית
 //  • Active Indicator: AnimatedContainer + AnimatedScale → secondaryContainer pill
 //  • AnimatedSwitcher להחלפת regular ↔ filled
-//  • AnimatedDefaultTextStyle לאנימציית צבע הטקסט
+//  • AnimatedDefaultTextStyle noנימציית צבע הtext
 //  • תמיכה ב-Tooltip לקיצורי מקלדת
 //
 // **שימוש:**
@@ -14,7 +14,7 @@
 // NavRailItem(
 //   icon: FluentIcons.library_24_regular,
 //   iconFilled: FluentIcons.library_24_filled,
-//   label: 'ספרייה',
+//   label: 'library',
 //   isSelected: _currentIndex == 0,
 //   onTap: () => _navigate(0),
 //   tooltip: 'Ctrl+L',
@@ -24,22 +24,22 @@
 import 'package:flutter/material.dart';
 
 class NavRailItem extends StatelessWidget {
-  /// אייקון רגיל (כשלא נבחר)
+  /// אייקון רגיל (כשno selected)
   final IconData icon;
 
-  /// אייקון filled (כשנבחר) — אופציונלי
+  /// אייקון filled (כשselected) — אופציונלי
   final IconData? iconFilled;
 
-  /// תווית מתחת לאייקון
+  /// תווית מתחת noייקון
   final String label;
 
-  /// האם פריט זה נבחר
+  /// האם פריט זה selected
   final bool isSelected;
 
-  /// Callback בעת לחיצה
+  /// Callback בעת tap
   final VoidCallback onTap;
 
-  /// טקסט Tooltip (לרוב קיצור מקלדת) — אופציונלי
+  /// text Tooltip (לרוב קיצור מקלדת) — אופציונלי
   final String? tooltip;
 
   const NavRailItem({

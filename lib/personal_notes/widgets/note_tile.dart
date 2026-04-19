@@ -235,7 +235,7 @@ class _NoteActions extends StatelessWidget {
         ),
         if (extraAction != null) extraAction!,
         IconButton(
-          tooltip: 'מחיקה',
+          tooltip: 'delete',
           icon: const Icon(FluentIcons.delete_24_regular, size: 18),
           iconSize: 18,
           padding: const EdgeInsets.all(8),
@@ -246,7 +246,7 @@ class _NoteActions extends StatelessWidget {
           onPressed: onDelete,
         ),
         IconButton(
-          tooltip: isExpanded ? 'סגור' : 'פתח',
+          tooltip: isExpanded ? 'closed' : 'Open',
           icon: AnimatedRotation(
             turns: isExpanded ? 0.5 : 0.0,
             duration: const Duration(milliseconds: 200),

@@ -17,8 +17,8 @@ class TextBookScaffold extends StatelessWidget {
   final TextEditingValue searchTextController;
   final TextBookTab tab;
   final int? initialSidebarTabIndex;
-  final Key? pageShapeKey; // מפתח עבור PageShapeScreen
-  final GlobalKey? pageShapePrintBoundaryKey; // מפתח עבור צילום למסמך הדפסה
+  final Key? pageShapeKey; // key עבור PageShapeScreen
+  final GlobalKey? pageShapePrintBoundaryKey; // key עבור צילום למסמך הדפסה
   final ValueNotifier<int?>? pageShapeSidebarTabNotifier;
   final ValueChanged<String?>? openSearch;
 

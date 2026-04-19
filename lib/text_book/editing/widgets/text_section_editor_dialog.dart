@@ -65,7 +65,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
   bool _hasUnsavedChanges = false;
   String _previewContent = '';
   final FocusNode _editorFocusNode = FocusNode();
-  String? _lastSearchText; // לשמירת טקסט החיפוש האחרון עבור F3
+  String? _lastSearchText; // לsave text הsearch האחרון עבור F3
 
   // Undo functionality
   final List<String> _undoStack = [];
@@ -206,12 +206,12 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
     _hasShownNotification = true;
 
     UiSnack.show(
-        'שים לב: השינויים נשמרים מקומית בלבד, ובמקרה של עדכון הספרייה, השינויים ימחקו!',
+        'שים לב: השינויים נשמרים מקומית בלבד, ובמקרה של update the library, השינויים יDeleteו!',
         duration: const Duration(seconds: 4));
   }
 
   void _save() async {
-    // במצב מוגן, נדרוש סיסמה לפני שמירה
+    // במצב מוגן, נדרוש סיסמה לפני save
     if (!await verifyPasswordForAction(context)) {
       return;
     }
@@ -280,7 +280,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
 
     if (widget.hasLinksFile && text.contains('\n')) {
       // Prevent line breaks in books with links
-      UiSnack.show('בספר זה אסור לשנות מבנה שורות כדי לשמור על קישורי פרשנות');
+      UiSnack.show('בbook זה forbidden לשנות מבנה lines כדי לSave על קישורי פרשנות');
       return;
     }
 
@@ -362,7 +362,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
           widget.hasLinksFile) {
         // Prevent Enter in books with links
         UiSnack.show(
-            'בספר זה אסור לשנות מבנה שורות כדי לשמור על קישורי פרשנות');
+            'בbook זה forbidden לשנות מבנה lines כדי לSave על קישורי פרשנות');
         return true;
       } else if (event.logicalKey == LogicalKeyboardKey.f3) {
         // F3 - Find next
@@ -462,7 +462,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
   void _performSearch(String searchText) {
     if (searchText.isEmpty) return;
 
-    // שמירת טקסט החיפוש עבור F3
+    // save text הsearch עבור F3
     _lastSearchText = searchText;
 
     final currentText = _textController.text;
@@ -499,22 +499,22 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
     if (foundIndex != -1) {
       // ================== התחלת התיקון ==================
 
-      // הערכה של מיקום הגלילה.
-      // 1. חשב את מספר השורות עד לתוצאה.
+      // הערכה של location הגלילה.
+      // 1. חשב את מbook הlines עד לתוצאה.
       final linesUpToFound =
           '\n'.allMatches(currentText.substring(0, foundIndex)).length;
 
-      // 2. הערך את הגובה הממוצע של שורה (למשל, 20 פיקסלים. אפשר לשפר את זה בעתיד).
+      // 2. הvalue את הגובה הממוצע של line (למשל, 20 פיקסלים. אפשר לשפר את זה בעתיד).
       const averageLineHeight = 20.0;
       final estimatedScrollOffset = linesUpToFound * averageLineHeight;
 
-      // 3. ודא שהגלילה לא חורגת מהגבולות.
+      // 3. ודא שהגלילה no חורגת מהגבולות.
       final maxScroll = _editorScrollController.position.maxScrollExtent;
       final targetOffset = estimatedScrollOffset.clamp(0.0, maxScroll);
 
-      // גלול למיקום המוערך
+      // scroll לlocation המוvalue
       _editorScrollController.animateTo(
-        targetOffset, // <-- שימוש במיקום המחושב
+        targetOffset, // <-- שימוש בlocation המחושב
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -531,7 +531,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
       _editorFocusNode.requestFocus();
     } else {
       // Show not found message
-      UiSnack.show('הטקסט לא נמצא');
+      UiSnack.show('הtext no נמצא');
     }
   }
 
@@ -545,7 +545,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            '${_hasUnsavedChanges ? 'שינויים שלא נשמרו • ' : ''}עריכת טקסט - ${widget.bookId}',
+            '${_hasUnsavedChanges ? 'שינויים שno נשמרו • ' : ''}עריכת text - ${widget.bookId}',
             style: const TextStyle(fontSize: 16),
           ),
           leading: IconButton(
@@ -556,12 +556,12 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
             TextButton.icon(
               onPressed: _hasUnsavedChanges ? _save : null,
               icon: const Icon(FluentIcons.save_24_regular),
-              label: const Text('שמור'),
+              label: const Text('Save'),
             ),
             TextButton.icon(
               onPressed: _saveAndClose,
               icon: const Icon(FluentIcons.save_arrow_right_24_regular),
-              label: const Text('שמור וצא'),
+              label: const Text('Save וצא'),
             ),
           ],
         ),
@@ -606,7 +606,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
                 ),
               ],
             ),
-            // שורה 2: סרגל הכלים - משותף לכל הרוחב
+            // line 2: סרגל הTools - משותף לכל הרוחב
             MarkdownToolbar(
               onBold: () => _wrapSelection('<b>', '</b>'),
               onItalic: () => _wrapSelection('<i>', '</i>'),
@@ -625,7 +625,7 @@ class _TextSectionEditorDialogState extends State<TextSectionEditorDialog> {
               onSearch: _showSearchDialog,
               hasLinksFile: widget.hasLinksFile,
             ),
-            // שורה 3: החלוניות עצמן
+            // line 3: החלוניות עצמן
             Expanded(
               child: Row(
                 children: [
@@ -718,14 +718,14 @@ class _SearchDialogState extends State<_SearchDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('חיפוש בטקסט'),
+      title: const Text('search בtext'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           RtlTextField(
             controller: _searchController,
             decoration: const InputDecoration(
-              labelText: 'הכנס טקסט לחיפוש',
+              labelText: 'הכנס text לsearch',
               hintText: 'מה לחפש...',
               prefixIcon: Icon(FluentIcons.search_24_regular),
             ),
@@ -734,7 +734,7 @@ class _SearchDialogState extends State<_SearchDialog> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'החיפוש מתחיל מהסמן הנוכחי וממשיך מהתחלה אם לא נמצא',
+            'הsearch מתחיל מהסמן הcurrent וcontinue מstart אם no נמצא',
             style: TextStyle(fontSize: 12, color: Colors.grey),
             textDirection: TextDirection.rtl,
           ),
@@ -743,7 +743,7 @@ class _SearchDialogState extends State<_SearchDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('closed'),
         ),
         ElevatedButton(
           onPressed: _performSearch,
@@ -788,7 +788,7 @@ class _LinkInsertDialogState extends State<_LinkInsertDialog> {
         ),
       },
       child: AlertDialog(
-        title: const Text('הוסף קישור'),
+        title: const Text('Add קישור'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -796,7 +796,7 @@ class _LinkInsertDialogState extends State<_LinkInsertDialog> {
               controller: _textController,
               autofocus: true,
               decoration: const InputDecoration(
-                labelText: 'טקסט הקישור',
+                labelText: 'text הקישור',
                 hintText: 'לחץ כאן',
               ),
             ),
@@ -817,14 +817,14 @@ class _LinkInsertDialogState extends State<_LinkInsertDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ביטול'),
+            child: const Text('cancel'),
           ),
           TextButton(
             onPressed: () {
               widget.onInsert(_textController.text, _urlController.text);
               Navigator.of(context).pop();
             },
-            child: const Text('הוסף'),
+            child: const Text('Add'),
           ),
         ],
       ),

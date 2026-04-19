@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:otzaria/tabs/models/tab.dart';
 
-/// מצב הצגת 2 ספרים זה לצד זה
+/// מצב הצגת 2 books זה לצד זה
 class SideBySideMode extends Equatable {
   final int leftTabIndex;
   final int rightTabIndex;
-  final double splitRatio; // 0.0-1.0, כמה מהמסך תופס הספר הימני
+  final double splitRatio; // 0.0-1.0, כמה מהמסך תופס הbook הימני
 
   const SideBySideMode({
     required this.leftTabIndex,

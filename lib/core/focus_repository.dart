@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-/// מייצג owner של הפוקוס שמסוגל לשחזר אותו לאחר אירועי חלון.
+/// מייצג owner של הfocus שמסוגל לשחזר אותו noחר אירועי חלון.
 ///
-/// [restore]    — קריאת שחזור הפוקוס.
-/// [canRestore] — האם ה-owner עדיין תקף ויכול לקבל פוקוס כרגע.
+/// [restore]    — קריאת שBack הfocus.
+/// [canRestore] — האם ה-owner עדיין תקף ויכול לקבל focus כרגע.
 class FocusRestorer {
   final VoidCallback restore;
   final bool Function() canRestore;
@@ -13,7 +13,7 @@ class FocusRestorer {
   const FocusRestorer({required this.restore, required this.canRestore});
 }
 
-/// מנהל מרכזי של שחזור פוקוס לאחר אירועי חלון (maximize, fullscreen, resize).
+/// admin מרכזי של שBack focus noחר אירועי חלון (maximize, fullscreen, resize).
 ///
 /// ## מודל שתי שכבות
 ///
@@ -22,11 +22,11 @@ class FocusRestorer {
 ///
 /// **שכבת דיאלוג** ([registerActiveRestorer] / [unregisterActiveRestorer]):
 /// מוסיף dialog/overlay מעל המסך. כשה-dialog נסגר ומבוטל רישומו, החזרה
-/// אוטומטית לבעלים של שכבת המסך (או ל-dialog הקודם, אם היו כמה).
+/// אוטומטית לבעלים של שכבת המסך (או ל-dialog הprevious, אם היו כמה).
 ///
 /// ## בחירת owner פעיל
 ///
-/// [_effectiveRestorer] עובר מהcstack מלמעלה למטה — dialog קודם מנצח,
+/// [_effectiveRestorer] עובר מהcstack מלמעלה למטה — dialog previous מנצח,
 /// ובהיעדר dialog תקף: בעלים של המסך.
 class FocusRepository {
   static final FocusRepository _instance = FocusRepository._internal();
@@ -52,14 +52,14 @@ class FocusRepository {
   // מניעת קריאות scheduleRestore כפולות באותו frame
   bool _hasScheduledRestore = false;
 
-  // debounce לשחזור בזמן resize רציף
+  // debounce לשBack בtime resize רציף
   Timer? _resizeDebounceTimer;
 
   // ── Effective restorer ─────────────────────────────────────────────────────
 
-  /// מחזיר את ה-owner הפעיל הנוכחי — dialog (top-to-bottom), ואז מסך.
+  /// מחזיר את ה-owner הפעיל הcurrent — dialog (top-to-bottom), ואז מסך.
   ///
-  /// **לא** צולם ב-snapshot — תמיד מחשב מחדש, כך שסגירת dialog
+  /// **no** צולם ב-snapshot — תמיד מחשב again, כך שסגירת dialog
   /// מחזירה אוטומטית לבעלים של המסך.
   FocusRestorer? get _effectiveRestorer {
     for (int i = _dialogRestorers.length - 1; i >= 0; i--) {
@@ -74,7 +74,7 @@ class FocusRepository {
 
   /// קובע את בעלים ברמת המסך. קרא בעת ניווט למסך חדש.
   ///
-  /// - מחליף את בעלי המסך הקודם.
+  /// - מחליף את בעלי המסך הprevious.
   /// - **אינו** נוגע ב-dialog stack.
   /// - מבטל debounce ממתין (ששייך לבעלים הישן).
   void setScreenRestorer({
@@ -87,10 +87,10 @@ class FocusRepository {
 
   // ── Dialog/overlay registration ────────────────────────────────────────────
 
-  /// מוסיף בעלים של dialog מעל בעלי המסך הנוכחי.
+  /// מוסיף בעלים של dialog מעל בעלי המסך הcurrent.
   ///
-  /// מחזיר token — שמור ותעביר ל-[unregisterActiveRestorer] כשה-dialog נסגר.
-  /// מבטל debounce ממתין (כדי שלא יחזיר פוקוס לבעלים הישן).
+  /// מחזיר token — Save ותעביר ל-[unregisterActiveRestorer] כשה-dialog נסגר.
+  /// מבטל debounce ממתין (כדי שno יחזיר focus לבעלים הישן).
   FocusRestorer registerActiveRestorer({
     required VoidCallback restore,
     required bool Function() canRestore,
@@ -103,8 +103,8 @@ class FocusRepository {
 
   /// מסיר בעלים של dialog (לפי זהות אובייקט).
   ///
-  /// לאחר ההסרה, [_effectiveRestorer] חוזר אוטומטית לבעלי המסך
-  /// (או ל-dialog הבא בstack, אם היו כמה).
+  /// noחר הremove, [_effectiveRestorer] חוזר אוטומטית לבעלי המסך
+  /// (או ל-dialog next בstack, אם היו כמה).
   void unregisterActiveRestorer(FocusRestorer restorer) {
     _dialogRestorers.removeWhere((r) => identical(r, restorer));
   }
@@ -147,12 +147,12 @@ class FocusRepository {
     );
   }
 
-  /// רישום FocusNode של תוכן ספר (נקרא מ-TextBookViewerBloc)
+  /// רישום FocusNode של content book (נקרא מ-TextBookViewerBloc)
   void registerBookContentFocusNode(FocusNode focusNode) {
     _currentBookContentFocusNode = focusNode;
   }
 
-  /// ביטול רישום FocusNode של תוכן ספר
+  /// cancel רישום FocusNode של content book
   void unregisterBookContentFocusNode(FocusNode focusNode) {
     if (_currentBookContentFocusNode == focusNode) {
       _currentBookContentFocusNode = null;
@@ -200,10 +200,10 @@ class FocusRepository {
 
   // ── Restore scheduling ─────────────────────────────────────────────────────
 
-  /// שחזור לאחר frame אחד — עבור אירועי חלון דיסקרטיים (maximize, fullscreen, restore).
+  /// שBack noחר frame אחד — עבור אירועי חלון דיסקרטיים (maximize, fullscreen, restore).
   ///
   /// קריאות מרובות באותו frame מתאחדות לcallback אחד.
-  /// השחזור מחשב את [_effectiveRestorer] **בזמן הריצה** (לא snapshot),
+  /// השBack מחשב את [_effectiveRestorer] **בtime הריצה** (no snapshot),
   /// כך שאם dialog נסגר לפני שה-callback ירה, הוא ישחזר לבעלי המסך.
   void scheduleRestore() {
     if (_hasScheduledRestore) return;
@@ -216,10 +216,10 @@ class FocusRepository {
     });
   }
 
-  /// שחזור עם debounce — עבור resize רציף.
+  /// שBack עם debounce — עבור resize רציף.
   ///
-  /// מבטל את הטיימר הקודם בכל קריאה וממתין 150ms ללא resize נוסף.
-  /// גם כאן [_effectiveRestorer] מחושב **בזמן ריצת הטיימר**, לא בזמן הקריאה.
+  /// מבטל את הטיימר הprevious בכל קריאה וממתין 150ms לno resize נוסף.
+  /// גם כאן [_effectiveRestorer] מחושב **בtime ריצת הטיימר**, no בtime הקריאה.
   void scheduleRestoreDebounced() {
     _resizeDebounceTimer?.cancel();
     if (_effectiveRestorer == null) return;
@@ -237,7 +237,7 @@ class FocusRepository {
     findRefSearchController.dispose();
   }
 
-  /// מאפס את כל מצב ה-restorers לצורך בדיקות בלבד.
+  /// מאפס את כל מצב ה-restorers לצורך tests בלבד.
   ///
   /// אין לקרוא לזה מחוץ לקבצי test.
   // ignore: invalid_use_of_visible_for_testing_member
@@ -249,13 +249,13 @@ class FocusRepository {
     _resizeDebounceTimer = null;
   }
 
-  /// מחזיר את תוצאת canRestore של ה-screen restorer הנוכחי — לצורך בדיקות בלבד.
+  /// מחזיר את תוצאת canRestore של ה-screen restorer הcurrent — לצורך tests בלבד.
   // ignore: invalid_use_of_visible_for_testing_member
   bool? screenCanRestoreForTesting() => _screenRestorer?.canRestore();
 
-  /// מריץ שחזור פוקוס סינכרוני מיידי — לצורך בדיקות בלבד.
+  /// מריץ שBack focus סינכרוני מיידי — לצורך tests בלבד.
   ///
-  /// מקביל לתוצאה של [scheduleRestore] אחרי frame אחד, ללא צורך ב-pump.
+  /// מקביל לתוצאה של [scheduleRestore] אחרי frame אחד, לno צורך ב-pump.
   // ignore: invalid_use_of_visible_for_testing_member
   void restoreNowForTesting() {
     final r = _effectiveRestorer;

@@ -4,7 +4,7 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:otzaria/settings/settings_card.dart';
 import 'package:otzaria/widgets/custom_ui_components.dart';
 
-/// טאב הגדרות עורך הספרים
+/// טאב settings עורך הbooks
 class EditorSettingsTab extends StatefulWidget {
   const EditorSettingsTab({super.key});
 
@@ -35,12 +35,12 @@ class _EditorSettingsTabState extends State<EditorSettingsTab> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SettingsCard(
-            title: 'עורך הספרים',
+            title: 'עורך הbooks',
             children: [
               _buildSlider(
                 icon: FluentIcons.timer_24_regular,
-                label: 'זמן עיכוב במילישניות',
-                subtitle: 'זמן ההמתנה לפני עדכון התצוגה המקדימה',
+                label: 'time עיכוב במילישניות',
+                subtitle: 'time ההמתנה לפני update התצוגה המקדימה',
                 value: previewDebounce,
                 min: 50,
                 max: 300,
@@ -54,7 +54,7 @@ class _EditorSettingsTabState extends State<EditorSettingsTab> {
               _buildSlider(
                 icon: FluentIcons.delete_dismiss_24_regular,
                 label: 'ניקוי טיוטות ישנות',
-                subtitle: 'מספר הימים לשמירת טיוטות לפני מחיקה אוטומטית',
+                subtitle: 'מbook הימים לsave טיוטות לפני delete אוטומטית',
                 value: cleanupDays,
                 min: 7,
                 max: 90,
@@ -68,7 +68,7 @@ class _EditorSettingsTabState extends State<EditorSettingsTab> {
               _buildSlider(
                 icon: FluentIcons.database_24_regular,
                 label: 'מכסת טיוטות',
-                subtitle: 'גודל מקסימלי לאחסון טיוטות (MB)',
+                subtitle: 'גודל מקסימלי noחסון טיוטות (MB)',
                 value: draftsQuota,
                 min: 50,
                 max: 100,

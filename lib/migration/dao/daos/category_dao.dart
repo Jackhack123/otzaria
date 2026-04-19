@@ -26,7 +26,7 @@ class CategoryDao {
     // Filter out special categories (except in debug mode)
     if (!kDebugMode) {
       return categories
-          .where((cat) => cat.title != 'ספרים מספריות חיצוניות')
+          .where((cat) => cat.title != 'books מbookיות חיצוניות')
           .toList();
     }
     return categories;
@@ -60,7 +60,7 @@ class CategoryDao {
     // Filter out special categories (except in debug mode)
     if (!kDebugMode) {
       return categories
-          .where((cat) => cat.title != 'ספרים מספריות חיצוניות')
+          .where((cat) => cat.title != 'books מbookיות חיצוניות')
           .toList();
     }
     return categories;

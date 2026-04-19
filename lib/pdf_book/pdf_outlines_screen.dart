@@ -73,7 +73,7 @@ class _OutlineViewState extends State<OutlineView>
     // מוצא את הרמה של הצומת היעד
     int targetLevel = _getNodeLevel(nodes, targetNode);
 
-    // אם הצומת ברמה 2 ומעלה (שזה רמה 3 ומעלה בספירה רגילה), פתח את כל ההורים
+    // אם הצומת ברמה 2 ומעלה (שזה רמה 3 ומעלה בספירה רגילה), Open את כל הparents
     if (targetLevel >= 2) {
       for (final node in path) {
         if (node.children.isNotEmpty && _expanded[node] != true) {
@@ -147,7 +147,7 @@ class _OutlineViewState extends State<OutlineView>
       _ensureParentsOpen(widget.outline!, activeNode);
     }
 
-    // קריאה ל-setState כדי לוודא שהפריט הנכון מודגש לפני הגלילה
+    // קריאה ל-setState כדי לוודא שהפריט הtrue מודגש לפני הגלילה
     if (mounted) {
       setState(() {});
     }
@@ -157,7 +157,7 @@ class _OutlineViewState extends State<OutlineView>
       return;
     }
 
-    // נחכה פריים אחד כדי שה-setState יסיים וה-UI יתעדכן
+    // נחכה פריים אחד כדי שה-setState יסיים וה-UI יתעדyes
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _isManuallyScrolling) return;
 
@@ -168,13 +168,13 @@ class _OutlineViewState extends State<OutlineView>
       final itemRenderObject = itemContext.findRenderObject();
       if (itemRenderObject is! RenderBox) return;
 
-      // --- התחלה: החישוב הנכון והבדוק ---
+      // --- start: החישוב הtrue והבדוק ---
       // זהו החישוב מההצעה של ה-AI השני, מותאם לקוד שלנו.
 
       final scrollableBox = _tocScrollController.position.context.storageContext
           .findRenderObject() as RenderBox;
 
-      // המיקום של הפריט ביחס ל-viewport של הגלילה
+      // הlocation של הפריט ביחס ל-viewport של הגלילה
       final itemOffset = itemRenderObject
           .localToGlobal(Offset.zero, ancestor: scrollableBox)
           .dy;
@@ -185,12 +185,12 @@ class _OutlineViewState extends State<OutlineView>
       // גובה הפריט עצמו
       final itemHeight = itemRenderObject.size.height;
 
-      // מיקום היעד המדויק למירוכז
+      // location היעד המדויק למירוכז
       final target = _tocScrollController.offset +
           itemOffset -
           (viewportHeight / 2) +
           (itemHeight / 2);
-      // --- סיום: החישוב הנכון והבדוק ---
+      // --- end: החישוב הtrue והבדוק ---
 
       _tocScrollController.animateTo(
         target.clamp(
@@ -211,7 +211,7 @@ class _OutlineViewState extends State<OutlineView>
     final outline = widget.outline;
     if (outline == null || outline.isEmpty) {
       return const Center(
-        child: Text('אין תוכן עניינים'),
+        child: Text('אין content עניינים'),
       );
     }
 
@@ -228,7 +228,7 @@ class _OutlineViewState extends State<OutlineView>
               widget.focusNode.requestFocus();
             },
             decoration: InputDecoration(
-              hintText: 'חיפוש סימניה...',
+              hintText: 'search סימניה...',
               prefixIcon: const Icon(FluentIcons.search_24_regular),
               suffixIcon: searchController.text.isNotEmpty
                   ? IconButton(
@@ -299,8 +299,8 @@ class _OutlineViewState extends State<OutlineView>
 
     getAllNodes(widget.outline, 0);
 
-    // דילוג על רמה 0 (כותרת ראשית של הספר) כדי למנוע התאמות שגויות
-    // לאותיות שמופיעות בשם הספר
+    // דילוג על רמה 0 (כותרת ראשית של הbook) כדי למנוע התאמות שגויות
+    // noותיות שמופיעות בname הbook
     final filteredNodes = allNodes
         .where((item) =>
             item.level > 0 && item.node.title.contains(searchController.text))
@@ -372,7 +372,7 @@ class _OutlineViewState extends State<OutlineView>
           child: Row(
             children: [
               Icon(
-                // רמה 0 (רמה 1 בספירה רגילה) מקבלת אייקון ספר
+                // רמה 0 (רמה 1 בספירה רגילה) מקבלת אייקון book
                 level == 0
                     ? FluentIcons.book_24_regular
                     : FluentIcons.text_bullet_list_24_regular,
@@ -425,7 +425,7 @@ class _OutlineViewState extends State<OutlineView>
             ),
             child: Row(
               children: [
-                // אזור הטקסט לניווט
+                // אזור הtext לניווט
                 Expanded(
                   child: InkWell(
                     onTap: () async => navigateToEntry(),
@@ -439,7 +439,7 @@ class _OutlineViewState extends State<OutlineView>
                       child: Row(
                         children: [
                           Icon(
-                            // רמה 0 (רמה 1 בספירה רגילה) מקבלת אייקון ספר
+                            // רמה 0 (רמה 1 בספירה רגילה) מקבלת אייקון book
                             level == 0
                                 ? FluentIcons.book_24_regular
                                 : FluentIcons.text_bullet_list_24_regular,
@@ -470,7 +470,7 @@ class _OutlineViewState extends State<OutlineView>
                     ),
                   ),
                 ),
-                // כפתור החץ לפתיחה/סגירה
+                // button החץ לפתיחה/סגירה
                 InkWell(
                   onTap: () {
                     setState(() {

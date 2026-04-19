@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:otzaria/widgets/rtl_text_field.dart';
 import 'package:otzaria/widgets/mixins/dialog_navigation_mixin.dart';
 
-/// דיאלוג הזנת טקסט עם תמיכה באנטר וחיצים
+/// דיאלוג הזנת text עם תמיכה באנטר וחיצים
 class InputDialog extends StatefulWidget {
   final String title;
   final String? subtitle;
@@ -23,8 +23,8 @@ class InputDialog extends StatefulWidget {
     this.hintText,
     this.initialValue = '',
     this.keyboardType,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'שמור',
+    this.cancelText = 'cancel',
+    this.confirmText = 'Save',
     this.confirmColor,
     this.obscureText = false,
   });
@@ -41,7 +41,7 @@ class _InputDialogState extends State<InputDialog> with DialogNavigationMixin {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue);
-    // תן פוקוס לשדה הטקסט אחרי שהדיאלוג נפתח
+    // תן focus לfield הtext אחרי שהדיאלוג נOpen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _textFieldFocusNode.requestFocus();
     });
@@ -144,7 +144,7 @@ class _InputDialogState extends State<InputDialog> with DialogNavigationMixin {
   }
 }
 
-/// הצגת דיאלוג הזנת טקסט
+/// הצגת דיאלוג הזנת text
 Future<String?> showInputDialog({
   required BuildContext context,
   required String title,
@@ -153,8 +153,8 @@ Future<String?> showInputDialog({
   String? hintText,
   String initialValue = '',
   TextInputType? keyboardType,
-  String cancelText = 'ביטול',
-  String confirmText = 'שמור',
+  String cancelText = 'cancel',
+  String confirmText = 'Save',
   Color? confirmColor,
 }) {
   return showDialog<String>(

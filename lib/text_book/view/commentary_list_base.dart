@@ -25,7 +25,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:otzaria/services/commentary_service.dart';
 
-// Type alias לתאימות לאחור - משתמש ב-LinkGroup מה-Service
+// Type alias לתאימות noחור - user ב-LinkGroup מה-Service
 typedef CommentaryGroup = LinkGroup;
 
 class CommentaryListBase extends StatefulWidget {
@@ -71,10 +71,10 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   final ValueNotifier<int> _currentSearchIndexNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> _totalSearchResultsNotifier = ValueNotifier<int>(0);
   final Map<String, int> _searchResultsPerLink = {};
-  int _lastScrollIndex = 0; // שומר את מיקום הגלילה האחרון
-  bool _allExpanded = true; // מצב גלובלי של פתיחה/סגירה של כל המפרשים
+  int _lastScrollIndex = 0; // שומר את location הגלילה האחרון
+  bool _allExpanded = true; // מצב גלובלי של פתיחה/סגירה של כל הCommentators
   final Map<String, bool> _expansionStates =
-      {}; // מעקב אחרי מצב כל קבוצת מפרשים
+      {}; // מעקב אחרי מצב כל קבוצת Commentators
   String? _cachedGroupingSignature;
   Future<List<CommentaryGroup>>? _cachedGroupsFuture;
 
@@ -83,16 +83,16 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   final Map<String, int> _pendingCounts = {};
 
   final ValueNotifier<String?> _savedSelectedText =
-      ValueNotifier<String?>(null); // טקסט נבחר לתפריט הקשר
+      ValueNotifier<String?>(null); // text selected לתפריט הקשר
   final ValueNotifier<Link?> _lastSelectedLink =
-      ValueNotifier<Link?>(null); // ה-link האחרון שנוגעו בו (לכותרות בהעתקה)
-  bool _showCommentatorsFilter = false; // האם להציג את מסך בחירת המפרשים
+      ValueNotifier<Link?>(null); // ה-link האחרון שנוגעו בו (לכותרות בCopyה)
+  bool _showCommentatorsFilter = false; // האם להציג את מסך בחירת הCommentators
   final FocusNode _focusNode = FocusNode();
 
   String _getLinkKey(Link link) =>
       '${link.index1}_${link.path2}_${link.index2}';
 
-  // רשימה של כל ה-links לפי סדר הופעתם (נבנית מחדש בכל build)
+  // list של כל ה-links לפי order הופעתם (נבנית again בכל build)
   List<Link> _orderedLinks = [];
 
   List<String> _selectedCommentators(TextBookLoaded state) {
@@ -126,18 +126,18 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   }
 
   int _getItemSearchIndex(Link link) {
-    // מחשב את האינדקס המצטבר עד ל-link הנוכחי
+    // מחשב את the index המצטבר עד ל-link הcurrent
     int cumulativeIndex = 0;
     final linkKey = _getLinkKey(link);
 
     for (final orderedLink in _orderedLinks) {
       final currentKey = _getLinkKey(orderedLink);
       if (currentKey == linkKey) {
-        // מצאנו את ה-link הנוכחי
+        // מצאנו את ה-link הcurrent
         final itemResults = _searchResultsPerLink[linkKey] ?? 0;
         if (itemResults == 0) return -1;
 
-        // מחשב את האינדקס היחסי בתוך ה-link הזה
+        // מחשב את the index היחסי בתוך ה-link הזה
         final relativeIndex =
             _currentSearchIndexNotifier.value - cumulativeIndex;
         return (relativeIndex >= 0 && relativeIndex < itemResults)
@@ -153,7 +153,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   @override
   void initState() {
     super.initState();
-    // האזנה לשינויים במיקום הגלילה כדי לשמור את המיקום האחרון
+    // האזנה לשינויים בlocation הגלילה כדי לSave את הlocation האחרון
     _itemPositionsListener.itemPositions.addListener(_updateLastScrollIndex);
   }
 
@@ -170,7 +170,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   void _updateLastScrollIndex() {
     final positions = _itemPositionsListener.itemPositions.value;
     if (positions.isNotEmpty) {
-      // שומר את האינדקס של הפריט הראשון הנראה
+      // שומר את the index של הפריט הראשון הנראה
       _lastScrollIndex = positions.first.index;
     }
   }
@@ -216,7 +216,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
     int cumulativeIndex = 0;
     Link? targetLink;
 
-    // 1. מוצא את ה-link שמכיל את תוצאת החיפוש הנוכחית
+    // 1. מוצא את ה-link שמכיל את תוצאת הsearch הcurrent
     for (final link in _orderedLinks) {
       final linkKey = _getLinkKey(link);
       final itemResults = _searchResultsPerLink[linkKey] ?? 0;
@@ -249,12 +249,12 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
       return;
     }
 
-    // 3. מבטיח שה-ExpansionTile של הקבוצה פתוח
+    // 3. מבטיח שה-ExpansionTile של הgroup open
     final groupKey = targetGroup.bookTitle;
 
     final bool isCurrentlyExpanded = _expansionStates[groupKey] ?? true;
 
-    // אם צריך לפתוח, פותח ומחכה לאנימציה
+    // אם צריך לopen, פותח ומחכה noנימציה
     if (!isCurrentlyExpanded) {
       setState(() {
         _expansionStates[groupKey] = true;
@@ -265,33 +265,33 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
 
-      // המתנה לסיום אנימציית הפתיחה אם הייתה
+      // המתנה לfinish אנימציית הפתיחה אם הייתה
       if (!isCurrentlyExpanded) {
         await Future.delayed(const Duration(milliseconds: 200));
         if (!mounted) return;
       }
 
-      // שלב א': גלילה גסה לקבוצה (כותרת הספר) כדי להבטיח שהפריטים ירונדרו
+      // שלב א': גלילה גסה לgroup (כותרת הbook) כדי להבטיח שהפריטים ירונדרו
       if (_itemScrollController.isAttached) {
         _itemScrollController.scrollTo(
           index: targetGroupIndex,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
-          alignment: 0.05, // מביא את הכותרת לראש העמוד
+          alignment: 0.05, // מביא את הכותרת לראש הpage
         );
       }
 
-      // המתנה לסיום הגלילה הגסה ורינדור הפריטים
+      // המתנה לfinish הגלילה הגסה ורינדור הפריטים
       await Future.delayed(const Duration(milliseconds: 350));
       // תיקון שגיאת לינט: בדיקת mounted אחרי await
       if (!mounted) return;
 
-      // שלב ב': גלילה עדינה לפריט הספציפי באמצעות חישוב אופסט ידני
+      // שלב ב': גלילה עדינה לפריט הspecific באמצעות חישוב אופסט ידני
       final linkKey = _getLinkKey(targetLink!);
       final itemKey = _itemKeys[linkKey];
       final BuildContext? itemContext = itemKey?.currentContext;
 
-      // תיקון שגיאת לינט: בדיקה ש-itemContext עצמו mounted
+      // תיקון שגיאת לינט: check ש-itemContext עצמו mounted
       if (itemContext != null && itemContext.mounted) {
         try {
           // מציאת ה-RenderObject של הפריט
@@ -299,7 +299,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
           if (itemRenderObj is! RenderBox) return;
           final RenderBox itemBox = itemRenderObj;
 
-          // תיקון שגיאת לינט: שימוש במשתנה שאינו nullable
+          // תיקון שגיאת לינט: שימוש בvariable שאינו nullable
           final ScrollableState scrollable = Scrollable.of(itemContext);
 
           // תיקון שגיאת לינט: בדיקת mounted ל-scrollable לפני גישה ל-context שלו
@@ -310,11 +310,11 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
           if (viewportRenderObj is! RenderBox) return;
           final RenderBox viewportBox = viewportRenderObj;
 
-          // חישוב המיקום של הפריט ביחס ל-Viewport של הרשימה
+          // חישוב הlocation של הפריט ביחס ל-Viewport של הlist
           final Offset itemOffset =
               itemBox.localToGlobal(Offset.zero, ancestor: viewportBox);
 
-          // אנו רוצים שהפריט יהיה בערך ב-10% מהחלק העליון של הרשימה
+          // אנו רוצים שהפריט יהיה בvalue ב-10% מהחלק העליון של הlist
           final double targetY = viewportBox.size.height * 0.1;
           final double currentY = itemOffset.dy;
 
@@ -339,15 +339,15 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
     if (!mounted) return;
 
     final key = _getLinkKey(link);
-    // אם הכמות לא השתנתה, אין צורך לעשות כלום
+    // אם הכמות no השתנתה, אין צורך לעשות כלום
     if (_searchResultsPerLink[key] == count) return;
 
     _pendingCounts[key] = count;
 
-    // אם כבר יש טיימר פעיל, רק עדכנו את הרשימה הממתינה
+    // אם כבר יש טיימר פעיל, רק עדכנו את הlist הממתינה
     if (_searchUpdateDebounce?.isActive ?? false) return;
 
-    // הפעלת הטיימר
+    // Enableת הטיימר
     _searchUpdateDebounce = Timer(const Duration(milliseconds: 150), () {
       if (!mounted) return;
       _searchResultsPerLink.addAll(_pendingCounts);
@@ -367,19 +367,19 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   void _updateGlobalExpansionState() {
     if (_expansionStates.isEmpty) return;
 
-    // בודק אם כל המפרשים פתוחים
+    // בודק אם כל הCommentators openים
     final allExpanded = _expansionStates.values.every((state) => state == true);
-    // בודק אם כל המפרשים סגורים
+    // בודק אם כל הCommentators closedים
     final allCollapsed =
         _expansionStates.values.every((state) => state == false);
 
-    // מעדכן את המצב הגלובלי רק אם כולם באותו מצב
+    // מעדyes את המצב הגלובלי רק אם כולם באותו מצב
     if (allExpanded) {
       _allExpanded = true;
     } else if (allCollapsed) {
       _allExpanded = false;
     }
-    // אם יש מצב מעורב, לא משנים את _allExpanded
+    // אם יש מצב מעורב, no משנים את _allExpanded
   }
 
   Widget _buildCommentaryGroupTile({
@@ -389,7 +389,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   }) {
     final groupKey = group.bookTitle;
 
-    // אם אין מצב שמור עבור הקבוצה הזו, משתמש במצב הגלובלי
+    // אם אין מצב Save עבור הgroup הזו, user במצב הגלובלי
     if (!_expansionStates.containsKey(groupKey)) {
       _expansionStates[groupKey] = _allExpanded;
     }
@@ -416,7 +416,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
       lastSelectedLinkListenable: _lastSelectedLink,
       onExpansionChanged: (expanded) {
         _expansionStates[groupKey] = expanded;
-        // בודק אם כל המפרשים פתוחים או סגורים ומעדכן את המצב הגלובלי
+        // בודק אם כל הCommentators openים או closedים ומעדyes את המצב הגלובלי
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             setState(() {
@@ -441,7 +441,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   Widget build(BuildContext context) {
     return TextBookStateBuilder(
         buildWhen: (previous, current) {
-          // מבטיח בניה מחדש רק כשיש שינוי בנתונים שמשפיעים על תצוגת המפרשים
+          // מבטיח בניה again רק כשיש שינוי בנתונים שמשפיעים על תצוגת הCommentators
           if (previous is! TextBookLoaded || current is! TextBookLoaded) {
             return true;
           }
@@ -475,14 +475,14 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
           Widget buildList() {
             return Builder(
               builder: (context) {
-                // בודק מראש אם יש קישורים רלוונטיים לאינדקסים הנוכחיים
+                // בודק מראש אם יש קישורים רלוונטיים noינדקסים הcurrent
                 final currentIndexesRaw = widget.indexes ??
                     (state.selectedIndex != null
                         ? [state.selectedIndex!]
                         : state.visibleIndices);
 
-                // בהפעלה מחדש/מצבים נדירים יכול להגיע לכאן עם רשימת אינדקסים ריקה,
-                // מה שגורם ל"אין מפרשים" גם כשיש. נבחר אינדקס ברירת מחדל יציב.
+                // בrestart/מצבים נדירים יכול להגיע לכאן עם רשימת אינדקסים emptyה,
+                // מה שגורם ל"אין Commentators" גם כשיש. selected אינדקס ברירת מחדל יציב.
                 final currentIndexes = currentIndexesRaw.isNotEmpty
                     ? currentIndexesRaw
                     : [
@@ -492,7 +492,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                                 : 0)
                       ];
 
-                // בדיקה אם יש בכלל קישורים לאינדקסים הנוכחיים (ללא סינון מפרשים)
+                // check אם יש בכלל קישורים noינדקסים הcurrent (לno סינון Commentators)
                 final hasAnyCommentaryLinks = currentIndexes.any((idx) {
                   final lineLinks = state.linksByLine[idx + 1];
                   if (lineLinks == null) return false;
@@ -512,7 +512,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
 
                 // אם אין קישורים רלוונטיים
                 if (!hasRelevantLinks) {
-                  // אם יש מפרשים זמינים אבל לא נבחרו בכלל - פתח אוטומטית את מסך הבחירה
+                  // אם יש Commentators זמינים אבל no selectedו בכלל - Open אוטומטית את מסך הבחירה
                   if (widget.showSearch &&
                       hasAnyCommentaryLinks &&
                       selectedCommentators.isEmpty &&
@@ -527,14 +527,14 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  // אין מפרשים בכלל לקטע הזה, או שיש מפרשים נבחרים אבל הם לא רלוונטיים
+                  // אין Commentators בכלל לקטע הזה, או שיש Commentators selectedים אבל הם no רלוונטיים
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
                         hasAnyCommentaryLinks
-                            ? 'לא נמצאו מפרשים מהנבחרים לקטע זה'
-                            : 'לא נמצאו מפרשים לקטע הנבחר',
+                            ? 'no נמצאו Commentators מהselectedים לקטע זה'
+                            : 'no נמצאו Commentators לקטע הselected',
                         style: TextStyle(
                           fontSize: widget.fontSize * 0.7,
                           color: Colors.grey,
@@ -552,19 +552,19 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                       commentatorsToShow: selectedCommentators),
                   builder: (context, thisLinksSnapshot) {
                     if (!thisLinksSnapshot.hasData) {
-                      // רק אם יש קישורים רלוונטיים, מציג אנימציית טעינה
+                      // רק אם יש קישורים רלוונטיים, מציג אנימציית loading
                       return _buildSkeletonLoading();
                     }
                     if (thisLinksSnapshot.data!.isEmpty) {
-                      // אם אין מפרשים, פשוט נציג מסך ריק
+                      // אם אין Commentators, פשוט נציג מסך empty
                       return const SizedBox.shrink();
                     }
                     final data = thisLinksSnapshot.data!;
 
-                    // שומר את הסדר של ה-links לצורך חישוב אינדקס החיפוש
+                    // שומר את הorder של ה-links לצורך חישוב אינדקס הsearch
                     _orderedLinks = data;
 
-                    // מנקה מפתחות ישנים ומכין מפתחות חדשים
+                    // מנקה keys ישנים ומכין keys חדשים
                     final currentLinkKeys =
                         data.map((l) => _getLinkKey(l)).toSet();
                     _itemKeys.removeWhere(
@@ -654,7 +654,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
           }
 
           if (widget.showSearch) {
-            // אם מסך בחירת המפרשים פתוח, מציג אותו במקום הרשימה
+            // אם מסך בחירת הCommentators open, מציג אותו במקום הlist
             if (_showCommentatorsFilter) {
               final groups = _commentatorGroups(state);
               final customSelection =
@@ -681,7 +681,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      // כפתור בחירת מפרשים - בצד ימין
+                      // button בחירת Commentators - בצד ימין
                       CommentatorsFilterButton(
                         isActive: false,
                         onPressed: _openCommentatorsFilter,
@@ -706,7 +706,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                                     return RtlTextField(
                                       controller: _searchController,
                                       decoration: InputDecoration(
-                                        hintText: 'חפש בתוך המפרשים המוצגים...',
+                                        hintText: 'חפש בתוך הCommentators המוצגים...',
                                         prefixIcon: const Icon(
                                             FluentIcons.search_24_regular),
                                         suffixIcon: query.isNotEmpty
@@ -808,7 +808,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      // כפתור סגירה/פתיחה גלובלית של כל המפרשים - מוצג רק אם יש מפרשים פעילים
+                      // button סגירה/פתיחה גלובלית של כל הCommentators - מוצג רק אם יש Commentators פעילים
                       if (selectedCommentators.isNotEmpty)
                         IconButton(
                           icon: Icon(
@@ -817,12 +817,12 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                                 : FluentIcons.arrow_expand_all_24_regular,
                           ),
                           tooltip: _allExpanded
-                              ? 'כווץ את כל המפרשים'
-                              : 'הרחב את כל המפרשים',
+                              ? 'כווץ את כל הCommentators'
+                              : 'הרחב את כל הCommentators',
                           onPressed: () {
                             setState(() {
                               _allExpanded = !_allExpanded;
-                              // מעדכן את כל המצבים של הקבוצות
+                              // מעדyes את כל המצבים של הgroups
                               for (var key in _expansionStates.keys) {
                                 _expansionStates[key] = _allExpanded;
                               }
@@ -872,7 +872,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // כפתור גלובלי מעל הרשימה
+                // button גלובלי מעל הlist
                 if (selectedCommentators.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -893,12 +893,12 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                               : FluentIcons.arrow_expand_all_24_regular,
                         ),
                         tooltip: _allExpanded
-                            ? 'כווץ את כל המפרשים'
-                            : 'הרחב את כל המפרשים',
+                            ? 'כווץ את כל הCommentators'
+                            : 'הרחב את כל הCommentators',
                         onPressed: () {
                           setState(() {
                             _allExpanded = !_allExpanded;
-                            // מעדכן את כל המצבים של הקבוצות
+                            // מעדyes את כל המצבים של הgroups
                             for (var key in _expansionStates.keys) {
                               _expansionStates[key] = _allExpanded;
                             }
@@ -907,7 +907,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                       ),
                     ),
                   ),
-                // הרשימה
+                // הlist
                 Flexible(
                   child: buildList(),
                 ),
@@ -917,7 +917,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
         });
   }
 
-  /// בניית skeleton loading לפרשנות - מספר פרשנויות עם כותרת ושלוש שורות
+  /// בניית skeleton loading לפרשנות - מbook פרשנויות עם כותרת ושלוש lines
   Widget _buildSkeletonLoading() {
     final baseColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
@@ -938,7 +938,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
                 child: _SkeletonLine(width: 0.3, height: 20, color: baseColor),
               ),
             ),
-            // שלוש שורות תוכן
+            // שלוש lines content
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
@@ -967,7 +967,7 @@ class CommentaryListBaseState extends State<CommentaryListBase> {
   }
 }
 
-/// Widget של שורה סטטית לשלד טעינה
+/// Widget של line סטטית לשלד loading
 class _SkeletonLine extends StatelessWidget {
   final double width;
   final double height;
@@ -992,8 +992,8 @@ class _SkeletonLine extends StatelessWidget {
   }
 }
 
-/// Widget מותאם אישית להצגת קבוצת מפרשים עם אפשרות כיווץ/הרחבה
-/// שלא מפריע לבחירת טקסט והעתקה (במקום ExpansionTile)
+/// Widget מותאם אישית להצגת קבוצת Commentators עם אפשרות כיווץ/הרחבה
+/// שno מפריע לבחירת text וCopyה (במקום ExpansionTile)
 class _CollapsibleCommentaryGroup extends StatefulWidget {
   final CommentaryGroup group;
   final bool isExpanded;
@@ -1067,7 +1067,7 @@ class _CollapsibleCommentaryGroupState
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // כותרת הקבוצה - ניתנת ללחיצה להרחבה/כיווץ
+        // כותרת הgroup - ניתנת לtap להרחבה/כיווץ
         InkWell(
           onTap: () {
             setState(() {
@@ -1115,7 +1115,7 @@ class _CollapsibleCommentaryGroupState
             ),
           ),
         ),
-        // תוכן המפרשים - מוצג רק כשמורחב
+        // content הCommentators - מוצג רק כSaveחב
         if (_isExpanded)
           ...widget.group.links.map((link) {
             return SelectionArea(

@@ -7,7 +7,7 @@ import 'package:otzaria/text_book/view/splited_view/splited_view_screen.dart';
 /// Shows the main text with commentaries below (not in a side panel)
 class CombinedViewStrategyImpl extends TextBookViewStrategy {
   @override
-  String get displayName => 'מפרשים מתחת';
+  String get displayName => 'Commentators מתחת';
 
   @override
   Widget buildView(BuildContext context, TextBookViewConfig config) {

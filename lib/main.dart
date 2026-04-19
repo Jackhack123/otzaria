@@ -436,7 +436,7 @@ Future<void> _runAppBootstrap() async {
                 },
               ),
               BlocProvider<FileSyncBloc>(
-                lazy: true, // יוצר רק כשנדרש לראשונה
+                lazy: true, // create only when first needed
                 create: (context) => FileSyncBloc(
                   repository: FileSyncRepository(
                     githubOwner: 'Otzaria',
@@ -457,7 +457,7 @@ Future<void> _runAppBootstrap() async {
     ),
   );
 
-  // טעינת מילוני ארמי, ראשי תיבות וספרים ברקע – אחרי הפריים הראשון, כדי לא להתחרות עם ה-paint.
+  // טעינת מילוני ארמי, ראשי תיבות וbooks ברקע – אחרי הפריים הראשון, כדי no להתחרות עם ה-paint.
   WidgetsBinding.instance.addPostFrameCallback((_) {
     unawaited(
       DictionaryLookupRepository.instance.ensureLoaded().catchError((e) {

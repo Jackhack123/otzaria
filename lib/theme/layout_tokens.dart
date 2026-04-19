@@ -10,12 +10,12 @@ class LayoutPadding {
   static const double expanded = 32;
 }
 
-/// קבועי מידות לפריסת ממשק
+/// constantי מידות לפריסת interface
 class LayoutConstraints {
   LayoutConstraints._();
 
-  /// רוחב מקסימלי לתוכן בתוך מסכי לוח (הגדרות, ספריה, כלים)
-  /// מאפשר מרכוז תוכן על מסכים רחבים מאוד
+  /// רוחב מקסימלי לcontent בתוך מסכי לוח (settings, Library, Tools)
+  /// מאפשר מרכוז content על מסכים רחבים מאוד
   static const double panelContentMaxWidth = 860.0;
 
   /// רוחב סרגל הצד במסכי לוח בדסקטופ

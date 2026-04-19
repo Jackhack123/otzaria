@@ -335,7 +335,7 @@ class SeforimRepository {
   /// @throws Exception If the insertion fails
   Future<int> insertCategory(Category category) async {
     try {
-      // בדוק אם קיימת קטגוריה עם אותו שם ואותו הורה
+      // בדוק אם קיימת category עם אותו name ואותו parentה
       final existingCategories =
           await _getCategoriesByParent(category.parentId);
       final existingCategory = existingCategories.firstWhere(
@@ -346,7 +346,7 @@ class SeforimRepository {
         return existingCategory.id;
       }
 
-      // אם לא קיימת, צור מזהה שלילי חדש
+      // אם no קיימת, צור מזהה שלילי חדש
       final newNegativeId = await getNextNegativeCategoryId();
       final categoryToInsert = Category(
         id: newNegativeId,
@@ -355,7 +355,7 @@ class SeforimRepository {
         level: category.level,
       );
 
-      // הכנס את הקטגוריה עם מזהה שלילי
+      // הכנס את הcategory עם מזהה שלילי
       final insertedId = await _database.categoryDao.insertCategoryWithId(
           categoryToInsert.id,
           categoryToInsert.parentId,
@@ -364,7 +364,7 @@ class SeforimRepository {
 
       // ודא שההכנסה הצליחה
       if (insertedId == 0) {
-        // בדוק שוב אם הקטגוריה נוספה למרות הכל
+        // בדוק שוב אם הcategory נוספה למרות הכל
         final updatedCategories =
             await _getCategoriesByParent(category.parentId);
         final newCategory = updatedCategories.firstWhere(
@@ -381,7 +381,7 @@ class SeforimRepository {
     } catch (e) {
       _logger.warning(
           'Repository: Error inserting category \'${category.title}\': ${e.toString()}');
-      // במקרה של שגיאה, בדוק אם הקטגוריה קיימת בכל זאת
+      // במקרה של error, בדוק אם הcategory קיימת בכל זאת
       final categories = await _getCategoriesByParent(category.parentId);
       final existingCategory = categories.firstWhere(
         (cat) => cat.title == category.title,
@@ -604,7 +604,7 @@ class SeforimRepository {
     );
   }
 
-  /// מחזיר ספר לפי כותרת וסוג קובץ.
+  /// מחזיר book לפי כותרת וסוג file.
   Future<Book?> getBookByTitleAndFileType(String title, String fileType) async {
     final bookData =
         await _database.bookDao.getBookByTitleAndFileType(title, fileType);
@@ -1465,10 +1465,10 @@ class SeforimRepository {
         .toList();
   }
 
-  /// מחזיר את מידע הדור של ספר לפי ה-ID שלו
+  /// מחזיר את מידע הדור של book לפי ה-ID שלו
   ///
-  /// [bookId] - מזהה הספר
-  /// מחזיר [BookGenerationInfo] עם שם הדור וסדר המיון, או null אם לא נמצא
+  /// [bookId] - מזהה הbook
+  /// מחזיר [BookGenerationInfo] עם name הדור וorder המיון, או null אם no נמצא
   Future<BookGenerationInfo?> getBookGenerationInfo(int bookId) async {
     final db = await _database.database;
     final result = db.select('''
@@ -1491,10 +1491,10 @@ class SeforimRepository {
     );
   }
 
-  /// מחזיר את מידע הדור של ספר לפי שם הספר
+  /// מחזיר את מידע הדור של book לפי name הbook
   ///
-  /// [bookTitle] - שם הספר
-  /// מחזיר [BookGenerationInfo] עם שם הדור וסדר המיון, או null אם לא נמצא
+  /// [bookTitle] - name הbook
+  /// מחזיר [BookGenerationInfo] עם name הדור וorder המיון, או null אם no נמצא
   Future<BookGenerationInfo?> getBookGenerationInfoByTitle(
       String bookTitle) async {
     final db = await _database.database;
@@ -1848,7 +1848,7 @@ class SeforimRepository {
     return result.first.values.first as int;
   }
 
-  /// ספירת קישורים לפי מזהה סוג הקישור (במקום שם)
+  /// ספירת קישורים לפי מזהה סוג הקישור (במקום name)
   Future<int> countLinksBySourceBookAndTypeId(int bookId, int typeId) async {
     final db = await _database.database;
     final result = db.select('''
@@ -2419,10 +2419,10 @@ class CommentatorInfo {
   });
 }
 
-/// מידע על הדור של ספר
+/// מידע על הדור של book
 ///
 /// @property generationId מזהה הדור
-/// @property generationName שם הדור (תורה שבכתב, חז"ל, ראשונים, אחרונים, מחברי זמננו)
+/// @property generationName name הדור (תורה שבFont, חז"ל, ראשונים, אחרונים, מחברי זמננו)
 class BookGenerationInfo {
   final int generationId;
   final String generationName;

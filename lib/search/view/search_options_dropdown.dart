@@ -47,7 +47,7 @@ class _SearchOptionsDropdownState extends State<SearchOptionsDropdown> {
       icon: Icon(_isExpanded
           ? FluentIcons.chevron_up_24_regular
           : FluentIcons.chevron_down_24_regular),
-      tooltip: 'אפשרויות חיפוש',
+      tooltip: 'אפשרויות search',
       onPressed: _toggleExpanded,
     );
   }
@@ -55,10 +55,10 @@ class _SearchOptionsDropdownState extends State<SearchOptionsDropdown> {
 
 class SearchOptionsRow extends StatefulWidget {
   final bool isVisible;
-  final String? currentWord; // המילה הנוכחית
+  final String? currentWord; // המילה הcurrent
   final int? wordIndex; // אינדקס המילה
   final Map<String, Map<String, bool>>? wordOptions; // אפשרויות מהטאב
-  final VoidCallback? onOptionsChanged; // קולבק לעדכון
+  final VoidCallback? onOptionsChanged; // קולבק לupdate
 
   const SearchOptionsRow({
     super.key,
@@ -77,10 +77,10 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
   // רשימת האפשרויות הזמינות
   static const List<String> _availableOptions = [
     'קידומות',
-    'סיומות',
+    'endת',
     'קידומות דקדוקיות',
-    'סיומות דקדוקיות',
-    'כתיב מלא/חסר',
+    'endת דקדוקיות',
+    'כתיב full/חסר',
     'חלק ממילה',
   ];
 
@@ -125,13 +125,13 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
                 wordOptions != null) {
               final key = '${currentWord}_$wordIndex';
 
-              // וודא שהמפתח קיים
+              // וודא שהkey קיים
               if (!wordOptions.containsKey(key)) {
                 wordOptions[key] =
                     Map.fromIterable(_availableOptions, value: (_) => false);
               }
 
-              // עדכן את האפשרות
+              // עדyes את האפשרות
               wordOptions[key]![option] = !wordOptions[key]![option]!;
 
               // קרא לקולבק
@@ -179,7 +179,7 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(context).textTheme.bodyMedium?.color,
-                    height: 1.0, // מבטיח שהטקסט לא יהיה גבוה מדי
+                    height: 1.0, // מבטיח שהtext no יהיה גבוה מדי
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -200,7 +200,7 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
       alignment: Alignment.topCenter,
       child: Visibility(
         visible: widget.isVisible,
-        maintainState: true, // שומר את המצב של ה-Checkboxes גם כשהמגירה סגורה
+        maintainState: true, // שומר את המצב של ה-Checkboxes גם כשהמגירה closedה
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -223,7 +223,7 @@ class _SearchOptionsRowState extends State<SearchOptionsRow> {
                 left: 48.0, right: 16.0, top: 8.0, bottom: 8.0),
             child: Wrap(
               spacing: 16.0, // רווח אופקי בין אלמנטים
-              runSpacing: 8.0, // רווח אנכי בין שורות (זה המפתח!)
+              runSpacing: 8.0, // רווח אנכי בין lines (זה הkey!)
               children: _availableOptions
                   .map((option) => _buildCheckbox(option))
                   .toList(),

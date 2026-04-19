@@ -97,7 +97,7 @@ class _CommentatorsSelectionPanelState
 
   Future<void> _update() async {
     final torahShebichtav = await _filterGroup(
-      CommentatorGroup.groupByTitle(widget.groups, 'תורה שבכתב').commentators,
+      CommentatorGroup.groupByTitle(widget.groups, 'תורה שבFont').commentators,
     );
     final chazal = await _filterGroup(
       CommentatorGroup.groupByTitle(widget.groups, 'חז"ל').commentators,
@@ -112,7 +112,7 @@ class _CommentatorsSelectionPanelState
       CommentatorGroup.groupByTitle(widget.groups, 'מחברי זמננו').commentators,
     );
     final ungrouped = await _filterGroup(
-      CommentatorGroup.groupByTitle(widget.groups, 'שאר מפרשים').commentators,
+      CommentatorGroup.groupByTitle(widget.groups, 'שאר Commentators').commentators,
     );
 
     final merged = <String>[];
@@ -242,7 +242,7 @@ class _CommentatorsSelectionPanelState
   String _titleTextForToken(String item) {
     switch (item) {
       case _torahShebichtavTitle:
-        return 'תורה שבכתב';
+        return 'תורה שבFont';
       case _chazalTitle:
         return 'חז"ל';
       case _rishonimTitle:
@@ -252,7 +252,7 @@ class _CommentatorsSelectionPanelState
       case _modernTitle:
         return 'מחברי זמננו';
       case _ungroupedTitle:
-        return 'שאר מפרשים';
+        return 'שאר Commentators';
       default:
         return '';
     }
@@ -264,7 +264,7 @@ class _CommentatorsSelectionPanelState
       return widget.emptyState ??
           const Center(
             child: Text(
-              'אין מפרשים',
+              'אין Commentators',
               textDirection: TextDirection.rtl,
             ),
           );
@@ -274,10 +274,10 @@ class _CommentatorsSelectionPanelState
       children: [
         FilterChipsSelector<String>(
           items: [
-            if (CommentatorGroup.groupByTitle(widget.groups, 'תורה שבכתב')
+            if (CommentatorGroup.groupByTitle(widget.groups, 'תורה שבFont')
                 .commentators
                 .isNotEmpty)
-              'תורה שבכתב',
+              'תורה שבFont',
             if (CommentatorGroup.groupByTitle(widget.groups, 'חז"ל')
                 .commentators
                 .isNotEmpty)
@@ -331,7 +331,7 @@ class _CommentatorsSelectionPanelState
                 child: RtlTextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'סינון מפרשים...',
+                    hintText: 'סינון Commentators...',
                     prefixIcon: const Icon(FluentIcons.search_24_regular),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
@@ -353,7 +353,7 @@ class _CommentatorsSelectionPanelState
               if (_commentatorsList.isNotEmpty)
                 CheckboxListTile(
                   title: const Text(
-                    'הצג את כל המפרשים',
+                    'הצג את כל הCommentators',
                     textDirection: TextDirection.rtl,
                   ),
                   value: _commentatorsList
@@ -372,7 +372,7 @@ class _CommentatorsSelectionPanelState
                     if (item == _torahShebichtavButton) {
                       return CheckboxListTile(
                         title: const Text(
-                          'הצג את כל התורה שבכתב',
+                          'הצג את כל התורה שבFont',
                           textDirection: TextDirection.rtl,
                         ),
                         value: _torahShebichtav
@@ -432,7 +432,7 @@ class _CommentatorsSelectionPanelState
                     if (item == _ungroupedButton) {
                       return CheckboxListTile(
                         title: const Text(
-                          'הצג את כל שאר המפרשים',
+                          'הצג את כל שאר הCommentators',
                           textDirection: TextDirection.rtl,
                         ),
                         value: _ungrouped

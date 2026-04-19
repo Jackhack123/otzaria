@@ -75,7 +75,7 @@ class TantivyDataProvider {
     // If the index was manually deleted, clear booksDone so every book
     // is re-indexed from scratch.
     if (!indexExistedBefore && booksDone.isNotEmpty) {
-      debugPrint('⚠️ תיקיית האינדקס נמחקה – מנקה רשימת ספרים מאונדקסים');
+      debugPrint('⚠️ תיקיית the index נDeleteה – מנקה רשימת books מאונדקסים');
       booksDone.clear();
       await saveBooksDoneToDisk();
     }
@@ -169,8 +169,8 @@ class TantivyDataProvider {
     }
   }
 
-  /// פותח את box ה-Hive בנתיב הנתון. אם כבר פתוח באותו נתיב — מחזיר אותו.
-  /// אם פתוח בנתיב אחר — סוגר קודם ופותח מחדש.
+  /// פותח את box ה-Hive בpath הנתון. אם כבר open באותו path — מחזיר אותו.
+  /// אם open בpath אחר — סוגר previous ופותח again.
   Future<Box> _openBox(String directory) async {
     if (_hiveBox != null &&
         _hiveBox!.isOpen &&
@@ -339,10 +339,10 @@ class TantivyDataProvider {
 
     final lockPath = await AppPaths.getTantivyLockPath();
     debugPrint(
-      '⚠️ מצב האינדקס לא תואם לקטלוג הנוכחי '
+      '⚠️ מצב the index no תואם לקטלוג הcurrent '
       '(version=$_storedIndexStateVersion, '
       'signatureMatch=${_catalogueOrderSignature == currentCatalogueOrderSignature}) '
-      '- מסמן צורך בבנייה מחדש מלאה',
+      '- מסמן צורך בבנייה again fullה',
     );
     booksDone = [];
     _storedIndexStateVersion = currentIndexStateVersion;
@@ -441,9 +441,9 @@ class TantivyDataProvider {
     await _persistIndexState(lockPath);
   }
 
-  /// מחזיר האם תיקיית האינדקס כבר הייתה קיימת לפני פתיחת המנוע הנוכחי.
+  /// מחזיר האם תיקיית the index כבר הייתה קיימת לפני פתיחת המנוע הcurrent.
   ///
-  /// משמש כדי להבחין בין יצירת אינדקס ראשונית לבין בנייה מחדש מעל אינדקס ישן.
+  /// משמש כדי להבחין בין יצירת אינדקס ראשונית לבין בנייה again מעל אינדקס ישן.
   bool get indexExistedBeforeInit => _indexExistedBeforeInit;
 
   Future<int> countTexts(String query, List<String> books, List<String> facets,
@@ -480,7 +480,7 @@ class TantivyDataProvider {
     _ongoingCounts.add(cacheKey);
     final index = await engine;
 
-    // המרת החיפוש לפורמט המנוע החדש - בדיוק כמו ב-SearchRepository!
+    // המרת הsearch לפורמט המנוע החדש - בדיוק כמו ב-SearchRepository!
     final params = SearchQueryBuilder.prepareQueryParams(
         query, fuzzy, distance, customSpacing, alternativeWords, searchOptions);
     final List<String> regexTerms = params['regexTerms'] as List<String>;
@@ -585,15 +585,15 @@ class TantivyDataProvider {
   /// Returns a Stream of search results that can be listened to for real-time updates
   Stream<List<SearchResult>> searchTextsStream(
       String query, List<String> facets, int limit, bool fuzzy) async* {
-    // הפונקציה הזו לא נתמכת במנוע החדש - נחזיר תוצאה חד-פעמית
+    // הfunction הזו no נתמכת במנוע החדש - נחזיר תוצאה חד-פעמית
     final searchRepository = SearchRepository();
     final results =
         await searchRepository.searchTexts(query, facets, limit, fuzzy: fuzzy);
     yield results;
   }
 
-  /// ספירה מקבצת של תוצאות עבור מספר facets בבת אחת - לשיפור ביצועים.
-  /// מקבץ facets לפי parent prefix ומשתמש ב-getFacetCounts כשיש כמה siblings,
+  /// ספירה מקבצת של results עבור מbook facets בבת אחת - לשיפור ביצועים.
+  /// מקבץ facets לפי parent prefix וuser ב-getFacetCounts כשיש כמה siblings,
   /// כדי לחסוך קריאות FFI מיותרות.
   Future<Map<String, int>> countTextsForMultipleFacets(
       String query, List<String> books, List<String> facets,

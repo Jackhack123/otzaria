@@ -143,10 +143,10 @@ class _SearchScopeSelectorState extends State<SearchScopeSelector> {
     final colorScheme = Theme.of(context).colorScheme;
     final manualCount = _manualSelectedFacets.length;
     final helperText = _searchAllCategories
-        ? 'מופעל כברירת מחדל. כבה כדי לבחור קטגוריות או ספרים ידנית.'
+        ? 'active כברירת מחדל. Disable כדי לselected categories או books ידנית.'
         : manualCount == 0
-            ? 'אפשר לחפש בעץ ולבחור קטגוריות או ספרים. עד שתיבחר בחירה ידנית, החיפוש יישאר בכל הקטגוריות.'
-            : 'נשמרו $manualCount פריטים לבחירה הידנית הכללית.';
+            ? 'אפשר לחפש בעץ ולselected categories או books. עד שתיבחר בחירה ידנית, הsearch יישאר בכל הcategories.'
+            : 'נשמרו $manualCount פריטים לבחירה הידנית הgeneral.';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -174,7 +174,7 @@ class _SearchScopeSelectorState extends State<SearchScopeSelector> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'חיפוש בכל הקטגוריות',
+                      'search בכל הcategories',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -222,13 +222,13 @@ class _SearchScopeSelectorState extends State<SearchScopeSelector> {
   }
 }
 
-/// וידג'ט לבחירת קטגוריות לחיפוש עם עץ היררכי מתקפל
-/// מאפשר בחירת קטגוריות ותת-קטגוריות לפני ביצוע חיפוש
+/// וידג'ט לבחירת categories לsearch עם עץ היררכי מתקפל
+/// מאפשר בחירת categories ותת-categories לפני ביצוע search
 class CategoryTreeSelector extends StatefulWidget {
-  /// הקטגוריות שנבחרו - רשימת נתיבים (facets)
+  /// הcategories שselectedו - רשימת paths (facets)
   final Set<String> selectedFacets;
 
-  /// קריאה חוזרת כשהבחירה משתנה
+  /// קריאה חוזרת כשהבחירה variable
   final ValueChanged<Set<String>> onSelectionChanged;
 
   final bool shrinkWrap;
@@ -250,7 +250,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
   final Map<String, bool> _expansionState = {};
   final TextEditingController _searchController = TextEditingController();
 
-  // מאוחסן בבנייה כדי להיות זמין בפונקציות ה-toggle
+  // מאוחסן בבנייה כדי להיות זמין בfunctions ה-toggle
   Library? _library;
   List<_ScopeNode> _rootNodes = const [];
   Map<String, _ScopeNode> _nodesByFacet = const {};
@@ -273,9 +273,9 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
 
   void _toggleAll(bool select) {
     if (select) {
-      widget.onSelectionChanged({'/'}); // הכל נבחר
+      widget.onSelectionChanged({'/'}); // הכל selected
     } else {
-      widget.onSelectionChanged({}); // שום דבר לא נבחר
+      widget.onSelectionChanged({}); // שום דבר no selected
     }
   }
 
@@ -284,7 +284,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
     final newSelection = Set<String>.from(widget.selectedFacets);
 
     if (select) {
-      // בחירה: הסר הורים שמכסים אותה, הסר ילדים כפולים, הוסף
+      // בחירה: הסר parents שמכסים אותה, הסר children כפולים, Add
       newSelection.remove('/');
       for (final facet in newSelection.toList()) {
         if (category.path.startsWith('$facet/')) {
@@ -293,22 +293,22 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
       }
       _removeDescendants(category, newSelection);
       newSelection.add(category.path);
-      // דחיסה: אם כל אחי הקטגוריה נבחרו - אחד להורה
+      // דחיסה: אם כל אחי הcategory selectedו - אחד לparentה
       widget.onSelectionChanged(_consolidate(newSelection, _library!));
     } else {
-      // ביטול בחירה:
+      // cancel בחירה:
       if (newSelection.contains(category.path)) {
-        // נבחרה ישירות - פשוט הסר
+        // selectedה ישירות - פשוט הסר
         newSelection.remove(category.path);
       } else {
-        // מכוסה ע"י הורה (כולל "/") - "פוצץ" את ההורה
+        // מכוסה ע"י parentה (כולל "/") - "פוצץ" את הparentה
         _explodeExcluding(category, newSelection, _library!);
       }
       widget.onSelectionChanged(newSelection);
     }
   }
 
-  /// דחיסת הבחירה - אם כל ילדי הורה נבחרו, אחד אותם להורה (רקורסיבי עד שורש)
+  /// דחיסת הבחירה - אם כל childי parentה selectedו, אחד אותם לparentה (רקורסיבי עד שורש)
   Set<String> _consolidate(Set<String> selection, Library library) {
     if (selection.contains('/')) return selection;
     final result = Set<String>.from(selection);
@@ -321,7 +321,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
     return result;
   }
 
-  /// מנסה לדחוס קטגוריה ומחזיר true אם היא מכוסה לחלוטין
+  /// מנסה לדחוס category ומחזיר true אם היא מכוסה לחלוטין
   bool _doConsolidate(Category category, Set<String> selection) {
     if (selection.contains(category.path)) return true;
     for (final facet in selection) {
@@ -348,40 +348,40 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
     }
   }
 
-  /// "פיצוץ" הורה: הסר את ה-facet המכסה והוסף את כל האחים,
-  /// תוך ירידה רקורסיבית לאורך הנתיב לקטגוריה המובלטת.
+  /// "פיצוץ" parentה: הסר את ה-facet המכסה וAdd את כל האחים,
+  /// תוך ירידה רקורסיבית noורך הpath לcategory המובלטת.
   ///
-  /// [excluded] - הקטגוריה שרוצים לבטל
-  /// [selection] - הבחירה הנוכחית (תשתנה in-place)
-  /// [parent] - ה-Category הנוכחית שמעובדת (מתחיל מ-Library)
+  /// [excluded] - הcategory שרוצים לבטל
+  /// [selection] - הבחירה הcurrent (תשתנה in-place)
+  /// [parent] - ה-Category הcurrent שמעובדת (מתחיל מ-Library)
   void _explodeExcluding(
     Category excluded,
     Set<String> selection,
     Category parent,
   ) {
-    // מצא את ה-facet המכסה ברמה הנוכחית
+    // מצא את ה-facet המכסה ברמה הcurrent
     final coveringFacet = parent is Library ? '/' : parent.path;
 
     // הסר את ה-facet המכסה
     selection.remove(coveringFacet);
 
-    // עבור על כל ילדי ההורה
+    // עבור על כל childי הparentה
     for (final child in parent.subCategories) {
       if (child.path == excluded.path) {
-        // זה הילד שרוצים להוציא - דלג עליו
+        // זה הchild שרוצים להוציא - דלג עליו
         continue;
       }
       if (excluded.path.startsWith('${child.path}/')) {
-        // ילד זה הוא עצמו הורה של excluded - רדת רקורסיבית
+        // child זה הוא עצמו parentה של excluded - רדת רקורסיבית
         _explodeExcluding(excluded, selection, child);
       } else {
-        // ילד רגיל - הוסף אותו
+        // child רגיל - Add אותו
         selection.add(child.path);
       }
     }
   }
 
-  /// הסר את כל הצאצאים של קטגוריה מהבחירה
+  /// הסר את כל הצאצאים של category מהבחירה
   void _removeDescendants(Category category, Set<String> selection) {
     for (final sub in category.subCategories) {
       selection.remove(sub.path);
@@ -393,18 +393,18 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
 
   /// מחזיר true/false/null (tristate) לצ'קבוקס
   bool? _getCategoryCheckState(Category category) {
-    // "/" נבחר = הכל מסומן
+    // "/" selected = הכל מסומן
     if (_isAllSelected) return true;
 
-    // נבחרה ישירות
+    // selectedה ישירות
     if (widget.selectedFacets.contains(category.path)) return true;
 
-    // הורה נבחר = מסומן
+    // parentה selected = מסומן
     for (final facet in widget.selectedFacets) {
       if (facet != '/' && category.path.startsWith('$facet/')) return true;
     }
 
-    // יש צאצא שנבחר = חלקי
+    // יש צאצא שselected = חלקי
     if (_hasSelectedDescendant(category)) return null;
 
     return false;
@@ -493,7 +493,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
         ),
         const SizedBox(width: 8),
         Text(
-          'חיפוש בקטגוריות',
+          'search בcategories',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -536,7 +536,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
     return RtlTextField(
       controller: _searchController,
       decoration: InputDecoration(
-        hintText: 'איתור קטגוריה או ספר...',
+        hintText: 'איתור category או book...',
         prefixIcon: const Icon(FluentIcons.search_24_regular),
         suffixIcon: _searchController.text.isEmpty
             ? null
@@ -574,7 +574,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
     if (results.isEmpty) {
       return Center(
         child: Text(
-          'לא נמצאו קטגוריות או ספרים תואמים.',
+          'no נמצאו categories או books תואמים.',
           style: TextStyle(color: colorScheme.onSurfaceVariant),
           textDirection: TextDirection.rtl,
         ),
@@ -589,7 +589,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
             children: [
               Expanded(
                 child: Text(
-                  'נמצאו ${results.length} תוצאות',
+                  'נמצאו ${results.length} results',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -1042,13 +1042,13 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
                   onChanged: (value) => _toggleCategory(
                     category,
                     // tristate: null → true → false → true
-                    // כשהמצב הנוכחי true/null → ביטול; false → בחירה
+                    // כשהמצב הcurrent true/null → cancel; false → בחירה
                     checkState != false ? false : true,
                   ),
                 ),
               ),
               const SizedBox(width: 4),
-              // אייקון תיקייה (לחיץ להרחבה)
+              // אייקון folder (לחיץ להרחבה)
               InkWell(
                 onTap: hasChildren
                     ? () => setState(() {
@@ -1067,7 +1067,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
                 ),
               ),
               const SizedBox(width: 8),
-              // שם הקטגוריה (לחיץ להרחבה)
+              // name הcategory (לחיץ להרחבה)
               Expanded(
                 child: InkWell(
                   onTap: hasChildren
@@ -1110,7 +1110,7 @@ class _CategoryTreeSelectorState extends State<CategoryTreeSelector> {
             ],
           ),
         ),
-        // ילדים
+        // children
         if (isExpanded && hasChildren)
           Column(
             mainAxisSize: MainAxisSize.min,

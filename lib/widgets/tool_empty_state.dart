@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 
-/// מצב ריק סטנדרטי למסכי כלים.
+/// מצב empty סטנדרטי למסכי Tools.
 class ToolEmptyState extends StatelessWidget {
   final IconData icon;
   final String message;

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 /// Widget גנרי לניהול ניווט מקלדת
 /// תומך ב-Ctrl+Tab / Ctrl+Shift+Tab למעבר בין טאבים
-/// ומאפשר ניווט עם חיצים ו-Tab בתוך תוכן הטאב
+/// ומאפשר ניווט עם חיצים ו-Tab בתוך content הטאב
 class KeyboardNavigator extends StatelessWidget {
   final Widget child;
   final int currentTabIndex;
@@ -39,7 +39,7 @@ class KeyboardNavigator extends StatelessWidget {
           return KeyEventResult.handled;
         }
 
-        // Backspace - חזרה (רק אם אין TextField ממוקד)
+        // Backspace - חזרה (רק אם אין TextField מfocus)
         if (event.logicalKey == LogicalKeyboardKey.backspace && onBack != null) {
           final focusedWidget =
               FocusManager.instance.primaryFocus?.context?.widget;
@@ -49,7 +49,7 @@ class KeyboardNavigator extends StatelessWidget {
           }
         }
 
-        // Ctrl + Tab - טאב הבא
+        // Ctrl + Tab - טאב next
         if (event.logicalKey == LogicalKeyboardKey.tab &&
             HardwareKeyboard.instance.isControlPressed &&
             !HardwareKeyboard.instance.isShiftPressed) {
@@ -58,7 +58,7 @@ class KeyboardNavigator extends StatelessWidget {
           return KeyEventResult.handled;
         }
 
-        // Ctrl + Shift + Tab - טאב קודם
+        // Ctrl + Shift + Tab - טאב previous
         if (event.logicalKey == LogicalKeyboardKey.tab &&
             HardwareKeyboard.instance.isControlPressed &&
             HardwareKeyboard.instance.isShiftPressed) {

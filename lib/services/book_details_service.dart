@@ -4,19 +4,19 @@ import 'package:otzaria/data/data_providers/sqlite_data_provider.dart';
 import 'package:otzaria/migration/core/models/book.dart' as migration_models;
 import 'package:otzaria/models/books.dart';
 
-/// שירות מרכזי להפקת פרטי ספר לתצוגה/דיווח מתוך DB.
+/// שירות מרכזי להפקת private book לתצוגה/דיווח מתוך DB.
 class BookDetailsService {
-  static const String bookNotFoundText = 'לא ניתן למצוא את הספר';
+  static const String bookNotFoundText = 'no ניתן למצוא את הbook';
   static const String _customFolderSourcePrefix = 'Personal::';
 
-  /// מחזיר פרטי ספר בפורמט אחיד:
-  /// - שם הקובץ
-  /// - נתיב הקובץ
+  /// מחזיר private book בפורמט אחיד:
+  /// - name הfile
+  /// - path הfile
   /// - תיקיית המקור
   Future<Map<String, String>> getBookDetails(Book book) async {
     final details = <String, String>{
-      'שם הקובץ': bookNotFoundText,
-      'נתיב הקובץ': bookNotFoundText,
+      'name הfile': bookNotFoundText,
+      'path הfile': bookNotFoundText,
       'תיקיית המקור': bookNotFoundText,
     };
 
@@ -38,10 +38,10 @@ class BookDetailsService {
     );
 
     if (inferredName != null && inferredName.isNotEmpty) {
-      details['שם הקובץ'] = inferredName;
+      details['name הfile'] = inferredName;
     }
     if (resolvedPath != null && resolvedPath.isNotEmpty) {
-      details['נתיב הקובץ'] = resolvedPath;
+      details['path הfile'] = resolvedPath;
     }
     if (dbSource != null && dbSource.isNotEmpty) {
       details['תיקיית המקור'] = dbSource;
@@ -129,10 +129,10 @@ class BookDetailsService {
       if (_isAbsolutePath(pathWithExt)) {
         return pathWithExt;
       }
-      if (pathWithExt.startsWith('אוצריא/')) {
+      if (pathWithExt.startsWith('Otzaria/')) {
         return pathWithExt;
       }
-      return 'אוצריא/$pathWithExt';
+      return 'Otzaria/$pathWithExt';
     }
 
     if (inferredFileName == null || inferredFileName.isEmpty) {
@@ -144,7 +144,7 @@ class BookDetailsService {
       return inferredFileName;
     }
 
-    return 'אוצריא/$normalizedCategory/$inferredFileName';
+    return 'Otzaria/$normalizedCategory/$inferredFileName';
   }
 
   String? _normalizeSeparators(String? path) {

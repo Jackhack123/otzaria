@@ -2,24 +2,24 @@
 //
 // Barrel export לכל דיאלוגי האפליקציה.
 //
-// ─── דיאלוגי אישור/ביטול ─────────────────────────────────────────────────────
+// ─── דיאלוגי confirm/cancel ─────────────────────────────────────────────────────
 // [ConfirmationDialog] / [showConfirmationDialog]     → confirmation_dialog.dart
-//   שימוש: דיאלוג עם [isDangerous], [confirmColor], הדגשת פוקוס.
+//   שימוש: דיאלוג עם [isDangerous], [confirmColor], הדגשת focus.
 //
 // [SingleActionDialog] / [showSingleActionDialog]     → dialogs/app_dialogs.dart
 // [TwoActionsDialog]   / [showTwoActionsDialog]       → dialogs/app_dialogs.dart
 // [WarningDialog]      / [showWarningDialog]          → dialogs/app_dialogs.dart
-//   שימוש: דיאלוגים M3 FilledButton לפעולות כלליות.
+//   שימוש: דיאלוגים M3 FilledButton לactions generalות.
 //
 // ─── דיאלוגי קלט ─────────────────────────────────────────────────────────────
 // [InputDialog] / [showInputDialog]                   → input_dialog.dart
 //
-// ─── דיאלוגי הגדרות ──────────────────────────────────────────────────────────
+// ─── דיאלוגי settings ──────────────────────────────────────────────────────────
 // [GenericSettingsDialog]                             → generic_settings_dialog.dart
 //
 // ─── דיאלוגי בחירה ───────────────────────────────────────────────────────────
 // [SelectionDialog]                                   → selection_dialog.dart
-// ─── מיכל כללי ───────────────────────────────────────────────────────────────
+// ─── מיכל general ───────────────────────────────────────────────────────────────
 // [ReusableItemsDialog]                               → reusable_items_dialog.dart
 
 export '../confirmation_dialog.dart';

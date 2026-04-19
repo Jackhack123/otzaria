@@ -77,13 +77,13 @@ class DatabaseGenerator {
       // Set maximum performance mode for bulk generation
       await repository.setMaxPerformanceMode();
 
-      // Process hierarchy - expect sourceDirectory to be the parent folder containing "אוצריא"
-      final libraryPath = path.join(sourceDirectory, 'אוצריא');
+      // Process hierarchy - expect sourceDirectory to be the parent folder containing "Otzaria"
+      final libraryPath = path.join(sourceDirectory, 'Otzaria');
 
       final libraryDir = Directory(libraryPath);
       if (!await libraryDir.exists()) {
         throw StateError(
-            'התיקייה "אוצריא" לא נמצאה בתיקייה שנבחרה. נא לבחור את תיקיית האב של אוצריא.');
+            'הfolder "Otzaria" no נמצאה בfolder שselectedה. נא לselected את תיקיית האב של Otzaria.');
       }
 
       _libraryRoot = libraryPath;
@@ -311,20 +311,20 @@ class DatabaseGenerator {
         onProgress?.call(
             _processedBooksCount /
                 (_totalBooksToProcess > 0 ? _totalBooksToProcess : 1),
-            'עודכן ספר: $title ($pct%)');
+            'עודyes book: $title ($pct%)');
         // The book was updated; no need to fall through to the duplicate-skip
         // or delete-and-re-insert logic.
         return;
       }
 
-      // קביעת מזהה לספר: שלילי אם אישי או קובץ שאינו txt, אחרת רגיל
+      // קביעת מזהה לbook: שלילי אם אישי או file שאינו txt, אחרת רגיל
       int currentBookId = await repository.getNextNegativeBookId();
 
-      // Detect companion notes file named 'הערות על <title>.txt' in the same directory
+      // Detect companion notes file named 'notes על <title>.txt' in the same directory
       String? notesContent;
       try {
         final dir = Directory(path.dirname(bookPath));
-        final notesTitle = 'הערות על $title';
+        final notesTitle = 'notes על $title';
         final candidate = path.join(dir.path, '$notesTitle.txt');
         final candidateFile = File(candidate);
         if (await candidateFile.exists()) {
@@ -393,7 +393,7 @@ class DatabaseGenerator {
       onProgress?.call(
           _processedBooksCount /
               (_totalBooksToProcess > 0 ? _totalBooksToProcess : 1),
-          'מעבד ספר: $title ($pct%)');
+          'מעבד book: $title ($pct%)');
 
       // NOTE: Original files are never deleted. The DB is the single source of truth
       // but original files are always preserved on disk.

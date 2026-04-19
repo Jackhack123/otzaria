@@ -4,19 +4,19 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:otzaria/core/app_paths.dart';
 
-/// מחלקה לניהול הגדרות פר-ספר
+/// class לניהול settings פר-book
 class PerBookSettings {
   static const String _settingsFolderName = 'per_book_settings';
   static bool _migrationAttempted = false;
 
-  /// קבלת נתיב תיקיית ההגדרות
+  /// קבלת path תיקיית הsettings
   /// נשמרת תחת שורש הנתונים האחיד של האפליקציה.
   static Future<Directory> _getSettingsDirectory() async {
     final settingsDir = Directory(await AppPaths.getPerBookSettingsPath());
     if (!await settingsDir.exists()) {
       await settingsDir.create(recursive: true);
     }
-    // מיגרציה לאחור: העברת הגדרות שנשמרו בעבר בתיקיית Documents
+    // מיגרציה noחור: העברת settings שנשמרו בעבר בתיקיית Documents
     if (!_migrationAttempted) {
       _migrationAttempted = true;
       await _migrateFromDocuments(settingsDir);
@@ -24,7 +24,7 @@ class PerBookSettings {
     return settingsDir;
   }
 
-  /// העברת קבצי הגדרות מתיקיית Documents לתיקיית Application Support
+  /// העברת קבצי settings מתיקיית Documents לתיקיית Application Support
   static Future<void> _migrateFromDocuments(Directory newDir) async {
     try {
       final oldAppDir = await getApplicationDocumentsDirectory();
@@ -50,13 +50,13 @@ class PerBookSettings {
         try {
           await file.rename(destPath);
         } catch (_) {
-          // אם rename נכשל (למשל בין כוננים), נעתיק ואז נמחק
+          // אם rename נכשל (למשל בין כוננים), נעתיק ואז נDelete
           await file.copy(destPath);
           await file.delete();
         }
       }
 
-      // אם לא נשארו קבצי JSON - נמחק את התיקייה הישנה
+      // אם no נשארו קבצי JSON - נDelete את הfolder היyear
       final hasJson = await oldDir
           .list()
           .where((entity) => entity is File)
@@ -72,22 +72,22 @@ class PerBookSettings {
     }
   }
 
-  /// יצירת שם קובץ בטוח מתוך שם ספר
+  /// יצירת name file בטוח מתוך name book
   static String _sanitizeBookName(String bookName) {
-    // הסרת תווים לא חוקיים משם הקובץ
+    // הסרת תווים no חוקיים מname הfile
     return bookName
         .replaceAll(RegExp(r'[<>:"/\\|?*]'), '_')
         .replaceAll(' ', '_');
   }
 
-  /// קבלת נתיב קובץ הגדרות לספר
+  /// קבלת path file settings לbook
   static Future<File> _getSettingsFile(String bookName) async {
     final dir = await _getSettingsDirectory();
     final sanitizedName = _sanitizeBookName(bookName);
     return File('${dir.path}/settings_$sanitizedName.json');
   }
 
-  /// שמירת הגדרות לספר
+  /// save settings לbook
   static Future<void> saveSettings(
     String bookName,
     Map<String, dynamic> settings,
@@ -105,7 +105,7 @@ class PerBookSettings {
     }
   }
 
-  /// טעינת הגדרות של ספר
+  /// טעינת settings של book
   static Future<Map<String, dynamic>?> loadSettings(String bookName) async {
     try {
       final file = await _getSettingsFile(bookName);
@@ -125,7 +125,7 @@ class PerBookSettings {
     }
   }
 
-  /// מחיקת הגדרות של ספר
+  /// מחיקת settings של book
   static Future<void> deleteSettings(String bookName) async {
     try {
       final file = await _getSettingsFile(bookName);
@@ -138,7 +138,7 @@ class PerBookSettings {
     }
   }
 
-  /// מחיקת כל קבצי ההגדרות
+  /// מחיקת כל קבצי הsettings
   static Future<void> deleteAllSettings() async {
     try {
       final dir = await _getSettingsDirectory();
@@ -151,7 +151,7 @@ class PerBookSettings {
     }
   }
 
-  /// קבלת רשימת כל הספרים עם הגדרות
+  /// קבלת רשימת כל הbooks עם settings
   static Future<List<String>> getAllBooksWithSettings() async {
     try {
       final dir = await _getSettingsDirectory();
@@ -175,7 +175,7 @@ class PerBookSettings {
     }
   }
 
-  /// ניקוי קבצי הגדרות שהפכו למיותרים (זהים לברירת המחדל)
+  /// ניקוי קבצי settings שהפכו למיותרים (זהים לברירת המחדל)
   static Future<void> cleanupRedundantSettings({
     required double defaultFontSize,
     required bool defaultRemoveNikud,
@@ -197,7 +197,7 @@ class PerBookSettings {
           final json =
               jsonDecode(await file.readAsString()) as Map<String, dynamic>;
 
-          // בדיקה אם כל ההגדרות זהות לברירת המחדל
+          // check אם כל הsettings זהות לברירת המחדל
           final fontSize = json['fontSize'] as double?;
           final commentatorsBelow = json['commentatorsBelow'] as bool?;
           final removeNikud = json['removeNikud'] as bool?;
@@ -234,7 +234,7 @@ class PerBookSettings {
   }
 }
 
-/// הגדרות פר-ספר לספרי טקסט
+/// settings פר-book לbookי text
 class TextBookPerBookSettings {
   final double? fontSize;
   final bool? commentatorsBelow; // true = מתחת, false = בצד
@@ -264,19 +264,19 @@ class TextBookPerBookSettings {
     );
   }
 
-  /// שמירת הגדרות
+  /// save settings
   Future<void> save(String bookName) async {
     await PerBookSettings.saveSettings(bookName, toJson());
   }
 
-  /// טעינת הגדרות
+  /// טעינת settings
   static Future<TextBookPerBookSettings?> load(String bookName) async {
     final json = await PerBookSettings.loadSettings(bookName);
     if (json == null) return null;
     return TextBookPerBookSettings.fromJson(json);
   }
 
-  /// מחיקת הגדרות
+  /// מחיקת settings
   static Future<void> delete(String bookName) async {
     await PerBookSettings.deleteSettings(bookName);
   }
@@ -285,10 +285,10 @@ class TextBookPerBookSettings {
 /// מצב תצוגת PDF
 enum PdfLayoutMode {
   regularView, // תצוגה רגילה
-  bookView, // תצוגת ספר
+  bookView, // תצוגת book
 }
 
-/// הגדרות פר-ספר לספרי PDF
+/// settings פר-book לbookי PDF
 class PdfBookPerBookSettings {
   static final Map<String, Future<void>> _pendingWrites = {};
 
@@ -334,7 +334,7 @@ class PdfBookPerBookSettings {
     );
   }
 
-  /// שמירת הגדרות
+  /// save settings
   Future<void> save(String bookName) async {
     final previousWrite = _pendingWrites[bookName] ?? Future.value();
     final currentWrite = previousWrite.then((_) async {
@@ -360,14 +360,14 @@ class PdfBookPerBookSettings {
     }
   }
 
-  /// טעינת הגדרות
+  /// טעינת settings
   static Future<PdfBookPerBookSettings?> load(String bookName) async {
     final json = await PerBookSettings.loadSettings(bookName);
     if (json == null) return null;
     return PdfBookPerBookSettings.fromJson(json);
   }
 
-  /// מחיקת הגדרות
+  /// מחיקת settings
   static Future<void> delete(String bookName) async {
     final previousWrite = _pendingWrites[bookName] ?? Future.value();
     final deleteWrite = previousWrite.then((_) async {

@@ -47,7 +47,7 @@ class _InlineNoteEditorState extends State<InlineNoteEditor> {
   final ScrollController _scrollController = ScrollController();
   final PersonalNoteDraftService _draftService = PersonalNoteDraftService();
   Timer? _draftSaveTimer;
-  bool _isDone = false; // מונע שמירת טיוטה אחרי שמירה/ביטול
+  bool _isDone = false; // מונע save טיוטה אחרי save/cancel
 
   @override
   void initState() {
@@ -60,8 +60,8 @@ class _InlineNoteEditorState extends State<InlineNoteEditor> {
           ? widget.initialFormat
           : (widget.note?.contentFormat ?? PersonalNoteContentFormat.plain),
     );
-    // _initialResult מייצג את המצב ה"נקי" לפני עריכה — לא תוכן הטיוטה.
-    // כך _persistDraft לא ימחק את הטיוטה כשה-Quill מפעיל notifyListeners בהתחלה.
+    // _initialResult מייצג את המצב ה"נקי" לפני עריכה — no content הטיוטה.
+    // כך _persistDraft no יDelete את הטיוטה כשה-Quill מפעיל notifyListeners בstart.
     final originalController = buildPersonalNoteEditorController(
       initialContent: widget.note?.content ?? '',
       initialFormat:
@@ -83,14 +83,14 @@ class _InlineNoteEditorState extends State<InlineNoteEditor> {
   }
 
   Future<void> _handleSave() async {
-    // במצב מוגן, נדרוש סיסמה לפני שמירה
+    // במצב מוגן, נדרוש סיסמה לפני save
     if (!await verifyPasswordForAction(context) || !mounted) {
       return;
     }
 
     final result = _controller.buildResult();
     if (result.contentPlain.trim().isEmpty) {
-      UiSnack.showError('ההערה ריקה, לא נשמרה');
+      UiSnack.showError('הnote emptyה, no נשמרה');
       return;
     }
     _isDone = true;
@@ -176,12 +176,12 @@ class _InlineNoteEditorState extends State<InlineNoteEditor> {
           children: [
             TextButton(
               onPressed: _handleCancel,
-              child: const Text('ביטול'),
+              child: const Text('cancel'),
             ),
             const SizedBox(width: 8),
             FilledButton(
               onPressed: _handleSave,
-              child: const Text('שמור'),
+              child: const Text('Save'),
             ),
           ],
         ),

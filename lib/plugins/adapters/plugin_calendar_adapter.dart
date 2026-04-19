@@ -8,7 +8,7 @@ import 'package:otzaria/tools/calendar/ulits/calendar_cubit.dart';
 ///
 /// ממיר records מסוג `calendar.event` שפורסמו על-ידי תוספים
 /// (פורמט ה-spec: title, startsAt, source?, importance?, scope?, workspaceId?, bookId?)
-/// ל-[CustomEvent] פנימי של אוצריא.
+/// ל-[CustomEvent] פנימי של Otzaria.
 ///
 /// ### scope semantics (spec §published-data):
 /// | scope               | מה זה אומר                     |
@@ -23,8 +23,8 @@ class PluginCalendarAdapter {
 
   /// טוען records מסוג calendar.event ומאחד עם [existingEvents].
   ///
-  /// [currentWorkspaceId] — מזהה ה-workspace הנוכחי (אופציונלי, לסינון workspace-scope)
-  /// [currentBookId]      — מזהה הספר הנוכחי (אופציונלי, לסינון book-scope)
+  /// [currentWorkspaceId] — מזהה ה-workspace הcurrent (אופציונלי, לסינון workspace-scope)
+  /// [currentBookId]      — מזהה הbook הcurrent (אופציונלי, לסינון book-scope)
   Future<List<CustomEvent>> loadAndMergePluginEvents(
     List<CustomEvent> existingEvents, {
     String? currentWorkspaceId,
@@ -85,7 +85,7 @@ class PluginCalendarAdapter {
       return currentBookId != null && currentBookId == bookId;
     }
 
-    // scope לא מוכר — בטח לא להציג
+    // scope no מוכר — בטח no להציג
     return false;
   }
 
@@ -114,7 +114,7 @@ class PluginCalendarAdapter {
         ? '$source ($importance)'
         : source;
 
-    // המרה לתאריך עברי
+    // המרה לdate עברי
     final jwDate = JewishDate.fromDateTime(startsAt);
 
     return CustomEvent(

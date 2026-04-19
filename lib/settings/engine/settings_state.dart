@@ -6,13 +6,13 @@ class SettingsState extends Equatable {
   final bool followSystemTheme;
   final Color seedColor;
   final Color darkSeedColor;
-  final double textMaxWidth; // רוחב מקסימלי לטקסט בפיקסלים (0 = ללא הגבלה)
+  final double textMaxWidth; // רוחב מקסימלי לtext בפיקסלים (0 = לno הגבלה)
   final double fontSize;
   final String fontFamily;
   final String commentatorsFontFamily;
   final double commentatorsFontSize;
   final double
-      lineHeight; // מרווח בין שורות (1.0 = רגיל, 1.5 = מרווח וחצי, וכו')
+      lineHeight; // מרווח בין lines (1.0 = רגיל, 1.5 = מרווח וחצי, וכו')
   final bool showOtzarHachochma;
   final bool showHebrewBooks;
   final bool showExternalBooks;
@@ -92,7 +92,7 @@ class SettingsState extends Equatable {
       seedColor: Color(0xFF2C1B02),
       darkSeedColor: Color(0xFFCE93D8), // סגול בהיר למצב כהה
       textMaxWidth:
-          -1, // רוחב מקסימלי לטקסט (-1 = רמה 1 = 95% כברירת מחדל, 0 = ללא הגבלה)
+          -1, // רוחב מקסימלי לtext (-1 = רמה 1 = 95% כברירת מחדל, 0 = לno הגבלה)
       fontSize: 16,
       fontFamily: 'FrankRuhlCLM',
       commentatorsFontFamily: 'NotoRashiHebrew',

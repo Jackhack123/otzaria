@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
 
-/// מיפוי מרכזי בין שמות מקשים (מחרוזות) ל-[LogicalKeyboardKey].
+/// מיפוי מרכזי בין names מקשים (מחרוזות) ל-[LogicalKeyboardKey].
 ///
 /// משמש כמקור-האמת היחיד לכל ה-utils העוסקים בקיצורי מקשים:
-/// - [ShortcutHelper.matchesShortcut] – ניתוח מחרוזת קיצור והשוואה לאירוע
-/// - [ShortcutHelper.getKeyLabel]     – LogicalKeyboardKey → שם מחרוזת
+/// - [ShortcutHelper.matchesShortcut] – ניתוח מחרוזת קיצור והשוואה noירוע
+/// - [ShortcutHelper.getKeyLabel]     – LogicalKeyboardKey → name מחרוזת
 /// - [ShortcutHelper.formatKeysToShortcut] – Set של LogicalKeyboardKey → מחרוזת
 ///
 /// **הרחבה:** להוסיף מקש חדש יש לרשום אותו **כאן בלבד** –
@@ -13,9 +13,9 @@ class KeyMap {
   KeyMap._();
 
   // ─── אותיות (א׳–ת׳ / a–z) ──────────────────────────────────────────────────
-  // אותיות מטופלות בנפרד ב-ShortcutHelper לפי key.keyLabel, לא דרך המפה הזו.
+  // אותיות מטופלות בנפרד ב-ShortcutHelper לפי key.keyLabel, no דרך הmap הזו.
 
-  // ─── מקשי ספרות ──────────────────────────────────────────────────────────────
+  // ─── מקשי bookות ──────────────────────────────────────────────────────────────
   static const Map<String, LogicalKeyboardKey> nameToKey = {
     '0': LogicalKeyboardKey.digit0,
     '1': LogicalKeyboardKey.digit1,
@@ -75,17 +75,17 @@ class KeyMap {
     'f12': LogicalKeyboardKey.f12,
   };
 
-  /// מיפוי הפוך: [LogicalKeyboardKey] → שם מחרוזת.
-  /// נבנה אוטומטית מ-[nameToKey] – אין צורך לעדכן ידנית.
+  /// מיפוי הפוך: [LogicalKeyboardKey] → name מחרוזת.
+  /// נבנה אוטומטית מ-[nameToKey] – אין צורך לעדyes ידנית.
   static final Map<LogicalKeyboardKey, String> keyToName = {
     for (final e in nameToKey.entries) e.value: e.key,
   };
 
-  /// מחזיר את שם המחרוזת של [key], או `null` אם אינו ברשימה.
+  /// מחזיר את name המחרוזת של [key], או `null` אם אינו בlist.
   static String? labelFor(LogicalKeyboardKey key) => keyToName[key];
 
-  /// מחזיר את [LogicalKeyboardKey] המתאים לשם [name] (case-insensitive),
-  /// או `null` אם השם אינו מוכר.
+  /// מחזיר את [LogicalKeyboardKey] המתאים לname [name] (case-insensitive),
+  /// או `null` אם הname אינו מוכר.
   static LogicalKeyboardKey? keyFor(String name) =>
       nameToKey[name.toLowerCase()];
 }

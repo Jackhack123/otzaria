@@ -2,8 +2,8 @@
 //
 // ווידג'ט RtlIcon — אייקון RTL-מודע שמהפך חיצי ניווט אוטומטית.
 //
-// ⚠️ לא ניתן להשתמש ב-const Map<IconData,...> כי IconData לא מימש ==.
-//    מפות הנגד מוגדרות כ-static final.
+// ⚠️ no ניתן להשתמש ב-const Map<IconData,...> כי IconData no מימש ==.
+//    maps הנגד מוגדרות כ-static final.
 //
 // **שימוש:**
 //   RtlIcon(Icons.chevron_left)

@@ -1,28 +1,28 @@
 import 'package:otzaria/models/links.dart';
 
-/// עוזר לסנכרון מפרשים - מוצא את הקישור הטוב ביותר
+/// עוזר לסנכרון Commentators - מוצא את הקישור הטוב ביותר
 class CommentarySyncHelper {
-  /// בדיקה אם שורה היא כותרת (H1, H2, H3, H4...)
+  /// check אם line היא כותרת (H1, H2, H3, H4...)
   static bool isHeaderLine(String line) {
     final headerPattern = RegExp(r'^\s*<h[1-6]', caseSensitive: false);
     return headerPattern.hasMatch(line);
   }
 
-  /// מציאת האינדקס הלוגי (עם טיפול בכותרות)
-  /// אם השורה היא כותרת, מחזיר את השורה הבאה
+  /// מציאת the index הלוגי (עם טיפול בכותרות)
+  /// אם הline היא כותרת, מחזיר את הline nextה
   static int getLogicalIndex(int currentIndex, List<String> content) {
     if (currentIndex < 0 || currentIndex >= content.length) {
       return currentIndex;
     }
 
-    // אם השורה הנוכחית היא כותרת, נדלג לשורה הבאה
+    // אם הline הcurrent היא כותרת, נדלג לline nextה
     int logicalIndex = currentIndex;
     while (
         logicalIndex < content.length && isHeaderLine(content[logicalIndex])) {
       logicalIndex++;
     }
 
-    // אם הגענו לסוף הטקסט, נחזור לאינדקס המקורי
+    // אם הגענו לסוף הtext, נBack noינדקס המקורי
     if (logicalIndex >= content.length) {
       return currentIndex;
     }
@@ -30,7 +30,7 @@ class CommentarySyncHelper {
     return logicalIndex;
   }
 
-  /// מציאת הקישור הטוב ביותר למפרש
+  /// מציאת הקישור הטוב ביותר לcommentator
   /// מחזיר null אם אין קישורים כלל
   static Link? findBestLink({
     required List<Link> linksForCommentary,
@@ -51,7 +51,7 @@ class CommentarySyncHelper {
       // אין קישור מדויק - מחפשים את הקרוב ביותר
     }
 
-    // חיפוש L_before (הקישור הקודם הכי קרוב)
+    // search L_before (הקישור הprevious הכי קרוב)
     Link? lBefore;
     int minDistanceBefore = double.maxFinite.toInt();
 
@@ -65,12 +65,12 @@ class CommentarySyncHelper {
       }
     }
 
-    // אם יש קישור קודם - תמיד מעדיפים אותו
+    // אם יש קישור previous - תמיד מעדיפים אותו
     if (lBefore != null) {
       return lBefore;
     }
 
-    // אין קישור קודם - מחפשים L_after (הקישור הבא הכי קרוב)
+    // אין קישור previous - מחפשים L_after (הקישור next הכי קרוב)
     Link? lAfter;
     int minDistanceAfter = double.maxFinite.toInt();
 
@@ -84,10 +84,10 @@ class CommentarySyncHelper {
       }
     }
 
-    return lAfter; // יכול להיות null אם אין גם קישור הבא
+    return lAfter; // יכול להיות null אם אין גם קישור next
   }
 
-  /// חישוב האינדקס היעד במפרש
+  /// חישוב the index היעד בcommentator
   static int? getCommentaryTargetIndex(Link? link) {
     if (link == null) {
       return null;

@@ -6,7 +6,7 @@ String normalizeFindQuery(String rawQuery) {
   return normalizeFindText(SearchQueryBuilder.sanitizeQuery(rawQuery));
 }
 
-/// מנרמל טקסט לחיפוש בסגנון איתור.
+/// מנרמל text לsearch בסגנון איתור.
 String normalizeFindText(String rawText) {
   var cleaned = utils.removeVolwels(rawText);
   cleaned = cleaned.replaceAll('"', '').replaceAll("'", '');
@@ -15,7 +15,7 @@ String normalizeFindText(String rawText) {
   return cleaned.toLowerCase().replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
-/// מחזירה האם יש התאמה בין הטקסטים המנורמלים לבין שאילתת האיתור.
+/// מחזירה האם יש התאמה בין הtextים המנורמלים לבין שאילתת האיתור.
 bool findNormalizedTextMatches({
   required String normalizedQuery,
   required String normalizedPrimaryText,
@@ -44,7 +44,7 @@ int findNormalizedTextMatchRank({
   return 6;
 }
 
-/// מחזירה את סטיית האורך המינימלית בין השאילתה לבין הטקסטים המנורמלים.
+/// מחזירה את סטיית האורך המינימלית בין השאילתה לבין הtextים המנורמלים.
 int findNormalizedTextMatchLengthDelta({
   required String normalizedQuery,
   required String normalizedPrimaryText,

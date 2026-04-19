@@ -32,7 +32,7 @@ class CommentatorsFilterButton extends StatelessWidget {
                 .withValues(alpha: inactiveAlpha),
         size: iconSize,
       ),
-      tooltip: 'בחירת מפרשים',
+      tooltip: 'בחירת Commentators',
       padding: padding,
       constraints: constraints,
       onPressed: onPressed,

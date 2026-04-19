@@ -7,10 +7,10 @@ import 'package:logging/logging.dart';
 class ZipExtractorService {
   static final _log = Logger('ZipExtractorService');
 
-  /// בודק אם בתיקייה יש קובץ ZIP יחיד ומחלץ אותו
-  /// מחזיר את נתיב התיקייה שנוצרה או null אם לא היה צורך בחילוץ
+  /// בודק אם בfolder יש file ZIP יחיד ומחלץ אותו
+  /// מחזיר את path הfolder שcreatedה או null אם no היה צורך בחילוץ
   /// [onProgress] - callback להתקדמות (0.0 - 1.0)
-  /// [onAskDeleteZip] - callback לשאול את המשתמש אם למחוק את ה-ZIP (מחזיר `Future<bool>`)
+  /// [onAskDeleteZip] - callback לשאול את הuser אם לdeleted את ה-ZIP (מחזיר `Future<bool>`)
   static Future<ZipExtractionResult> checkAndExtractZipIfNeeded(
       String directoryPath,
       {Function(double progress, String message)? onProgress,
@@ -20,11 +20,11 @@ class ZipExtractorService {
       if (!directory.existsSync()) {
         return ZipExtractionResult(
           success: false,
-          errorMessage: 'התיקייה לא קיימת',
+          errorMessage: 'הfolder no קיימת',
         );
       }
 
-      // מציאת כל קבצי ה-ZIP בתיקייה
+      // מציאת כל קבצי ה-ZIP בfolder
       final zipFiles = <File>[];
       await for (final entity in directory.list()) {
         if (entity is File && entity.path.toLowerCase().endsWith('.zip')) {
@@ -40,12 +40,12 @@ class ZipExtractorService {
         );
       }
 
-      // אם יש יותר מקובץ ZIP אחד, נשאל את המשתמש
+      // אם יש יותר מfile ZIP אחד, נשאל את הuser
       if (zipFiles.length > 1) {
         return ZipExtractionResult(
           success: false,
           errorMessage:
-              'נמצאו ${zipFiles.length} קבצים דחוסים. אנא השאר רק קובץ דחוס אחד בתיקייה.',
+              'נמצאו ${zipFiles.length} files דחוסים. אנא השאר רק file דחוס אחד בfolder.',
           multipleZipFiles: true,
           zipFiles: zipFiles.map((f) => path.basename(f.path)).toList(),
         );
@@ -54,38 +54,38 @@ class ZipExtractorService {
       final zipFile = zipFiles.first;
       final zipFileName = path.basename(zipFile.path);
 
-      _log.info('נמצא קובץ דחוס: $zipFileName');
-      _log.info('נתיב מלא: ${zipFile.path}');
+      _log.info('נמצא file דחוס: $zipFileName');
+      _log.info('path full: ${zipFile.path}');
       _log.info('תיקיית יעד: $directoryPath');
 
-      // חילוץ הקובץ באמצעות archive package
+      // חילוץ הfile באמצעות archive package
       try {
-        // בדיקת גודל הקובץ
+        // בדיקת גודל הfile
         final fileSize = await zipFile.length();
         final fileSizeMB = (fileSize / 1024 / 1024).toStringAsFixed(1);
-        _log.info('גודל קובץ ZIP: $fileSize bytes ($fileSizeMB MB)');
+        _log.info('גודל file ZIP: $fileSize bytes ($fileSizeMB MB)');
 
         onProgress?.call(0.1, 'מתחיל חילוץ ($fileSizeMB MB)...');
 
-        // שימוש ב-extractFileToDisk - פונקציה אופטימלית שמטפלת ב-streaming אוטומטית
-        // זה מונע טעינת כל הקובץ לזיכרון ומתאים לקבצים גדולים
-        _log.info('משתמש ב-extractFileToDisk לחילוץ אופטימלי');
+        // שימוש ב-extractFileToDisk - function אופטימלית שמטפלת ב-streaming אוטומטית
+        // זה מונע טעינת כל הfile לזיכרון ומתאים לfiles largeים
+        _log.info('user ב-extractFileToDisk לחילוץ אופטימלי');
 
         try {
           await extractFileToDisk(zipFile.path, directoryPath);
-          _log.info('החילוץ הושלם בהצלחה');
+          _log.info('החילוץ הושלם בsuccess');
           onProgress?.call(0.95, 'משלים חילוץ...');
         } catch (e) {
-          _log.severe('שגיאה בחילוץ עם extractFileToDisk, מנסה שיטה חלופית', e);
-          // אם נכשל, ננסה את השיטה הישנה
-          onProgress?.call(0.1, 'קורא קובץ דחוס ($fileSizeMB MB)...');
+          _log.severe('error בחילוץ עם extractFileToDisk, מנסה שיטה חלופית', e);
+          // אם נכשל, ננסה את השיטה היyear
+          onProgress?.call(0.1, 'קורא file דחוס ($fileSizeMB MB)...');
           final bytes = await zipFile.readAsBytes();
-          _log.info('קובץ ZIP נקרא, גודל: ${bytes.length} bytes');
+          _log.info('file ZIP נקרא, גודל: ${bytes.length} bytes');
 
           onProgress?.call(0.15, 'מפענח ארכיון ($fileSizeMB MB)...');
           await Future.delayed(const Duration(milliseconds: 100));
           final archive = ZipDecoder().decodeBytes(bytes);
-          _log.info('ארכיון פוענח, ${archive.length} קבצים');
+          _log.info('ארכיון פוענח, ${archive.length} files');
 
           // חילוץ ידני
           await _extractArchiveManually(
@@ -96,20 +96,20 @@ class ZipExtractorService {
         }
 
         onProgress?.call(0.95, 'משלים חילוץ...');
-        _log.info('החילוץ הושלם בהצלחה');
+        _log.info('החילוץ הושלם בsuccess');
       } catch (extractError, extractStackTrace) {
-        _log.severe('שגיאה בפעולת החילוץ', extractError, extractStackTrace);
+        _log.severe('error בפעולת החילוץ', extractError, extractStackTrace);
         return ZipExtractionResult(
           success: false,
-          errorMessage: 'שגיאה בחילוץ הקובץ: ${extractError.toString()}',
+          errorMessage: 'error בחילוץ הfile: ${extractError.toString()}',
         );
       }
 
-      // מחיקת קובץ ה-ZIP המקורי
+      // מחיקת file ה-ZIP המקורי
       try {
         onProgress?.call(0.98, 'משלים...');
 
-        // שאלת המשתמש אם למחוק
+        // שאלת הuser אם לdeleted
         bool shouldDelete = true;
         if (onAskDeleteZip != null) {
           shouldDelete = await onAskDeleteZip();
@@ -117,13 +117,13 @@ class ZipExtractorService {
 
         if (shouldDelete) {
           await zipFile.delete();
-          _log.info('קובץ ה-ZIP המקורי נמחק');
+          _log.info('file ה-ZIP המקורי נDelete');
         } else {
-          _log.info('המשתמש בחר לשמור את קובץ ה-ZIP');
+          _log.info('הuser בחר לSave את file ה-ZIP');
         }
       } catch (deleteError) {
-        _log.warning('לא ניתן למחוק את קובץ ה-ZIP המקורי: $deleteError');
-        // לא נכשיל את כל הפעולה בגלל זה
+        _log.warning('no ניתן לdeleted את file ה-ZIP המקורי: $deleteError');
+        // no נכשיל את כל הaction בגלל זה
       }
 
       onProgress?.call(1.0, 'החילוץ הושלם!');
@@ -135,15 +135,15 @@ class ZipExtractorService {
         extractionPath: directoryPath,
       );
     } catch (e, stackTrace) {
-      _log.severe('שגיאה בחילוץ קובץ ZIP', e, stackTrace);
+      _log.severe('error בחילוץ file ZIP', e, stackTrace);
       return ZipExtractionResult(
         success: false,
-        errorMessage: 'שגיאה בחילוץ הקובץ: ${e.toString()}',
+        errorMessage: 'error בחילוץ הfile: ${e.toString()}',
       );
     }
   }
 
-  /// בודק אם קובץ הוא קובץ ZIP
+  /// בודק אם file הוא file ZIP
   static bool isZipFile(String filePath) {
     final extension = path.extension(filePath).toLowerCase();
     return extension == '.zip';
@@ -155,7 +155,7 @@ class ZipExtractorService {
     String directoryPath,
     Function(double progress, String message)? onProgress,
   ) async {
-    onProgress?.call(0.2, 'מתכונן לחילוץ ${archive.length} קבצים...');
+    onProgress?.call(0.2, 'מתכונן לחילוץ ${archive.length} files...');
     await Future.delayed(const Duration(milliseconds: 100));
 
     final totalFiles = archive.length;
@@ -181,13 +181,13 @@ class ZipExtractorService {
         final data = file.content as List<int>;
         final outputFile = File(path.join(directoryPath, filename));
 
-        // יצירת תיקיות אם צריך
+        // יצירת folders אם צריך
         await outputFile.parent.create(recursive: true);
 
-        // כתיבת הקובץ עם חיווי התקדמות
+        // כתיבת הfile עם חיווי התקדמות
         final fileSize = data.length;
         if (fileSize > 1024 * 1024) {
-          // קובץ גדול מ-1MB - נכתוב בחלקים
+          // file large מ-1MB - נכתוב בחלקים
           final sink = outputFile.openWrite();
           const chunkSize = 1024 * 1024; // 1MB chunks
           var written = 0;
@@ -201,7 +201,7 @@ class ZipExtractorService {
             written = end;
             processedBytes += chunkWritten;
 
-            // עדכון התקדמות
+            // update התקדמות
             final bytesProgress =
                 totalBytes > 0 ? processedBytes / totalBytes : 0.0;
             final filesProgress =
@@ -218,12 +218,12 @@ class ZipExtractorService {
 
           await sink.close();
         } else {
-          // קובץ קטן - נכתוב בבת אחת
+          // file small - נכתוב בבת אחת
           await outputFile.writeAsBytes(data);
           processedBytes += fileSize;
         }
       } else {
-        // יצירת תיקייה
+        // יצירת folder
         final dir = Directory(path.join(directoryPath, filename));
         await dir.create(recursive: true);
       }
@@ -233,7 +233,7 @@ class ZipExtractorService {
         final progress = 0.25 + (0.65 * extractedFiles / totalFiles);
         onProgress?.call(
           progress,
-          'מחלץ קבצים... ($extractedFiles מתוך $totalFiles)',
+          'מחלץ files... ($extractedFiles מתוך $totalFiles)',
         );
       }
     }
@@ -260,9 +260,9 @@ class ZipExtractionResult {
     this.zipFiles,
   });
 
-  /// האם הפעולה הצליחה והקובץ חולץ
+  /// האם הaction הצליחה והfile חולץ
   bool get successfullyExtracted => success && wasExtracted;
 
-  /// האם הפעולה הצליחה אבל לא היה צורך בחילוץ
+  /// האם הaction הצליחה אבל no היה צורך בחילוץ
   bool get noExtractionNeeded => success && !wasExtracted;
 }

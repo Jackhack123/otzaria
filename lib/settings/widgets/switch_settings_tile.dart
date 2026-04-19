@@ -7,7 +7,7 @@
 // **שימוש:**
 // ```dart
 // SwitchSettingsTile(
-//   title: const Text('הפעל מצב חסוך'),
+//   title: const Text('Enable מצב חסוך'),
 //   value: state.safeModeEnabled,
 //   onChanged: (v) => context.read<Bloc>().add(SetSafeMode(v)),
 // )
@@ -21,7 +21,7 @@ import 'package:flutter/services.dart';
 /// [Switch] תואם M3 — thumb/track/overlay מוגדרים לפי:
 /// https://m3.material.io/components/switch/specs
 ///
-/// תיקון hover במצב כהה: ברירת המחדל של Flutter משתמשת ב-primary חזק מדי.
+/// תיקון hover במצב כהה: ברירת המחדל של Flutter userת ב-primary חזק מדי.
 /// overlayColor מינימלי — 8% שקיפות דינמי לפי מצב המתג.
 class CustomSwitch extends StatelessWidget {
   final bool value;
@@ -77,9 +77,9 @@ class CustomSwitch extends StatelessWidget {
 
 // ── SwitchSettingsTile ────────────────────────────────────────────────────────
 
-/// [ListTile] עם [CustomSwitch] — עקבי עם כל שורות on/off בהגדרות.
+/// [ListTile] עם [CustomSwitch] — עקבי עם כל lines on/off בsettings.
 ///
-/// tap על ה-ListTile כולו מחליף את הערך (נגישות מלאה).
+/// tap על ה-ListTile כולו מחליף את הvalue (נגישות fullה).
 class SwitchSettingsTile extends StatefulWidget {
   final Widget? leading;
   final Widget title;

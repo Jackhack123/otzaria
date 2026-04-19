@@ -1,8 +1,8 @@
 import 'package:otzaria/plugins/models/plugin_context_menu_item.dart';
 
-/// Singleton לניהול פריטי תפריט הקשר שנרשמו על ידי פלאגינים.
+/// Singleton לניהול פריטי תפריט הקשר שנרשמו על ידי פnoגינים.
 ///
-/// פלאגינים רושמים פריטים בעת boot ומסירים אותם בעת unload.
+/// פnoגינים רושמים פריטים בעת boot ומסירים אותם בעת unload.
 /// ה-registry הוא in-memory — אין פרסיסטנציה.
 class ContextMenuRegistry {
   static final ContextMenuRegistry instance = ContextMenuRegistry._();
@@ -11,8 +11,8 @@ class ContextMenuRegistry {
   // pluginId → list of items
   final Map<String, List<PluginContextMenuItem>> _items = {};
 
-  /// רישום פריט תפריט עבור פלאגין.
-  /// אם פריט עם אותו id כבר קיים לאותו פלאגין, הוא יוחלף.
+  /// רישום פריט תפריט עבור פnoגין.
+  /// אם פריט עם אותו id כבר קיים noותו פnoגין, הוא יוחלף.
   void register(String pluginId, PluginContextMenuItem item) {
     final list = _items.putIfAbsent(pluginId, () => []);
     final idx = list.indexWhere((e) => e.id == item.id);
@@ -23,12 +23,12 @@ class ContextMenuRegistry {
     }
   }
 
-  /// הסרת פריט תפריט לפי id עבור פלאגין מסוים.
+  /// הסרת פריט תפריט לפי id עבור פnoגין מסוים.
   void remove(String pluginId, String itemId) {
     _items[pluginId]?.removeWhere((e) => e.id == itemId);
   }
 
-  /// הסרת כל פריטי התפריט של פלאגין מסוים.
+  /// הסרת כל פריטי התפריט של פnoגין מסוים.
   void removeAll(String pluginId) {
     _items.remove(pluginId);
   }

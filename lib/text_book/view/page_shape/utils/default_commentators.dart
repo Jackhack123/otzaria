@@ -9,32 +9,32 @@ import 'package:otzaria/utils/text_manipulation.dart'
     show normalizeCategoryPath;
 import 'package:otzaria/data/data_providers/file_system_data_provider.dart';
 
-/// מחלקה לניהול ברירות מחדל של מפרשים לפי סוג הספר
-/// ההגדרות נטענות מקובץ JSON חיצוני
+/// class לניהול ברירות מחדל של Commentators לפי סוג הbook
+/// הsettings נטענות מfile JSON חיצוני
 class DefaultCommentators {
-  // Cache לקובץ ה-JSON
+  // Cache לfile ה-JSON
   static Map<String, dynamic>? _configCache;
 
-  /// מחזיר מפרשי ברירת מחדל לפי קטגוריית הספר
-  /// מקבל גם את רשימת הקישורים כדי למצוא את השמות המלאים של המפרשים
+  /// מחזיר commentatorי ברירת מחדל לפי קטגוריית הbook
+  /// מקבל גם את רשימת הקישורים כדי למצוא את הnames הfullים של הCommentators
   static Future<Map<String, String?>> getDefaults(TextBook book,
       {List<Link>? links, List<String>? availableCommentators}) async {
     final config = await _loadConfig();
 
-    // קבלת נתיב הספר
+    // קבלת path הbook
     final titleToPath = await FileSystemData.instance.titleToPath;
     var bookPath = titleToPath[book.title] ?? '';
 
-    // נסיון לקבלת נתיב מתוך אובייקט הספר (עבור ספרים ממסד הנתונים)
+    // נסיון לקבלת path מתוך אובייקט הbook (עבור books ממסד הנתונים)
     if (bookPath.isEmpty) {
       bookPath = book.category?.path ?? book.categoryPath ?? '';
     }
     bookPath = normalizeCategoryPath(bookPath);
 
-    // קבלת שמות המפרשים מה-JSON
+    // קבלת names הCommentators מה-JSON
     final defaults = _getDefaultsFromConfig(config, book.title, bookPath);
 
-    // אם יש links, נחפש את השמות המלאים של המפרשים
+    // אם יש links, נחפש את הnames הfullים של הCommentators
     if (availableCommentators != null && availableCommentators.isNotEmpty) {
       return _resolveCommentatorNamesFromAvailable(
           defaults, availableCommentators);
@@ -47,10 +47,10 @@ class DefaultCommentators {
     return defaults;
   }
 
-  /// מחפש את השמות המלאים של המפרשים מתוך רשימת הקישורים
+  /// מחפש את הnames הfullים של הCommentators מתוך רשימת הקישורים
   static Map<String, String?> _resolveCommentatorNames(
       Map<String, String?> defaults, List<Link> links) {
-    // קבלת רשימת שמות המפרשים הזמינים
+    // קבלת רשימת names הCommentators הזמינים
     final availableCommentators = links
         .where((link) => LinkTypes.isCommentaryOrTargum(link.connectionType))
         .map((link) => utils.getTitleFromPath(link.path2))
@@ -81,8 +81,8 @@ class DefaultCommentators {
     };
   }
 
-  /// מחפש מפרש שמתאים לשם הנתון
-  /// מחזיר את השם המלא אם נמצא, או null אם לא
+  /// מחפש commentator שמתאים לname הנתון
+  /// מחזיר את הname הfull אם נמצא, או null אם no
   static String? _findMatchingCommentator(
       String? shortName, List<String> available) {
     if (shortName == null) return null;
@@ -93,7 +93,7 @@ class DefaultCommentators {
       return match;
     }
 
-    // 2. התאמה של התחלה
+    // 2. התאמה של start
     match = available.firstWhereOrNull((name) => name.startsWith(shortName));
     if (match != null) {
       return match;
@@ -105,8 +105,8 @@ class DefaultCommentators {
       return match;
     }
 
-    // 4. התאמה הפוכה - אם השם בהגדרות הוא נתיב מלא והשם הזמין הוא רק הכותרת
-    // נבדוק אם השם בהגדרות מכיל את השם הזמין
+    // 4. התאמה הפוכה - אם הname בsettings הוא path full והname הזמין הוא רק הכותרת
+    // נבדוק אם הname בsettings מכיל את הname הזמין
     match = available.firstWhereOrNull((name) => shortName.contains(name));
     if (match != null) {
       return match;
@@ -155,7 +155,7 @@ class DefaultCommentators {
   }
 
   static bool _matchesCategory(String bookPath, Map<String, dynamic> category) {
-    // pathContains - כל המחרוזות חייבות להיות בנתיב (AND)
+    // pathContains - כל המחרוזות חייבות להיות בpath (AND)
     if (category.containsKey('pathContains')) {
       final pathContains = category['pathContains'] as List<dynamic>;
       if (!pathContains.every((p) => bookPath.contains(p as String))) {
@@ -163,7 +163,7 @@ class DefaultCommentators {
       }
     }
 
-    // pathContainsAny - לפחות מחרוזת אחת חייבת להיות בנתיב (OR)
+    // pathContainsAny - לפחות מחרוזת אחת חייבת להיות בpath (OR)
     if (category.containsKey('pathContainsAny')) {
       final pathContainsAny = category['pathContainsAny'] as List<dynamic>;
       if (!pathContainsAny.any((p) => bookPath.contains(p as String))) {
@@ -171,7 +171,7 @@ class DefaultCommentators {
       }
     }
 
-    // pathNotContains - אף מחרוזת לא יכולה להיות בנתיב
+    // pathNotContains - אף מחרוזת no יכולה להיות בpath
     if (category.containsKey('pathNotContains')) {
       final pathNotContains = category['pathNotContains'] as List<dynamic>;
       if (pathNotContains.any((p) => bookPath.contains(p as String))) {

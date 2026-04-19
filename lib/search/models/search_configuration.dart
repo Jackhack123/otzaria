@@ -1,31 +1,31 @@
 import 'package:search_engine/search_engine.dart';
 
-/// מצבי החיפוש השונים
+/// מצבי הsearch השונים
 enum SearchMode {
-  advanced, // חיפוש מתקדם (slop/word-distance)
-  exact, // חיפוש מדוייק
-  fuzzy, // חיפוש מקורב (slop/word-distance)
-  levenshtein, // מצב ישן לתאימות לאחור בלבד
+  advanced, // search מתקדם (slop/word-distance)
+  exact, // search מדוייק
+  fuzzy, // search מקורב (slop/word-distance)
+  levenshtein, // מצב ישן לתאימות noחור בלבד
 }
 
-/// מחלקה שמרכזת את כל הגדרות החיפוש במקום אחד
-/// כוללת הגדרות קיימות והגדרות עתידיות לרגקס
+/// class שמרכזת את כל settings הsearch במקום אחד
+/// כוללת settings קיימות וsettings עתידיות לרגקס
 class SearchConfiguration {
-  // הגדרות חיפוש קיימות
+  // settings search קיימות
   final int distance;
   final SearchMode searchMode;
   final ResultsOrder sortBy;
   final int numResults;
   final List<String> currentFacets;
 
-  /// טווח החיפוש המקורי שנקבע בדיאלוג (לא משתנה ע"י לחיצה בעץ התוצאות)
+  /// טווח הsearch המקורי שנקבע בדיאלוג (no variable ע"י tap בעץ הresults)
   /// משמש לספירת facets ולבאנר חיווי
   final List<String> searchScopeFacets;
 
-  /// תיקון שגיאות כתיב הוא כעת אפשרות בתוך החיפוש המתקדם.
+  /// תיקון errors כתיב הוא כעת אפשרות בתוך הsearch המתקדם.
   final bool typoToleranceEnabled;
 
-  // הגדרות רגקס עתידיות (מוכנות להרחבה)
+  // settings רגקס עתידיות (מוכנות להרחבה)
   final bool regexEnabled;
   final bool caseSensitive;
   final bool multiline;
@@ -81,7 +81,7 @@ class SearchConfiguration {
     );
   }
 
-  /// המרה למפה לשמירה או העברה
+  /// המרה לmap לsave או העברה
   Map<String, dynamic> toMap() {
     return {
       'distance': distance,
@@ -99,7 +99,7 @@ class SearchConfiguration {
     };
   }
 
-  /// יצירה ממפה
+  /// יצירה מmap
   factory SearchConfiguration.fromMap(Map<String, dynamic> map) {
     final rawSearchMode = SearchMode.values[map['searchMode'] ?? 0];
     final normalizedSearchMode = rawSearchMode == SearchMode.levenshtein
@@ -124,7 +124,7 @@ class SearchConfiguration {
     );
   }
 
-  /// בדיקה אם החיפוש במצב רגקס
+  /// check אם הsearch במצב רגקס
   bool get isRegexMode => regexEnabled;
 
   /// קבלת דגלי רגקס כמחרוזת (לשימוש עתידי)
@@ -137,7 +137,7 @@ class SearchConfiguration {
     return flags;
   }
 
-  // Getters לתאימות לאחור
+  // Getters לתאימות noחור
   bool get fuzzy => searchMode == SearchMode.fuzzy;
   bool get isAdvancedSearchEnabled =>
       searchMode == SearchMode.advanced || searchMode == SearchMode.levenshtein;

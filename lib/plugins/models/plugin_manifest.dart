@@ -28,7 +28,7 @@ class PluginManifest {
   final String? toolTabIconVariant;
   final List<String> publishedDataTypes;
 
-  /// מקורות מסד נתונים שהתוסף מצהיר עליהם (מהשדה contributes.databaseSources)
+  /// מקורות מסד נתונים שהתוסף מצהיר עליהם (מהfield contributes.databaseSources)
   final List<Map<String, dynamic>> databaseSources;
 
   PluginManifest({

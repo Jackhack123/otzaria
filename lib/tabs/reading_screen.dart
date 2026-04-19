@@ -122,7 +122,7 @@ class _ReadingScreenState extends State<ReadingScreen>
         ),
         BlocListener<TabsBloc, TabsState>(
           listener: (context, state) {
-            // כשסוגרים את הטאב האחרון, עוברים למסך הספרייה
+            // כשסוגרים את הטאב האחרון, עוברים למסך the library
             if (!state.hasOpenTabs) {
               context.read<NavigationBloc>().add(
                     const NavigateToScreen(Screen.library),
@@ -146,7 +146,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                         const Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Text(
-                            'לא נבחרו ספרים',
+                            'no selectedו books',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -159,7 +159,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                                   );
                             },
                             icon: const Icon(FluentIcons.library_24_regular),
-                            label: const Text('דפדף בספרייה'),
+                            label: const Text('דפpage בlibrary'),
                           ),
                         ),
                       ],
@@ -190,7 +190,7 @@ class _ReadingScreenState extends State<ReadingScreen>
 
   Widget _buildTabView(OpenedTab tab) {
     if (tab is CombinedTab) {
-      // הצגת שני הספרים זה לצד זה
+      // הצגת שני הbooks זה לצד זה
       return _buildCombinedTabView(tab);
     } else if (tab is PdfBookTab) {
       return PdfBookScreen(
@@ -252,7 +252,7 @@ class _ReadingScreenState extends State<ReadingScreen>
   }
 }
 
-// Widget להצגת 2 ספרים זה לצד זה
+// Widget להצגת 2 books זה לצד זה
 class _SideBySideViewWidget extends StatefulWidget {
   final OpenedTab rightTab;
   final OpenedTab leftTab;
@@ -285,7 +285,7 @@ class _SideBySideViewWidgetState extends State<_SideBySideViewWidget> {
   @override
   void didUpdateWidget(_SideBySideViewWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // עדכון היחס אם השתנה (למשל, אחרי החלפת צדדים)
+    // update היחס אם השתנה (למשל, אחרי החלפת צדדים)
     if (widget.initialSplitRatio != oldWidget.initialSplitRatio) {
       setState(() {
         _splitRatio = widget.initialSplitRatio;
@@ -306,7 +306,7 @@ class _SideBySideViewWidgetState extends State<_SideBySideViewWidget> {
           children: [
             Row(
               children: [
-                // ספר ימני (בגלל RTL, זה יופיע בצד ימין)
+                // book ימני (בגלל RTL, זה יופיע בצד ימין)
                 SizedBox(
                   width: rightWidth,
                   child: widget.buildTabView(widget.rightTab),
@@ -323,7 +323,7 @@ class _SideBySideViewWidgetState extends State<_SideBySideViewWidget> {
                   },
                   onDragEnd: () => widget.onSplitRatioChanged(_splitRatio),
                 ),
-                // ספר שמאלי (בגלל RTL, זה יופיע בצד שמאל)
+                // book שמאלי (בגלל RTL, זה יופיע בצד שמאל)
                 SizedBox(
                   width: leftWidth - dividerWidth,
                   child: widget.buildTabView(widget.leftTab),

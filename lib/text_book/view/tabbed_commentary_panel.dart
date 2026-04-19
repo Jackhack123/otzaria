@@ -12,15 +12,15 @@ import 'package:otzaria/text_book/view/commentators_list_screen.dart';
 import 'package:otzaria/text_book/widgets/text_book_state_builder.dart';
 import 'package:otzaria/widgets/panel_tab_header.dart';
 
-/// Widget שמציג כרטיסיות עם מפרשים וקישורים בחלונית הצד
+/// Widget שמציג כרטיסיות עם Commentators וקישורים בחלונית הצד
 class TabbedCommentaryPanel extends StatefulWidget {
   final Function(OpenedTab) openBookCallback;
   final double fontSize;
   final bool showSearch;
   final VoidCallback? onClosePane;
   final int? initialTabIndex; // אינדקס הכרטיסייה הראשונית
-  final Function(int)? onTabChanged; // callback כשהטאב משתנה
-  final bool showSplitView; // האם במצב מפוצל (true) או מפרשים למטה (false)
+  final Function(int)? onTabChanged; // callback כשהטאב variable
+  final bool showSplitView; // האם במצב מפוצל (true) או Commentators למטה (false)
 
   const TabbedCommentaryPanel({
     super.key,
@@ -41,7 +41,7 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // פונקציה ציבורית לעבור לכרטיסיית הקישורים
+  // function ציבורית לעבור לכרטיסיית הקישורים
   void switchToLinksTab() {
     if (_tabController.index != 1) {
       _tabController.animateTo(1);
@@ -51,10 +51,10 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
   @override
   void initState() {
     super.initState();
-    // וידוא שהאינדקס ההתחלתי תקף (בין 0 ל-2)
+    // וידוא שthe index ההתחלתי תקף (בין 0 ל-2)
     final validInitialIndex = (widget.initialTabIndex ?? 0).clamp(0, 2);
     _tabController = TabController(
-      length: 3, // 3 טאבים: מפרשים, קישורים והערות אישיות
+      length: 3, // 3 טאבים: Commentators, קישורים וnotes אישיות
       vsync: this,
       initialIndex: validInitialIndex, // כרטיסייה ראשונית
     );
@@ -76,7 +76,7 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
     if (widget.initialTabIndex != null &&
         widget.initialTabIndex != oldWidget.initialTabIndex) {
       final validIndex = widget.initialTabIndex!.clamp(0, 2);
-      // וודא שהאינדקס שונה מהנוכחי לפני שמנסים לעבור אליו
+      // וודא שthe index שונה מהcurrent לפני שמנסים לעבור אליו
       if (_tabController.index != validIndex) {
         _tabController.animateTo(validIndex);
       }
@@ -104,10 +104,10 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
       builder: (context, state) {
         return Column(
           children: [
-            // שורת הכרטיסיות עם כפתור סגירה
+            // שורת הכרטיסיות עם button סגירה
             LayoutBuilder(
               builder: (context, constraints) {
-                // מתחת לסף זה - הצג אייקונים בלבד (ללא טקסט)
+                // מתחת לסף זה - הצג אייקונים בלבד (לno text)
                 final isCompact = constraints.maxWidth < 270;
                 final firstTabIcon = Icon(
                   widget.showSplitView
@@ -133,7 +133,7 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
                             icon: firstTabIcon,
                             iconMargin: const EdgeInsets.only(bottom: 2),
                             child: _tabLabel(
-                              widget.showSplitView ? 'מפרשים' : 'סינון מפרשים',
+                              widget.showSplitView ? 'Commentators' : 'סינון Commentators',
                             ),
                           ),
                           Tab(
@@ -146,18 +146,18 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
                             icon:
                                 const Icon(FluentIcons.note_24_regular, size: 18),
                             iconMargin: const EdgeInsets.only(bottom: 2),
-                            child: _tabLabel('הערות'),
+                            child: _tabLabel('notes'),
                           ),
                         ],
                 );
               },
             ),
-            // תוכן הכרטיסיות
+            // content הכרטיסיות
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  // כרטיסייה ראשונה: מפרשים (מצב מפוצל) או הגדרות מפרשים (מצב למטה)
+                  // כרטיסייה ראשונה: Commentators (מצב מפוצל) או settings Commentators (מצב למטה)
                   if (widget.showSplitView)
                     CommentaryListBase(
                       key: const ValueKey('commentary_list_tabbed'),
@@ -180,9 +180,9 @@ class _TabbedCommentaryPanelState extends State<TabbedCommentaryPanel>
                     openBookCallback: widget.openBookCallback,
                     fontSize: widget.fontSize,
                     showVisibleLinksIfNoSelection:
-                        widget.initialTabIndex == 1, // אם נפתח ישירות לקישורים
+                        widget.initialTabIndex == 1, // אם נOpen ישירות לקישורים
                   ),
-                  // כרטיסיית ההערות האישיות
+                  // כרטיסיית הnotes האישיות
                   PersonalNotesSidebar(
                     bookId: state.book.title,
                     categoryId: state.book.categoryId,

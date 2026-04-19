@@ -132,8 +132,8 @@ class _PluginTabPageState extends State<PluginTabPage> {
               context: context,
               title: title,
               content: content,
-              cancelText: 'ביטול',
-              confirmText: 'אישור',
+              cancelText: 'cancel',
+              confirmText: 'confirm',
             ) ==
             true;
       },
@@ -148,7 +148,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
               title: title,
               content: content,
               subtitle: subtitle,
-              cancelText: 'ביטול',
+              cancelText: 'cancel',
               confirmText: 'המשך',
             ) ==
             true;
@@ -183,7 +183,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
       await _ensurePackageInfo();
       final manifestFile = File(p.join(widget.plugin.resolvedRootPath, 'manifest.json'));
       if (!manifestFile.existsSync()) {
-        setState(() => _devErrorMessage = 'קובץ manifest.json חסר בתיקייה.');
+        setState(() => _devErrorMessage = 'file manifest.json חסר בfolder.');
         return;
       }
       final manifestStr = await manifestFile.readAsString();
@@ -199,7 +199,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
       );
       
       if (manifest.id != widget.plugin.pluginId) {
-        setState(() => _devErrorMessage = 'מזהה התוסף (id) השתנה.\nמצופה: ${widget.plugin.pluginId}\nנמצא: ${manifest.id}\nשינוי ID דורש התקנה מחדש.');
+        setState(() => _devErrorMessage = 'מזהה התוסף (id) השתנה.\nמצופה: ${widget.plugin.pluginId}\nנמצא: ${manifest.id}\nשינוי ID דורש התקנה again.');
         return;
       }
 
@@ -212,7 +212,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
       localHtmlPath = p.join(widget.plugin.resolvedRootPath, manifest.entrypoint);
       await webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri.uri(Uri.file(localHtmlPath))));
     } catch (e) {
-      if (mounted) setState(() => _devErrorMessage = 'שגיאה בלתי צפויה בריענון התוסף: $e');
+      if (mounted) setState(() => _devErrorMessage = 'error בלתי צפויה בריענון התוסף: $e');
     }
   }
 
@@ -234,7 +234,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
     if (!widget.plugin.enabled) {
       return Center(
         child: Text(
-          'התוסף כבוי על ידי המשתמש ולא ניתן להציגו.',
+          'התוסף כבוי על ידי הuser וno ניתן להציגו.',
           style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
       );
@@ -248,7 +248,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
     }
 
     if (_hasError) {
-      return Center(child: Text('שגיאה בטעינת הקובץ: $localHtmlPath'));
+      return Center(child: Text('error בטעינת הfile: $localHtmlPath'));
     }
 
     if (!File(localHtmlPath).existsSync()) {
@@ -279,7 +279,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
               .registerController(widget.plugin.pluginId, controller);
           _bridge.register(controller);
         } catch (e) {
-          // bridge.register נכשל — מנקים את ה-registration הלא שלם
+          // bridge.register נכשל — מנקים את ה-registration הno שלם
           PluginRuntimeDispatcher.instance
               .unregisterController(widget.plugin.pluginId);
           debugPrint('Plugin [${widget.plugin.pluginId}] WebView init error: $e');
@@ -442,7 +442,7 @@ class _PluginTabPageState extends State<PluginTabPage> {
               widget.plugin.pluginId, 'ERROR', 'Boot failed: $e');
           if (!mounted) return;
           if (widget.plugin.isDevelopment) {
-            setState(() => _devErrorMessage = 'שגיאה באתחול התוסף:\n$e');
+            setState(() => _devErrorMessage = 'error באתחול התוסף:\n$e');
           } else {
             setState(() => _hasError = true);
           }

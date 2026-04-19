@@ -1,5 +1,5 @@
 // פונקציית עזר גלובלית להמרת dynamic ל-bool
-// מניחה שערכים מסוג int הם 0 (false) או 1 (true)
+// מניחה שvalues מסוג int הם 0 (false) או 1 (true)
 bool safeBoolFromJson(dynamic jsonValue, [bool defaultValue = false]) {
   if (jsonValue == null) {
     return defaultValue;
@@ -15,8 +15,8 @@ bool safeBoolFromJson(dynamic jsonValue, [bool defaultValue = false]) {
     return jsonValue != 0;
   }
 
-  // טיפול כללי או החזרת ערך ברירת מחדל
+  // טיפול general או החזרת value ברירת מחדל
   return defaultValue;
 }
 
-// ניתן להוסיף כאן פונקציות עזר נוספות (למשל, המרת String בטוחה ל-int)
+// ניתן להוסיף כאן functions עזר נוספות (למשל, המרת String בטוחה ל-int)

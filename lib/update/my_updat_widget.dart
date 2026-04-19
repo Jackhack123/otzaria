@@ -11,22 +11,22 @@ import 'hebrew_updat_widgets.dart';
 import 'linux_installer.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 
-/// סוג ההתקנה המוגדר בזמן build (אופציונלי)
-/// להגדרה: --dart-define=INSTALL_KIND=exe/zip
+/// סוג ההתקנה המוגדר בtime build (אופציונלי)
+/// לsetting: --dart-define=INSTALL_KIND=exe/zip
 const _kInstallKind =
     String.fromEnvironment('INSTALL_KIND', defaultValue: 'auto');
 
-/// זיהוי סוג ההתקנה ב-Windows
-/// אם הוגדר INSTALL_KIND בזמן build - משתמש בו
-/// אחרת - מזהה לפי נתיב הקובץ
+/// identify סוג ההתקנה ב-Windows
+/// אם הוגדר INSTALL_KIND בtime build - user בו
+/// אחרת - מזהה לפי path הfile
 String _preferredWindowsFormat() {
   if (!Platform.isWindows) return 'unknown';
 
-  // אם הוגדר סוג התקנה בזמן build - משתמש בו
+  // אם הוגדר סוג התקנה בtime build - user בו
   if (_kInstallKind != 'auto') return _kInstallKind; // 'exe' | 'zip'
 
   try {
-    // זיהוי אוטומטי לפי נתיב הקובץ
+    // identify אוטומטי לפי path הfile
     final executablePath = Platform.resolvedExecutable.toLowerCase();
 
     if (executablePath.contains('\\program files\\') ||
@@ -36,12 +36,12 @@ String _preferredWindowsFormat() {
 
     return 'zip'; // גרסה ניידת/ידנית
   } catch (e) {
-    // במקרה של שגיאה, ברירת מחדל היא EXE
+    // במקרה של error, ברירת מחדל היא EXE
     return 'exe';
   }
 }
 
-/// עוטף את [hebrewFlatChip] ומבטל אוטומטית שגיאות עדכון לאחר השהיה קצרה.
+/// עוטף את [hebrewFlatChip] ומבטל אוטומטית errors update noחר השהיה shortה.
 Widget _hebrewFlatChipAutoHideError({
   required BuildContext context,
   required String? latestVersion,
@@ -142,10 +142,10 @@ class MyUpdatWidget extends StatelessWidget {
               final isDev = Settings.getValue<bool>('key-dev-channel') ?? false;
               final repo = isDev ? "Y-PLONI" : "sivan22";
 
-              // קבלת פרטי ה-release
+              // קבלת private ה-release
               dynamic release;
               if (isDev) {
-                // ערוץ dev - חיפוש לפי התחלת גרסה
+                // ערוץ dev - search לפי התחלת גרסה
                 final data = await http.get(Uri.parse(
                     "https://api.github.com/repos/$repo/otzaria/releases"));
                 final releases = jsonDecode(data.body) as List;
@@ -176,10 +176,10 @@ class MyUpdatWidget extends StatelessWidget {
 
               String? assetUrl;
 
-              // פונקציה לבחירת קובץ Windows לפי סדר עדיפות
-              // חשוב: לא לבחור קובץ -full.exe כי הוא מכיל את הספרייה המלאה
-              // ומיועד רק למשתמשים חדשים, לא לעדכונים
-              // allowZipFallback: האם לאפשר נפילה ל-ZIP אם לא נמצא התאמה
+              // function לבחירת file Windows לפי order עדיפות
+              // חשוב: no לselected file -full.exe כי הוא מכיל את the library הfullה
+              // ומיועד רק לusers חדשים, no לעדכונים
+              // allowZipFallback: האם noפשר נפילה ל-ZIP אם no נמצא התאמה
               String? pickWindows(List<String> extsInOrder,
                   {bool allowZipFallback = true}) {
                 String? foundZip;
@@ -191,7 +191,7 @@ class MyUpdatWidget extends StatelessWidget {
                       name.endsWith('.exe');
                   if (!isWin) continue;
 
-                  // דלג על קובץ full - מיועד להתקנה ראשונית בלבד
+                  // דלג על file full - מיועד להתקנה ראשונית בלבד
                   if (name.contains('-full.exe') ||
                       name.contains('_full.exe')) {
                     continue;
@@ -211,7 +211,7 @@ class MyUpdatWidget extends StatelessWidget {
               }
 
               if (platform == 'windows') {
-                // בחירת סדר עדיפות לפי סוג ההתקנה
+                // בחירת order עדיפות לפי סוג ההתקנה
                 final pref = _preferredWindowsFormat();
                 final order = switch (pref) {
                   'zip' => ['.zip', '.exe'],
@@ -219,7 +219,7 @@ class MyUpdatWidget extends StatelessWidget {
                 };
                 assetUrl = pickWindows(order, allowZipFallback: true);
               } else if (platform == 'macos') {
-                // macOS - חיפוש קובץ zip
+                // macOS - search file zip
                 for (final a in assets) {
                   final n = (a["name"] as String).toLowerCase();
                   if ((n.contains('macos') ||
@@ -282,10 +282,10 @@ class MyUpdatWidget extends StatelessWidget {
                 if (response.statusCode == 200) {
                   return response.body;
                 } else {
-                  return 'שגיאה בטעינת יומן השינויים.\nקוד שגיאה: ${response.statusCode}';
+                  return 'error בטעינת יומן השינויים.\nקוד error: ${response.statusCode}';
                 }
               } catch (e) {
-                return 'שגיאה בטעינת יומן השינויים: $e';
+                return 'error בטעינת יומן השינויים: $e';
               }
             },
             currentVersion: snapshot.data!.version,

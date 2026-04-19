@@ -1,15 +1,15 @@
 import 'dart:math' as math;
 import 'package:otzaria/search/utils/regex_patterns.dart';
 
-/// מחלקת שירות לריכוז לוגיקת בניית שאילתות החיפוש.
+/// מחלקת שירות לריכוז לוגיקת בניית שאילתות הsearch.
 ///
-/// מחלקה זו מאחדת את הלוגיקה המשותפת לבניית שאילתות חיפוש מתקדמות,
-/// הכוללת מילים חילופיות ואפשרויות חיפוש שונות.
-/// משמשת הן עבור חיפוש והן עבור ספירת תוצאות.
+/// class זו מאחדת את הלוגיקה המשותפת לבניית שאילתות search מתקדמות,
+/// הכוללת מילים חילופיות ואפשרויות search שונות.
+/// משמשת הן עבור search והן עבור ספירת results.
 class SearchQueryBuilder {
   SearchQueryBuilder._();
 
-  /// ניקוי שאילתה מתווים מיוחדים שיכולים להפריע לחיפוש
+  /// ניקוי שאילתה מתווים מיוחדים שיכולים להפריע לsearch
   /// מסירים גם פסיקים וגרשיים/גרש
   static String sanitizeQuery(String query) {
     return query
@@ -35,7 +35,7 @@ class SearchQueryBuilder {
     return maxSpacing;
   }
 
-  /// בונה query מתקדם עם מילים חילופיות ואפשרויות חיפוש
+  /// בונה query מתקדם עם מילים חילופיות ואפשרויות search
   static List<String> buildAdvancedQuery(
       List<String> words,
       Map<int, List<String>>? alternativeWords,
@@ -46,13 +46,13 @@ class SearchQueryBuilder {
       final word = words[i];
       final wordKey = '${word}_$i';
 
-      // קבלת אפשרויות החיפוש למילה הזו
+      // קבלת אפשרויות הsearch למילה הזו
       final wordOptions = searchOptions?[wordKey] ?? {};
       final hasPrefix = wordOptions['קידומות'] == true;
-      final hasSuffix = wordOptions['סיומות'] == true;
+      final hasSuffix = wordOptions['endת'] == true;
       final hasGrammaticalPrefixes = wordOptions['קידומות דקדוקיות'] == true;
-      final hasGrammaticalSuffixes = wordOptions['סיומות דקדוקיות'] == true;
-      final hasFullPartialSpelling = wordOptions['כתיב מלא/חסר'] == true;
+      final hasGrammaticalSuffixes = wordOptions['endת דקדוקיות'] == true;
+      final hasFullPartialSpelling = wordOptions['כתיב full/חסר'] == true;
       final hasPartialWord = wordOptions['חלק ממילה'] == true;
 
       // קבלת מילים חילופיות
@@ -64,7 +64,7 @@ class SearchQueryBuilder {
         allOptions.addAll(alternatives);
       }
 
-      // סינון אפשרויות ריקות
+      // סינון אפשרויות emptyות
       final validOptions =
           allOptions.where((w) => w.trim().isNotEmpty).toList();
 
@@ -73,7 +73,7 @@ class SearchQueryBuilder {
         final allVariations = <String>{};
 
         for (final option in validOptions) {
-          // השתמש בפונקציה המשולבת החדשה
+          // השתמש בfunction המשולבת החדשה
           final pattern = SearchRegexPatterns.createSearchPattern(
             option,
             hasPrefix: hasPrefix,
@@ -86,7 +86,7 @@ class SearchQueryBuilder {
           allVariations.add(pattern);
         }
 
-        // הגבלה על מספר הוריאציות הכולל למילה אחת
+        // הגבלה על מbook parentיאציות הכולל למילה אחת
         final limitedVariations = allVariations.length > 20
             ? allVariations.take(20).toList()
             : allVariations.toList();
@@ -106,7 +106,7 @@ class SearchQueryBuilder {
     return regexTerms;
   }
 
-  /// מכין את הפרמטרים לשאילתת חיפוש
+  /// מכין את הפרמטרים לשאילתת search
   static Map<String, dynamic> prepareQueryParams(
       String query,
       bool fuzzy,
@@ -114,7 +114,7 @@ class SearchQueryBuilder {
       Map<String, String>? customSpacing,
       Map<int, List<String>>? alternativeWords,
       Map<String, Map<String, bool>>? searchOptions) {
-    // ניקוי תווים מיוחדים שלא צריכים להיות בחיפוש
+    // ניקוי תווים מיוחדים שno צריכים להיות בsearch
     final cleanedQuery = sanitizeQuery(query);
 
     final words = cleanedQuery
@@ -123,7 +123,7 @@ class SearchQueryBuilder {
         .where((w) => w.isNotEmpty)
         .toList();
 
-    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות חיפוש
+    // check אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות search
     final hasCustomSpacing = customSpacing != null && customSpacing.isNotEmpty;
     final hasAlternativeWords =
         alternativeWords != null && alternativeWords.isNotEmpty;
@@ -132,23 +132,23 @@ class SearchQueryBuilder {
         searchOptions.values.any((wordOptions) =>
             wordOptions.values.any((isEnabled) => isEnabled == true));
 
-    // המרת החיפוש לפורמט המנוע החדש
+    // המרת הsearch לפורמט המנוע החדש
     final List<String> regexTerms;
     final int effectiveSlop;
 
     if (hasAlternativeWords || hasSearchOptions) {
-      // יש מילים חילופיות או אפשרויות חיפוש - נבנה queries מתקדמים
+      // יש מילים חילופיות או אפשרויות search - נבנה queries מתקדמים
       regexTerms = SearchQueryBuilder.buildAdvancedQuery(
           words, alternativeWords, searchOptions);
       effectiveSlop = hasCustomSpacing
           ? SearchQueryBuilder.getMaxCustomSpacing(customSpacing, words.length)
           : (fuzzy ? distance : 0);
     } else if (fuzzy) {
-      // חיפוש מקורב - נשתמש במילים בודדות
+      // search מקורב - נשתמש במילים בודדות
       regexTerms = words;
       effectiveSlop = distance;
     } else if (words.length == 1) {
-      // מילה אחת - חיפוש פשוט
+      // מילה אחת - search פשוט
       regexTerms = [query];
       effectiveSlop = 0;
     } else if (hasCustomSpacing) {
@@ -157,12 +157,12 @@ class SearchQueryBuilder {
       effectiveSlop =
           SearchQueryBuilder.getMaxCustomSpacing(customSpacing, words.length);
     } else {
-      // חיפוש מדוייק של כמה מילים - slop=0 כדי לאכוף סדר וצמידות
+      // search מדוייק של כמה מילים - slop=0 כדי noכוף order וצמידות
       regexTerms = words;
       effectiveSlop = 0;
     }
 
-    // חישוב maxExpansions בהתבסס על סוג החיפוש
+    // חישוב maxExpansions בהתבסס על סוג הsearch
     final int maxExpansions = SearchQueryBuilder.calculateMaxExpansions(
         fuzzy, regexTerms.length,
         searchOptions: searchOptions, words: words);
@@ -174,12 +174,12 @@ class SearchQueryBuilder {
     };
   }
 
-  /// מחשב את maxExpansions בהתבסס על סוג החיפוש
+  /// מחשב את maxExpansions בהתבסס על סוג הsearch
   static int calculateMaxExpansions(bool fuzzy, int termCount,
       {Map<String, Map<String, bool>>? searchOptions, List<String>? words}) {
-    // בדיקה אם יש חיפוש עם סיומות או קידומות ואיזה מילים
+    // check אם יש search עם endת או קידומות ואיזה מילים
     bool hasSuffixOrPrefix = false;
-    int shortestWordLength = 10; // ערך התחלתי גבוה
+    int shortestWordLength = 10; // value התחלתי גבוה
 
     if (searchOptions != null && words != null) {
       for (int i = 0; i < words.length; i++) {
@@ -187,10 +187,10 @@ class SearchQueryBuilder {
         final wordKey = '${word}_$i';
         final wordOptions = searchOptions[wordKey] ?? {};
 
-        if (wordOptions['סיומות'] == true ||
+        if (wordOptions['endת'] == true ||
             wordOptions['קידומות'] == true ||
             wordOptions['קידומות דקדוקיות'] == true ||
-            wordOptions['סיומות דקדוקיות'] == true ||
+            wordOptions['endת דקדוקיות'] == true ||
             wordOptions['חלק ממילה'] == true) {
           hasSuffixOrPrefix = true;
           shortestWordLength = math.min(shortestWordLength, word.length);
@@ -199,20 +199,20 @@ class SearchQueryBuilder {
     }
 
     if (fuzzy) {
-      return 50; // חיפוש מקורב
+      return 50; // search מקורב
     } else if (hasSuffixOrPrefix) {
-      // התאמת המגבלה לפי אורך המילה הקצרה ביותר עם אפשרויות מתקדמות
+      // התאמת המגבלה לפי אורך המילה הshortה ביותר עם אפשרויות מתקדמות
       if (shortestWordLength <= 1) {
         return 2000; // מילה של תו אחד - הגבלה קיצונית
       } else if (shortestWordLength <= 2) {
-        return 3000; // מילה של 2 תווים - הגבלה בינונית
+        return 3000; // מילה של 2 תווים - הגבלה mediumת
       } else if (shortestWordLength <= 3) {
         return 4000; // מילה של 3 תווים - הגבלה קלה
       } else {
-        return 5000; // מילה ארוכה - הגבלה מלאה
+        return 5000; // מילה ארוכה - הגבלה fullה
       }
     } else if (termCount > 1) {
-      return 100; // חיפוש של כמה מילים - צריך expansions גבוה יותר
+      return 100; // search של כמה מילים - צריך expansions גבוה יותר
     } else {
       return 10; // מילה אחת - expansions נמוך
     }

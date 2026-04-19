@@ -5,7 +5,7 @@ enum DirectErrorReportQueueType {
   automaticRetry,
 }
 
-/// מודל אחיד לדיווח טעות שנשלח ישירות לצוות אוצריא.
+/// מודל אחיד לדיווח טעות שנשלח ישירות לצוות Otzaria.
 class DirectErrorReport extends Equatable {
   final String id;
   final String senderEmail;

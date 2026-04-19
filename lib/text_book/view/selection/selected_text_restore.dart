@@ -1,7 +1,7 @@
 import 'package:otzaria/widgets/smart_text/render_settings.dart';
 import 'package:otzaria/widgets/smart_text/text_renderer_service.dart';
 
-/// מעבד שורת מקור לאותו טקסט פשוט שהמשתמש רואה בפועל במסך.
+/// מעבד שורת מקור noותו text פשוט שהuser רואה בפועל במסך.
 String renderSelectionLine({
   required String rawText,
   required RenderSettings settings,
@@ -10,7 +10,7 @@ String renderSelectionLine({
   return TextRendererService.stripHtml(processed);
 }
 
-/// משחזר מעברי שורה בטקסט שנבחר מ-SelectionArea כאשר Flutter מחזיר טקסט שטוח.
+/// משחזר מעברי line בtext שselected מ-SelectionArea כאשר Flutter מחזיר text שטוח.
 String restoreSelectedTextLineBreaks({
   required String selectedText,
   required List<String> visibleLines,

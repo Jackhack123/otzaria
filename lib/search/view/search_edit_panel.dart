@@ -13,8 +13,8 @@ import 'package:otzaria/tabs/models/searching_tab.dart';
 import 'package:otzaria/widgets/custom_ui_components.dart';
 import 'package:otzaria/widgets/rtl_text_field.dart';
 
-/// פאנל עריכת חיפוש - מופיע מתחת לשורת "מוצגות תוצאות של..."
-/// מאפשר עריכת החיפוש הנוכחי ללא יצירת כרטיסייה חדשה
+/// פאנל עריכת search - מופיע מתחת לשורת "מוצגות results של..."
+/// מאפשר עריכת הsearch הcurrent לno יצירת כרטיסייה חדשה
 class SearchEditPanel extends StatefulWidget {
   final SearchingTab tab;
   final VoidCallback onClose;
@@ -52,7 +52,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
     final query = widget.tab.queryController.text.trim();
 
     if (query.isEmpty) {
-      UiSnack.show('נא להזין טקסט לחיפוש');
+      UiSnack.show('נא להזין text לsearch');
       return;
     }
 
@@ -110,7 +110,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'מרווח כללי בין מילים:',
+          'מרווח general בין מילים:',
           style: TextStyle(
             fontSize: 14,
             color: onSurface.withValues(alpha: 0.7),
@@ -164,7 +164,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'בחר קטגוריות לחיפוש המעודכן',
+            'בחר categories לsearch הupdated',
             style: TextStyle(
               fontSize: 14,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -243,7 +243,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
-                    'מצב חיפוש:',
+                    'מצב search:',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -266,7 +266,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
                       controller: widget.tab.queryController,
                       focusNode: widget.tab.searchFieldFocusNode,
                       decoration: InputDecoration(
-                        hintText: 'הזן טקסט לחיפוש...',
+                        hintText: 'הזן text לsearch...',
                         border: const OutlineInputBorder(),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -289,7 +289,7 @@ class _SearchEditPanelState extends State<SearchEditPanel> {
                   ),
                   const SizedBox(width: 8),
                   NeutralActionButton(
-                    text: 'סגור',
+                    text: 'closed',
                     icon: FluentIcons.dismiss_24_regular,
                     onPressed: widget.onClose,
                   ),

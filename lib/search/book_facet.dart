@@ -39,7 +39,7 @@ class BookFacet {
       topics: topics,
     );
 
-    // בניית מפתח ייחודי לספר (אותה לוגיקה כמו IndexingRepository.catalogueOrderKey)
+    // בניית key ייoverrideי לbook (אותה לוגיקה כמו IndexingRepository.catalogueOrderKey)
     String bookKey;
     if (externalLibraryId != null && externalLibraryId.isNotEmpty) {
       bookKey = 'ext:$externalLibraryId';
@@ -141,7 +141,7 @@ class BookFacet {
     }
   }
 
-  /// מחזיר את הספר המתאים ביותר מתוך אוסף מועמדים עבור בניית facet.
+  /// מחזיר את הbook המתאים ביותר מתוך אוסף מועמדים עבור בניית facet.
   @visibleForTesting
   static Book? findMatchingBook(
     Iterable<Book> books, {

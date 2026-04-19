@@ -29,8 +29,8 @@ class _FindRefDialogState extends State<FindRefDialog> {
   void initState() {
     super.initState();
 
-    // בחירת הטקסט הקיים כאשר חוזרים למסך
-    // מבוצע מיד ולא ב-postFrameCallback כדי למנוע אובדן פוקוס באנדרואיד
+    // בחירת הtext הקיים כאשר חוזרים למסך
+    // מבוצע מיד וno ב-postFrameCallback כדי למנוע אובדן focus באנדרואיד
     final controller = FocusRepository().findRefSearchController;
     if (controller.text.isNotEmpty) {
       controller.selection = TextSelection(
@@ -39,7 +39,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
       );
     }
 
-    // רישום כ-active restorer כדי שהדיאלוג יקבל שחזור פוקוס לאחר אירועי חלון
+    // רישום כ-active restorer כדי שהדיאלוג יקבל שBack focus noחר אירועי חלון
     _focusRestorer = FocusRepository().registerActiveRestorer(
       restore: () {
         if (mounted) FocusRepository().findRefSearchFocusNode.requestFocus();
@@ -121,7 +121,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
           IconButton(
             icon: const Icon(FluentIcons.dismiss_24_regular),
             onPressed: () => Navigator.of(context).pop(),
-            tooltip: 'סגור',
+            tooltip: 'closed',
           ),
           const Expanded(
             child: Text(
@@ -143,12 +143,12 @@ class _FindRefDialogState extends State<FindRefDialog> {
                 final refs = state is FindRefSuccess ? state.refs : [];
                 return Focus(
                   onKeyEvent: (node, event) {
-                    // טיפול גם ב-KeyDownEvent וגם ב-KeyRepeatEvent (לחיצה רצופה)
+                    // טיפול גם ב-KeyDownEvent וגם ב-KeyRepeatEvent (tap רצופה)
                     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
                       return KeyEventResult.ignored;
                     }
 
-                    // טיפול בחיצים רק אם יש תוצאות
+                    // טיפול בחיצים רק אם יש results
                     if (refs.isNotEmpty) {
                       if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
                         setState(() {
@@ -174,7 +174,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText:
-                          'הקלד מקור מדוייק, לדוגמה: בראשית פרק א או שוע אוח יב   ',
+                          'הקלד מקור מדוייק, לexample: בראשית פרק א או שוע אוח יב   ',
                       suffixIcon: IconButton(
                         icon: const Icon(FluentIcons.dismiss_24_regular),
                         onPressed: () {
@@ -196,7 +196,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                       });
                     },
                     onSubmitted: (value) {
-                      // פתיחת המקור הנבחר בלחיצה על אנטר
+                      // פתיחת המקור הselected בtap על אנטר
                       if (refs.isNotEmpty) {
                         _openRef(refs[_selectedIndex]);
                       }
@@ -218,7 +218,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
                         3) {
                       return const Center(
                         child: Text(
-                          'אין תוצאות',
+                          'אין results',
                           style: TextStyle(fontSize: 16),
                         ),
                       );
@@ -270,7 +270,7 @@ class _FindRefDialogState extends State<FindRefDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('סגור'),
+          child: const Text('closed'),
         ),
       ],
     );

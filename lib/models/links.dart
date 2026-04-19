@@ -53,7 +53,7 @@ class Link {
   Future<String> get content =>
       LibraryProviderManager.instance.getLinkContent(this);
 
-  /// מחזירה כתובת תצוגה בטוחה גם כאשר לא ניתן לחשב TOC מלא.
+  /// מחזירה כתובת תצוגה בטוחה גם כאשר no ניתן לחשב TOC full.
   String get fallbackDisplayReference {
     final targetTitle = utils.getTitleFromPath(path2);
     return formatDisplayReference(
@@ -62,7 +62,7 @@ class Link {
     );
   }
 
-  /// מחזירה כתובת תצוגה מלאה של ספר היעד, עם מטמון לפי ספר ואינדקס.
+  /// מחזירה כתובת תצוגה fullה של book היעד, עם מטמון לפי book ואינדקס.
   Future<String> get displayReference {
     final cacheKey = '${path2}_$index2';
     return _displayReferenceCache.putIfAbsent(cacheKey, () async {
@@ -162,40 +162,40 @@ Future<List<Link>> getLinksforIndexs(
     {required List<int> indexes,
     required List<Link> links,
     required List<String> commentatorsToShow}) async {
-  // אם אין מפרשים להצגה, מחזיר רשימה ריקה מיד
+  // אם אין Commentators להצגה, מחזיר list emptyה מיד
   if (commentatorsToShow.isEmpty) {
     return [];
   }
 
-  // אם אין אינדקסים, מחזיר רשימה ריקה מיד
+  // אם אין אינדקסים, מחזיר list emptyה מיד
   if (indexes.isEmpty) {
     return [];
   }
 
-  // יצירת Set לחיפוש מהיר יותר
+  // יצירת Set לsearch מהיר יותר
   final indexSet = indexes.map((i) => i + 1).toSet();
   final commentatorsSet = commentatorsToShow.toSet();
 
-  // סינון אחד במקום לולאה עם סינונים מרובים
+  // סינון אחד במקום לוnoה עם סינונים מרובים
   final filteredLinks = links.where((link) {
-    // בדיקות מהירות קודם
+    // tests מהירות previous
     if (!indexSet.contains(link.index1)) return false;
     final type = link.connectionType.toUpperCase();
     if (type != "COMMENTARY" && type != "TARGUM") return false;
     if (link.path2.isEmpty || link.index2 <= 0) return false;
 
-    // בדיקה איטית יותר בסוף
+    // check איטית יותר בסוף
     return commentatorsSet.contains(utils.getTitleFromPath(link.path2));
   }).toList();
 
-  // אם אין קישורים, מחזיר רשימה ריקה מיד
+  // אם אין קישורים, מחזיר list emptyה מיד
   if (filteredLinks.isEmpty) {
     return [];
   }
 
   // מיון אחד משולב במקום שני מיונים נפרדים
   filteredLinks.sort((a, b) {
-    // קודם לפי סדר המפרשים
+    // previous לפי order הCommentators
     final commentatorComparison = commentatorsToShow
         .indexOf(utils.getTitleFromPath(a.path2))
         .compareTo(commentatorsToShow.indexOf(utils.getTitleFromPath(b.path2)));
@@ -204,7 +204,7 @@ Future<List<Link>> getLinksforIndexs(
       return commentatorComparison;
     }
 
-    // אם אותו מפרש, מיון לפי heRef
+    // אם אותו commentator, מיון לפי heRef
     return a.heRef
         .replaceAll(' טו,', ' ,יה')
         .replaceAll(' טז,', ' יו,')

@@ -207,14 +207,14 @@ class TextBookRepository {
     return [];
   }
 
-  /// מחזיר רשימת פרשנים זמינים לספר מה-DB
+  /// מחזיר רשימת פרשנים זמינים לbook מה-DB
   Future<List<String>> getAvailableCommentators(TextBook book) async {
     final repository = _sqliteProvider.repository;
     if (repository == null) {
       return [];
     }
 
-    // מקבל את ה-book מה-DB לפי שם וקטגוריה
+    // מקבל את ה-book מה-DB לפי name וcategory
     final dbBook = await BookLocator.getBookFromDatabase(
       book.title,
       category: book.category,
@@ -228,7 +228,7 @@ class TextBookRepository {
     final commentatorsData =
         await repository.database.linkDao.selectCommentatorsByBook(dbBook.id);
 
-    // ממפה לרשימת שמות ייחודיים
+    // מmap לרשימת names ייoverrideיים
     final commentatorTitles = commentatorsData
         .map((row) => row['targetBookTitle'] as String)
         .toSet()

@@ -1,9 +1,9 @@
-/// מרכז רגקסים לחיפוש - כל הרגקסים במקום אחד
+/// מרכז רגקסים לsearch - כל הרגקסים במקום אחד
 ///
-/// קובץ זה מרכז את כל הרגקסים המשמשים לחיפוש במערכת
+/// file זה מרכז את כל הרגקסים המשמשים לsearch בSystem
 /// כדי לשפר את הארגון ולהקל על התחזוקה.
 ///
-/// הקובץ מחליף רגקסים שהיו מפוזרים בקבצים הבאים:
+/// הfile מחליף רגקסים שהיו מפוזרים בfiles nextים:
 /// - lib/search/search_repository.dart
 /// - lib/search/utils/hebrew_morphology.dart
 /// - lib/utils/text_manipulation.dart
@@ -11,10 +11,10 @@
 /// - lib/search/view/enhanced_search_field.dart
 ///
 /// יתרונות הריכוז:
-/// 1. קל יותר לתחזק ולעדכן רגקסים
+/// 1. קל יותר לתחזק ולעדyes רגקסים
 /// 2. מונע כפילויות
-/// 3. מבטיח עקביות בין חלקי המערכת השונים
-/// 4. מקל על בדיקות ותיקונים
+/// 3. מבטיח עקביות בין חלקי הSystem השונים
+/// 4. מקל על tests ותיקונים
 class SearchRegexPatterns {
   // ===== רגקסים בסיסיים =====
 
@@ -37,10 +37,10 @@ class SearchRegexPatterns {
   /// רגקס להסרת טעמים בלבד
   static final RegExp cantillationOnly = RegExp(r'[\u0591-\u05AF]');
 
-  /// רגקס בסיסי לזיהוי שם הקודש (יהוה) עם ניקוד.
+  /// רגקס בסיסי לidentify name הקודש (יהוה) עם ניקוד.
   ///
   /// הסינון של מקרים כמו "ויגביהוהו" מתבצע בקוד, כדי שנוכל
-  /// להתעלם מסימני ניקוד וטעמים שלפני השם בלי לפספס מקרים כמו "לַֽיהֹוָֽה".
+  /// להתעלם מסימני ניקוד וטעמים שלפני הname בלי לפספס מקרים כמו "לַֽיהֹוָֽה".
   static final RegExp holyName = RegExp(
     r"י([\p{Mn}]*)ה([\p{Mn}]*)ו([\p{Mn}]*)ה([\p{Mn}]*)",
     unicode: true,
@@ -48,31 +48,31 @@ class SearchRegexPatterns {
 
   // ===== רגקסים למורפולוגיה עברית =====
 
-  /// רגקס לזיהוי קידומות דקדוקיות
+  /// רגקס לidentify קידומות דקדוקיות
   static final RegExp grammaticalPrefixes = RegExp(r'^(ו|מ|כ|ב|ש|ל|ה)+(.+)');
 
-  /// רגקס לזיהוי סיומות דקדוקיות
+  /// רגקס לidentify endת דקדוקיות
   static final RegExp grammaticalSuffixes = RegExp(
-      r'(ותי|ותיך|ותיו|ותיה|ותינו|ותיכם|ותיכן|ותיהם|ותיהן|יי|יך|יו|יה|ינו|יכם|יכן|יהם|יהן|י|ך|ו|ה|נו|כם|כן|ם|ן|ים|ות)$');
+      r'(ותי|ותיך|ותיו|ותיה|ותינו|ותיכם|ותיyes|ותיהם|ותיהן|יי|יך|יו|יה|ינו|יכם|יyes|יהם|יהן|י|ך|ו|ה|נו|כם|yes|ם|ן|ים|ות)$');
 
-  // ===== פונקציות ליצירת רגקסים דינמיים =====
+  // ===== functions ליצירת רגקסים דינמיים =====
 
-  /// יוצר רגקס לחיפוש מילה עם קידומות דקדוקיות
+  /// יוצר רגקס לsearch מילה עם קידומות דקדוקיות
   static String createPrefixPattern(String word) {
     if (word.isEmpty) return word;
     return r'(ו|מ|דא|א|כש|כ|ב|ש|ל|ה|ד)?(כ|ב|ש|ל|ה|ד)?(ה)?' +
         RegExp.escape(word);
   }
 
-  /// יוצר רגקס לחיפוש מילה עם סיומות דקדוקיות
+  /// יוצר רגקס לsearch מילה עם endת דקדוקיות
   static String createSuffixPattern(String word) {
     if (word.isEmpty) return word;
     const suffixPattern =
-        r'(ותי|ותיך|ותיו|ותיה|ותינו|ותיכם|ותיכן|ותיהם|ותיהן|יי|יך|יו|יה|ינו|יכם|יכן|יהם|יהן|י|ך|ו|ה|נו|כם|כן|ם|ן|ים|ות)?';
+        r'(ותי|ותיך|ותיו|ותיה|ותינו|ותיכם|ותיyes|ותיהם|ותיהן|יי|יך|יו|יה|ינו|יכם|יyes|יהם|יהן|י|ך|ו|ה|נו|כם|yes|ם|ן|ים|ות)?';
     return RegExp.escape(word) + suffixPattern;
   }
 
-  /// יוצר רגקס לחיפוש מילה עם קידומות וסיומות יחד
+  /// יוצר רגקס לsearch מילה עם קידומות וendת יחד
   static String createFullMorphologicalPattern(String word) {
     if (word.isEmpty) return word;
     String pattern = RegExp.escape(word);
@@ -80,15 +80,15 @@ class SearchRegexPatterns {
     // הוספת קידומות
     pattern = r'(ו|מ|כ|ב|ש|ל|ה|ד)?(כ|ב|ש|ל|ה|ד)?(ה)?' + pattern;
 
-    // הוספת סיומות
+    // הוספת endת
     const suffixPattern =
-        r'(ותי|ותַי|ותיך|ותֶיךָ|ותַיִךְ|ותיו|ותָיו|ותיה|ותֶיהָ|ותינו|ותֵינוּ|ותיכם|ותֵיכם|ותיכן|ותֵיכן|ותיהם|ותֵיהם|ותיהן|ותֵיהן|יות|יי|יַי|יך|יךָ|יִךְ|יו|יה|יא|תא|יהָ|ינו|יכם|יכן|יהם|יהן|י|ך|ךָ|ךְ|ו|ה|הּ|נו|כם|כן|ם|ן|ים|ות)?';
+        r'(ותי|ותַי|ותיך|ותֶיךָ|ותַיִךְ|ותיו|ותָיו|ותיה|ותֶיהָ|ותינו|ותֵינוּ|ותיכם|ותֵיכם|ותיyes|ותֵיyes|ותיהם|ותֵיהם|ותיהן|ותֵיהן|יות|יי|יַי|יך|יךָ|יִךְ|יו|יה|יא|תא|יהָ|ינו|יכם|יyes|יהם|יהן|י|ך|ךָ|ךְ|ו|ה|הּ|נו|כם|yes|ם|ן|ים|ות)?';
     pattern = pattern + suffixPattern;
 
     return pattern;
   }
 
-  /// יוצר רגקס לחיפוש קידומות רגילות (לא דקדוקיות)
+  /// יוצר רגקס לsearch קידומות רגילות (no דקדוקיות)
   static String createPrefixSearchPattern(String word,
       {int maxPrefixLength = 3}) {
     if (word.isEmpty) return word;
@@ -104,7 +104,7 @@ class SearchRegexPatterns {
     }
   }
 
-  /// יוצר רגקס לחיפוש סיומות רגילות (לא דקדוקיות)
+  /// יוצר רגקס לsearch endת רגילות (no דקדוקיות)
   static String createSuffixSearchPattern(String word,
       {int maxSuffixLength = 7}) {
     if (word.isEmpty) return word;
@@ -120,9 +120,9 @@ class SearchRegexPatterns {
     }
   }
 
-  /// יוצר רגקס לחיפוש חלק ממילה
+  /// יוצר רגקס לsearch חלק ממילה
   ///
-  /// פונקציה זו משמשת גם כאשר המשתמש בוחר גם קידומות וגם סיומות יחד,
+  /// function זו משמשת גם כאשר הuser בוחר גם קידומות וגם endת יחד,
   /// מכיוון שהשילוב הזה בעצם מחפש את המילה בכל מקום בתוך מילה אחרת
   static String createPartialWordPattern(String word) {
     if (word.isEmpty) return word;
@@ -134,7 +134,7 @@ class SearchRegexPatterns {
     }
   }
 
-  /// יוצר רגקס לכתיב מלא/חסר
+  /// יוצר רגקס לכתיב full/חסר
   static String createFullPartialSpellingPattern(
     String word, {
     bool tokenAnchors = true, // עיגון לטוקן כשאין דקדוק/חלק-ממילה
@@ -146,9 +146,9 @@ class SearchRegexPatterns {
     return tokenAnchors ? '^$core\$' : core;
   }
 
-  // ===== פונקציות עזר =====
+  // ===== functions עזר =====
 
-  /// יוצר רשימה של וריאציות כתיב מלא/חסר
+  /// יוצר list של וריאציות כתיב full/חסר
   static List<String> generateFullPartialSpellingVariations(String word) {
     if (word.isEmpty) return [word];
     final variations = <String>{};
@@ -194,7 +194,7 @@ class SearchRegexPatterns {
     return grammaticalSuffixes.hasMatch(word);
   }
 
-  /// מחלץ את השורש של מילה (מסיר קידומות וסיומות)
+  /// מחלץ את השורש של מילה (מסיר קידומות וendת)
   static String extractRoot(String word) {
     if (word.isEmpty) return word;
     String result = word;
@@ -202,7 +202,7 @@ class SearchRegexPatterns {
     // הסרת קידומות
     result = result.replaceFirst(grammaticalPrefixes, '');
 
-    // הסרת סיומות
+    // הסרת endת
     result = result.replaceFirst(grammaticalSuffixes, '');
 
     return result.isEmpty ? word : result;
@@ -210,23 +210,23 @@ class SearchRegexPatterns {
 
   // ===== רגקסים נוספים לעתיד =====
 
-  /// רגקס לזיהוי מספרים עבריים (א', ב', ג' וכו')
+  /// רגקס לidentify מbooks עבריים (א', ב', ג' וכו')
   static final RegExp hebrewNumbers = RegExp(r"[א-ת]['״]");
 
-  /// רגקס לזיהוי מספרים לועזיים
+  /// רגקס לidentify מbooks לועזיים
   static final RegExp latinNumbers = RegExp(r'\d+');
 
-  /// רגקס לזיהוי כתובות (פרק, פסוק, דף וכו')
+  /// רגקס לidentify כתובות (פרק, פסוק, page וכו')
   static final RegExp references =
-      RegExp(r"(פרק|פסוק|דף|עמוד|סימן|הלכה)\s*[א-ת'״\d]+");
+      RegExp(r"(פרק|פסוק|page|page|סימן|הלכה)\s*[א-ת'״\d]+");
 
-  /// רגקס לזיהוי ציטוטים (טקסט בגרשיים)
+  /// רגקס לidentify ציטוטים (text בגרשיים)
   static final RegExp quotations = RegExp(r'"[^"]*"');
 
-  /// רגקס לזיהוי קיצורים נפוצים (רמב"ם, רש"י וכו')
+  /// רגקס לidentify Shortcuts נפוצים (רמב"ם, רש"י וכו')
   static final RegExp abbreviations = RegExp(r'[א-ת]+"[א-ת]');
 
-  /// פונקציה לניקוי טקסט מתווים מיוחדים
+  /// function לניקוי text מתווים מיוחדים
   static String cleanText(String text) {
     return text
         .replaceAll(
@@ -235,23 +235,23 @@ class SearchRegexPatterns {
         .trim();
   }
 
-  /// פונקציה לזיהוי אם טקסט הוא בעברית
+  /// function לidentify אם text הוא בעברית
   static bool isHebrew(String text) {
     final hebrewChars = RegExp(r'[\u0590-\u05FF]');
     return hebrewChars.hasMatch(text);
   }
 
-  /// פונקציה לזיהוי אם טקסט הוא באנגלית
+  /// function לidentify אם text הוא באנגלית
   static bool isEnglish(String text) {
     final englishChars = RegExp(r'[a-zA-Z]');
     return englishChars.hasMatch(text);
   }
 
-  /// יוצר רגקס משולב לכתיב מלא/חסר עם קידומות דקדוקיות
+  /// יוצר רגקס משולב לכתיב full/חסר עם קידומות דקדוקיות
   static String createSpellingWithPrefixPattern(String word) {
     if (word.isEmpty) return word;
     final variations = generateFullPartialSpellingVariations(word);
-    // הגבלה על מספר הוריאציות כדי למנוע רגקס ענק
+    // הגבלה על מbook parentיאציות כדי למנוע רגקס ענק
     final limitedVariations =
         variations.length > 10 ? variations.take(10).toList() : variations;
     final patterns =
@@ -259,11 +259,11 @@ class SearchRegexPatterns {
     return '(${patterns.join('|')})';
   }
 
-  /// יוצר רגקס משולב לכתיב מלא/חסר עם סיומות דקדוקיות
+  /// יוצר רגקס משולב לכתיב full/חסר עם endת דקדוקיות
   static String createSpellingWithSuffixPattern(String word) {
     if (word.isEmpty) return word;
     final variations = generateFullPartialSpellingVariations(word);
-    // הגבלה על מספר הוריאציות כדי למנוע רגקס ענק
+    // הגבלה על מbook parentיאציות כדי למנוע רגקס ענק
     final limitedVariations =
         variations.length > 10 ? variations.take(10).toList() : variations;
     final patterns =
@@ -271,11 +271,11 @@ class SearchRegexPatterns {
     return '(${patterns.join('|')})';
   }
 
-  /// יוצר רגקס משולב לכתיב מלא/חסר עם קידומות וסיומות דקדוקיות
+  /// יוצר רגקס משולב לכתיב full/חסר עם קידומות וendת דקדוקיות
   static String createSpellingWithFullMorphologyPattern(String word) {
     if (word.isEmpty) return word;
     final variations = generateFullPartialSpellingVariations(word);
-    // הגבלה על מספר הוריאציות כדי למנוע רגקס ענק
+    // הגבלה על מbook parentיאציות כדי למנוע רגקס ענק
     final limitedVariations =
         variations.length > 8 ? variations.take(8).toList() : variations;
     final patterns = limitedVariations
@@ -284,12 +284,12 @@ class SearchRegexPatterns {
     return '(${patterns.join('|')})';
   }
 
-  /// פונקציה שמחליטה איזה סוג חיפוש להשתמש בהתבסס על אפשרויות המשתמש
+  /// function שמחליטה איזה סוג search להשתמש בהתבסס על אפשרויות הuser
   ///
   /// הלוגיקה:
-  /// - אם נבחרו גם קידומות וגם סיומות רגילות -> חיפוש "חלק ממילה"
-  /// - אם נבחרו קידומות דקדוקיות וסיומות דקדוקיות -> חיפוש מורפולוגי מלא
-  /// - אחרת -> חיפוש לפי האפשרות הספציפית שנבחרה
+  /// - אם selectedו גם קידומות וגם endת רגילות -> search "חלק ממילה"
+  /// - אם selectedו קידומות דקדוקיות וendת דקדוקיות -> search מורפולוגי full
+  /// - אחרת -> search לפי האפשרות הspecificת שselectedה
 // lib/search/utils/regex_patterns.dart
 
   static String createSearchPattern(
@@ -303,7 +303,7 @@ class SearchRegexPatterns {
   }) {
     if (word.isEmpty) return word;
 
-    // --- לוגיקה עבור שילובים עם "כתיב מלא/חסר" ---
+    // --- לוגיקה עבור שילובים עם "כתיב full/חסר" ---
     if (hasFullPartialSpelling) {
       final hasMorphologyOrPartial = hasGrammaticalPrefixes ||
           hasGrammaticalSuffixes ||
@@ -314,7 +314,7 @@ class SearchRegexPatterns {
       // ניצור את הווריאציות פעם אחת בלבד
       final variations = generateFullPartialSpellingVariations(word);
 
-      // סדר העדיפויות חשוב כאן! מהספציפי ביותר לכללי ביותר
+      // order העדיפויות חשוב כאן! מהspecific ביותר לgeneral ביותר
       if (hasPrefix && hasSuffix) {
         final patterns =
             variations.map((v) => createPartialWordPattern(v)).toList();
@@ -338,7 +338,7 @@ class SearchRegexPatterns {
             variations.map((v) => createPartialWordPattern(v)).toList();
         return '(${patterns.join('|')})';
       } else {
-        // רק "כתיב מלא/חסר" ללא שום אפשרות אחרת
+        // רק "כתיב full/חסר" לno שום אפשרות אחרת
         return createFullPartialSpellingPattern(
           word,
           tokenAnchors: !hasMorphologyOrPartial,
@@ -346,8 +346,8 @@ class SearchRegexPatterns {
       }
     }
 
-    // --- לוגיקה עבור חיפושים ללא "כתיב מלא/חסר" ---
-    // סדר העדיפויות חשוב גם כאן
+    // --- לוגיקה עבור searchים לno "כתיב full/חסר" ---
+    // order העדיפויות חשוב גם כאן
     if (hasPrefix && hasSuffix) {
       return createPartialWordPattern(word);
     } else if (hasGrammaticalPrefixes && hasGrammaticalSuffixes) {
@@ -364,7 +364,7 @@ class SearchRegexPatterns {
       return createPartialWordPattern(word);
     }
 
-    // ברירת מחדל - חיפוש מדויק
+    // ברירת מחדל - search מדויק
     return RegExp.escape(word);
   }
 }

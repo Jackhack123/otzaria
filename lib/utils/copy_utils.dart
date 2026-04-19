@@ -7,7 +7,7 @@ import 'package:otzaria/core/ui_snack.dart';
 import 'package:otzaria/utils/text_manipulation.dart' as text_utils;
 
 class CopyUtils {
-  /// מחיל העדפות תצוגה על טקסט שמיועד להעתקה.
+  /// מחיל העדפות תצוגה על text שמיועד לCopyה.
   static String applyCopyPreferences({
     required String text,
     required bool replaceHolyNames,
@@ -19,7 +19,7 @@ class CopyUtils {
     return text_utils.replaceHolyNames(text);
   }
 
-  /// מחיל העדפות העתקה על plain text ועל HTML יחד,
+  /// מחיל העדפות Copyה על plain text ועל HTML יחד,
   /// ושומר על עקביות ביניהם גם אם ה-HTML מפוצל ע"י תגיות inline.
   static ({String plainText, String htmlText}) applyCopyPreferencesForClipboard({
     required String plainText,
@@ -58,11 +58,11 @@ class CopyUtils {
     );
   }
 
-  /// מחלץ את שם הספר
+  /// מחלץ את name הbook
   static String extractBookName(TextBook book) => book.title.trim();
 
-  /// מחלץ את הנתיב ההיררכי הנוכחי:
-  /// 1) ניסיון קפדני מתוך התוכן עצמו: רק תגיות <h1>..<h6>
+  /// מחלץ את הpath ההיררכי הcurrent:
+  /// 1) ניסיון קפדני מתוך הcontent עצמו: רק תגיות <h1>..<h6>
   /// 2) נפילה ל-TOC: לוקחים את הכותרת האחרונה לכל רמה (1..6) עד currentIndex
   static Future<String> extractCurrentPath(
     TextBook book,
@@ -70,7 +70,7 @@ class CopyUtils {
     List<String>? bookContent,
   }) async {
     try {
-      // --- שלב 1: ניסיון קפדני מתוך התוכן ---
+      // --- שלב 1: ניסיון קפדני מתוך הcontent ---
       final fromContent =
           _extractPathFromContentStrict(bookContent, currentIndex);
       if (fromContent.isNotEmpty) return fromContent;
@@ -82,7 +82,7 @@ class CopyUtils {
       final Map<int, String> lastByLevel = {};
       for (final entry in toc) {
         if (entry.index <= currentIndex) {
-          if (entry.level <= 1) continue; // רמה 1 = שם הספר, כבר מכוסה ע"י bookName
+          if (entry.level <= 1) continue; // רמה 1 = name הbook, כבר מכוסה ע"י bookName
           final clean = _cleanHtml(entry.text);
           if (clean.isNotEmpty) {
             lastByLevel[entry.level] = clean;
@@ -114,7 +114,7 @@ class CopyUtils {
     }
   }
 
-  /// מעצב טקסט עם כותרות בהתאם להגדרות
+  /// מעצב text עם כותרות בהתאם לsettings
   static String formatTextWithHeaders({
     required String originalText,
     required String copyWithHeaders,
@@ -167,7 +167,7 @@ class CopyUtils {
     return result;
   }
 
-  /// יוצר HTML מעוצב להעתקה, עם בלוק נפרד לכל שורה כדי לשמור Enter רגיל.
+  /// יוצר HTML מעוצב לCopyה, עם בלוק נפרד לכל line כדי לSave Enter רגיל.
   static String buildStyledHtml({
     required String htmlText,
     required String fontFamily,
@@ -180,7 +180,7 @@ class CopyUtils {
     return '<html><body><p dir="rtl" style="font-family: $fontFamily; font-size: ${fontSize}px; text-align: justify; direction: rtl; margin: 0; padding: 0;">$htmlLines</p></body></html>';
   }
 
-  /// העתקת טקסט מעוצב ללוח עם HTML
+  /// Copyת text מעוצב ללוח עם HTML
   /// מטפל בעיצוב HTML עם גופן וגודל, וכתיבה ללוח עם חיווי באפליקציה.
   static Future<void> copyStyledToClipboard({
     required String plainText,
@@ -191,7 +191,7 @@ class CopyUtils {
     try {
       final clipboard = SystemClipboard.instance;
       if (clipboard == null) {
-        UiSnack.show('לא ניתן לגשת ללוח');
+        UiSnack.show('no ניתן לגשת ללוח');
         return;
       }
 
@@ -202,13 +202,13 @@ class CopyUtils {
       );
 
       final item = DataWriterItem();
-      item.add(Formats.plainText(plainText.trimRight())); // טקסט רגיל כגיבוי
-      item.add(Formats.htmlText(htmlContent)); // טקסט עם עיצוב
+      item.add(Formats.plainText(plainText.trimRight())); // text רגיל כגיבוי
+      item.add(Formats.htmlText(htmlContent)); // text עם עיצוב
 
       await clipboard.write([item]);
-      UiSnack.show('הטקסט המעוצב הועתק ללוח');
+      UiSnack.show('הtext המעוצב הועתק ללוח');
     } catch (e) {
-      UiSnack.showError('שגיאה בהעתקה: $e');
+      UiSnack.showError('error בCopyה: $e');
     }
   }
 
@@ -216,7 +216,7 @@ class CopyUtils {
   //                 HELPERS - STRICT CONTENT PARSING
   // ------------------------------------------------------------
 
-  /// הלוגיקה החדשה: סורקים אחורה מהמיקום הנוכחי עד לתחילת הקובץ,
+  /// הלוגיקה החדשה: סורקים אחורה מcurrent location עד לתחילת הfile,
   /// ואוספים את הכותרת האחרונה (הקרובה ביותר) מכל רמה.
   static String _extractPathFromContentStrict(
       List<String>? content, int currentIndex) {
@@ -226,7 +226,7 @@ class CopyUtils {
     final Map<int, String> lastHeaderByLevel = {};
     final hTag = RegExp(r'<h([1-6])[^>]*>(.*?)</h\1>', dotAll: true);
 
-    // סריקה מהמיקום הנוכחי אחורה עד להתחלה
+    // סemptyה מcurrent location אחורה עד לstart
     for (int i = currentIndex; i >= 0; i--) {
       // עוצרים רק כשיש שרשרת רציפה מרמה 2 עד הרמה העמוקה שנמצאה
       if (lastHeaderByLevel.isNotEmpty) {
@@ -247,7 +247,7 @@ class CopyUtils {
       for (final match in hTag.allMatches(line)) {
         try {
           final level = int.parse(match.group(1)!);
-          if (level <= 1) continue; // רמה 1 = שם הספר, כבר מכוסה ע"י bookName
+          if (level <= 1) continue; // רמה 1 = name הbook, כבר מכוסה ע"י bookName
           final text = _cleanHtml(match.group(2)!);
 
           // שומרים רק את הכותרת הראשונה שנמצאה עבור כל רמה (כי אנחנו הולכים אחורה)
@@ -262,7 +262,7 @@ class CopyUtils {
 
     if (lastHeaderByLevel.isEmpty) return '';
 
-    // הרכבת הנתיב לפי סדר הרמות (1, 2, 3...)
+    // הרכבת הpath לפי order הרמות (1, 2, 3...)
     final sortedLevels = lastHeaderByLevel.keys.toList()..sort();
     final parts = <String>[];
     for (final level in sortedLevels) {

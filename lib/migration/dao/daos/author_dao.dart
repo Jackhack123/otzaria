@@ -94,7 +94,7 @@ class AuthorDao {
     return firstIntValue(db.select(_queries['countBookAuthors']!, [bookId])) ?? 0;
   }
 
-  /// מחזירה מיפוי title ← שם תקופה לכל הספרים שיש להם מחבר עם תקופה ידועה
+  /// מחזירה מיפוי title ← name תקופה לכל הbooks שיש להם מחבר עם תקופה ידועה
   Future<Map<String, String>> getAllBookTitleToGeneration() async {
     final db = await database;
     final rows =

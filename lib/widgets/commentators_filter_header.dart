@@ -8,7 +8,7 @@ class CommentatorsFilterHeader extends StatelessWidget {
   const CommentatorsFilterHeader({
     super.key,
     required this.onBack,
-    this.title = 'בחירת מפרשים',
+    this.title = 'בחירת Commentators',
   });
 
   @override
@@ -19,7 +19,7 @@ class CommentatorsFilterHeader extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(FluentIcons.arrow_right_24_regular),
-            tooltip: 'חזרה למפרשים',
+            tooltip: 'חזרה לCommentators',
             onPressed: onBack,
           ),
           const SizedBox(width: 8),

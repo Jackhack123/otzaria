@@ -1,6 +1,6 @@
 import 'package:otzaria/models/books.dart';
 
-/// מפתח ספר אחיד לכל שכבות ה-provider.
+/// key book אחיד לכל שכבות ה-provider.
 ///
 /// הפורמט הוא: title + categoryId + fileType מנורמל.
 class BookCompositeKey {

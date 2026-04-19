@@ -10,14 +10,14 @@ class FullscreenHelper {
     BuildContext context,
     bool isFullscreen,
   ) async {
-    // עדכון ה-state ב-Bloc
+    // update ה-state ב-Bloc
     final settingsBloc = context.read<SettingsBloc>();
     if (settingsBloc.state.isFullscreen != isFullscreen) {
       settingsBloc.add(UpdateIsFullscreen(isFullscreen));
     }
 
-    // פעולות על מנהל החלונות
-    // חשוב: להסתיר את ה-title bar לפני המעבר למסך מלא כדי למנוע הבהוב
+    // actions על admin החלונות
+    // חשוב: להסתיר את ה-title bar לפני המעבר למסך full כדי למנוע הבהוב
     if (isFullscreen) {
       await windowManager.setTitleBarStyle(
         TitleBarStyle.hidden,
@@ -26,7 +26,7 @@ class FullscreenHelper {
       await windowManager.setFullScreen(true);
     } else {
       await windowManager.setFullScreen(false);
-      // אנחנו משתמשים ב-CustomTitleBar ולכן תמיד רוצים להסתיר את הכותרת המקורית
+      // אנחנו users ב-CustomTitleBar ולyes תמיד רוצים להסתיר את הכותרת המקורית
       await windowManager.setTitleBarStyle(
         TitleBarStyle.hidden,
         windowButtonVisibility: false,

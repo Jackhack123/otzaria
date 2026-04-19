@@ -11,7 +11,7 @@ import 'package:otzaria/settings/settings_exports.dart';
 /// Service for collecting data required for phone error reporting
 class DataCollectionService {
   static String get _libraryVersionPath =>
-      'אוצריא${Platform.pathSeparator}אודות התוכנה${Platform.pathSeparator}גירסת ספריה.txt';
+      'Otzaria${Platform.pathSeparator}About התוכנה${Platform.pathSeparator}גירסת Library.txt';
 
   /// Read library version from the database or file
   /// Returns "unknown" if not found or cannot be read
@@ -142,7 +142,7 @@ class DataCollectionService {
 
     if (libraryVersion == 'unknown') {
       result['available'] = false;
-      result['errors'].add('לא ניתן לקרוא את גירסת הספרייה');
+      result['errors'].add('no ניתן לקרוא את גירסת the library');
     }
 
     // Check book ID
@@ -151,7 +151,7 @@ class DataCollectionService {
 
     if (bookId == null) {
       result['available'] = false;
-      result['errors'].add('לא ניתן למצוא את הספר במאגר הנתונים');
+      result['errors'].add('no ניתן למצוא את הbook במאגר הנתונים');
     }
 
     return result;

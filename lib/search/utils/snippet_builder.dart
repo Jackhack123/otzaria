@@ -22,7 +22,7 @@ class _ApproximateSnippetMatchCandidate {
 }
 
 class SnippetBuilder {
-  /// פונקציה לחישוב כמה תווים יכולים להיכנס בשורה אחת
+  /// function לחישוב כמה תווים יכולים להיכנס בline אחת
   static int calculateCharsPerLine(double availableWidth, TextStyle textStyle) {
     final textPainter = TextPainter(
       text: TextSpan(text: 'א' * 100, style: textStyle),
@@ -37,7 +37,7 @@ class SnippetBuilder {
     return charsPerLine;
   }
 
-  /// פונקציה חכמה ליצירת קטע טקסט עם הדגשות - מבטיחה שכל ההתאמות יופיעו!
+  /// function חכמה ליצירת קטע text עם הדגשות - מבטיחה שכל ההתאמות יופיעו!
   static List<InlineSpan> createSnippetSpans({
     required String fullHtml,
     required String query,
@@ -49,11 +49,11 @@ class SnippetBuilder {
     Map<String, String> customSpacing = const {},
     bool typoToleranceEnabled = false,
   }) {
-    // 1. קבלת הטקסט הנקי מה-HTML
+    // 1. קבלת הtext הנקי מה-HTML
     var plainText =
         html_parser.parse(fullHtml).documentElement?.text.trim() ?? '';
 
-    // 2. חילוץ מילות החיפוש כולל מילים חילופיות
+    // 2. חילוץ מילות הsearch כולל מילים חילופיות
     final originalWords = query
         .trim()
         .replaceAll(RegExp(r'[!?":*\(\)\[\]\{\}\^\$\|\\+.~`~]'), ' ')
@@ -61,30 +61,30 @@ class SnippetBuilder {
         .where((s) => s.isNotEmpty)
         .toList();
 
-    // הוספת מילים חילופיות ווריאציות כתיב מלא/חסר למילות החיפוש
-    // termsByWord: רשימת רשימות - עבור כל מילת חיפוש, כל הווריאציות שלה
+    // הוספת מילים חילופיות ווריאציות כתיב full/חסר למילות הsearch
+    // termsByWord: רשימת lists - עבור כל מילת search, כל הווריאציות שלה
     final termsByWord = <List<String>>[];
     for (int i = 0; i < originalWords.length; i++) {
       final word = originalWords[i];
       final wordKey = '${word}_$i';
       final wordTerms = <String>[];
 
-      // בדיקת אפשרויות החיפוש למילה הזו
+      // בדיקת אפשרויות הsearch למילה הזו
       final wordOptions = searchOptions[wordKey] ?? {};
-      final hasFullPartialSpelling = wordOptions['כתיב מלא/חסר'] == true;
+      final hasFullPartialSpelling = wordOptions['כתיב full/חסר'] == true;
 
       if (hasFullPartialSpelling) {
-        // אם יש כתיב מלא/חסר, נוסיף את כל הווריאציות
+        // אם יש כתיב full/חסר, נוסיף את כל הווריאציות
         try {
           final variations =
               SearchRegexPatterns.generateFullPartialSpellingVariations(word);
           wordTerms.addAll(variations);
         } catch (e) {
-          // אם יש בעיה, נוסיף לפחות את המילה המקורית
+          // אם יש issue, נוסיף לפחות את המילה המקורית
           wordTerms.add(word);
         }
       } else {
-        // אם אין כתיב מלא/חסר, נוסיף את המילה המקורית
+        // אם אין כתיב full/חסר, נוסיף את המילה המקורית
         wordTerms.add(word);
       }
 
@@ -92,7 +92,7 @@ class SnippetBuilder {
       final alternatives = alternativeWords[i];
       if (alternatives != null && alternatives.isNotEmpty) {
         if (hasFullPartialSpelling) {
-          // אם יש כתיב מלא/חסר, נוסיף גם את הווריאציות של המילים החילופיות
+          // אם יש כתיב full/חסר, נוסיף גם את הווריאציות של המילים החילופיות
           for (final alt in alternatives) {
             try {
               final altVariations =
@@ -111,16 +111,16 @@ class SnippetBuilder {
       termsByWord.add(wordTerms);
     }
 
-    // רשימה שטוחה - לשימוש בחיפוש מקורב
+    // list שטוחה - לשימוש בsearch מקורב
     final searchTerms = termsByWord.expand((t) => t).toList();
 
     if (searchTerms.isEmpty || plainText.isEmpty) {
       return [TextSpan(text: plainText, style: defaultStyle)];
     }
 
-    // 3. מציאת כל ההתאמות של כל המילים בטקסט המקורי
+    // 3. מציאת כל ההתאמות של כל המילים בtext המקורי
     // שימוש ב-phrase matching: מדגישים רק הופעות שבהן כל המילים מופיעות ברצף,
-    // כך שהופעות בודדות-מרוחקות לא מקבלות הדגשה מוטעית
+    // כך שהופעות בודדות-מרוחקות no מקבלות הדגשה מוטעית
     final exactMatches = _collectPhraseWordMatches(plainText, termsByWord,
         customSpacing: customSpacing);
     final approxMatches = typoToleranceEnabled
@@ -156,7 +156,7 @@ class SnippetBuilder {
     int snippetStart;
     int snippetEnd;
 
-    // חישוב אורך הטקסט הנדרש לשלוש שורות בהתבסס על רוחב המסך בפועל
+    // חישוב אורך הtext הנדרש לשלוש lines בהתבסס על רוחב המסך בפועל
     final charsPerLine = calculateCharsPerLine(availableWidth, defaultStyle);
     final targetLength = (charsPerLine * 3).clamp(120, 400);
 
@@ -173,7 +173,7 @@ class SnippetBuilder {
       snippetEnd =
           (absoluteLastMatch + limitedPadding).clamp(0, plainText.length);
     } else if (totalMatchesSpan < targetLength) {
-      // אם ההתאמות קצרות מהיעד, נוסיף הקשר עד שנגיע ל-3 שורות
+      // אם ההתאמות shortות מהיעד, נוסיף הקשר עד שנגיע ל-3 lines
       int remainingSpace = targetLength - totalMatchesSpan;
       int paddingBefore = remainingSpace ~/ 2;
       int paddingAfter = remainingSpace - paddingBefore;
@@ -190,7 +190,7 @@ class SnippetBuilder {
       snippetEnd = (absoluteLastMatch + minPadding).clamp(0, plainText.length);
     }
 
-    // התאמה לגבולות מילים - אבל לא על חשבון ההתאמות!
+    // התאמה לגבולות מילים - אבל no על חשבון ההתאמות!
     if (snippetStart > 0 && snippetStart < absoluteFirstMatch) {
       int? spaceIndex = plainText.lastIndexOf(' ', snippetStart);
       if (spaceIndex != -1 && spaceIndex >= snippetStart - 50) {
@@ -222,7 +222,7 @@ class SnippetBuilder {
 
     final snippetText = plainText.substring(snippetStart, snippetEnd);
 
-    // 6. בדיקה נוספת - ספירת ההתאמות בקטע הסופי
+    // 6. check נוספת - ספירת ההתאמות בקטע הסופי
     final snippetMatches = allMatches
         .where(
             (match) => match.start >= snippetStart && match.end <= snippetEnd)
@@ -255,9 +255,9 @@ class SnippetBuilder {
   }
 
   /// מציאת התאמות ביטוי (phrase matching) בשיטת token-based:
-  /// מוצאים רק הופעות שבהן כל המילים מופיעות ברצף כשמספר הטוקנים
-  /// ביניהם <= customSpacing. תואם את סמנטיקת slop מנוע החיפוש.
-  /// אם לא נמצא ביטוי - מחזיר רשימה ריקה (אין הדגשה), לא מחזיר בodim בודדות.
+  /// מוצאים רק הופעות שבהן כל המילים מופיעות ברצף כשמbook הטוקנים
+  /// ביניהם <= customSpacing. תואם את סמנטיקת slop מנוע הsearch.
+  /// אם no נמצא ביטוי - מחזיר list emptyה (אין הדגשה), no מחזיר בodim בודדות.
   static List<_SnippetMatchRange> _collectPhraseWordMatches(
     String plainText,
     List<List<String>> termsByWord, {
@@ -283,7 +283,7 @@ class SnippetBuilder {
       return _mergeOverlappingRanges(matchesByWord[0]);
     }
 
-    // 2. בניית רשימת תחילות הטוקנים (מילים לא-רווח) לספירת טוקנים בין היתורים
+    // 2. בניית רשימת תחילות הטוקנים (מילים no-רווח) לספירת טוקנים בין היתורים
     final tokenStarts = <int>[];
     for (final m in RegExp(r'\S+').allMatches(plainText)) {
       tokenStarts.add(m.start);
@@ -307,7 +307,7 @@ class SnippetBuilder {
           if (candidate.start < prevEnd) continue;
           final tokensBetween =
               _countTokensInRange(tokenStarts, prevEnd, candidate.start);
-          if (tokensBetween > maxTokensBetween) break; // רשימה ממוינת, break תקין
+          if (tokensBetween > maxTokensBetween) break; // list ממוינת, break תקין
           best = candidate;
           break; // נוצלים את הקרובה ביותר
         }
@@ -325,8 +325,8 @@ class SnippetBuilder {
       }
     }
 
-    // אם לא נמצא ביטוי - מחזירים רשימה ריקה. דע caller יבחר להציג קטע ללא הדגשה.
-    // זה הוגן מהדגשת הופעות בודדות לא-קשורות.
+    // אם no נמצא ביטוי - מחזירים list emptyה. דע caller יבחר להציג קטע לno הדגשה.
+    // זה הוגן מהדגשת הופעות בודדות no-קlines.
     return _mergeOverlappingRanges(result);
   }
 

@@ -1,7 +1,7 @@
 import 'font_file_reader_stub.dart'
     if (dart.library.io) 'font_file_reader_io.dart' as impl;
 
-/// קורא קובץ פונט מהדיסק.
+/// קורא file פונט מהדיסק.
 ///
 /// בדסקטופ (dart:io) זה נתמך.
 /// ב-web זה יזרוק UnsupportedError.

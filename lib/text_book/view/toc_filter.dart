@@ -1,9 +1,9 @@
 import 'package:otzaria/models/books.dart';
 import 'package:otzaria/search/utils/find_match_utils.dart';
 
-/// מחזירה עץ תוכן עניינים מסונן לפי טקסט החיפוש.
+/// מחזירה עץ content עניינים מסונן לפי text הsearch.
 ///
-/// אם הטקסט מנורמל לריק (למשל רק ניקוד/רווחים), מוחזר עץ ריק.
+/// אם הtext מנורמל לempty (למשל רק ניקוד/רווחים), מוחזר עץ empty.
 List<TocEntry> filterTocEntriesForSearch(
   List<TocEntry> entries,
   String rawQuery,
@@ -15,7 +15,7 @@ List<TocEntry> filterTocEntriesForSearch(
   return _sortEntriesByRelevance(filtered, normalizedQuery);
 }
 
-/// קובע אם צומת צריך להיות פתוח כברירת מחדל במצב חיפוש.
+/// קובע אם צומת צריך להיות open כברירת מחדל במצב search.
 bool shouldExpandInSearch(bool? expandedFlag) => expandedFlag ?? true;
 
 String _normalizeQuery(String rawQuery) {

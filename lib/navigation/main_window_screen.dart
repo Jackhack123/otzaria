@@ -81,16 +81,16 @@ class MainWindowScreenState extends State<MainWindowScreen>
   // rest of the application UI available.
   List<Widget> _pages = [];
 
-  // שמירת הדפים כדי שלא ייבנו מחדש
+  // save הpages כדי שno ייבנו again
   Widget? _cachedLibraryPage;
   Widget? _cachedReadingPage;
   Widget? _cachedMorePage;
   Widget? _cachedSettingsPage;
 
-  // שמירת BLoC של EmptyLibrary כדי שלא יאבד את המצב
+  // save BLoC של EmptyLibrary כדי שno יאבד את המצב
   EmptyLibraryBloc? _emptyLibraryBloc;
 
-  // שמירת מצב הספרייה הקודם כדי לזהות שינויים
+  // save מצב the library הprevious כדי לזהות שינויים
   bool? _previousLibraryEmptyState;
 
   final StartupWorkGate _startupWorkGate = StartupWorkGate();
@@ -101,9 +101,9 @@ class MainWindowScreenState extends State<MainWindowScreen>
   bool _isFindRefOpen = false;
   bool _isReadingSettingsPanelOpen = false;
   late Screen _lastScreen;
-  // עוקב אחר מצב ההגדרות הקודם לצורך dispatch ספציפי
+  // עוקב אחר מצב הsettings הprevious לצורך dispatch specific
   SettingsState? _prevSettingsState;
-  // עוקב אחר מצב הלוח הקודם לצורך dispatch ספציפי
+  // עוקב אחר מצב הלוח הprevious לצורך dispatch specific
   CalendarState? _prevCalendarState;
 
   bool _hasInitializedPageController = false;
@@ -113,7 +113,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       screen: Screen.library,
       icon: FluentIcons.library_24_regular,
       iconFilled: FluentIcons.library_24_filled,
-      label: 'ספרייה',
+      label: 'library',
       shortcutKey: 'key-shortcut-open-library-browser',
       shortcutDefault: 'ctrl+l',
     ),
@@ -137,7 +137,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       screen: Screen.search,
       icon: FluentIcons.search_24_regular,
       iconFilled: FluentIcons.search_24_filled,
-      label: 'חיפוש',
+      label: 'search',
       shortcutKey: 'key-shortcut-open-new-search',
       shortcutDefault: 'ctrl+q',
     ),
@@ -145,7 +145,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       screen: Screen.more,
       icon: FluentIcons.apps_24_regular,
       iconFilled: FluentIcons.apps_24_filled,
-      label: 'כלים',
+      label: 'Tools',
       shortcutKey: 'key-shortcut-open-more',
       shortcutDefault: 'ctrl+m',
     ),
@@ -153,7 +153,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
       screen: Screen.settings,
       icon: FluentIcons.settings_24_regular,
       iconFilled: FluentIcons.settings_24_filled,
-      label: 'הגדרות',
+      label: 'settings',
       shortcutKey: 'key-shortcut-open-settings',
       shortcutDefault: 'ctrl+comma',
     ),
@@ -168,7 +168,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
 
     // הצגת פופאפ פרסומת אחרי 5 שניות
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // אתחול tracker למעקב אחרי מיקום הקריאה
+      // אתחול tracker למעקב אחרי location הקריאה
       if (mounted) {
         _readerLocationTracker = ReaderLocationTracker(
           tabsBloc: context.read<TabsBloc>(),
@@ -177,8 +177,8 @@ class MainWindowScreenState extends State<MainWindowScreen>
 
       AdPopupDialog.showIfNeeded(context);
 
-      // רענון plugin calendar events עם scope אמיתי לאחר שה-context מוכן.
-      // הטעינה הראשונית ב-_initializeCalendar נקראה בלי workspace/book IDs —
+      // refresh plugin calendar events עם scope אמיתי noחר שה-context מוyes.
+      // הloading הראשונית ב-_initializeCalendar נקראה בלי workspace/book IDs —
       // כאן אנחנו מתקנים זאת עם ה-state שמזומן כעת.
       if (!mounted) return;
       try {
@@ -210,7 +210,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // אתחול PageController פעם אחת עם initialPage הנכון
+    // אתחול PageController פעם אחת עם initialPage הtrue
     if (!_hasInitializedPageController) {
       _hasInitializedPageController = true;
       final initialScreen = context.read<NavigationBloc>().state.currentScreen;
@@ -248,7 +248,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
         if (result.addedBooks > 0 ||
             result.updatedBooks > 0 ||
             result.addedLinks > 0) {
-          debugPrint('📚 סנכרון קבצים הושלם: ${result.addedBooks} ספרים חדשים, '
+          debugPrint('📚 סנכרון files הושלם: ${result.addedBooks} new books, '
               '${result.updatedBooks} עודכנו, ${result.addedLinks} קישורים');
 
           // Refresh the library browser to show new books
@@ -288,13 +288,13 @@ class MainWindowScreenState extends State<MainWindowScreen>
       }
     };
 
-    // שחזור פוקוס לאחר אירועי מצב חלון דיסקרטיים (maximize/unmaximize/fullscreen/restore)
+    // שBack focus noחר אירועי מצב חלון דיסקרטיים (maximize/unmaximize/fullscreen/restore)
     appWindowListener?.onWindowStateChanged = () {
       if (!mounted) return;
       FocusRepository().scheduleRestore();
     };
 
-    // שחזור פוקוס בזמן resize רציף — עם debounce כדי למנוע הצפת קריאות
+    // שBack focus בtime resize רציף — עם debounce כדי למנוע הצפת קריאות
     appWindowListener?.onWindowResizeOccurred = () {
       if (!mounted) return;
       FocusRepository().scheduleRestoreDebounced();
@@ -376,7 +376,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
     });
   }
 
-  /// ודאו שה-PageView מסונכרן למצב הניווט הנוכחי גם אם בחרו שוב באותו יעד.
+  /// ודאו שה-PageView מסונכרן למצב הניווט הcurrent גם אם בחרו שוב באותו יעד.
   Future<void> _syncPageWithState() async {
     if (!mounted || !pageController.hasClients) return;
     final currentScreen = context.read<NavigationBloc>().state.currentScreen;
@@ -498,7 +498,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
                   .dispatchEvent('workspace.changed', {
                 'workspaceId': state.activeWorkspaceId,
               });
-              // עדכון שם שולחן העבודה הנוכחי ב-HistoryBloc
+              // update name שולחן העבודה הcurrent ב-HistoryBloc
               final currentId = state.activeWorkspaceId;
               if (currentId != null) {
                 final workspace =
@@ -692,7 +692,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
             },
           ),
           // settings.changed עבור selectedCity ו-calendarType —
-          // שדות אלה נמצאים ב-CalendarState ולא ב-SettingsState
+          // fields אלה נמצאים ב-CalendarState וno ב-SettingsState
           BlocListener<CalendarCubit, CalendarState>(
             listenWhen: (previous, current) =>
                 previous.selectedCity != current.selectedCity ||
@@ -717,7 +717,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
               }
             },
           ),
-          // רענון לוח כשמשתנה הספר הפתוח (book-scope events)
+          // refresh לוח כשvariable הbook הopen (book-scope events)
           BlocListener<TabsBloc, TabsState>(
             listenWhen: (previous, current) =>
                 previous.currentTab?.title != current.currentTab?.title,
@@ -731,7 +731,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
               );
             },
           ),
-          // רענון לוח כשמשתנה ה-workspace (workspace-scope events)
+          // refresh לוח כשvariable ה-workspace (workspace-scope events)
           BlocListener<WorkspaceBloc, WorkspaceState>(
             listenWhen: (previous, current) =>
                 previous.activeWorkspaceId != current.activeWorkspaceId,
@@ -754,14 +754,14 @@ class MainWindowScreenState extends State<MainWindowScreen>
           builder: (context, state) {
             // Build the pages list here so we can inject the EmptyLibraryScreen
             // into the library page while keeping the rest of the app visible.
-            // נבנה את הדפים רק פעם אחת ונשמור אותם
-            // אם מצב הספרייה השתנה, נבנה מחדש את דף הספרייה
+            // נבנה את הpages רק פעם אחת ונSave אותם
+            // אם מצב the library השתנה, נבנה again את page the library
             if (_cachedLibraryPage == null ||
                 state.isLibraryEmpty !=
                     (_cachedLibraryPage is EmptyLibraryScreen) ||
                 _previousLibraryEmptyState != state.isLibraryEmpty) {
               if (state.isLibraryEmpty) {
-                // יצירת BLoC פעם אחת אם עדיין לא קיים
+                // יצירת BLoC פעם אחת אם עדיין no קיים
                 _emptyLibraryBloc ??= EmptyLibraryBloc();
                 _cachedLibraryPage = EmptyLibraryScreen(
                   bloc: _emptyLibraryBloc,
@@ -770,7 +770,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
                   },
                 );
               } else {
-                // אם הספרייה כבר לא ריקה, נסגור את ה-BLoC
+                // אם the library כבר no emptyה, נclosed את ה-BLoC
                 _emptyLibraryBloc?.close();
                 _emptyLibraryBloc = null;
                 _cachedLibraryPage = LibraryBrowser(key: libraryBrowserKey);
@@ -962,7 +962,7 @@ class MainWindowScreenState extends State<MainWindowScreen>
                                 child: Row(
                                   children: [
                                     Text(
-                                      'הגדרות תצוגת הספרים',
+                                      'settings תצוגת הbooks',
                                       textDirection: TextDirection.rtl,
                                       style: Theme.of(context)
                                           .textTheme
@@ -1065,12 +1065,12 @@ class MainWindowScreenState extends State<MainWindowScreen>
   }
 
   int _getSelectedIndex(Screen currentScreen) {
-    // מיפוי מחדש של האינדקסים כיון שהסרנו את דף האיתור
+    // מיפוי again של the indexים כיון שהסרנו את page האיתור
     switch (currentScreen) {
       case Screen.library:
         return 0;
       case Screen.find:
-        return -1; // לא נבחר
+        return -1; // no selected
       case Screen.reading:
         return 2;
       case Screen.search:

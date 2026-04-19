@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:sqlite3/sqlite3.dart' as sqlite3;
 import 'package:zstandard/zstandard.dart';
 
-/// מנהל את מסד הקטלוגים החיצוניים (אוצר החכמה והיברובוקס).
+/// admin את מסד הקטלוגים החיצוניים (אוצר החכמה והיברובוקס).
 class ExternalCatalogRepository {
   static const String releaseApiUrl =
       'https://api.github.com/repos/Otzaria/otzar-HB_catalog/releases/latest';
@@ -26,7 +26,7 @@ class ExternalCatalogRepository {
   })  : _httpClient = httpClient ?? http.Client(),
         _zstandard = zstandard ?? Zstandard();
 
-  /// מחזיר את נתיב קובץ ה-DB של הקטלוגים.
+  /// מחזיר את path file ה-DB של הקטלוגים.
   String get databasePath => DatabaseConstants.getExternalCatalogDatabasePath();
 
   /// בודק האם מסד הקטלוגים קיים ליד `seforim.db`.
@@ -34,7 +34,7 @@ class ExternalCatalogRepository {
     return File(databasePath).exists();
   }
 
-  /// מחזיר את ספרי אוצר החכמה מתוך מסד הקטלוגים החיצוני.
+  /// מחזיר את bookי אוצר החכמה מתוך מסד הקטלוגים החיצוני.
   Future<List<ExternalLibraryBook>> getOtzarBooks() async {
     return _loadBooks(
       tableName: 'otzar_hahochma',
@@ -42,7 +42,7 @@ class ExternalCatalogRepository {
     );
   }
 
-  /// מחזיר את ספרי היברובוקס מתוך מסד הקטלוגים החיצוני.
+  /// מחזיר את bookי היברובוקס מתוך מסד הקטלוגים החיצוני.
   Future<List<Book>> getHebrewBooks() async {
     return _loadBooks(
       tableName: 'hebrew_books',
@@ -84,9 +84,9 @@ class ExternalCatalogRepository {
     return _fetchReleaseVersion(release);
   }
 
-  /// מעדכן את מסד הקטלוגים רק אם קיימת גרסה חדשה יותר.
+  /// מעדyes את מסד הקטלוגים רק אם קיימת גרסה חדשה יותר.
   ///
-  /// מחזיר `true` אם בוצע עדכון בפועל.
+  /// מחזיר `true` אם בוצע update בפועל.
   Future<bool> updateDatabaseIfNeeded() async {
     if (!await databaseExists()) {
       return false;
@@ -171,17 +171,17 @@ class ExternalCatalogRepository {
 
     if (response.statusCode != 200) {
       throw Exception(
-          'שגיאה בקבלת רליס הקטלוגים האחרון: ${response.statusCode}');
+          'error בקבלת רליס הקטלוגים האחרון: ${response.statusCode}');
     }
 
     final decoded = jsonDecode(utf8.decode(response.bodyBytes));
     if (decoded is! Map<String, dynamic>) {
-      throw Exception('מבנה תשובת GitHub של קטלוג הספרים אינו תקין');
+      throw Exception('מבנה תשובת GitHub של קטלוג הbooks אינו תקין');
     }
 
     final databaseAsset = parseLatestDatabaseAsset(decoded);
     if (databaseAsset == null) {
-      throw Exception('לא נמצא קובץ DB של הקטלוגים ברליס האחרון');
+      throw Exception('no נמצא file DB של הקטלוגים ברליס האחרון');
     }
 
     return ExternalCatalogReleaseInfo(
@@ -194,7 +194,7 @@ class ExternalCatalogRepository {
   Future<Uint8List> _downloadAssetBytes(String downloadUrl) async {
     final response = await _httpClient.get(Uri.parse(downloadUrl));
     if (response.statusCode != 200) {
-      throw Exception('שגיאה בהורדת DB הקטלוגים: ${response.statusCode}');
+      throw Exception('error בparentדת DB הקטלוגים: ${response.statusCode}');
     }
     return response.bodyBytes;
   }
@@ -203,7 +203,7 @@ class ExternalCatalogRepository {
     final response = await _httpClient.get(Uri.parse(downloadUrl));
     if (response.statusCode != 200) {
       throw Exception(
-          'שגיאה בהורדת קובץ הגרסה של הקטלוגים: ${response.statusCode}');
+          'error בparentדת file הגרסה של הקטלוגים: ${response.statusCode}');
     }
     return utf8.decode(response.bodyBytes);
   }
@@ -212,7 +212,7 @@ class ExternalCatalogRepository {
     final versionAsset = release.versionAsset;
     if (versionAsset == null) {
       throw Exception(
-        'לא נמצא ${DatabaseConstants.externalCatalogVersionFileName} ברליס ${release.tagName}',
+        'no נמצא ${DatabaseConstants.externalCatalogVersionFileName} ברליס ${release.tagName}',
       );
     }
 
@@ -220,7 +220,7 @@ class ExternalCatalogRepository {
     final version = parseVersionText(versionText);
     if (version == null) {
       throw Exception(
-        'לא ניתן לקרוא את גרסת הקטלוג מתוך ${versionAsset.fileName}',
+        'no ניתן לקרוא את גרסת הקטלוג מתוך ${versionAsset.fileName}',
       );
     }
 

@@ -68,13 +68,13 @@ class _SearchPaneBaseState extends State<SearchPaneBase> {
       if (delta > 4 && !_isCompact) {
         setState(() => _isCompact = true);
       }
-      // גלילה למעלה או חזרה לראש: פתח
+      // גלילה למעלה או חזרה לראש: Open
       else if ((delta < -4 || offset <= 0) && _isCompact) {
         setState(() => _isCompact = false);
       }
     }
 
-    // פוקוס בשדה — תמיד פתוח
+    // focus בfield — תמיד open
     if (notification is UserScrollNotification && _isCompact) {
       if (widget.focusNode.hasFocus) {
         setState(() => _isCompact = false);
@@ -118,7 +118,7 @@ class _SearchPaneBaseState extends State<SearchPaneBase> {
       child: widget.isNoResults
           ? const Center(
               child: Text(
-                'אין תוצאות',
+                'אין results',
                 textDirection: TextDirection.rtl,
               ),
             )

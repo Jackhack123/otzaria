@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otzaria/tools/calendar/ulits/calendar_cubit.dart';
 import 'package:otzaria/settings/panels/settings_panels_exports.dart';
 
-/// טאב כלים — לוח שנה, גימטריות, עורך.
+/// טאב Tools — לוח year, גימטריות, עורך.
 ///
-/// [calendarCubit] — העברה מפורשת של CalendarCubit כדי לתקן את הבאג שבו
-/// הגדרות לוח השנה לא נשמרות כאשר ההגדרות נפתחות כ-route חדש (ה-context
-/// של המסך החדש לא מכיל את ה-CalendarCubit ממסך הניווט).
+/// [calendarCubit] — העברה מפורשת של CalendarCubit כדי לתקן את nextג שבו
+/// settings לוח הyear no נשמרות כאשר הsettings נOpenות כ-route חדש (ה-context
+/// של המסך החדש no מכיל את ה-CalendarCubit ממסך הניווט).
 class ToolsSettingsTab extends StatelessWidget {
-  /// CalendarCubit שמגיע מה-context של המסך שפתח את ההגדרות.
-  /// אם null, מנסה לקרוא מה-context (תואמות לאחור).
+  /// CalendarCubit שמגיע מה-context של המסך שOpen את הsettings.
+  /// אם null, מנסה לקרוא מה-context (תואמות noחור).
   final CalendarCubit? calendarCubit;
 
   const ToolsSettingsTab({super.key, this.calendarCubit});

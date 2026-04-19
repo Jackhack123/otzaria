@@ -79,7 +79,7 @@ class HistoryView extends StatelessWidget {
             if (item.isSearch) {
               final tabsBloc = ctx.read<TabsBloc>();
               // Always create a new search tab instead of reusing existing one
-              final searchTab = SearchingTab('חיפוש', null);
+              final searchTab = SearchingTab('search', null);
               tabsBloc.add(AddTab(searchTab));
 
               // Restore search query and options
@@ -131,16 +131,16 @@ class HistoryView extends StatelessWidget {
           },
           onDelete: (ctx, originalIndex) {
             ctx.read<HistoryBloc>().add(RemoveHistory(originalIndex));
-            UiSnack.show('נמחק בהצלחה');
+            UiSnack.show('נDelete בsuccess');
           },
           onClearAll: (ctx) {
             ctx.read<HistoryBloc>().add(ClearHistory());
-            UiSnack.show('כל ההיסטוריה נמחקה');
+            UiSnack.show('כל ההיסטוריה נDeleteה');
           },
           hintText: 'חפש בהיסטוריה...',
           emptyText: 'אין היסטוריה',
-          notFoundText: 'לא נמצאו תוצאות',
-          clearAllText: 'מחק את כל ההיסטוריה',
+          notFoundText: 'no נמצאו results',
+          clearAllText: 'Delete את כל ההיסטוריה',
           leadingIconBuilder: (item) =>
               _getLeadingIcon(item.book, item.isSearch),
           subtitleBuilder: (item) {
@@ -151,7 +151,7 @@ class HistoryView extends StatelessWidget {
               final displayed = allNames.length > 2
                   ? '${allNames.take(2).join(', ')}...'
                   : allNames.join(', ');
-              parts.add('חיפוש בקטגוריות: $displayed');
+              parts.add('search בcategories: $displayed');
             }
             if (item.workspaceName != null) {
               parts.add(item.workspaceName!);
@@ -161,7 +161,7 @@ class HistoryView extends StatelessWidget {
           subtitleTooltipBuilder: (item) {
             final facets = item.searchScopeFacets;
             if (facets == null || facets.length <= 2) return null;
-            return 'חיפוש בקטגוריות: ${_facetDisplayNames(facets).join(', ')}';
+            return 'search בcategories: ${_facetDisplayNames(facets).join(', ')}';
           },
         );
       },

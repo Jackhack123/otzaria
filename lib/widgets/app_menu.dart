@@ -42,7 +42,7 @@ class AppContextMenuEntry {
   final VoidCallback? onTap;
   final Widget? trailing;
 
-  /// תת-פריטים לתפריט משנה
+  /// תת-פריטים לתפריט מyear
   final List<AppContextMenuEntry>? children;
 
   const AppContextMenuEntry({
@@ -69,7 +69,7 @@ class AppContextMenuEntry {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AppPopupMenuButton — כפתור שפותח תפריט
+// AppPopupMenuButton — button שפותח תפריט
 // ═══════════════════════════════════════════════════════════════════════════
 
 class AppPopupMenuButton<T> extends StatefulWidget {
@@ -269,11 +269,11 @@ Future<T?> showAnchoredAppMenu<T>({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// _buildAppMenuRowContent — בניית שורת תוכן בתפריט
+// _buildAppMenuRowContent — בניית שורת content בתפריט
 //
 // שינויים:
-// • הרקע הנבחר ממלא שורה שלמה (ללא borderRadius, ללא גבול)
-// • סימן ✓ תמיד מופיע לפריט נבחר
+// • הרקע הselected מfull line שלמה (לno borderRadius, לno גבול)
+// • סימן ✓ תמיד מופיע לפריט selected
 // ═══════════════════════════════════════════════════════════════════════════
 
 Widget _buildAppMenuRowContent(
@@ -287,7 +287,7 @@ Widget _buildAppMenuRowContent(
   bool isDestructive = false,
 }) {
   final colorScheme = Theme.of(context).colorScheme;
-  // M3: selectedContainer = primaryContainer (ללא גבול, ממלא שורה שלמה)
+  // M3: selectedContainer = primaryContainer (לno גבול, מfull line שלמה)
   final selectedBackground =
       colorScheme.primaryContainer.withValues(alpha: 0.95);
   final foregroundColor = isDestructive
@@ -301,7 +301,7 @@ Widget _buildAppMenuRowContent(
       minWidth: metrics.menuMinWidth,
       minHeight: metrics.itemHeight,
     ),
-    // צבע מלא שורה — ללא עיגול פינות וללא גבול
+    // צבע full line — לno עיגול פינות ולno גבול
     color: isSelected ? selectedBackground : null,
     padding: metrics.itemPadding,
     alignment: AlignmentDirectional.centerStart,
@@ -332,7 +332,7 @@ Widget _buildAppMenuRowContent(
             ),
           ),
         ),
-        // סימן ✓ לפריט נבחר (תמיד, בכל סוג תפריט)
+        // סימן ✓ לפריט selected (תמיד, בכל סוג תפריט)
         if (isSelected) ...[
           const SizedBox(width: 8),
           Icon(
@@ -375,7 +375,7 @@ PopupMenuEntry<T> buildAppPopupMenuItem<T>(
     enabled: entry.enabled,
     height: metrics.itemHeight,
     // padding: EdgeInsets.zero — הריפוד מנוהל ב-_buildAppMenuRowContent
-    // כדי שהצבע הנבחר יכסה שורה שלמה
+    // כדי שהצבע הselected יכסה line שלמה
     padding: EdgeInsets.zero,
     child: _buildAppMenuRowContent(
       context,
@@ -489,7 +489,7 @@ PopupMenuEntry<T> buildAppSubmenuPopupMenuItem<T>({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// showAppMenu — הצגת תפריט במיקום מוחלט
+// showAppMenu — הצגת תפריט בlocation מוחלט
 // ═══════════════════════════════════════════════════════════════════════════
 
 Future<T?> showAppMenu<T>({
@@ -516,10 +516,10 @@ Future<T?> showAppMenu<T>({
 // שימוש:
 //   AppContextMenuRegion(
 //     menuBuilder: (context) => [
-//       AppContextMenuEntry(label: 'העתק', icon: FluentIcons.copy_24_regular, onTap: ...),
+//       AppContextMenuEntry(label: 'Copy', icon: FluentIcons.copy_24_regular, onTap: ...),
 //       const AppContextMenuEntry.divider(),
 //       AppContextMenuEntry(
-//         label: 'מפרשים',
+//         label: 'Commentators',
 //         icon: FluentIcons.book_24_regular,
 //         children: [...],
 //       ),
@@ -758,7 +758,7 @@ class _AppContextMenuRegionState extends State<AppContextMenuRegion> {
   MenuStyle _menuStyle(BuildContext context, AppMenuMetrics metrics) {
     final themeStyle = Theme.of(context).menuTheme.style;
     // alignment: Alignment.topLeft — מציב את הפינה השמאלית-עליונה של תת-התפריט
-    // בנקודת הכפתור (קצה ימין של הכפתור), כך שהתפריט נפתח ימינה.
+    // בנקודת הbutton (קצה ימין של הbutton), כך שהתפריט נOpen ימינה.
     // Flutter יהפוך אוטומטית שמאלה אם אין מקום בצד ימין.
     return (themeStyle ?? const MenuStyle()).copyWith(
       alignment: Alignment.topLeft,
@@ -1044,10 +1044,10 @@ class _AppContextMenuPanel extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AppSelectionField — שדה-בחירה (trigger לתפריט נפתח)
+// AppSelectionField — field-בחירה (trigger לתפריט נOpen)
 //
-// עיצוב: זהה לשורת הטריגר של DropdownMenu עם חיפוש
-// • ללא גבול במצב רגיל
+// עיצוב: זהה לשורת הטריגר של DropdownMenu עם search
+// • לno גבול במצב רגיל
 // • גבול עדין בעת hover
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1156,7 +1156,7 @@ class _AppSelectionFieldState extends State<AppSelectionField> {
             const SizedBox(width: 8),
           ],
           Flexible(child: widget.child),
-          // ללא חץ — המראה הוויזואלי של הכרטיס מספיק כ-affordance
+          // לno חץ — הAppearance הוויזואלי של הכרטיס מספיק כ-affordance
         ],
       ),
     );
@@ -1196,10 +1196,10 @@ class _AppSelectionFieldState extends State<AppSelectionField> {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AppDropdownField — שדה בחירה עם תפריט נפתח
+// AppDropdownField — field בחירה עם תפריט נOpen
 //
 // • enableSearch: false → AppSelectionField + popup menu
-// • enableSearch: true  → DropdownMenu עם חיפוש + auto-select בפתיחה
+// • enableSearch: true  → DropdownMenu עם search + auto-select בפתיחה
 //   ההבדל היחיד: האם ניתן להקליד ולסנן
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1292,7 +1292,7 @@ class _AppDropdownFieldState<T> extends State<AppDropdownField<T>> {
 
   void _handleFocusChanged() {
     if (_focusNode.hasFocus) {
-      // בחירת כל הטקסט אוטומטית בפתיחה — סעיף 6
+      // בחירת כל הtext אוטומטית בפתיחה — סעיף 6
       Future.microtask(() {
         if (mounted && _focusNode.hasFocus) {
           _controller.selection = TextSelection(
@@ -1477,7 +1477,7 @@ class _AppDropdownFieldState<T> extends State<AppDropdownField<T>> {
         AppMenuMetrics.create(compactMenus: false);
     final isCompact = metrics.compactMenus;
 
-    // גובה, פונט ורדיוס תלויים ב-compact mode - משתמשים ב-AppInputTokens
+    // גובה, פונט ורדיוס תלויים ב-compact mode - users ב-AppInputTokens
     final fieldHeight = AppInputTokens.height(isCompact);
     final fieldFontSize = AppInputTokens.fontSize(isCompact);
     final fieldRadius = AppInputTokens.radius(isCompact);
@@ -1550,7 +1550,7 @@ class _AppDropdownFieldState<T> extends State<AppDropdownField<T>> {
                 ? constraints.maxWidth
                 : width;
 
-        // ── מצב ללא חיפוש: AppSelectionField + popup ──────────────────────
+        // ── מצב לno search: AppSelectionField + popup ──────────────────────
         if (!widget.enableSearch) {
           final selectedEntry = _selectedEntry;
           final displayText =
@@ -1602,7 +1602,7 @@ class _AppDropdownFieldState<T> extends State<AppDropdownField<T>> {
           );
         }
 
-        // ── מצב עם חיפוש: DropdownMenu ────────────────────────────────────
+        // ── מצב עם search: DropdownMenu ────────────────────────────────────
         return SizedBox(
           width: resolvedWidth,
           child: Focus(

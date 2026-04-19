@@ -122,7 +122,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         final index = blocState.visibleIndices.first;
         String ref =
             await refFromIndex(index, Future.value(blocState.tableOfContents));
-        // הוספת שם הספר לכותרת
+        // הוספת name הbook לכותרת
         ref = addBookTitleToRef(ref, blocState.book.title);
         return Bookmark(
           ref: ref,
@@ -142,12 +142,12 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       if (outline != null && outline.isNotEmpty) {
         final heading = _findHeadingForPage(outline, page);
         if (heading != null) {
-          ref = '${tab.title} $heading'; // שם הספר + הכותרת
+          ref = '${tab.title} $heading'; // name הbook + הכותרת
         } else {
-          ref = '${tab.title} עמוד $page'; // אם אין כותרת, הצג עם מספר עמוד
+          ref = '${tab.title} page $page'; // אם אין כותרת, הצג עם מbook page
         }
       } else {
-        ref = '${tab.title} עמוד $page'; // אם אין outline, הצג עם מספר עמוד
+        ref = '${tab.title} page $page'; // אם אין outline, הצג עם מbook page
       }
 
       return Bookmark(
@@ -160,7 +160,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     return null;
   }
 
-  /// מוצא את הכותרת המתאימה לעמוד מסוים ב-outline
+  /// מוצא את הכותרת המתאימה לpage מסוים ב-outline
   String? _findHeadingForPage(List<PdfOutlineNode> outline, int page) {
     PdfOutlineNode? bestMatch;
 
@@ -168,12 +168,12 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       for (final node in nodes) {
         final nodePage = node.dest?.pageNumber;
         if (nodePage != null && nodePage <= page) {
-          // אם זה העמוד המדויק או קרוב יותר מהמצא הקודם
+          // אם זה הpage המדויק או קרוב יותר מהמצא הprevious
           if (bestMatch == null ||
               nodePage > (bestMatch!.dest?.pageNumber ?? 0)) {
             bestMatch = node;
           }
-          // חפש גם בילדים
+          // חפש גם בchildren
           if (node.children.isNotEmpty) {
             searchNodes(node.children);
           }
@@ -194,16 +194,16 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
     const Map<String, String> optionAbbreviations = {
       'קידומות': 'ק',
-      'סיומות': 'ס',
+      'endת': 'ס',
       'קידומות דקדוקיות': 'קד',
-      'סיומות דקדוקיות': 'סד',
-      'כתיב מלא/חסר': 'מח',
+      'endת דקדוקיות': 'סד',
+      'כתיב full/חסר': 'מח',
       'חלק ממילה': 'חמ',
     };
 
     const Set<String> suffixOptions = {
-      'סיומות',
-      'סיומות דקדוקיות',
+      'endת',
+      'endת דקדוקיות',
     };
 
     for (int i = 0; i < words.length; i++) {

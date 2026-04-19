@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-/// Widget שמציג הדרכה על חלונית המפרשים בפעם הראשונה
+/// Widget שמציג הדרכה על חלונית הCommentators בפעם הראשונה
 class CommentaryPaneTooltip extends StatefulWidget {
   final Widget child;
 
@@ -42,17 +42,17 @@ class _CommentaryPaneTooltipState extends State<CommentaryPaneTooltip>
   }
 
   Future<void> _checkIfShouldShow() async {
-    // אם כבר הוצג בהפעלה הנוכחית - לא מציגים שוב
+    // אם כבר הוצג בEnableה הcurrent - no מציגים שוב
     if (CommentaryPaneTooltip._shownThisSession) return;
 
-    // בדיקה אם המשתמש כבר ראה - לא מציגים יותר
+    // check אם הuser כבר ראה - no מציגים יותר
     final alreadyShown = Settings.getValue<bool>(
             CommentaryPaneTooltip._settingsKey,
             defaultValue: false) ??
         false;
     if (alreadyShown) return;
 
-    // בדיקה אם עבר שבוע מאז ההצגה הראשונה
+    // check אם עבר week מאז ההצגה הראשונה
     final firstShownStr =
         Settings.getValue<String>(CommentaryPaneTooltip._firstShownDateKey);
     if (firstShownStr != null) {
@@ -60,21 +60,21 @@ class _CommentaryPaneTooltipState extends State<CommentaryPaneTooltip>
       if (firstShown != null) {
         final daysSinceFirst = DateTime.now().difference(firstShown).inDays;
         if (daysSinceFirst >= 7) {
-          // עבר שבוע - לא מציגים יותר
+          // עבר week - no מציגים יותר
           Settings.setValue<bool>(CommentaryPaneTooltip._settingsKey, true);
           return;
         }
       }
     } else {
-      // זו הפעם הראשונה - שומרים את התאריך
+      // זו הפעם הראשונה - שומרים את הdate
       Settings.setValue<String>(CommentaryPaneTooltip._firstShownDateKey,
           DateTime.now().toIso8601String());
     }
 
-    // מסמנים שהוצג בהפעלה הנוכחית
+    // מסמנים שהוצג בEnableה הcurrent
     CommentaryPaneTooltip._shownThisSession = true;
 
-    // המתנה קצרה לפני הצגת ההדרכה
+    // המתנה shortה לפני הצגת ההדרכה
     await Future.delayed(const Duration(milliseconds: 1500));
     if (mounted) {
       _showOverlay();
@@ -125,7 +125,7 @@ class _CommentaryPaneTooltipState extends State<CommentaryPaneTooltip>
                     ],
                   ),
                   child: Text(
-                    'לחץ כאן למפרשים וקישורים ←',
+                    'לחץ כאן לCommentators וקישורים ←',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onInverseSurface,
                       fontSize: 13,

@@ -7,7 +7,7 @@ import 'package:otzaria/text_book/view/splited_view/splited_view_screen.dart';
 /// Shows the main text with commentary panel on the side
 class SplitViewStrategyImpl extends TextBookViewStrategy {
   @override
-  String get displayName => 'מפרשים בצד';
+  String get displayName => 'Commentators בצד';
 
   @override
   Widget buildView(BuildContext context, TextBookViewConfig config) {

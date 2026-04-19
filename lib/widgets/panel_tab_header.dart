@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
-/// Header משותף לכל הפנלים עם טאב בר וכפתור סגירה.
+/// Header משותף לכל הפנלים עם טאב בר וbutton סגירה.
 class PanelTabHeader extends StatelessWidget {
   final TabController controller;
   final List<Widget> tabs;

@@ -6,10 +6,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
-/// מפתח גלובלי לניווט - חובה לחבר ל-MaterialApp
+/// key גלובלי לניווט - חובה לחבר ל-MaterialApp
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-/// מפתח גלובלי ל-ScaffoldMessenger - נשמר לתאימות לאחור
+/// key גלובלי ל-ScaffoldMessenger - נשמר לתאימות noחור
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -17,13 +17,13 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 // טוקנים פנימיים
 // ─────────────────────────────────────────────────────────────────────────────
 abstract class _ToastTokens {
-  /// פינות בצורת גלולה — כמו שורת החיפוש
+  /// פינות בצורת scrollה — כמו שורת הsearch
   static const double radius = 28.0;
 
   static const double padH = AppTokens.spaceMD; // 16
   static const double padV = AppTokens.spaceSM; // 8
 
-  static const double fontMessage = AppTokens.fontXL; // 18 — גדול יותר
+  static const double fontMessage = AppTokens.fontXL; // 18 — large יותר
   static const double fontAction = AppTokens.fontMD; // 14
 
   static const double maxWidth = 500;
@@ -31,7 +31,7 @@ abstract class _ToastTokens {
   /// שקיפות רקע — מספיק שקוף כדי לראות את הרקע, מספיק אטום לקריאות
   static const double bgAlpha = 0.88;
 
-  /// blur לאפקט זכוכית
+  /// blur noפקט זכוכית
   static const double blurSigma = 24.0;
 
   static const Duration animEnter = AppTokens.animFast; // 150ms
@@ -44,7 +44,7 @@ abstract class _ToastTokens {
 enum _SnackVariant { standard, error, warning }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// UiSnack — ממשק ציבורי
+// UiSnack — interface ציבורי
 // ─────────────────────────────────────────────────────────────────────────────
 class UiSnack {
   static OverlayEntry? _currentOverlay;
@@ -111,11 +111,11 @@ class UiSnack {
         enableHaptic: false,
       );
 
-  /// הודעה צפה (תאימות לאחור)
+  /// Message צפה (תאימות noחור)
   static void showFloating(String message, {Duration? duration}) =>
       show(message, duration: duration ?? const Duration(seconds: 4));
 
-  /// הודעה עם משך זמן מותאם (תאימות לאחור)
+  /// Message עם משך time מותאם (תאימות noחור)
   static void showWithDuration(String message, {Duration? duration}) =>
       show(message, duration: duration ?? const Duration(seconds: 2));
 
@@ -219,17 +219,17 @@ class UiSnack {
     _currentOverlay = null;
   }
 
-  // ── קבועי טקסט ───────────────────────────────────────────────────────────
-  static const String textCopied = 'הטקסט הועתק ללוח';
-  static const String formattedTextCopied = 'הטקסט המעוצב הועתק ללוח';
-  static const String copyError = 'שגיאה בהעתקה';
-  static const String formattedCopyError = 'שגיאה בהעתקה מעוצבת';
-  static const String sectionNotFound = 'הדף לא נמצא בתוכן העניינים';
-  static const String bookNotFound = 'הספר איננו קיים';
-  static const String noteCreated = 'ההערה נוצרה והוצבה בסרגל';
-  static const String savedSuccessfully = 'השינויים נשמרו בהצלחה';
-  static const String textNotFound = 'הטקסט לא נמצא';
-  static const String noTextSelected = 'אנא בחר טקסט להעתקה';
+  // ── constantי text ───────────────────────────────────────────────────────────
+  static const String textCopied = 'הtext הועתק ללוח';
+  static const String formattedTextCopied = 'הtext המעוצב הועתק ללוח';
+  static const String copyError = 'error בCopyה';
+  static const String formattedCopyError = 'error בCopyה מעוצבת';
+  static const String sectionNotFound = 'הpage no נמצא בcontent העניינים';
+  static const String bookNotFound = 'הbook איננו קיים';
+  static const String noteCreated = 'הnote createdה והוצבה בסרגל';
+  static const String savedSuccessfully = 'השינויים נשמרו בsuccess';
+  static const String textNotFound = 'הtext no נמצא';
+  static const String noTextSelected = 'אנא בחר text לCopyה';
   static const String cleanupCompleted = 'ניקוי טיוטות הושלם';
 }
 
@@ -306,7 +306,7 @@ class _SnackToastState extends State<_SnackToast>
     super.dispose();
   }
 
-  /// צבעים לפי variant — נשענים על צבעי המערכת (ColorScheme)
+  /// צבעים לפי variant — נשענים על צבעי הSystem (ColorScheme)
   ({Color bg, Color fg, Color action}) _colors(ColorScheme cs) =>
       switch (widget.variant) {
         _SnackVariant.error => (
@@ -333,11 +333,11 @@ class _SnackToastState extends State<_SnackToast>
     final c = _colors(cs);
     final messageMaxLines = widget.variant == _SnackVariant.warning ? 4 : 2;
 
-    // רקע שקוף-למחצה — מספיק אטום לקריאות, מספיק שקוף לאפקט עמוק
+    // רקע שקוף-למחצה — מספיק אטום לקריאות, מספיק שקוף noפקט עמוק
     final bgColor = c.bg.withValues(alpha: _ToastTokens.bgAlpha);
 
     return Positioned(
-      // מיקום מקורי — מרחף מעל תחתית המסך
+      // location מקורי — מרחף מעל תחתית המסך
       bottom: 64,
       left: 20,
       right: 20,

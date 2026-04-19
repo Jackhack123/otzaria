@@ -319,7 +319,7 @@ $content''';
       // This would typically be in the book's directory with a .links extension
       final libraryPath =
           Settings.getValue<String>(SettingsRepository.keyLibraryPath) ?? '.';
-      final bookPath = path.join(libraryPath, 'אוצריא');
+      final bookPath = path.join(libraryPath, 'Otzaria');
 
       // Look for links file - this is a simplified check
       // In practice, you'd need to check the actual book structure

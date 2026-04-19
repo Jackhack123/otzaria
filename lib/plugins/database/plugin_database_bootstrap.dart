@@ -5,11 +5,11 @@ import 'plugin_database_source.dart';
 
 /// אתחול מקורות נתונים SQLite לתוספים.
 ///
-/// קוראת לפונקציה זו פעם אחת בזמן אתחול האפליקציה (מ-`initialize()` ב-main.dart).
+/// קוראת לfunction זו פעם אחת בtime אתחול האפליקציה (מ-`initialize()` ב-main.dart).
 /// היא רושמת את כל מסדי הנתונים שהאפליקציה מציעה לתוספים.
 ///
-/// מקורות שקובץ ה-DB שלהם לא קיים — נרשמים עם הנתיב אך יסומנו כ-unavailable
-/// בתגובה ל-`database.listSources`. אין crash.
+/// מקורות שfile ה-DB שלהם no קיים — נרשמים עם הpath אך יסומנו כ-unavailable
+/// בcomment ל-`database.listSources`. אין crash.
 Future<void> initPluginDatabaseSources() async {
   final libraryPath = await AppPaths.getLibraryPath();
 
@@ -19,7 +19,7 @@ Future<void> initPluginDatabaseSources() async {
 void _registerTalmudSynopsis(String libraryPath) {
   final dbPath = p.join(libraryPath, 'talmud_synopsis_pooled.db');
 
-  // נרשם תמיד — ה-service יבדוק בזמן ריצה אם הקובץ קיים (available: true/false)
+  // נרname תמיד — ה-service יבדוק בtime ריצה אם הfile קיים (available: true/false)
   PluginDatabaseRegistry.instance.register(PluginDatabaseSource(
     sourceId: 'talmud_synopsis',
     label: 'עדי נוסח בבלי',

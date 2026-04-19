@@ -44,9 +44,9 @@ import 'package:otzaria/widgets/otzaria_search_field.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 import 'package:otzaria/theme/app_surfaces.dart';
 
-// ── קבועים ────────────────────────────────────────────────────────────────────
+// ── constants ────────────────────────────────────────────────────────────────────
 
-/// רוחב מינימלי להצגת LibraryDafYomi בשורה הראשית (לא בשורה שניה)
+/// רוחב מינימלי להצגת LibraryDafYomi בline הראשית (no בline שניה)
 const double _kDafYomiInlineMinWidth = 820.0;
 
 /// דיבאונס לגלילה (ms) — מונע rebuild חוזר
@@ -72,7 +72,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
   double? _previewPaneWidthOverride;
   late final ValueNotifier<double> _topBarTotalHeight;
 
-  /// שולט בנראות השורה השניה — מוגן מפני flicker ע"י debounce ב-AppTopBar
+  /// שולט בנראות הline השניה — מוגן מפני flicker ע"י debounce ב-AppTopBar
   late final ValueNotifier<bool> _secondaryRowVisible;
 
   /// דיבאונס timer לגלילה — מונע setState חוזר בכל scroll event
@@ -80,22 +80,22 @@ class _LibraryBrowserState extends State<LibraryBrowser>
   bool _lastScrollVisible = true;
 
   static const List<String> _orderedTopCategories = [
-    'תנ"ך',
+    'Written Torah',
     'מדרש',
-    'משנה',
-    'תלמוד בבלי',
-    'תלמוד ירושלמי',
+    'מyear',
+    'Talmud בבלי',
+    'Talmud ירושלמי',
     'תוספתא',
     'הלכה',
     'שו"ת',
     'קבלה',
-    'סדר התפילה',
+    'order התפילה',
     'מחשבת ישראל',
     'חסידות',
-    'ספרי מוסר',
-    'מילונים וספרי יעץ',
+    'bookי מוסר',
+    'מילונים וbookי יעץ',
     'לימוד יומי',
-    'ספרות עזר',
+    'bookות עזר',
     'בית שני',
   ];
 
@@ -273,16 +273,16 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                     backgroundColor: AppSurfaces.panelBackground(context),
                     body: LayoutBuilder(
                       builder: (ctx, constraints) {
-                        // האם יש מספיק מקום ל-DafYomi בשורה הראשית?
+                        // האם יש מספיק מקום ל-DafYomi בline הראשית?
                         final dafYomiInline =
                             constraints.maxWidth >= _kDafYomiInlineMinWidth;
                         final isCompact = settingsState.compactMenuMode;
 
-                        // גובה הסרגל הראשי (קבוע) — ממנו נגזר ה-padding התחתון
+                        // גובה הסרגל הראשי (constant) — ממנו נגזר ה-padding התחתון
                         final primaryBarH = AppTopBar.barHeight(isCompact);
 
-                        // גובה השורה השניה המקסימלי משמש כ-fallback לפני שיש
-                        // מדידה בפועל מה-AppTopBar.
+                        // גובה הline השניה המקסימלי משמש כ-fallback לפני שיש
+                        // accurateה בפועל מה-AppTopBar.
                         const double kSecondaryRowMaxH = 52.0;
                         final hasSecondaryRow = !dafYomiInline ||
                             (context
@@ -295,8 +295,8 @@ class _LibraryBrowserState extends State<LibraryBrowser>
                             ? primaryBarH + kSecondaryRowMaxH
                             : primaryBarH;
 
-                        // Stack: תוכן מאחורה עם padding קבוע, סרגל צף מעל
-                        // כך הסרגל לא גורם ל-reflow של ה-ScrollView בגלילה.
+                        // Stack: content מאחורה עם padding constant, סרגל צף מעל
+                        // כך הסרגל no גורם ל-reflow של ה-ScrollView בגלילה.
                         return Stack(
                           children: [
                             Positioned.fill(
@@ -377,13 +377,13 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     // ── Trailing items ────────────────────────────────────────────────────
     final trailingItems = <AppTopBarItem>[];
 
-    // LibraryDafYomi: בשורה הראשית כשיש מקום, אחרת בשורה שניה
+    // LibraryDafYomi: בline הראשית כשיש מקום, אחרת בline שניה
     if (dafYomiInline) {
       trailingItems.add(
         AppTopBarItem(
           widget: LibraryDafYomi(
             compact: isCompact,
-            inlineDate: isCompact, // desktop: date + daf בשורה אחת
+            inlineDate: isCompact, // desktop: date + daf בline אחת
             maxWidth: 240,
             onDafYomiTap: (tractate, daf) =>
                 openDafYomiBook(context, tractate, ' $daf.'),
@@ -392,12 +392,12 @@ class _LibraryBrowserState extends State<LibraryBrowser>
       );
     }
 
-    // אייקון לוח שנה — תמיד בשורה העליונה
+    // אייקון לוח year — תמיד בline העליונה
     trailingItems.add(
       AppTopBarItem(
         widget: ToolbarActionButton(
           compact: isCompact,
-          tooltip: 'פתח לוח שנה',
+          tooltip: 'Open לוח year',
           icon: FluentIcons.calendar_24_regular,
           emphasis: ToolbarActionButtonEmphasis.subtle,
           onPressed: () {
@@ -415,7 +415,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         dividerBefore: true,
         widget: ToolbarActionButton(
           compact: isCompact,
-          tooltip: previewSelected ? 'הסתר תצוגה מקדימה' : 'הצג תצוגה מקדימה',
+          tooltip: previewSelected ? 'hide תצוגה מקדימה' : 'הצג תצוגה מקדימה',
           icon: previewSelected
               ? FluentIcons.eye_24_filled
               : FluentIcons.eye_24_regular,
@@ -429,7 +429,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
           valueListenable: _settingsPanelOpen,
           builder: (context, isOpen, _) => ToolbarActionButton(
             compact: isCompact,
-            tooltip: isOpen ? 'סגור הגדרות ספרייה' : 'הגדרות ספרייה',
+            tooltip: isOpen ? 'closed settings library' : 'settings library',
             icon: isOpen
                 ? FluentIcons.settings_24_filled
                 : FluentIcons.settings_24_regular,
@@ -576,7 +576,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
             autofocus: true,
             slim: isCompact,
             hintText:
-                'איתור ספר או מחבר ב${state.currentCategory?.title ?? ""}',
+                'איתור book או מחבר ב${state.currentCategory?.title ?? ""}',
             maxWidth: isCompact ? 500 : 400,
             onChanged: (value) {
               context.read<LibraryBloc>().add(UpdateSearchQuery(value));
@@ -603,15 +603,15 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     const categoryTopics = [
       'תנך',
       'מדרש',
-      'משנה',
-      'תלמוד בבלי',
-      'תלמוד ירושלמי',
+      'מyear',
+      'Talmud בבלי',
+      'Talmud ירושלמי',
       'הלכה',
-      'משנה תורה',
+      'מyear תורה',
       'שולחן ערוך',
       'חסידות',
       'קבלה',
-      'ספרי מוסר',
+      'bookי מוסר',
       'שות',
       'ראשונים',
       'אחרונים',
@@ -763,7 +763,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
               FileSyncStatus.syncing => 'עצור סינכרון',
               FileSyncStatus.completed =>
                 syncState.hasNewSync ? 'סנכרון הושלם' : 'אין עדכונים חדשים',
-              FileSyncStatus.error => 'שגיאה בסינכרון - לחץ לנסות שוב',
+              FileSyncStatus.error => 'error בסינכרון - לחץ לנסות שוב',
               FileSyncStatus.initial => 'סינכרון',
             };
             return ToolbarActionButton(
@@ -821,7 +821,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
 
       await FileSyncService.saveCustomFoldersSignature(customFolders);
     } catch (_) {
-      // גם אם סריקת התיקיות נכשלה, עדיין נרענן את הספרייה.
+      // גם אם סemptyת הfolders נכשלה, עדיין נRefresh את the library.
     }
 
     if (mounted) {
@@ -863,12 +863,12 @@ class _LibraryBrowserState extends State<LibraryBrowser>
       ActionButtonData(
         widget: ToolbarActionButton(
           compact: compact,
-          tooltip: 'טעינה מחדש',
+          tooltip: 'loading again',
           icon: FluentIcons.arrow_clockwise_24_regular,
           onPressed: _refreshWithPersonalFolders,
         ),
         icon: FluentIcons.arrow_clockwise_24_regular,
-        tooltip: 'טעינה מחדש',
+        tooltip: 'loading again',
         onPressed: _refreshWithPersonalFolders,
       ),
     ];
@@ -908,12 +908,12 @@ class _LibraryBrowserState extends State<LibraryBrowser>
       ActionButtonData(
         widget: ToolbarActionButton(
           compact: compact,
-          tooltip: 'טעינה מחדש',
+          tooltip: 'loading again',
           icon: FluentIcons.arrow_clockwise_24_regular,
           onPressed: _refreshWithPersonalFolders,
         ),
         icon: FluentIcons.arrow_clockwise_24_regular,
-        tooltip: 'טעינה מחדש',
+        tooltip: 'loading again',
         onPressed: _refreshWithPersonalFolders,
       ),
     ];
@@ -978,8 +978,8 @@ class _LibraryBrowserState extends State<LibraryBrowser>
             return Center(
               child: Text(
                 repo.librarySearchController.text.isNotEmpty
-                    ? 'אין תוצאות עבור "${repo.librarySearchController.text}"'
-                    : 'אין פריטים להצגה בתיקייה זו',
+                    ? 'אין results עבור "${repo.librarySearchController.text}"'
+                    : 'אין פריטים להצגה בfolder זו',
                 style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
@@ -1213,7 +1213,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     );
   }
 
-  /// פריט ספר בתצוגת רשימה
+  /// פריט book בתצוגת list
   Widget _buildListBookItem(
     Book book,
     int level, {
@@ -1306,7 +1306,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     );
   }
 
-  /// פריט ספר חיצוני בתצוגת רשימה
+  /// פריט book חיצוני בתצוגת list
   Widget _buildExternalBookListItem(
     ExternalLibraryBook book,
     int level, {
@@ -1385,7 +1385,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
   void _openBookInReader(Book book, int index) =>
       openBook(context, book, index, '');
 
-  /// מחזיר את הספר הראשון שיוצג בפועל בקטגוריה, לפי אותו סדר תצוגה כמו _buildCategoryContent
+  /// מחזיר את הbook הראשון שיוצג בפועל בcategory, לפי אותו order תצוגה כמו _buildCategoryContent
   Book? _getFirstDisplayedBook(Category category) {
     final books = category.books.toList()
       ..sort((a, b) => a.order.compareTo(b.order));
@@ -1427,7 +1427,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('כל הספרים (${books.length})'),
+        title: Text('כל הbooks (${books.length})'),
         content: SizedBox(
           width: 600,
           height: 400,
@@ -1439,7 +1439,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('סגור'),
+            child: const Text('closed'),
           ),
         ],
       ),
@@ -1584,7 +1584,7 @@ class _LibraryBrowserState extends State<LibraryBrowser>
             child: Row(
               children: [
                 Text(
-                  'הגדרות',
+                  'settings',
                   style: Theme.of(context)
                       .textTheme
                       .headlineMedium
@@ -1646,7 +1646,7 @@ class _LoadingDotsTextState extends State<_LoadingDotsText>
                     ? 2
                     : 3;
         return Text(
-          'טוען ספרייה${'.' * dots}${' ' * (3 - dots)}',
+          'טוען library${'.' * dots}${' ' * (3 - dots)}',
           style: Theme.of(context).textTheme.bodyMedium,
         );
       },

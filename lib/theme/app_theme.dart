@@ -31,13 +31,13 @@ class AppTokens {
   static const Duration animSlow = Duration(milliseconds: 400);
 }
 
-/// סגנונות טקסט מובנים לשימוש עקבי בכל האפליקציה
+/// סגנונות text מובנים לשימוש עקבי בכל האפליקציה
 class AppTextStyles {
   AppTextStyles._();
 
-  /// כותרת שורת הגדרה (16sp) — לשימוש ב-ListTile title בכל מסכי ההגדרות
+  /// כותרת שורת setting (16sp) — לשימוש ב-ListTile title בכל מסכי הsettings
   static const TextStyle settingTitle = TextStyle(fontSize: AppTokens.fontLG);
 
-  /// תת-כותרת שורת הגדרה (13sp) — לשימוש ב-ListTile subtitle
+  /// תת-כותרת שורת setting (13sp) — לשימוש ב-ListTile subtitle
   static const TextStyle settingSubtitle = TextStyle(fontSize: 13);
 }

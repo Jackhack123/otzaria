@@ -67,9 +67,9 @@ class ShortcutsSettingsTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // ── כללי (איפוס) ──────────────────────────────────────────────
+          // ── general (איפוס) ──────────────────────────────────────────────
           SettingsCard(
-            title: 'כללי',
+            title: 'general',
             children: [
               ListTile(
                 hoverColor: Colors.transparent,
@@ -90,13 +90,13 @@ class ShortcutsSettingsTab extends StatelessWidget {
 
           kSettingsCardSpacing,
 
-          // ── ניווט כללי ────────────────────────────────────────────────
+          // ── ניווט general ────────────────────────────────────────────────
           SettingsCard(
-            title: 'ניווט כללי',
+            title: 'ניווט general',
             children: [
               _ShortcutTile(
                 settingKey: 'key-shortcut-open-library-browser',
-                label: 'ספרייה',
+                label: 'library',
                 defaultShortcut: 'ctrl+l',
                 icon: FluentIcons.library_24_regular,
                 allShortcuts: _shortcutsList,
@@ -117,21 +117,21 @@ class ShortcutsSettingsTab extends StatelessWidget {
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-open-new-search',
-                label: 'חלון חיפוש חדש',
+                label: 'חלון search חדש',
                 defaultShortcut: 'ctrl+q',
                 icon: FluentIcons.search_24_regular,
                 allShortcuts: _shortcutsList,
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-open-settings',
-                label: 'הגדרות',
+                label: 'settings',
                 defaultShortcut: 'ctrl+comma',
                 icon: FluentIcons.settings_24_regular,
                 allShortcuts: _shortcutsList,
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-open-more',
-                label: 'כלים',
+                label: 'Tools',
                 defaultShortcut: 'ctrl+m',
                 icon: FluentIcons.apps_24_regular,
                 allShortcuts: _shortcutsList,
@@ -162,14 +162,14 @@ class ShortcutsSettingsTab extends StatelessWidget {
 
           kSettingsCardSpacing,
 
-          // ── תצוגת ספר ─────────────────────────────────────────────────
+          // ── תצוגת book ─────────────────────────────────────────────────
           SettingsCard(
-            title: 'תצוגת ספר',
+            title: 'תצוגת book',
             children: [
               _ShortcutTile(
                 settingKey: ShortcutValidator.currentWindowSearchKey,
-                label: 'חיפוש בחלון הנוכחי',
-                subtitle: 'משמש לחיפוש מהיר במסכי תוכן וכלים תומכים',
+                label: 'search בחלון הcurrent',
+                subtitle: 'משמש לsearch מהיר במסכי content וTools תומכים',
                 defaultShortcut: 'ctrl+f',
                 icon: FluentIcons.search_24_regular,
                 allShortcuts: _shortcutsList,
@@ -190,28 +190,28 @@ class ShortcutsSettingsTab extends StatelessWidget {
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-add-bookmark',
-                label: 'הוסף סימניה',
+                label: 'Add סימניה',
                 defaultShortcut: 'ctrl+b',
                 icon: FluentIcons.bookmark_24_regular,
                 allShortcuts: _shortcutsList,
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-add-note',
-                label: 'הוספת הערה',
+                label: 'הוספת note',
                 defaultShortcut: 'ctrl+n',
                 icon: FluentIcons.note_24_regular,
                 allShortcuts: _shortcutsList,
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-close-tab',
-                label: 'סגור ספר נוכחי',
+                label: 'closed book current',
                 defaultShortcut: 'ctrl+w',
                 icon: FluentIcons.dismiss_circle_24_regular,
                 allShortcuts: _shortcutsList,
               ),
               _ShortcutTile(
                 settingKey: 'key-shortcut-close-all-tabs',
-                label: 'סגור כל הספרים',
+                label: 'closed כל הbooks',
                 defaultShortcut: 'ctrl+shift+w',
                 icon: FluentIcons.dismiss_24_regular,
                 allShortcuts: _shortcutsList,
@@ -228,17 +228,17 @@ class ShortcutsSettingsTab extends StatelessWidget {
       context: context,
       title: 'איפוס קיצורי מקשים?',
       content: 'כל קיצורי המקשים המותאמים אישית יאופסו לברירת המחדל.',
-      subtitle: 'פעולה זו אינה הפיכה',
+      subtitle: 'action זו אינה הפיכה',
     );
     if (confirmed == true && context.mounted) {
       context.read<SettingsBloc>().add(ResetShortcuts());
-      UiSnack.showSuccess('קיצורי המקשים אופסו בהצלחה');
+      UiSnack.showSuccess('קיצורי המקשים אופסו בsuccess');
     }
   }
 }
 
 // ── _ShortcutTile ─────────────────────────────────────────────────────────────
-// פה מחקנו את כל עטיפות ה-Theme המסורבלות
+// פה Deleteנו את כל עטיפות ה-Theme המסורבלות
 class _ShortcutTile extends StatelessWidget {
   final String settingKey;
   final String label;

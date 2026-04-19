@@ -56,7 +56,7 @@ class SettingsRepository {
   static const String keyLibraryFolderName = 'key-library-folder-name';
 
   /// Android only: nתיב ה-DB שנגיש ל-sqlite3 native (override ל-getDatabasePath).
-  /// נוצר כאשר המשתמש בחר ספרייה באחסון חיצוני ו-DB הועתק/הועבר פנימה.
+  /// created כאשר הuser בחר library באחסון חיצוני ו-DB הועתק/הועבר פנימה.
   static const String keyDbEffectivePath = 'key-db-effective-path';
   static const String keyHebrewBooksPath = 'key-hebrew-books-path';
   static const String keyDevChannel = 'key-dev-channel';

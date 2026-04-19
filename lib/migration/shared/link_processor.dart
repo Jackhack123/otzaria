@@ -375,7 +375,7 @@ class LinkProcessor {
     final errors = <String>[];
 
     _log.info('Found $totalFiles link files to process');
-    onProgress?.call(0.0, 'מתחיל עיבוד קישורים (0/$totalFiles קבצים)');
+    onProgress?.call(0.0, 'מתחיל עיבוד קישורים (0/$totalFiles files)');
 
     // Process all link files within a transaction for better performance
     await _repository.beginTransaction();
@@ -459,14 +459,14 @@ class LinkProcessor {
 
     // Optionally update the book_has_links table
     if (updateBookHasLinks && totalLinks > 0) {
-      onProgress?.call(1.0, 'מעדכן טבלת קישורים לספרים...');
+      onProgress?.call(1.0, 'מעדyes טבלת קישורים לbooks...');
       await _updateBookHasLinksTable();
     }
 
     // Delete links directory if it became empty
     await _deleteIfEmpty(linksDir);
 
-    final resultMessage = 'הושלם עיבוד $totalLinks קישורים מ-$totalFiles קבצים';
+    final resultMessage = 'הושלם עיבוד $totalLinks קישורים מ-$totalFiles files';
     onProgress?.call(1.0, resultMessage);
     _log.info(resultMessage);
 

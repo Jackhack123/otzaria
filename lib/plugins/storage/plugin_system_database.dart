@@ -308,7 +308,7 @@ class PluginSystemDatabase {
     return rows.map(PluginPublishedRecord.fromDbMap).toList();
   }
 
-  /// מחזיר records מלאים כולל plugin_id, scope, record_key ו-payload_json
+  /// מחזיר records fullים כולל plugin_id, scope, record_key ו-payload_json
   Future<List<Map<String, dynamic>>> getPublishedRecordsFull(
       String type) async {
     final db = await database;

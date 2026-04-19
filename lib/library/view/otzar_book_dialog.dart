@@ -60,13 +60,13 @@ class OtzarBookDialog extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     _buildInfoRow(context, FluentIcons.document_text_24_regular,
-                        'תיאור', book.heShortDesc ?? 'לא קיים'),
+                        'description', book.heShortDesc ?? 'no קיים'),
                     _buildInfoRow(context, FluentIcons.person_24_regular,
-                        'מחבר', book.author ?? 'לא ידוע'),
+                        'מחבר', book.author ?? 'no ידוע'),
                     _buildInfoRow(context, FluentIcons.location_24_regular,
-                        'מקום הדפסה', book.pubPlace ?? 'לא ידוע'),
+                        'מקום הדפסה', book.pubPlace ?? 'no ידוע'),
                     _buildInfoRow(context, FluentIcons.calendar_24_regular,
-                        'שנת הדפסה', book.pubDate ?? 'לא ידוע'),
+                        'שנת הדפסה', book.pubDate ?? 'no ידוע'),
                     _buildInfoRow(context, FluentIcons.apps_24_regular,
                         'נושאים', book.topics),
                     const SizedBox(height: 24),
@@ -119,7 +119,7 @@ class OtzarBookDialog extends StatelessWidget {
         if (canLaunchLocally && bookExists)
           ElevatedButton.icon(
             icon: const Icon(FluentIcons.desktop_24_regular),
-            label: const Text('פתח מקומית'),
+            label: const Text('Open מקומית'),
             onPressed: () {
               Navigator.of(context).pop();
               OtzarUtils.launchOtzarLocal(book.id!);
@@ -131,13 +131,13 @@ class OtzarBookDialog extends StatelessWidget {
           ),
         ElevatedButton.icon(
           icon: const Icon(FluentIcons.open_24_regular),
-          label: const Text('פתח באתר'),
+          label: const Text('Open באתר'),
           onPressed: () async {
             Navigator.of(context).pop();
             if (await OtzarUtils.launchOtzarWeb(book.link)) {
               // Success
             } else {
-              UiSnack.showError('לא ניתן לפתוח את הקישור בדפדפן');
+              UiSnack.showError('no ניתן לopen את הקישור בדפדפן');
             }
           },
           style: ElevatedButton.styleFrom(
@@ -150,7 +150,7 @@ class OtzarBookDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(context).colorScheme.secondary,
           ),
-          child: const Text('סגור'),
+          child: const Text('closed'),
         ),
       ],
     );

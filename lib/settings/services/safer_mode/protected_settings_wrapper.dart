@@ -27,7 +27,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
   @override
   void initState() {
     super.initState();
-    // נשתמש ב-postFrameCallback כדי לוודא שה-context מוכן
+    // נשתמש ב-postFrameCallback כדי לוודא שה-context מוyes
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _checkProtection();
@@ -36,7 +36,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
   }
 
   void _checkProtection() {
-    // נבדוק אם מצב מוגן מופעל
+    // נבדוק אם מצב מוגן active
     final state = context.read<SettingsBloc>().state;
     final repository = context.read<SettingsRepository>();
 
@@ -72,7 +72,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
       barrierDismissible: true,
       builder: (dialogContext) => PasswordVerificationDialog(
         title: 'הזן סיסמה',
-        hint: 'הנך במצב מוגן.\nהזן את הסיסמה כדי לגשת להגדרות',
+        hint: 'הנך במצב מוגן.\nהזן את הסיסמה כדי לגשת לsettings',
         onVerify: (password) async {
           return repository.verifyProtectedModePassword(password);
         },
@@ -86,7 +86,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
         _isVerified = true;
       });
     } else {
-      // המשתמש ביטל - נחזור למסך הקודם בצורה בטוחה
+      // הuser ביטל - נBack למסך הprevious בצורה בטוחה
       // נבדוק אם ה-Navigator יכול לעשות pop
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
@@ -100,11 +100,11 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
       listenWhen: (previous, current) =>
           previous.protectedModeEnabled != current.protectedModeEnabled,
       listener: (context, state) {
-        // אם המצב המוגן הופעל והמשתמש עדיין לא אומת
+        // אם המצב המוגן הופעל והuser עדיין no אומת
         if (state.protectedModeEnabled && !_isVerified) {
           final repository = context.read<SettingsRepository>();
           if (repository.hasProtectedModePassword()) {
-            // נאפס את הסטטוס ונבקש אימות מחדש
+            // נאפס את הסטטוס ונבקש אימות again
             setState(() {
               _isVerified = false;
               _isChecking = false;
@@ -137,7 +137,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
       return Scaffold(
         appBar: AppBar(
           title: const Text(
-            'הגדרות',
+            'settings',
             textDirection: TextDirection.rtl,
           ),
           automaticallyImplyLeading: true,
@@ -161,7 +161,7 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'נדרשת סיסמה כדי לגשת להגדרות',
+                  'נדרשת סיסמה כדי לגשת לsettings',
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -190,14 +190,14 @@ class _ProtectedSettingsWrapperState extends State<ProtectedSettingsWrapper> {
   }
 }
 
-/// פונקציה עוזרת לבדיקה האם צריך הגנה
+/// function עוזרת לtest האם צריך הגנה
 bool shouldProtectSettings(BuildContext context) {
   final state = context.read<SettingsBloc>().state;
   final repository = context.read<SettingsRepository>();
   return state.protectedModeEnabled && repository.hasProtectedModePassword();
 }
 
-/// פונקציה עוזרת לאימות סיסמה
+/// function עוזרת noימות סיסמה
 Future<bool> verifyPasswordForAction(BuildContext context) async {
   if (!shouldProtectSettings(context)) {
     return true; // אין הגנה - מאושר
@@ -209,7 +209,7 @@ Future<bool> verifyPasswordForAction(BuildContext context) async {
     context: context,
     builder: (context) => PasswordVerificationDialog(
       title: 'אמת סיסמה',
-      hint: 'הנך במצב מוגן.\nהזן את הסיסמה כדי לבצע פעולה זו',
+      hint: 'הנך במצב מוגן.\nהזן את הסיסמה כדי לבצע action זו',
       onVerify: (password) async {
         return repository.verifyProtectedModePassword(password);
       },

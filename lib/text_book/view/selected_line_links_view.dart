@@ -43,7 +43,7 @@ String normalizeSelectedLinkText(String text) {
       .trim();
 }
 
-/// Widget שמציג את הקישורים של השורה הנבחרת בלבד
+/// Widget שמציג את הקישורים של הline הselectedת בלבד
 class SelectedLineLinksView extends StatefulWidget {
   final Function(OpenedTab) openBookCallback;
   final double fontSize;
@@ -70,9 +70,9 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
   bool _searchInContent = false;
   Future<List<Link>>? _filteredLinksFuture;
   String _lastSearchKey = '';
-  final Set<String> _linksWithSearchResults = {}; // קישורים עם תוצאות חיפוש
-  String? _savedSelectedText; // טקסט נבחר לתפריט הקשר
-  Link? _savedSelectedLink; // ה-link שממנו נבחר הטקסט
+  final Set<String> _linksWithSearchResults = {}; // קישורים עם results search
+  String? _savedSelectedText; // text selected לתפריט הקשר
+  Link? _savedSelectedLink; // ה-link שממנו selected הtext
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       builder: (context, state) {
         return Column(
           children: [
-            // שדה חיפוש
+            // field search
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -136,14 +136,14 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
                               });
                             },
                           ),
-                          const Text('חפש גם בתוכן הקישורים'),
+                          const Text('חפש גם בcontent הקישורים'),
                         ],
                       ),
                     ),
                 ],
               ),
             ),
-            // תוכן הקישורים
+            // content הקישורים
             Expanded(
               child: _buildLinksList(state),
             ),
@@ -154,7 +154,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
   }
 
   Widget _buildLinksList(TextBookLoaded state) {
-    // מסנן קישורים מבוססי תווים (inline links) - הם אמורים להופיע רק בתוך הטקסט
+    // מסנן קישורים מבוססי תווים (inline links) - הם אמורים להופיע רק בתוך הtext
     final links = state.visibleLinks
         .where((link) => link.start == null && link.end == null)
         .toList();
@@ -164,7 +164,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
-            'לא נמצאו קישורים לקטע הנבחר',
+            'no נמצאו קישורים לקטע הselected',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -175,10 +175,10 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       );
     }
 
-    // יצירת מפתח ייחודי לחיפוש
+    // יצירת key ייoverrideי לsearch
     final searchKey = '${_searchQuery}_${_searchInContent}_${links.length}';
 
-    // יצירת Future חדש רק אם החיפוש השתנה
+    // יצירת Future חדש רק אם הsearch השתנה
     if (_lastSearchKey != searchKey) {
       _lastSearchKey = searchKey;
       _filteredLinksFuture = _filterLinksAsync(links);
@@ -203,9 +203,9 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
     );
   }
 
-  // פונקציה אסינכרונית לסינון הקישורים עם חיפוש בתוכן
+  // function אסינכרונית לסינון הקישורים עם search בcontent
   Future<List<Link>> _filterLinksAsync(List<Link> links) async {
-    _linksWithSearchResults.clear(); // איפוס רשימת הקישורים עם תוצאות
+    _linksWithSearchResults.clear(); // איפוס רשימת הקישורים עם results
 
     if (_searchQuery.isEmpty) {
       return links;
@@ -219,13 +219,13 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       final title = link.heRef.toLowerCase();
       final bookTitle = utils.getTitleFromPath(link.path2).toLowerCase();
 
-      // חיפוש בכותרת ושם הספר
+      // search בכותרת וname הbook
       if (title.contains(query) || bookTitle.contains(query)) {
         filteredLinks.add(link);
         continue;
       }
 
-      // חיפוש בתוכן אם הופעל
+      // search בcontent אם הופעל
       if (_searchInContent) {
         try {
           final content = await link.content;
@@ -234,10 +234,10 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
           ).toLowerCase();
           if (cleanContent.contains(query)) {
             filteredLinks.add(link);
-            _linksWithSearchResults.add(keyStr); // מסמן שיש תוצאות בתוכן
-            _contentCache[keyStr] = link.content; // טוען את התוכן למטמון
+            _linksWithSearchResults.add(keyStr); // מסמן שיש results בcontent
+            _contentCache[keyStr] = link.content; // טוען את הcontent למטמון
 
-            // פותח אוטומטית את הקישור הראשון עם תוצאות
+            // פותח אוטומטית את הקישור הראשון עם results
             if (_linksWithSearchResults.length == 1) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted) {
@@ -249,7 +249,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
             }
           }
         } catch (_) {
-          // אם יש שגיאה בטעינת התוכן, מוסיף בכל זאת אם מתאים לכותרת
+          // אם יש error בטעינת הcontent, מוסיף בכל זאת אם מתאים לכותרת
           // (כבר בדקנו את זה למעלה)
         }
       }
@@ -339,12 +339,12 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
         },
       ),
       onExpansionChanged: (isExpanded) {
-        // טוען תוכן רק אם נפתח ועדיין לא נטען
+        // טוען content רק אם נOpen ועדיין no נטען
         if (isExpanded && !_contentCache.containsKey(keyStr)) {
           _contentCache[keyStr] = link.content;
         }
 
-        // עדכון מצב ההרחבה עם setState בטוח - דוחה עד אחרי הבנייה
+        // update מצב ההרחבה עם setState בטוח - דוחה עד אחרי הבנייה
         if (_expanded[keyStr] != isExpanded) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
@@ -367,7 +367,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
                   BlocBuilder<SettingsBloc, SettingsState>(
                 builder: (context, settingsState) {
                   return Text(
-                    'שגיאה בטעינת התוכן: $error',
+                    'error בטעינת הcontent: $error',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
                       fontSize: settingsState.commentatorsFontSize,
@@ -386,7 +386,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
       return BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, settingsState) {
           return Text(
-            'אין תוכן זמין',
+            'אין content זמין',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
               fontSize: settingsState.commentatorsFontSize,
@@ -455,7 +455,7 @@ class _SelectedLineLinksViewState extends State<SelectedLineLinksView> {
           TextRendererService.stripHtml(content),
         );
 
-        // חיפוש בתוכן - בדיקה אם הקישור הזה מכיל תוצאות
+        // search בcontent - check אם הקישור הזה מכיל results
         String searchText = '';
         if (_searchQuery.isNotEmpty && _searchInContent) {
           final keyStr = '${link.path2}_${link.index2}';

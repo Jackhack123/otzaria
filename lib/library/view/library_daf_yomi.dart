@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:kosher_dart/kosher_dart.dart';
 import 'package:otzaria/tools/calendar/helpers/calendar_date_helpers.dart';
 
-/// ווידג'ט דף יומי — 2 מצבי תצוגה.
+/// ווידג'ט page יומי — 2 מצבי תצוגה.
 ///
 /// • [compact] = false (touch/ברירת מחדל):
-///   אזור לחיצה אחד — טקסט בשתי שורות.
+///   אזור tap אחד — text בשתי lines.
 ///
 /// • [compact] = true (desktop):
 ///   גרסה דחוסה. כשיש מספיק רוחב ([inlineDate] = true) —
-///   תאריך ודף מוצגים בשורה אחת (" • " ביניהם).
-///   כשהמסך צר — מוצגים בשתי שורות קצרות.
+///   date וpage מוצגים בline אחת (" • " ביניהם).
+///   כשהמסך צר — מוצגים בשתי lines shortות.
 ///
 /// **אחריות:**
-/// • מציג תאריך עברי + דף יומי.
-/// • פתיחת הדף היומי מטופלת דרך [onDafYomiTap].
-/// • ניווט ללוח השנה הוא אחריות של הסרגל המכיל.
+/// • מציג date עברי + page יומי.
+/// • פתיחת הpage היומי מטופלת דרך [onDafYomiTap].
+/// • ניווט ללוח הyear הוא אחריות של הסרגל המכיל.
 class LibraryDafYomi extends StatelessWidget {
   final Function(String tractate, String daf) onDafYomiTap;
 
   /// true = מצב desktop — גרסה דחוסה
   final bool compact;
 
-  /// true = תאריך ודף באותה שורה (רלוונטי רק ב-compact)
+  /// true = date וpage באותה line (רלוונטי רק ב-compact)
   final bool inlineDate;
 
   /// רוחב מקסימלי של הווידג'ט (כדי למנוע overflow)
@@ -116,7 +116,7 @@ class LibraryDafYomi extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Tooltip(
-        message: 'פתח דף יומי',
+        message: 'Open page יומי',
         child: InkWell(
           onTap: () => onDafYomiTap(tractate, formatAmud(dafAmud)),
           borderRadius: BorderRadius.circular(8),
@@ -141,7 +141,7 @@ class LibraryDafYomi extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'דף היומי: $dafText',
+                  'page היומי: $dafText',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: dafStyle,
@@ -176,7 +176,7 @@ class LibraryDafYomi extends StatelessWidget {
     final inlineStyle =
         _primaryTextStyle(context, isCompact: true, emphasized: false);
 
-    // תצוגה inline: תאריך • דף יומי בשורה אחת
+    // תצוגה inline: date • page יומי בline אחת
     final textWidget = inlineDate
         ? Text(
             '$dateText  •  $dafText',
@@ -225,7 +225,7 @@ class LibraryDafYomi extends StatelessWidget {
           );
 
     return Tooltip(
-      message: 'פתח דף יומי: $dafText',
+      message: 'Open page יומי: $dafText',
       child: InkWell(
         onTap: () => onDafYomiTap(tractate, formatAmud(dafAmud)),
         borderRadius: BorderRadius.circular(6),

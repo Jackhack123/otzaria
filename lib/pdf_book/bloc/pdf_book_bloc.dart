@@ -264,7 +264,7 @@ class PdfBookBloc extends Bloc<PdfBookEvent, PdfBookState> {
     // Update tab
     tab.pageNumber = event.pageNumber;
 
-    String title = event.title ?? 'עמוד ${event.pageNumber}';
+    String title = event.title ?? 'page ${event.pageNumber}';
     int? textLineNumber = event.textLineNumber;
 
     // Calculate title from outline if not provided
@@ -647,7 +647,7 @@ class PdfBookBloc extends Bloc<PdfBookEvent, PdfBookState> {
     final current = state;
     if (current is! PdfBookLoaded) return;
 
-    // בדיקה אם הגדרות פר-ספר מופעלות
+    // check אם settings פר-book activeות
     final enablePerBookSettings =
       Settings.getValue<bool>(SettingsRepository.keyEnablePerBookSettings) ??
         false;
@@ -659,7 +659,7 @@ class PdfBookBloc extends Bloc<PdfBookEvent, PdfBookState> {
     PdfLayoutMode? layoutModeToApply;
 
     if (enablePerBookSettings) {
-      // נסה לטעון הגדרות פר-ספר
+      // נסה לטעון settings פר-book
       final settings = await PdfBookPerBookSettings.load(current.book.title);
       if (settings?.zoom != null) {
         zoomToApply = settings!.zoom;
@@ -673,7 +673,7 @@ class PdfBookBloc extends Bloc<PdfBookEvent, PdfBookState> {
         ? PdfLayoutMode.bookView
         : PdfLayoutMode.regularView;
 
-    // אם אין הגדרות פר-ספר, נסה לשחזר זום מהסשן (שנשמר ב-tab.savedZoom)
+    // אם אין settings פר-book, נסה לשחזר זום מהסשן (שנשמר ב-tab.savedZoom)
     if (zoomToApply == null && tab.savedZoom != null && tab.savedZoom != 1.0) {
       zoomToApply = tab.savedZoom;
     }

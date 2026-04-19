@@ -21,7 +21,7 @@ import 'package:otzaria/indexing/bloc/indexing_event.dart';
 import 'package:otzaria/indexing/bloc/indexing_state.dart';
 import 'package:otzaria/core/ui_snack.dart';
 
-/// טאב הגדרות ספרייה
+/// טאב settings library
 class LibrarySettingsTab extends StatefulWidget {
   const LibrarySettingsTab({super.key});
 
@@ -38,14 +38,14 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
       onSuccess: (extractionResult) async {
         if (!context.mounted) return;
 
-        // עדכון הנתיב
+        // update הpath
         if (isLibraryPath) {
           context.read<LibraryBloc>().add(UpdateLibraryPath(path));
         } else {
           context.read<LibraryBloc>().add(UpdateHebrewBooksPath(path));
         }
 
-        // המתנה קצרה
+        // המתנה shortה
         await Future.delayed(const Duration(milliseconds: 500));
 
         if (context.mounted) {
@@ -53,7 +53,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
 
           if (extractionResult.successfullyExtracted) {
             UiSnack.show(
-                'הקובץ "${extractionResult.extractedFileName}" חולץ בהצלחה!');
+                'הfile "${extractionResult.extractedFileName}" חולץ בsuccess!');
           }
         }
       },
@@ -63,7 +63,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
     );
   }
 
-  /// פונקציית בניית ווידג'ט מיקום ספריית אוצריא
+  /// פונקציית בניית ווידג'ט location bookיית Otzaria
   Widget _buildLibraryLocationWidget(BuildContext context) {
     final pathStr =
         Settings.getValue<String>(SettingsRepository.keyLibraryPath);
@@ -72,9 +72,9 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
     return ListTile(
       hoverColor: Colors.transparent,
       leading: const Icon(FluentIcons.folder_24_regular),
-      title: const Text('מיקום ספריית אוצריא', style: kSettingsTitleStyle),
+      title: const Text('location bookיית Otzaria', style: kSettingsTitleStyle),
       subtitle: Text(
-        hasPath ? pathStr : 'בחר מיקום עבור מאגר הספרים',
+        hasPath ? pathStr : 'בחר location עבור מאגר הbooks',
         style: kSettingsSubtitleStyle,
         textDirection: TextDirection.rtl,
       ),
@@ -83,7 +83,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
         children: [
           if (hasPath)
             NeutralActionButton(
-              text: 'העתק נתיב',
+              text: 'Copy path',
               icon: FluentIcons.copy_24_regular,
               onPressed: () async {
                 try {
@@ -93,13 +93,13 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                   }
                 } catch (e) {
                   if (context.mounted) {
-                    UiSnack.showError('שגיאה בהעתקה: ${e.toString()}');
+                    UiSnack.showError('error בCopyה: ${e.toString()}');
                   }
                 }
               },
             ),
           RecommendedActionButton(
-            text: hasPath ? 'שנה מיקום' : 'בחר מיקום',
+            text: hasPath ? 'year location' : 'בחר location',
             icon: FluentIcons.folder_24_regular,
             onPressed: () async {
               String? path = await FilePicker.platform.getDirectoryPath();
@@ -114,7 +114,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
     );
   }
 
-  /// פונקציית בניית ווידג'ט מיקום היברובוקס המועברת לפאנל המשותף
+  /// פונקציית בניית ווידג'ט location היברובוקס המועברת לפאנל המשותף
   Widget _buildHebrewBooksLocationWidget(BuildContext context) {
     final pathStr =
         Settings.getValue<String>(SettingsRepository.keyHebrewBooksPath);
@@ -123,9 +123,9 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
     return ListTile(
       hoverColor: Colors.transparent,
       leading: const Icon(FluentIcons.folder_24_regular),
-      title: const Text('מיקום ספרי היברובוקס', style: kSettingsTitleStyle),
+      title: const Text('location bookי היברובוקס', style: kSettingsTitleStyle),
       subtitle: Text(
-        hasPath ? pathStr : 'במידה וקיימים ברשותך ספרים ממאגר זה',
+        hasPath ? pathStr : 'במידה וקיימים ברשותך books ממאגר זה',
         style: kSettingsSubtitleStyle,
         textDirection: TextDirection.rtl,
       ),
@@ -134,7 +134,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
         children: [
           if (hasPath)
             NeutralActionButton(
-              text: 'העתק נתיב',
+              text: 'Copy path',
               icon: FluentIcons.copy_24_regular,
               onPressed: () async {
                 try {
@@ -144,13 +144,13 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                   }
                 } catch (e) {
                   if (context.mounted) {
-                    UiSnack.showError('שגיאה בהעתקה: ${e.toString()}');
+                    UiSnack.showError('error בCopyה: ${e.toString()}');
                   }
                 }
               },
             ),
           RecommendedActionButton(
-            text: hasPath ? 'שנה מיקום' : 'בחר מיקום',
+            text: hasPath ? 'year location' : 'בחר location',
             icon: FluentIcons.folder_24_regular,
             onPressed: () async {
               String? path = await FilePicker.platform.getDirectoryPath();
@@ -170,7 +170,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
-        // בניית כפתור בחירת תיקייה רק בדסקטופ והעברה לפאנל
+        // בניית button בחירת folder רק בדסקטופ והעברה לפאנל
         final hebrewPathWidget = !(Platform.isAndroid || Platform.isIOS)
             ? _buildHebrewBooksLocationWidget(context)
             : null;
@@ -181,10 +181,10 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // מאגר הספרים (רק בדסקטופ)
+              // מאגר הbooks (רק בדסקטופ)
               if (!(Platform.isAndroid || Platform.isIOS)) ...[
                 SettingsCard(
-                  title: 'מאגר הספרים',
+                  title: 'מאגר הbooks',
                   children: [
                     _buildLibraryLocationWidget(context),
                   ],
@@ -192,21 +192,21 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                 kSettingsCardSpacing,
               ],
 
-              // הפאנל המשותף (תצוגה + ספרים נוספים) - כעת כולל את תיקיית היברובוקס בתוכו!
+              // הפאנל המשותף (תצוגה + books נוספים) - כעת כולל את תיקיית היברובוקס בתוכו!
               LibrarySettingsPanel(hebrewBooksPathWidget: hebrewPathWidget),
 
-              // תיקיות מותאמות אישית (רק בדסקטופ)
+              // folders מותאמות אישית (רק בדסקטופ)
               if (!(Platform.isAndroid || Platform.isIOS)) ...[
                 kSettingsCardSpacing,
                 SettingsCard(
-                  title: 'תיקיות מותאמות אישית',
+                  title: 'folders מותאמות אישית',
                   children: const [
                     CustomFoldersTile(),
                   ],
                 ),
               ],
 
-              // חיפוש ואינדקס
+              // search ואינדקס
               kSettingsCardSpacing,
               _buildSearchSection(context, state),
             ],
@@ -218,15 +218,15 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
 
   Widget _buildSearchSection(BuildContext context, SettingsState state) {
     return SettingsCard(
-      title: 'חיפוש ואינדקס',
+      title: 'search ואינדקס',
       children: [
         SwitchSettingsTile(
           leading: const Icon(FluentIcons.arrow_clockwise_24_regular),
-          title: const Text('עדכון אינדקס אוטומטי', style: kSettingsTitleStyle),
+          title: const Text('update אינדקס אוטומטי', style: kSettingsTitleStyle),
           subtitle: Text(
               state.autoUpdateIndex
-                  ? 'אינדקס החיפוש יתעדכן אוטומטית'
-                  : 'אינדקס החיפוש לא יתעדכן אוטומטית',
+                  ? 'אינדקס הsearch יתעדyes אוטומטית'
+                  : 'אינדקס הsearch no יתעדyes אוטומטית',
               style: kSettingsSubtitleStyle),
           value: state.autoUpdateIndex,
           onChanged: (value) {
@@ -245,20 +245,20 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
             final library = context.watch<LibraryBloc>().state.library;
             final hasBooks = library?.getAllBooks().isNotEmpty ?? false;
             if (libraryPath == null || libraryPath.isEmpty) {
-              subtitleText = 'לא קיימת ספרייה לאינדוקס';
+              subtitleText = 'no קיימת library noינדוקס';
             } else if (!hasBooks) {
-              subtitleText = 'הספרייה ריקה – אין ספרים לאינדוקס';
+              subtitleText = 'the library emptyה – אין books noינדוקס';
             } else if (isActive) {
-              subtitleText = 'התקדמות האינדקס: $processed/$total';
+              subtitleText = 'התקדמות the index: $processed/$total';
             } else if (indexingState is IndexingComplete) {
-              subtitleText = 'האינדקס מעודכן';
+              subtitleText = 'the index updated';
             } else {
-              subtitleText = 'האינדקס לא מעודכן';
+              subtitleText = 'the index no updated';
             }
             return ListTile(
               leading: const Icon(FluentIcons.table_24_regular),
               title: const Text(
-                'אינדקס חיפוש',
+                'אינדקס search',
                 style: kSettingsTitleStyle,
                 textDirection: TextDirection.rtl,
               ),
@@ -274,8 +274,8 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                       onPressed: () async {
                         final result = await showWarningDialog(
                           context: context,
-                          title: 'עצירת עדכון',
-                          content: 'האם לעצור את תהליך עדכון האינדקס?',
+                          title: 'עצירת update',
+                          content: 'האם לעצור את תהליך update the index?',
                         );
                         if (!context.mounted) return;
                         if (result == true) {
@@ -291,7 +291,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                               context: context,
                               title: 'איפוס אינדקס',
                               content:
-                                  'האם למחוק את אינדקס החיפוש? תצטרך לבנות אותו מחדש כדי להשתמש בחיפוש.',
+                                  'האם לdeleted את אינדקס הsearch? תצטרך לבנות אותו again כדי להשתמש בsearch.',
                             );
                             if (!context.mounted) return;
                             if (result == true) {
@@ -300,7 +300,7 @@ class _LibrarySettingsTabState extends State<LibrarySettingsTab> {
                           },
                         )
                       : RecommendedActionButton(
-                          text: 'עדכן',
+                          text: 'עדyes',
                           onPressed: () {
                             final library =
                                 context.read<LibraryBloc>().state.library;

@@ -5,7 +5,7 @@ import 'package:otzaria/tabs/models/tab.dart';
 import 'package:otzaria/text_book/view/selected_line_links_view.dart';
 import 'package:otzaria/widgets/panel_tab_header.dart';
 
-/// חלונית פנימית עבור צורת הדף שמציגה קישורים והערות אישיות.
+/// חלונית פנימית עבור צורת הpage שמציגה קישורים וnotes אישיות.
 class LinksNotesSidebar extends StatefulWidget {
   final String bookId;
   final int? categoryId;
@@ -90,7 +90,7 @@ class _LinksNotesSidebarState extends State<LinksNotesSidebar>
                 icon: Icon(FluentIcons.note_24_regular, size: 18),
                 iconMargin: EdgeInsets.only(bottom: 2),
                 height: 48,
-                child: Text('הערות', style: TextStyle(fontSize: 12),
+                child: Text('notes', style: TextStyle(fontSize: 12),
                     textDirection: TextDirection.rtl),
               ),
             ],

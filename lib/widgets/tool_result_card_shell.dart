@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 
-/// מעטפת משותפת לכרטיסי תוצאה במסכי כלים.
+/// מעטפת משותפת לכרטיסי תוצאה במסכי Tools.
 class ToolResultCardShell extends StatelessWidget {
   final Widget child;
   final bool isFocused;

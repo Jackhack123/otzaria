@@ -1,7 +1,7 @@
 /// Converts a Hive-returned [Map] (with dynamic keys) to `Map<String, dynamic>`.
 ///
-/// הפונקציה פועלת רקורסיבית — גם מפות מקוננות ורשימות שמכילות
-/// מפות מומרות, כך ש-fromJson יקבל תמיד את הטיפוסים הנכונים.
+/// הfunction פועלת רקורסיבית — גם maps מקוננות וlists שמכילות
+/// maps מומרות, כך ש-fromJson יקבל תמיד את הטיפוסים הנכונים.
 Map<String, dynamic> castMap(dynamic source) {
   if (source is Map) {
     return source.map<String, dynamic>(

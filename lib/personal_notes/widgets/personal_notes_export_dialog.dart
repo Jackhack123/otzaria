@@ -53,11 +53,11 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
   NotesExportSelection _buildSelection() {
     final notes = widget.allNotes;
     List<PersonalNote> result = notes;
-    String description = 'כל ההערות';
+    String description = 'כל הnotes';
 
     if (_mode == NotesExportMode.byBook && _selectedBookId != null) {
       result = notes.where((note) => note.bookId == _selectedBookId).toList();
-      description = 'הערות לספר $_selectedBookId';
+      description = 'notes לbook $_selectedBookId';
     } else if (_mode == NotesExportMode.byDateRange && _dateRange != null) {
       final start = DateUtils.dateOnly(_dateRange!.start);
       final endExclusive = DateUtils.dateOnly(
@@ -69,7 +69,7 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
               note.updatedAt.isBefore(endExclusive))
           .toList();
       description =
-          'הערות בתאריכים ${_dateRange!.start.toIso8601String()} - ${_dateRange!.end.toIso8601String()}';
+          'notes בתאריכים ${_dateRange!.start.toIso8601String()} - ${_dateRange!.end.toIso8601String()}';
     } else if (_mode == NotesExportMode.manual) {
       result =
           notes.where((note) => _manualSelection[note.id] == true).toList();
@@ -93,7 +93,7 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
     }).toList();
 
     return AlertDialog(
-      title: const Text('ייצוא הערות'),
+      title: const Text('ייצוא notes'),
       content: SizedBox(
         width: 540,
         child: Column(
@@ -124,7 +124,7 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
                     .toList(),
                 onSelected: (value) => setState(() => _selectedBookId = value),
                 decoration: const InputDecoration(
-                  labelText: 'בחר ספר',
+                  labelText: 'בחר book',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -150,7 +150,7 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
               RtlTextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
-                  labelText: 'חיפוש הערות',
+                  labelText: 'search notes',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -188,11 +188,11 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
       actions: [
         NeutralActionButton(
           onPressed: () => Navigator.of(context).pop(),
-          text: 'ביטול',
+          text: 'cancel',
         ),
         RecommendedActionButton(
           onPressed: _submit,
-          text: 'ייצא',
+          text: 'יExit',
         ),
       ],
     );
@@ -203,9 +203,9 @@ class _PersonalNotesExportDialogState extends State<PersonalNotesExportDialog> {
       case NotesExportMode.all:
         return 'הכל';
       case NotesExportMode.byBook:
-        return 'לפי ספר';
+        return 'לפי book';
       case NotesExportMode.byDateRange:
-        return 'טווח זמן';
+        return 'טווח time';
       case NotesExportMode.manual:
         return 'בחירה ידנית';
     }

@@ -93,8 +93,8 @@ class PdfBookTab extends OpenedTab {
     pinLeftPane.value = Settings.getValue<bool>('key-pin-sidebar') ?? false;
   }
 
-  /// מתודה להוספת listener לעדכון מספר העמוד
-  /// צריך לקרוא לזה אחרי שה-controller מוכן
+  /// מתודה להוספת listener לupdate מbook הpage
+  /// צריך לקרוא לזה אחרי שה-controller מוyes
   void setupPageTracking() {
     pdfViewerController.addListener(_updatePageNumber);
   }
@@ -157,14 +157,14 @@ class PdfBookTab extends OpenedTab {
   /// The JSON map contains 'path', 'pageNumber' and 'type' keys.
   @override
   Map<String, dynamic> toJson() {
-    // שמירת מספר העמוד הנוכחי - אם ה-controller מוכן, נשתמש בו, אחרת נשתמש ב-pageNumber השמור
+    // save מbook הpage הcurrent - אם ה-controller מוyes, נשתמש בו, אחרת נשתמש ב-pageNumber הSave
     int currentPage = pageNumber;
     try {
       if (pdfViewerController.isReady) {
         currentPage = pdfViewerController.pageNumber ?? pageNumber;
       }
     } catch (e) {
-      // אם יש שגיאה בגישה ל-controller, נשתמש ב-pageNumber השמור
+      // אם יש error בגישה ל-controller, נשתמש ב-pageNumber הSave
       currentPage = pageNumber;
     }
 

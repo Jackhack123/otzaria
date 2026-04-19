@@ -21,7 +21,7 @@ class AdPopupDialog extends StatefulWidget {
 
   /// הצגת הפופאפ אם צריך
   static Future<void> showIfNeeded(BuildContext context) async {
-    // במצב debug לא להציג את הפופאפ אוטומטית
+    // במצב debug no להציג את הפופאפ אוטומטית
     if (kDebugMode) return;
 
     final shouldShow = await AdPopupService.shouldShowAd();
@@ -36,7 +36,7 @@ class AdPopupDialog extends StatefulWidget {
       context: context,
       barrierDismissible: true,
       builder: (context) => const AdPopupDialog(
-        title: 'אוצריא מתגייסת לעזרת לומדי התורה',
+        title: 'Otzaria מתגייסת לעזרת לומדי התורה',
       ),
     );
   }
@@ -51,7 +51,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
 
-  int _animationStage = 0; // 0: לוגו במרכז, 1: לוגו+טקסט, 2: הכל למעלה+רשימה
+  int _animationStage = 0; // 0: לוגו במרכז, 1: לוגו+text, 2: הכל למעלה+list
 
   @override
   void initState() {
@@ -79,13 +79,13 @@ class _AdPopupDialogState extends State<AdPopupDialog>
       curve: Curves.easeIn,
     ));
 
-    // אנימציה של שלב 1 - הופעת הטקסט
+    // אנימציה של שלב 1 - הופעת הtext
     _stage1Controller = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    // אנימציה של שלב 2 - מעבר למעלה והופעת הרשימה
+    // אנימציה של שלב 2 - מעבר למעלה והופעת הlist
     _stage2Controller = AnimationController(
       duration: const Duration(milliseconds: 700),
       vsync: this,
@@ -100,7 +100,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
     await Future.delayed(const Duration(milliseconds: 1200));
     if (!mounted) return;
 
-    // שלב 1: הטקסט מופיע
+    // שלב 1: הtext מופיע
     setState(() => _animationStage = 1);
     await _stage1Controller.forward();
 
@@ -108,7 +108,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
     await Future.delayed(const Duration(milliseconds: 1500));
     if (!mounted) return;
 
-    // שלב 2: הכל זז למעלה והרשימה מופיעה
+    // שלב 2: הכל זז למעלה והlist מופיעה
     setState(() => _animationStage = 2);
     await _stage2Controller.forward();
   }
@@ -141,23 +141,23 @@ class _AdPopupDialogState extends State<AdPopupDialog>
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // תוכן דינמי לפי שלב
+                    // content דינמי לפי שלב
                     Flexible(
                       child: _buildStageContent(),
                     ),
                     const Divider(height: 1),
-                    // כפתורים תחתונים
+                    // buttons תחתונים
                     _buildBottomButtons(),
                   ],
                 ),
-                // כפתור סגירה X
+                // button סגירה X
                 Positioned(
                   top: 8,
                   left: 8,
                   child: IconButton(
                     onPressed: () => Navigator.of(context).pop(),
                     icon: const Icon(FluentIcons.dismiss_24_regular),
-                    tooltip: 'סגור',
+                    tooltip: 'closed',
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.black.withValues(alpha: 0.1),
                       foregroundColor: Colors.black54,
@@ -177,9 +177,9 @@ class _AdPopupDialogState extends State<AdPopupDialog>
       case 0:
         return _buildStage0(); // לוגו במרכז
       case 1:
-        return _buildStage1(); // לוגו+טקסט
+        return _buildStage1(); // לוגו+text
       case 2:
-        return _buildStage2(); // הכל למעלה+רשימה
+        return _buildStage2(); // הכל למעלה+list
       default:
         return _buildStage0();
     }
@@ -199,7 +199,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
     );
   }
 
-  // שלב 1: לוגו במרכז וטקסט מופיע לידו
+  // שלב 1: לוגו במרכז וtext מופיע לידו
   Widget _buildStage1() {
     return Center(
       child: Padding(
@@ -215,7 +215,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
               height: 100,
             ),
             const SizedBox(width: 20),
-            // טקסט מופיע עם אנימציה
+            // text מופיע עם אנימציה
             Flexible(
               child: SlideTransition(
                 position: Tween<Offset>(
@@ -244,7 +244,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
     );
   }
 
-  // שלב 2: הכל מתכווץ למעלה ורשימה מופיעה
+  // שלב 2: הכל מתכווץ למעלה וlist מופיעה
   Widget _buildStage2() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -255,7 +255,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
           builder: (context, child) {
             // גודל הלוגו מתכווץ מ-100 ל-50
             final logoSize = 100.0 - (_stage2Controller.value * 50.0);
-            // גודל הטקסט מתכווץ מ-22 ל-18
+            // גודל הtext מתכווץ מ-22 ל-18
             final fontSize = 22.0 - (_stage2Controller.value * 4.0);
             // הפדינג מתכווץ מ-40 ל-16
             final verticalPadding = 40.0 - (_stage2Controller.value * 24.0);
@@ -277,7 +277,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
                     height: logoSize,
                   ),
                   SizedBox(width: 20 - (_stage2Controller.value * 8)),
-                  // טקסט מתכווץ
+                  // text מתכווץ
                   Flexible(
                     child: Text(
                       widget.title,
@@ -348,7 +348,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
                   children: [
                     Icon(FluentIcons.calendar_24_regular, size: 20),
                     SizedBox(width: 12),
-                    Text('למשך שבוע'),
+                    Text('למשך week'),
                   ],
                 ),
               ),
@@ -358,7 +358,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
                   children: [
                     Icon(FluentIcons.calendar_month_24_regular, size: 20),
                     SizedBox(width: 12),
-                    Text('למשך חודש'),
+                    Text('למשך month'),
                   ],
                 ),
               ),
@@ -374,7 +374,7 @@ class _AdPopupDialogState extends State<AdPopupDialog>
               ),
             ],
             child: OutlinedButton.icon(
-              onPressed: null, // הכפתור עצמו לא עושה כלום, רק פותח תפריט
+              onPressed: null, // הbutton עצמו no עושה כלום, רק פותח תפריט
               style: OutlinedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -408,10 +408,10 @@ class _OrganizationsList extends StatelessWidget {
 2 - שלוחת הרכבים
 5 - שלוחת רישום למקבלי הצווים
 7 - כמות הנרשמים (מעל 71,197)
-8 - דיווח על תקלות במערכת
-9 - הסרה מרשימת התפוצה
+8 - דיווח על תקלות בSystem
+9 - remove מרשימת התפוצה
 
-לאחר לחיצה על 0:
+noחר tap על 0:
 1 - ירושלים
 2 - בני ברק
 3 - בית שמש
@@ -422,12 +422,12 @@ class _OrganizationsList extends StatelessWidget {
 8 - אשדוד
 9 - ערים נוספות
 
-לאחר לחיצה על 9 (ערים נוספות):
+noחר tap על 9 (ערים נוספות):
 1 - ערים בצפון
 2 - ערים במרכז
 3 - ערים בדרום
 
-ערים בצפון (לחיצה על 1):
+ערים בצפון (tap על 1):
 1 - חיפה
 2 - זכרון יעקב
 3 - טבריה
@@ -439,26 +439,26 @@ class _OrganizationsList extends StatelessWidget {
 9 - יבניאל
 10 - נהריה ומעלות תרשיחא
 
-ערים במרכז (לחיצה על 2):
+ערים במרכז (tap על 2):
 1 - תל אביב יפו
-2 - פתח תקווה
+2 - Open תקווה
 3 - רמת גן
 4 - אזור רחובות
 5 - ערים שונות בגוש דן
 6 - אזור השרון
 7 - חולון ובת ים
-8 - קרית מלאכי
+8 - קרית fullכי
 9 - קרית יערים תלסטון
 10 - עמנואל
 
-מזרח גוש דן (לחיצה על 5 ואז 0):
+מזרח גוש דן (tap על 5 ואז 0):
 0 - כל אזור מזרח גוש דן
 1 - גבעת שמואל
 2 - יהוד
 3 - קרית אונו וגני תקווה
 4 - אור יהודה
 
-ערים בדרום (לחיצה על 3):
+ערים בדרום (tap על 3):
 1 - באר שבע
 2 - אשקלון
 3 - ירוחם
@@ -467,41 +467,41 @@ class _OrganizationsList extends StatelessWidget {
 6 - ערד
 7 - קרית גת
 
-אופקים, נתיבות ותפרח (לחיצה על 5):
-0 - אופקים, נתיבות ותפרח ביחד
+אופקים, pathות ותפרח (tap על 5):
+0 - אופקים, pathות ותפרח ביחד
 1 - אופקים
-2 - נתיבות
+2 - pathות
 3 - תפרח''',
     },
     {
       'name': 'החוטפים הגיעו',
       'phone': '02-800-8080',
       'logo': 'assets/logos/hachotfim_higiu.jpg',
-      'details': '''**שימו לב! המערכת חודשה ושודרגה**
+      'details': '''**שימו לב! הSystem monthה ושודרגה**
 נוספו עשרות ערים חדשות ואפשרויות רבות נוספות
-גם מי שנרשם כבר במערכת הישנה, יש לבצע רישום מחדש 
-לנרשמים ברשימה של כל הארץ ישלח צינתוק ולא מבזק
+גם מי שנרname כבר בSystem היyear, יש לבצע רישום again 
+לנרשמים בlist של כל הארץ ישלח צינתוק וno מבזק
 
 1 - לרישום
-2 - להסרה מרשימת התפוצה
-3 - להגבלת שעות כפי המידע שנמסר בהוראות
-(לע"ע האפשרות להגבלת שעות היא רק על מבזקים ולא על צינתוקים)
+2 - לremove מרשימת התפוצה
+3 - להגבלת שעות כפי המידע שנמסר בparentאות
+(לע"ע האפשרות להגבלת שעות היא רק על מבזקים וno על צינתוקים)
 4 - לדיווח חירום בעת נסיון מעצר
 5 - לדיווח על מחסומים
-6 - להשארת הודעות למערכת
-7 - להוראות רישום ומידע מורחב על המערכת החדשה
+6 - להשארת הודעות לSystem
+7 - לparentאות רישום ומידע מורחב על הSystem החדשה
 
-לאחר לחיצה על 1 (לרישום):
+noחר tap על 1 (לרישום):
 1 - להרשמה לפי עיר
 2 - להרשמה לפי אזור בארץ
 3 - להרשמה לכל הארץ
 
-לאחר לחיצה על 1 (להרשמה לפי עיר)
-יושמע התקליט הבא:
+noחר tap על 1 (להרשמה לפי עיר)
+יושמע התקליט next:
 בחר את העיר הרצויה, אם ידוע לך קוד העיר הקש אותו בכל שלב
 רשימת הערים יוקראו ברצף -
 לבחירת העיר הקש 0
-למעבר מהיר לעיר הבאה הקש #
+למעבר מהיר לעיר nextה הקש #
 לעיר הקודמת הקש *
 
 1 בני ברק
@@ -535,24 +535,24 @@ class _OrganizationsList extends StatelessWidget {
 29 ירוחם
 30 כרמיאל
 31 לוד - אחיסמך
-32 לוד כללי
+32 לוד general
 33 מגדל העמק
 34 מירון
 35 מעלה אדומים
 36 מעלות
 37 נהריה
 38 נצרת נוף הגליל
-39 נתיבות 
+39 pathות 
 40 נתניה
 41 עמנואל
 42 עפולה
 43 ערד
-44 פתח תקוה
+44 Open תקוה
 45 צפת
 46 קוממיות חזון יחזקאל
 47 קרית אתא
 48 קרית גת
-49 קרית מלאכי
+49 קרית fullכי
 50 ראשון לציון
 51 רחובות
 52 רכסים
@@ -564,19 +564,19 @@ class _OrganizationsList extends StatelessWidget {
 58 הרצליה
 59 רמת השרון
 
-לאחר בחירת עיר מסוימת, יושמע התקליט הבא:
-לאישור הקש 1
-להקשה מחודשת הקישו 2
-(אחרי לחיצה על 1 לאישור)
-להוספת מספרכם לרשימת הצינתוקים הקישו 1
-להסרת מספרכם מרשימת הצינתוקים הקישו 2 
-להוספת מספרכם לרשימת הצינתוקים לזמן מסוים הקישו 3
-להשתקת קבלת צינתוקים עד לזמן מסוים הקישו 4 
+noחר בחירת עיר מסוימת, יושמע התקליט next:
+לconfirm הקש 1
+להקשה מmonthת הקישו 2
+(אחרי tap על 1 לconfirm)
+להוספת מbookכם לרשימת הצינתוקים הקישו 1
+להסרת מbookכם מרשימת הצינתוקים הקישו 2 
+להוספת מbookכם לרשימת הצינתוקים לtime מסוים הקישו 3
+להשתקת קבלת צינתוקים עד לtime מסוים הקישו 4 
 ליציאה הקישו *
 
-לאחר לחיצה על 2 (להרשמה לפי אזור)
-יושמע התקליט הבא:
-הקש את קוד האזור, ובסיום הקש סולמית
+noחר tap על 2 (להרשמה לפי אזור)
+יושמע התקליט next:
+הקש את קוד האזור, ובfinish הקש סולמית
 1 אזור המרכז
 2 אזור ירושלים ובית שמש
 3 אזור הדרום - אזור אשדוד
@@ -591,24 +591,24 @@ class _OrganizationsList extends StatelessWidget {
       'name': 'נותנים גב',
       'phone': '04-313-2000',
       'logo': 'assets/logos/notnim_gav.png',
-      'details': '''לאנגלית הקש 4
-1 - מוקד רישום לבחורים מקבלי הצווים
+      'details': '''noנגלית הקש 4
+1 - focus רישום לselectedים מקבלי הצווים
 2 - אגף ייעוץ מקצועי
 3 - אגף תמיכה לנשים ואמהות
 5 - הדרכה מוקלטת למקבלי הצווים
 8 - הרשמה להתנדבות בארגון
-9 - השארת הודעה למנהלי הארגון
+9 - השארת Message לadminי הארגון
 0 - תרומות במענה אנושי או אוטומטי
-* - מוקד חרום בעת מעצר''',
+* - focus חרום בעת מעצר''',
     },
     {
       'name': 'עם קדוש',
       'phone': '*5172',
       'logo': 'assets/logos/am_kadosh.jpg',
       'details': '''גימטריא קטנה של "נאזר" בגבורה
-1 - בחור מגיל 18 ומעלה שקיבל צו
+1 - selected מגיל 18 ומעלה שקיבל צו
 2 - מגיל 16 וחצי עד 18
-3 - השארת הודעה
+3 - השארת Message
 4 - מענה בעת ניסיון מעצר או בשעת מעצר
 5 - דיווח על מחסומים ברחבי הארץ
 8 - תרומות''',
@@ -629,10 +629,10 @@ class _OrganizationsList extends StatelessWidget {
       'logo': 'assets/logos/ezram.jpg',
       'details': '''ארגון לתושבי ביתר
 הפועל בצמוד ובתמיכת רבני העיר
-* - מוקד החירום במקרי מעצר
+* - focus החירום במקרי מעצר
 1 - רישום למקבלי צווי הגיוס
 2 - לייעוץ משפטי למקבלי הצווים
-3 - מוקד התמיכה לאמהות ונשות מקבלי הצווים
+3 - focus התמיכה noמהות ונשות מקבלי הצווים
 4 - מענה מנציגים
 9 - להנהלת הארגון
 0 - לתרומות''',
@@ -644,22 +644,22 @@ class _OrganizationsList extends StatelessWidget {
       'details': '''1 - לרישום
 2 - מענה והכוונה משפטית
 3 -מענה בשפות נוספות
-7 - מוקד משפטי למנהלי הישיבות
+7 - focus משפטי לadminי הישיבות
 9 - שלוחת החירום למקרי מעצר
-קו תוכן שע"י האגודה: 077-226-2626
-אפשרויות קו התוכן:
+קו content שע"י האגודה: 077-226-2626
+אפשרויות קו הcontent:
 1 - עדכונים
 5 - רישום, תמיכה וסיוע משפטי
 6 - תרומות
-9 - הרשמה והסרה מרשימות התפוצה''',
+9 - הרשמה וremove מlists התפוצה''',
     },
     {
-      'name': 'הצלה לאחים',
+      'name': 'הצלה noחים',
       'phone': '02-502-3231',
       'logo': 'assets/logos/hatzala_leachim.png',
       'details': '''1 - לפניות חדשות והמשך טיפול
 2 - לפניות בנושא עיכוב יציאה מהארץ
-3 - לפניות בנושא עצורים בכלא הצבאי
+3 - לפניות בנושא עצורים בכno הצבאי
 6 - לקבלת כתובת המייל והפקס
 8 - לשמיעת הסטטוס בתיק שלכם
 9 - לשמיעה חוזרת''',
@@ -669,9 +669,9 @@ class _OrganizationsList extends StatelessWidget {
       'phone': '02-579-5252',
       'logo': 'assets/logos/achim_anachnu.png',
       'details': '''1 - למקבלי צווי ההתיצבות והגיוס
-2 - לבעיות מול הצבא
-4 - להשארת הודעה
-5 - לקבלת מספר הפקס ודואר אלקטרוני
+2 - לissues מול הצבא
+4 - להשארת Message
+5 - לקבלת מbook הפקס ודואר אלקטרוני
 6 - לכל נושא אחר''',
     },
     {
@@ -768,7 +768,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
     int lastIndex = 0;
 
     for (final match in _detailsRegex.allMatches(details)) {
-      // טקסט רגיל לפני ההדגשה
+      // text רגיל לפני ההדגשה
       if (match.start > lastIndex) {
         spans.add(TextSpan(
           text: details.substring(lastIndex, match.start),
@@ -776,7 +776,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
         ));
       }
 
-      // טקסט מודגש (ללא הכוכביות)
+      // text מודגש (לno הכוכביות)
       spans.add(TextSpan(
         text: match.group(1),
         style: _boldDetailsStyle,
@@ -785,7 +785,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
       lastIndex = match.end;
     }
 
-    // שאר הטקסט
+    // שאר הtext
     if (lastIndex < details.length) {
       spans.add(TextSpan(
         text: details.substring(lastIndex),
@@ -842,7 +842,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // שם
+                  // name
                   Expanded(
                     child: Text(
                       widget.org['name'],
@@ -890,7 +890,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
                   // טלפונים נוספים
                   if (widget.org['phones'] != null) ...[
                     const Text(
-                      'מספרי טלפון:',
+                      'מbookי טלפון:',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -914,7 +914,7 @@ class _ExpandableOrgCardState extends State<_ExpandableOrgCard> {
                         ))),
                     const SizedBox(height: 12),
                   ],
-                  // פרטים
+                  // privateם
                   if (widget.org['details'] != null) ...[
                     const Text(
                       'אפשרויות הקו:',

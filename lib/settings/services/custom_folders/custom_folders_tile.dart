@@ -19,7 +19,7 @@ import 'package:otzaria/library/bloc/library_event.dart';
 import 'package:otzaria/migration/core/models/category.dart';
 import 'package:otzaria/widgets/zip_extraction_progress_dialog.dart';
 
-/// Widget להוספה וניהול תיקיות מותאמות אישית
+/// Widget לadd וניהול folders מותאמות אישית
 class CustomFoldersTile extends StatefulWidget {
   const CustomFoldersTile({super.key});
 
@@ -40,7 +40,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
   }
 
   static const String _customFoldersReloadNotice =
-      'לאחר הוספת ספרים חדשים לתיקייה קיימת, יש ללחוץ על סמל הרענון.';
+      'noחר הוספת books חדשים לfolder קיימת, יש ללחוץ על סמל הrefresh.';
 
   @override
   void initState() {
@@ -73,19 +73,19 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
   Future<void> _addFolder() async {
     final path = await FilePicker.platform.getDirectoryPath();
     if (path != null) {
-      // בדיקה שהתיקייה קיימת
+      // check שהfolder קיימת
       final dir = Directory(path);
       if (!await dir.exists()) {
         if (!mounted) return;
-        UiSnack.showError('התיקייה לא נמצאה');
+        UiSnack.showError('הfolder no נמצאה');
         return;
       }
 
-      // בדיקה וחילוץ קובץ ZIP אם קיים - עם דיאלוג
+      // check וחילוץ file ZIP אם קיים - עם דיאלוג
       bool zipExtracted = false;
       String? extractedFileName;
 
-      // בדיקה אם יש ZIP
+      // check אם יש ZIP
       final zipFiles = dir
           .listSync()
           .where((entity) =>
@@ -121,16 +121,16 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       });
       await _saveFolders();
 
-      // סריקת הספרים בתיקייה והוספתם ל-DB כספרים חיצוניים (ברקע).
-      // RefreshLibrary מופעל אחרי גמר הסריקה כדי לא לחסום את ה-UI.
-      // סריקה ברקע — _activeScanCount מנוהל בתוך _startBackgroundScan.
+      // סemptyת הbooks בfolder והוספתם ל-DB כbooks חיצוניים (ברקע).
+      // RefreshLibrary active אחרי גמר הסemptyה כדי no לחסום את ה-UI.
+      // סemptyה ברקע — _activeScanCount מנוהל בתוך _startBackgroundScan.
       _startBackgroundScan(path);
 
       if (!mounted) return;
       String successMessage =
-          'התיקייה "${path.split(Platform.pathSeparator).last}" נוספה בהצלחה';
+          'הfolder "${path.split(Platform.pathSeparator).last}" נוספה בsuccess';
       if (zipExtracted && extractedFileName != null) {
-        successMessage += '\nהקובץ "$extractedFileName" חולץ בהצלחה!';
+        successMessage += '\nהfile "$extractedFileName" חולץ בsuccess!';
       }
       UiSnack.show(
         successMessage,
@@ -139,7 +139,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
     }
   }
 
-  /// סריקת תיקייה והוספת הספרים שבה ל-DB כספרים חיצוניים (ברקע).
+  /// סemptyת folder והוספת הbooks שבה ל-DB כbooks חיצוניים (ברקע).
   ///
   /// מחזירה [Future<ScanResult>] שמסתיים כשכל כתיבות ה-DB גמורות.
   /// הקריאה אינה חוסמת — המתקשר צריך להגדיל את [_activeScanCount]
@@ -153,7 +153,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       final repository = sqliteProvider.repository;
       if (repository == null) {
         debugPrint('Repository not available for scanning external books');
-        return ScanResult(fatalError: 'מסד הנתונים לא זמין');
+        return ScanResult(fatalError: 'מסד הנתונים no זמין');
       }
       final folderName = folderPath.split(Platform.pathSeparator).last;
       return await DatabaseLibraryProvider.instance
@@ -165,25 +165,25 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
     }
   }
 
-  /// מפעיל סריקה ברקע ומעדכן את ה-UI לפי התוצאה.
+  /// מפעיל סemptyה ברקע ומעדyes את ה-UI לפי התוצאה.
   /// הספירה מנוהלת על ידי operationQueue; אין צורך בספירה מקומית.
   void _startBackgroundScan(String folderPath) {
     if (!mounted) return;
-    // תופסים רפרנס לפני הסריקה — RefreshLibrary יישלח גם אם ה-widget יתפרק
-    // באמצע הסריקה (כגון שהמשתמש יסגור את המסך).
+    // תופסים רפרנס לפני הסemptyה — RefreshLibrary יישלח גם אם ה-widget יתפרק
+    // באמצע הסemptyה (כגון שהuser יclosed את המסך).
     final libraryBloc = context.read<LibraryBloc>();
     _scanAndAddExternalBooks(folderPath).then((result) {
-      // רענון הספרייה תמיד — גם אם ה-widget כבר לא mounted.
+      // refresh the library תמיד — גם אם ה-widget כבר no mounted.
       if (result.isSuccess) {
         libraryBloc.add(RefreshLibrary());
       }
       // הודעות UI רק אם ה-widget עדיין חי.
       if (!mounted) return;
       if (!result.isSuccess) {
-        UiSnack.showError('שגיאת סריקה: ${result.fatalError}');
+        UiSnack.showError('שגיאת סemptyה: ${result.fatalError}');
       } else if (result.hasPartialFailure) {
         UiSnack.show(
-          '${result.addedBooks} ספרים נוספו, '
+          '${result.addedBooks} books נוספו, '
           '${result.updatedBooks} עודכנו '
           '(כשל: ${result.failedBooks})',
         );
@@ -191,19 +191,19 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
     });
   }
 
-  /// הסרת תיקייה מהתוכנה.
-  /// מנתק את הקישור של התיקייה מהתוכנה (התוכנה מפסיקה לסרוק אותה).
-  /// שואל את המשתמש אם למחוק גם את הנתונים מה-DB.
-  /// קבצים פיזיים לעולם לא נמחקים.
+  /// הסרת folder מהתוכנה.
+  /// מנתק את הקישור של הfolder מהתוכנה (התוכנה מפסיקה לסרוק אותה).
+  /// שואל את הuser אם לdeleted גם את הנתונים מה-DB.
+  /// files פיזיים לעולם no נDeleteים.
   Future<void> _removeFolder(CustomFolder folder) async {
     debugPrint(
         '[CustomFolders] _removeFolder START: name=${folder.name}, path=${folder.path}, addToDatabase=${folder.addToDatabase}');
 
     final confirmed = await showConfirmationDialog(
       context: context,
-      title: 'הסרת תיקייה',
-      content: 'האם להסיר את התיקייה "${folder.name}" מהספרייה?\n'
-          'הקבצים המקוריים לא יימחקו.',
+      title: 'הסרת folder',
+      content: 'האם להסיר את הfolder "${folder.name}" מthe library?\n'
+          'הfiles המקוריים no ייDeleteו.',
       isDangerous: false,
     );
 
@@ -212,7 +212,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       return;
     }
 
-    // הסרת הקישור מהתוכנה (מפסיקה לסרוק את התיקייה)
+    // הסרת הקישור מהתוכנה (מפסיקה לסרוק את הfolder)
     debugPrint('[CustomFolders] _removeFolder: removing link from settings...');
     setState(() {
       _folders = CustomFoldersManager.removeFolder(_folders, folder.path);
@@ -223,32 +223,32 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
 
     if (!mounted) return;
 
-    // שואל אם למחוק גם מה-DB
+    // שואל אם לdeleted גם מה-DB
     debugPrint(
         '[CustomFolders] _removeFolder: asking user about DB deletion...');
     final deleteFromDb = await showTwoActionsDialog(
       context: context,
-      title: 'מחיקה ממסד הנתונים',
-      content: 'התיקייה הוסרה מהרשימה.\n'
-          'האם למחוק גם את הספרים ממסד הנתונים?',
+      title: 'delete ממסד הנתונים',
+      content: 'הfolder הוסרה מהlist.\n'
+          'האם לdeleted גם את הbooks ממסד הנתונים?',
       cancelText: 'השאר ב-DB',
-      confirmText: 'מחק מ-DB',
+      confirmText: 'Delete מ-DB',
     );
 
     if (deleteFromDb == true) {
       debugPrint('[CustomFolders] _removeFolder: user chose DELETE FROM DB');
       await _deleteFolderFromDatabase(folder);
       if (mounted) {
-        UiSnack.show('התיקייה והספרים נמחקו ממסד הנתונים.');
+        UiSnack.show('הfolder והbooks נDeleteו ממסד הנתונים.');
       }
     } else {
       debugPrint('[CustomFolders] _removeFolder: user chose KEEP IN DB');
       if (mounted) {
-        UiSnack.show('התיקייה הוסרה. הספרים נשארו במסד הנתונים.');
+        UiSnack.show('הfolder הוסרה. הbooks נשארו במסד הנתונים.');
       }
     }
 
-    // רענון הספרייה
+    // refresh the library
     debugPrint('[CustomFolders] _removeFolder: refreshing library...');
     if (mounted) {
       context.read<LibraryBloc>().add(RefreshLibrary());
@@ -256,7 +256,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
     debugPrint('[CustomFolders] _removeFolder END');
   }
 
-  /// מחיקת תיקייה מה-DB
+  /// מחיקת folder מה-DB
   Future<void> _deleteFolderFromDatabase(CustomFolder folder) async {
     debugPrint(
         '[CustomFolders] _deleteFolderFromDatabase START: ${folder.name}');
@@ -277,14 +277,14 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       final rootCategories = await repository.getRootCategories();
       Category? personalCategory;
       for (final cat in rootCategories) {
-        if (cat.title == 'ספרים אישיים') {
+        if (cat.title == 'books אישיים') {
           personalCategory = cat;
           break;
         }
       }
       if (personalCategory == null) {
         debugPrint(
-            '[CustomFolders] _deleteFolderFromDatabase: "ספרים אישיים" NOT FOUND');
+            '[CustomFolders] _deleteFolderFromDatabase: "books אישיים" NOT FOUND');
         return;
       }
 
@@ -322,12 +322,12 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
     debugPrint(
         '[CustomFolders] _toggleAddToDatabase: ${folder.name}, newValue=$value (was ${folder.addToDatabase})');
     if (value) {
-      // הצגת אזהרה לפני הפעלה
+      // הצגת Warning לפני Enableה
       final confirmed = await showConfirmationDialog(
         context: context,
-        title: 'הכנסת תוכן ל-DB',
-        content: 'תוכן הספרים יישמר במסד הנתונים.\n'
-            'הקבצים המקוריים יישארו במקום.\n\n'
+        title: 'הכנסת content ל-DB',
+        content: 'content הbooks יישמר במסד הנתונים.\n'
+            'הfiles המקוריים יישארו במקום.\n\n'
             'האם להמשיך?',
         isDangerous: false,
       );
@@ -345,11 +345,11 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       });
       await _saveFolders();
 
-      // הפעל סנכרון
+      // Enable סנכרון
       debugPrint('[CustomFolders] _toggleAddToDatabase ON: starting sync...');
       await _rescanCustomFolders(showNoChangesMessage: false);
     } else {
-      // כיבוי - עדכון הגדרות והפעלת סנכרון כדי לנקות את ה-DB
+      // כיבוי - update settings וEnableת סנכרון כדי לנקות את ה-DB
       debugPrint('[CustomFolders] _toggleAddToDatabase OFF: saving setting');
       setState(() {
         _folders = CustomFoldersManager.updateFolderDbSetting(
@@ -357,15 +357,15 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       });
       await _saveFolders();
 
-      // הפעל סנכרון כדי להחיל את שינוי הסטטוס על הספרים
+      // Enable סנכרון כדי להחיל את שינוי הסטטוס על הbooks
       debugPrint('[CustomFolders] _toggleAddToDatabase OFF: starting sync...');
       await _rescanCustomFolders(showNoChangesMessage: false);
 
       debugPrint('[CustomFolders] _toggleAddToDatabase OFF: done.');
 
       if (mounted) {
-        UiSnack.show('תוכן הספרים נסרק ועודכן.\n'
-            'מעתה הספרים ייקראו ישירות מהקבצים.');
+        UiSnack.show('content הbooks נסרק ועודyes.\n'
+            'מעתה הbooks ייקראו ישירות מהfiles.');
       }
     }
   }
@@ -377,13 +377,13 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
         await sqliteProvider.initialize();
       }
       if (!sqliteProvider.isInitialized) {
-        throw Exception('מסד הנתונים לא זמין');
+        throw Exception('מסד הנתונים no זמין');
       }
 
       final dbPath = sqliteProvider.dbPath;
       final libraryPath = Settings.getValue<String>('key-library-path');
       if (libraryPath == null || libraryPath.isEmpty) {
-        throw Exception('נתיב הספרייה לא מוגדר');
+        throw Exception('path the library no מוגדר');
       }
 
       // _folders already holds the up-to-date state saved before this call.
@@ -409,15 +409,15 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
 
       final hasChanges = result.addedBooks > 0 || result.updatedBooks > 0;
       final message = hasChanges
-          ? 'הסריקה הושלמה: ${result.addedBooks} ספרים נוספו, ${result.updatedBooks} עודכנו'
-          : 'הסריקה הושלמה. לא נמצאו ספרים חדשים.';
+          ? 'הסemptyה הושלמה: ${result.addedBooks} books נוספו, ${result.updatedBooks} עודכנו'
+          : 'הסemptyה הושלמה. no נמצאו new books.';
 
       if (hasChanges || showNoChangesMessage) {
         UiSnack.show(message);
       }
     } catch (e) {
       if (!mounted) return;
-      UiSnack.showError('שגיאה בסריקת תיקיות אישיות: $e');
+      UiSnack.showError('error בסemptyת folders אישיות: $e');
     }
   }
 
@@ -427,11 +427,11 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
       children: [
         ListTile(
           leading: const Icon(FluentIcons.folder_add_24_regular),
-          title: const Text('הוסף תיקייה לאוצריא'),
+          title: const Text('Add folder לOtzaria'),
           subtitle: Text(
             _folders.isEmpty
-                ? 'לחץ להוספת תיקיות אישיות'
-                : '${_folders.length} תיקיות',
+                ? 'לחץ להוספת folders אישיות'
+                : '${_folders.length} folders',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           hoverColor: Colors.transparent,
@@ -448,10 +448,10 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
                         )
                       : const Icon(FluentIcons.arrow_clockwise_24_regular),
                   onPressed: _isSyncing ? null : _rescanCustomFolders,
-                  tooltip: 'סרוק מחדש תיקיות אישיות',
+                  tooltip: 'סרוק again folders אישיות',
                 ),
               RecommendedActionButton(
-                text: 'הוסף תיקייה',
+                text: 'Add folder',
                 icon: FluentIcons.folder_add_24_regular,
                 onPressed: _addFolder,
                 isLoading: _isSyncing,
@@ -468,7 +468,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
                       _isExpanded = !_isExpanded;
                     });
                   },
-                  tooltip: _isExpanded ? 'הסתר' : 'הצג תיקיות',
+                  tooltip: _isExpanded ? 'hide' : 'הצג folders',
                 ),
             ],
           ),
@@ -553,7 +553,7 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
         children: [
           // Toggle להכנסה ל-DB
           Tooltip(
-            message: 'הכנס תוכן ל-DB',
+            message: 'הכנס content ל-DB',
             child: _isSyncing && folder.addToDatabase
                 ? const SizedBox(
                     width: 24,
@@ -567,11 +567,11 @@ class _CustomFoldersTileState extends State<CustomFoldersTile> {
                         : (value) => _toggleAddToDatabase(folder, value),
                   ),
           ),
-          // כפתור הסרה — חסום בזמן סריקה כדי למנוע כתיבה מקבילה ל-DB
+          // button remove — חסום בtime סemptyה כדי למנוע כתיבה מקבילה ל-DB
           IconButton(
             icon: const Icon(FluentIcons.delete_24_regular, size: 18),
             onPressed: _isSyncing ? null : () => _removeFolder(folder),
-            tooltip: 'הסר תיקייה',
+            tooltip: 'הסר folder',
           ),
         ],
       ),

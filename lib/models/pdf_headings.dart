@@ -4,7 +4,7 @@ import 'package:otzaria/migration/core/models/toc_entry.dart'
     as migration_models;
 
 /// מודל לניהול קבצי headings של PDF
-/// מקשר בין כותרות ב-PDF למספרי שורות בקובץ הטקסט
+/// מקשר בין כותרות ב-PDF למbookי lines בfile הtext
 class PdfHeadings {
   final Map<String, int> headingsMap;
   final String bookTitle;
@@ -14,9 +14,9 @@ class PdfHeadings {
     required this.bookTitle,
   });
 
-  /// טוען headings עבור ספר PDF מתוך ה-DB (טבלת tocEntry).
+  /// טוען headings עבור book PDF מתוך ה-DB (טבלת tocEntry).
   ///
-  /// הנתונים נשענים על השדות: bookId, textId, lineIndex.
+  /// הנתונים נשענים על הfields: bookId, textId, lineIndex.
   static Future<PdfHeadings?> loadFromDatabase(
     String bookTitle, {
     int? categoryId,
@@ -34,13 +34,13 @@ class PdfHeadings {
         return null;
       }
 
-      // חיפוש לפי filePath תחילה - מזהה מדויק שמונע החזרת ספר שגוי
-      // כשכמה ספרים חולקים אותה כותרת
+      // search לפי filePath תחילה - מזהה מדויק שמונע החזרת book שגוי
+      // כשכמה books חולקים אותה כותרת
       var book = filePath != null
           ? await repository.getExternalBookByFilePath(filePath)
           : null;
 
-      // fallback לפי כותרת כאשר אין filePath או לא נמצא
+      // fallback לפי כותרת כאשר אין filePath או no נמצא
       if (book == null) {
         book = categoryId != null
             ? await repository.getBookByTitleAndCategory(bookTitle, categoryId)
@@ -63,7 +63,7 @@ class PdfHeadings {
     }
   }
 
-  /// טוען headings עבור ספר PDF מתוך ה-DB לפי מזהה ספר.
+  /// טוען headings עבור book PDF מתוך ה-DB לפי מזהה book.
   static Future<PdfHeadings?> loadFromDatabaseByBookId(
     int bookId, {
     String? bookTitle,
@@ -125,12 +125,12 @@ class PdfHeadings {
     return headingsMap;
   }
 
-  /// מחזיר את מספר השורה בטקסט עבור כותרת מסוימת
+  /// מחזיר את מbook הline בtext עבור כותרת מסוימת
   int? getLineNumberForHeading(String heading) {
     return headingsMap[heading];
   }
 
-  /// מחזיר את הכותרת הקרובה ביותר למספר שורה נתון
+  /// מחזיר את הכותרת הקרובה ביותר למbook line נתון
   String? getClosestHeading(int lineNumber) {
     String? closestHeading;
     int closestDistance = double.maxFinite.toInt();
@@ -146,7 +146,7 @@ class PdfHeadings {
     return closestHeading;
   }
 
-  /// מחזיר רשימה של כותרות ממוינות לפי מספר השורה
+  /// מחזיר list של כותרות ממוינות לפי מbook הline
   List<MapEntry<String, int>> getSortedHeadings() {
     final entries = headingsMap.entries.toList();
     entries.sort((a, b) => a.value.compareTo(b.value));

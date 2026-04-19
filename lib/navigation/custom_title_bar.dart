@@ -53,7 +53,7 @@ const double _kActionButtonWidth = 56.0;
 const double _kWindowCaptionButtonsWidth = 138.0;
 const double _kWindowCaptionButtonWidth = 46.0;
 
-/// סגנון משותף לכפתורי האייקון בשורת הכותרת
+/// סגנון משותף לbuttonי האייקון בשורת הכותרת
 final ButtonStyle _kIconButtonStyle = IconButton.styleFrom(
   minimumSize: const Size(32, 32),
   padding: EdgeInsets.zero,
@@ -138,7 +138,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
                     ),
                     child: Row(
                       children: [
-                        // כפתורי פעולה (היסטוריה וכו') - תמיד מוצגים
+                        // buttonי action (היסטוריה וכו') - תמיד מוצגים
                         SizedBox(
                           height: 40,
                           child: Stack(
@@ -169,13 +169,13 @@ class _CustomTitleBarState extends State<CustomTitleBar>
                           ),
                         ),
 
-                        // תוכן הכותרת (טאבים או כותרת רגילה)
+                        // content הכותרת (טאבים או כותרת רגילה)
                         Expanded(
                           child:
                               _buildContent(context, navState, settingsState),
                         ),
 
-                        // כפתורי חלון (רק בדסקטופ)
+                        // buttonי חלון (רק בדסקטופ)
                         if (!kIsWeb &&
                             (Platform.isWindows ||
                                 Platform.isLinux ||
@@ -201,7 +201,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
                                 if (settingsState.isFullscreen)
                                   _CaptionActionButton(
                                     brightness: Theme.of(context).brightness,
-                                    tooltip: 'סגור',
+                                    tooltip: 'closed',
                                     icon: FluentIcons.dismiss_24_regular,
                                     onPressed: () => windowManager.close(),
                                   ),
@@ -320,16 +320,16 @@ class _CustomTitleBarState extends State<CustomTitleBar>
   }
 
   Widget _buildStandardTitle(BuildContext context, NavigationState navState) {
-    String title = 'אוצריא';
+    String title = 'Otzaria';
     switch (navState.currentScreen) {
       case Screen.find:
         title = 'איתור';
         break;
       case Screen.search:
-        title = 'חיפוש';
+        title = 'search';
         break;
       case Screen.settings:
-        title = 'הגדרות';
+        title = 'settings';
         break;
       default:
         break;
@@ -390,22 +390,22 @@ class _CustomTitleBarState extends State<CustomTitleBar>
               DragToMoveArea(
                 child: SizedBox(width: leftSpacerWidth),
               ),
-            // אזור הטאבים המעודכן
+            // אזור הטאבים הupdated
             Expanded(
               child: DragTarget<OpenedTab>(
                 onWillAcceptWithDetails: (details) => state.tabs.length > 1,
                 onAcceptWithDetails: (details) {
-                  // מקבלים את רוחב המסך הכולל ואת מיקום העכבר בעת העזיבה
+                  // מקבלים את רוחב המסך הכולל ואת location העכבר בעת העזיבה
                   final RenderBox renderBox =
                       context.findRenderObject() as RenderBox;
                   final localOffset = renderBox.globalToLocal(details.offset);
                   final isLeftHalf =
                       localOffset.dx < (renderBox.size.width / 2);
 
-                  // בודקים אם כיוון האפליקציה הוא מימין לשמאל (RTL) - אוצריא בעברית
+                  // בודקים אם כיוון האפליקציה הוא מימין לשמאל (RTL) - Otzaria בעברית
                   final isRtl = Directionality.of(context) == TextDirection.rtl;
 
-                  // חישוב האינדקס החדש
+                  // חישוב the index החדש
                   int newIndex;
                   if (isRtl) {
                     newIndex = isLeftHalf ? state.tabs.length - 1 : 0;
@@ -416,7 +416,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
                   final draggedTab = details.data;
                   final currentIndex = state.tabs.indexOf(draggedTab);
 
-                  // מבצעים את ההעברה רק אם הטאב באמת שינה מיקום
+                  // מבצעים את ההעברה רק אם הטאב באמת שינה location
                   if (currentIndex != -1 && currentIndex != newIndex) {
                     context.read<TabsBloc>().add(MoveTab(draggedTab, newIndex));
                   }
@@ -445,7 +445,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
               ),
             ),
 
-            // כפתורים נוספים (הגדרות)
+            // buttons נוספים (settings)
             DragToMoveArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -456,7 +456,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
                         : FluentIcons.settings_24_regular,
                     size: 18,
                   ),
-                  tooltip: 'הגדרות תצוגת הספרים',
+                  tooltip: 'settings תצוגת הbooks',
                   onPressed: widget.onReadingSettingsPressed ??
                       () => showReadingSettingsDialog(context),
                   style: _kIconButtonStyle.copyWith(
@@ -504,7 +504,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
       BuildContext context, SettingsState settingsState) {
     return _CaptionActionButton(
       brightness: Theme.of(context).brightness,
-      tooltip: settingsState.isFullscreen ? 'צא ממסך מלא' : 'מסך מלא',
+      tooltip: settingsState.isFullscreen ? 'צא ממסך full' : 'מסך full',
       icon: settingsState.isFullscreen
           ? FluentIcons.full_screen_minimize_24_regular
           : FluentIcons.full_screen_maximize_24_regular,
@@ -561,7 +561,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
     final closeTabShortcut =
         Settings.getValue<String>('key-shortcut-close-tab') ?? 'ctrl+w';
 
-    // מזהים את כיוון השפה כדי לדעת מאיזה צד לפתוח את הרווח
+    // מזהים את כיוון השפה כדי לדעת מאיזה צד לopen את הרווח
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     bool isTabActive(int tabIndex) {
@@ -571,7 +571,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
     // State לניהול hover על הטאב
     bool isTabHovered = false;
 
-    // פונקציה פנימית לבניית המראה של הטאב כדי למנוע כפילות קוד באנימציות
+    // function פנימית לבניית הAppearance של הטאב כדי למנוע כפילות קוד באנימציות
     Widget buildTabAppearance(StateSetter? setState) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -735,7 +735,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
             },
             child: buildTabAppearance(null),
           ),
-          // עטיפה ב-Material כדי למנוע את הקווים הצהובים בטקסט בזמן גרירה
+          // עטיפה ב-Material כדי למנוע את הקווים הצהובים בtext בtime גרירה
           feedback: Material(
             color: Colors.transparent,
             child: Opacity(
@@ -784,7 +784,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
       BuildContext context, OpenedTab tab) {
     final workspaceState = context.read<WorkspaceBloc>().state;
 
-    // מסנן את שולחנות העבודה - מציג רק את אלו שאינם שולחן העבודה הנוכחי
+    // מסנן את שולחנות העבודה - מציג רק את אלו שאינם שולחן העבודה הcurrent
     final otherWorkspaces = workspaceState.workspaces
         .where((w) => w.id != workspaceState.activeWorkspaceId)
         .toList();
@@ -826,7 +826,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
     // מסיר את הטאב מה-UI
     tabsBloc.add(RemoveTab(tab));
 
-    // מחשב את הטאבים והאינדקס החדשים
+    // מחשב את הטאבים וthe index החדשים
     final currentTabs = tabsState.tabs.where((t) => t != tab).toList();
     final newActiveIndex = currentTabs.isEmpty
         ? 0
@@ -840,7 +840,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
       currentTabIndex: newActiveIndex,
     ));
 
-    // מציג הודעה למשתמש
+    // מציג Message לuser
     UiSnack.show('הכרטיסיה הועברה לשולחן העבודה "${targetWorkspace.name}"');
   }
 
@@ -855,15 +855,15 @@ class _CustomTitleBarState extends State<CustomTitleBar>
         onTap: () => context.read<TabsBloc>().add(TogglePinTab(tab)),
       ),
       AppContextMenuEntry(
-        label: 'סגור',
+        label: 'closed',
         onTap: () => closeTab(tab, context),
       ),
       AppContextMenuEntry(
-        label: 'סגור הכל',
+        label: 'closed הכל',
         onTap: () => closeAllTabs(state, context),
       ),
       AppContextMenuEntry(
-        label: 'סגור את האחרים',
+        label: 'closed את האחרים',
         onTap: () => closeAllTabsButCurrent(state, context),
       ),
       AppContextMenuEntry(
@@ -920,7 +920,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
     entries.addAll([
       const AppContextMenuEntry.divider(),
       AppContextMenuEntry(
-        label: 'כרטיסיות פתוחות',
+        label: 'כרטיסיות openות',
         children: _getOpenTabsMenuEntries(state.tabs),
       ),
       _buildMoveToWorkspaceMenuEntry(context, tab),
@@ -940,7 +940,7 @@ class _CustomTitleBarState extends State<CustomTitleBar>
           context.read<TabsBloc>().add(SetCurrentTab(index));
         },
         trailing: IconButton(
-          tooltip: 'סגור',
+          tooltip: 'closed',
           visualDensity: VisualDensity.compact,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 28, minHeight: 28),

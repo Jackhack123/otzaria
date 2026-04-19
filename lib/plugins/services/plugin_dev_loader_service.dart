@@ -17,12 +17,12 @@ class PluginDevLoaderService {
   Future<void> loadDevelopmentPlugin(String directoryPath) async {
     final dir = Directory(directoryPath);
     if (!dir.existsSync()) {
-      throw Exception('תיקיית התוסף לא נמצאה: $directoryPath');
+      throw Exception('תיקיית התוסף no נמצאה: $directoryPath');
     }
 
     final manifestFile = File(p.join(directoryPath, 'manifest.json'));
     if (!manifestFile.existsSync()) {
-      throw Exception('manifest.json לא נמצא בתיקיית התוסף');
+      throw Exception('manifest.json no נמצא בתיקיית התוסף');
     }
 
     final manifestStr = manifestFile.readAsStringSync();
@@ -39,7 +39,7 @@ class PluginDevLoaderService {
 
     final existingPlugin = await _repository.getPlugin(manifest.id);
     if (existingPlugin != null && !existingPlugin.isDevelopment) {
-      throw Exception('כבר קיים תוסף מותקן (רגיל) עם אותו מזהה. מחק או שנה id.');
+      throw Exception('כבר קיים תוסף installed (רגיל) עם אותו מזהה. Delete או year id.');
     }
 
     final plugin = InstalledPlugin(

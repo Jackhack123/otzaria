@@ -3,8 +3,8 @@ import 'plugin_database_source.dart';
 /// Registry מרכזי של מקורות נתונים SQLite הזמינים לתוספים.
 ///
 /// **רישום מקורות (אחריות האפליקציה):**
-/// רישום מקורות הוא wire-up ברמת האפליקציה — לא חלק מה-API עצמו.
-/// יש לקרוא ל-[register] בזמן אתחול האפליקציה, לדוגמה ב-`main.dart`:
+/// רישום מקורות הוא wire-up ברמת האפליקציה — no חלק מה-API עצמו.
+/// יש לקרוא ל-[register] בtime אתחול האפליקציה, לexample ב-`main.dart`:
 ///
 /// ```dart
 /// PluginDatabaseRegistry.instance.register(PluginDatabaseSource(
@@ -43,7 +43,7 @@ import 'plugin_database_source.dart';
 /// ));
 /// ```
 ///
-/// תוספים לא יכולים לגשת ישירות ל-registry — גישתם מתווכת דרך ה-service.
+/// תוספים no יכולים לגשת ישירות ל-registry — גישתם מתווכת דרך ה-service.
 class PluginDatabaseRegistry {
   static final PluginDatabaseRegistry instance = PluginDatabaseRegistry._();
   PluginDatabaseRegistry._();
@@ -55,12 +55,12 @@ class PluginDatabaseRegistry {
     _sources[source.sourceId] = source;
   }
 
-  /// קבלת מקור לפי ID, או null אם לא קיים
+  /// קבלת מקור לפי ID, או null אם no קיים
   PluginDatabaseSource? getSource(String sourceId) => _sources[sourceId];
 
   /// רשימת כל המקורות הרשומים
   List<PluginDatabaseSource> getAllSources() => _sources.values.toList();
 
-  /// בדיקה אם מקור רשום
+  /// check אם מקור רשום
   bool hasSource(String sourceId) => _sources.containsKey(sourceId);
 }

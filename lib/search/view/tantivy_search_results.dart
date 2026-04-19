@@ -78,7 +78,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
     return LayoutBuilder(builder: (context, constrains) {
       return BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
-          // עכשיו רק מציגים את התוצאות - השורה התחתונה מוצגת במקום אחר
+          // עכשיו רק מציגים את הresults - הline התחתונה מוצגת במקום אחר
           return _buildResultsContent(state, constrains);
         },
       );
@@ -86,24 +86,24 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
   }
 
   Widget _buildResultsContent(SearchState state, BoxConstraints constrains) {
-    // חשוב: בעת טעינה אנחנו לא רוצים לפרק את ה-ListView,
-    // אחרת הגלילה מתאפסת לראש. לכן ספינר מרכזי מוצג רק כשאין עדיין תוצאות.
+    // חשוב: בעת loading אנחנו no רוצים לפרק את ה-ListView,
+    // אחרת הגלילה מתאפסת לראש. לyes ספינר מרכזי מוצג רק כשאין עדיין results.
     if (state.isLoading && state.results.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
     if (state.searchQuery.isEmpty) {
-      return const Center(child: Text("לא בוצע חיפוש"));
+      return const Center(child: Text("no בוצע search"));
     }
     if (state.results.isEmpty && !state.isLoading) {
       return const Center(
           child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: Text('אין תוצאות'),
+        child: Text('אין results'),
       ));
     }
 
     // תמיד נשתמש ב-ListView גם לתוצאה אחת - כך היא תופיע למעלה
-    // תיקון שגיאות כתיב: totalResults = מה שנטען בפועל, לכן בודקים hasMoreResults
+    // תיקון errors כתיב: totalResults = מה שנטען בפועל, לyes בודקים hasMoreResults
     final hasMoreResults = state.isTypoToleranceEnabled
         ? state.hasMoreResults
         : state.results.length < state.totalResults;
@@ -118,8 +118,8 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
       itemCount: state.results.length +
           ((showInlineLoadingIndicator || showLoadMoreButton) ? 1 : 0),
       itemBuilder: (context, index) {
-        // האיטם האחרון מציג אינדיקטור טעינה בזמן הזרמה,
-        // או כפתור pagination כשיש עוד תוצאות בשרת.
+        // האיטם האחרון מציג אינדיקטור loading בtime הזרמה,
+        // או button pagination כשיש עוד results בשרת.
         if (index == state.results.length) {
           if (showInlineLoadingIndicator) {
             return const Padding(
@@ -129,18 +129,18 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
                   children: [
                     CircularProgressIndicator(),
                     SizedBox(height: 8),
-                    Text('טוען תוצאות...'),
+                    Text('טוען results...'),
                   ],
                 ),
               ),
             );
           }
 
-          // תיקון שגיאות כתיב: totalResults = נטענו בפועל, לכן אין ספירה מדויקת
+          // תיקון errors כתיב: totalResults = נטענו בפועל, לyes אין ספירה מדויקת
           final isLevenshtein = state.isTypoToleranceEnabled;
           final remainingText = isLevenshtein
-              ? 'טען תוצאות נוספות'
-              : 'טען תוצאות נוספות (${state.totalResults - state.results.length})';
+              ? 'טען results נוספות'
+              : 'טען results נוספות (${state.totalResults - state.results.length})';
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
@@ -178,7 +178,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
               rawHtml = utils.replaceHolyNames(rawHtml);
             }
 
-            // חישוב רוחב זמין לטקסט
+            // חישוב רוחב זמין לtext
             final wrappedTitleText = _formatTitleForWrapping(titleText);
             final availableWidth = constrains.maxWidth - 100.0;
 
@@ -199,7 +199,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
             ].join('|');
 
             // Create the snippet using the new robust function
-            // שימוש בגופן וגודל של המשתמש מההגדרות
+            // שימוש בגופן וגודל של הuser מהsettings
             final snippetSpans = _snippetCache.putIfAbsent(
               snippetCacheKey,
               () {
@@ -343,7 +343,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // מספר התוצאה
+                      // מbook התוצאה
                       Container(
                         width: 32,
                         height: 32,
@@ -365,12 +365,12 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      // תוכן התוצאה
+                      // content התוצאה
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // נתיב (כותרת + הפניה)
+                            // path (כותרת + הפניה)
                             Row(
                               children: [
                                 if (result.isPdf)
@@ -404,7 +404,7 @@ class _TantivySearchResultsState extends State<TantivySearchResults> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            // הטקסט שנמצא
+                            // הtext שנמצא
                             RichText(
                               textAlign: TextAlign.justify,
                               text: TextSpan(

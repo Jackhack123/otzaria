@@ -1,4 +1,4 @@
-/// מיפוי משמות שיטות API לשמות ההרשאות הנדרשות - לשימוש בהודעות שגיאה מועילות
+/// מיפוי מnames שיטות API לnames ההרשאות הנדרשות - לשימוש בהודעות error מועילות
 const Map<String, String> apiCallToPermissionHint = {
   // database.*
   'database.listSources': 'database.read',
@@ -42,73 +42,73 @@ const Map<String, String> apiCallToPermissionHint = {
 
 /// רשימת כל ההרשאות התקפות שתוסף יכול לבקש
 ///
-/// הרשאות אלו מאפשרות לתוספים לגשת לפונקציונליות שונות של אוצריא.
+/// הרשאות אלו מאפשרות לתוספים לגשת לפונקציונליות שונות של Otzaria.
 /// כל הרשאה חייבת להיות מוגדרת ב-manifest.json של התוסף.
 const pluginValidPermissions = <String>[
   // ===== מידע על האפליקציה =====
-  /// גישה למידע כללי על האפליקציה (גרסה, פלטפורמה, ערכת נושא)
+  /// גישה למידע general על האפליקציה (גרסה, פלטפורמה, ערכת נושא)
   'app.info.read',
 
-  /// גישה למייל המשתמש (לדיווח שגיאות)
+  /// גישה למייל הuser (לדיווח errors)
   'app.user_email.read',
 
-  // ===== ספרייה =====
-  /// חיפוש וקריאת רשימת ספרים
+  // ===== library =====
+  /// search וקריאת רשימת books
   'library.books.read',
 
-  /// קריאת תוכן ספרים
+  /// קריאת content books
   'library.content.read',
 
-  // ===== חיפוש =====
-  /// ביצוע חיפוש טקסט מלא
+  // ===== search =====
+  /// ביצוע search text full
   'search.fulltext.read',
 
   // ===== קורא =====
-  /// פתיחת ספרים במצב קריאה
+  /// פתיחת books במצב קריאה
   'reader.open',
 
   /// הוספת פריטים לתפריט ההקשר של הקורא
   'reader.context_menu',
 
-  /// הוספה וניהול של הדגשות צבעוניות בטקסט
+  /// add וניהול של הדגשות צבעוניות בtext
   'reader.highlight',
 
   // ===== ניווט =====
   /// מעבר בין מסכים באפליקציה
   'navigation.write',
 
-  // ===== הערות אישיות =====
-  /// קריאת הערות אישיות
+  // ===== notes אישיות =====
+  /// קריאת notes אישיות
   'notes.read',
 
-  /// כתיבה ועריכת הערות אישיות
+  /// כתיבה ועריכת notes אישיות
   'notes.write',
 
-  // ===== לוח שנה =====
-  /// גישה ללוח השנה העברי, זמנים הלכתיים ואירועים
+  // ===== לוח year =====
+  /// גישה ללוח הyear העברי, זמנים הלכתיים ואירועים
   'calendar.read',
 
-  // ===== הגדרות =====
-  /// קריאת הגדרות האפליקציה (רק מרשימה מאושרת)
+  // ===== settings =====
+  /// קריאת settings האפליקציה (רק מlist מאושרת)
   'settings.read',
 
-  // ===== ממשק משתמש =====
-  /// הצגת הודעות ודיאלוגים למשתמש
+  // ===== interface user =====
+  /// הצגת הודעות ודיאלוגים לuser
   'ui.feedback',
 
   // ===== אחסון תוסף =====
-  /// קריאה מאחסון מפתח-ערך של התוסף
+  /// קריאה מאחסון key-value של התוסף
   'plugin.storage.read',
 
-  /// כתיבה לאחסון מפתח-ערך של התוסף
+  /// כתיבה noחסון key-value של התוסף
   'plugin.storage.write',
 
   // ===== פרסום נתונים =====
-  /// פרסום נתונים מהתוסף לאפליקציה (למשל אירועי לוח שנה)
+  /// פרסום נתונים מהתוסף noפליקציה (למשל אירועי לוח year)
   'published_data.write',
 
   // ===== רשת =====
-  /// גישה לאינטרנט (לתוספים שצריכים לטעון משאבים חיצוניים)
+  /// גישה noינטרנט (לתוספים שצריכים לטעון משאבים חיצוניים)
   'network.access',
 
   // ===== משוב ומיילים =====
@@ -116,10 +116,10 @@ const pluginValidPermissions = <String>[
   'feedback.send_email',
 
   // ===== היסטוריית קריאה =====
-  /// קריאת היסטוריית קריאה וחיפושים
+  /// קריאת היסטוריית קריאה וsearchים
   'history.read',
 
-  /// מחיקה ועריכת היסטוריית קריאה
+  /// delete ועריכת היסטוריית קריאה
   'history.write',
 
   // ===== מסד נתונים =====
@@ -130,34 +130,34 @@ const pluginValidPermissions = <String>[
   /// הצגת התראות בתוך האפליקציה (UiSnack)
   'notifications.send',
 
-  /// שליחת התראות למערכת ההפעלה
+  /// שליחת התראות לSystem הEnableה
   'notifications.system',
 
   // ===== אירועים (Events) =====
-  /// הרשמה לאירועי שינוי ניווט
+  /// הרשמה noירועי שינוי ניווט
   'events.subscribe:navigation.changed',
 
-  /// הרשמה לאירועי שינוי ספר נוכחי
+  /// הרשמה noירועי שינוי book current
   'events.subscribe:reader.current_book_changed',
 
-  /// הרשמה לאירועי שינוי מיקום בקורא
+  /// הרשמה noירועי שינוי location בקורא
   'events.subscribe:reader.current_ref_changed',
 
-  /// הרשמה לאירועי שינוי ערכת נושא
+  /// הרשמה noירועי שינוי ערכת נושא
   'events.subscribe:theme.changed',
 
-  /// הרשמה לאירועי שינוי הגדרות
+  /// הרשמה noירועי שינוי settings
   'events.subscribe:settings.changed',
 
-  /// הרשמה לאירועי שינוי תאריך בלוח השנה
+  /// הרשמה noירועי שינוי date בלוח הyear
   'events.subscribe:calendar.date_changed',
 
-  /// הרשמה לאירועי שינוי סביבת עבודה
+  /// הרשמה noירועי שינוי סביבת עבודה
   'events.subscribe:workspace.changed',
 
-  /// הרשמה לאירועי שינוי הרשאות התוסף
+  /// הרשמה noירועי שינוי הרשאות התוסף
   'events.subscribe:plugin.permissions_changed',
 
-  /// הרשמה לאירועי סימון טקסט בקורא
+  /// הרשמה noירועי סימון text בקורא
   'events.subscribe:reader.selection_changed',
 ];

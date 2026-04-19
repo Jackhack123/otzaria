@@ -39,7 +39,7 @@ class TextBookInitial extends TextBookState {
       this.splitedView = true,
       this.showPageShapeView = false]);
 
-  // קונסטרקטור עם פרמטרים בשם
+  // קונסטרקטור עם פרמטרים בname
   const TextBookInitial.named(
     super.book,
     super.index,
@@ -53,7 +53,7 @@ class TextBookInitial extends TextBookState {
     this.typoToleranceEnabled = false,
     bool? splitedView,
     this.showPageShapeView = false,
-  }) : splitedView = splitedView ?? false; // ברירת מחדל: מפרשים מתחת
+  }) : splitedView = splitedView ?? false; // ברירת מחדל: Commentators מתחת
 
   @override
   List<Object?> get props =>

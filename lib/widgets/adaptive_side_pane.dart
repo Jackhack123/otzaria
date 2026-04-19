@@ -4,10 +4,10 @@ import 'package:otzaria/widgets/floating_panel.dart';
 import 'package:otzaria/widgets/resizable_drag_handle.dart';
 
 /// חלונית צד אדפטיבית:
-/// במסך רחב דוחקת תוכן, ובמסך צר נפתחת כ-overlay.
+/// במסך רחב דוחקת content, ובמסך צר נOpenת כ-overlay.
 ///
-/// כללי ברירת מחדל:
-/// - תוכן החלונית מקבל שכבת רקע נוספת של חלון (solidPanelBackground).
+/// general ברירת מחדל:
+/// - content החלונית מקבל שכבת רקע נוספת של חלון (solidPanelBackground).
 /// - מעבר מרוחב רחב למסך צר סוגר אוטומטית את החלונית.
 /// - חלונית ניווט אמורה להיות בצד ימין (`centerEnd`) וחלונית מידע בצד שמאל (`centerStart`).
 class AdaptiveSidePane extends StatefulWidget {

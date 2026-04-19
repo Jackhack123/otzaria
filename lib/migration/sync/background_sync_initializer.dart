@@ -105,9 +105,9 @@ class BackgroundSyncInitializer {
       if (result.addedBooks > 0 ||
           result.updatedBooks > 0 ||
           result.addedLinks > 0) {
-        debugPrint('📚 סנכרון קבצים הושלם: '
-            '${result.addedBooks} ספרים חדשים, '
-            '${result.updatedBooks} ספרים עודכנו, '
+        debugPrint('📚 סנכרון files הושלם: '
+            '${result.addedBooks} new books, '
+            '${result.updatedBooks} books עודכנו, '
             '${result.addedLinks} קישורים נוספו');
       }
 

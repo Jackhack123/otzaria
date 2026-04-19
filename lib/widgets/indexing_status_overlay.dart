@@ -147,7 +147,7 @@ class _IndexingStatusOverlayState extends State<IndexingStatusOverlay> {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      'תיתכן איטיות בפעילות התוכנה',
+                                      'תיתyes איטיות בפעילות התוכנה',
                                       textDirection: TextDirection.rtl,
                                       style: Theme.of(context)
                                           .textTheme
@@ -187,7 +187,7 @@ class _IndexingStatusOverlayState extends State<IndexingStatusOverlay> {
                           ),
                           splashRadius: 14,
                           color: colorScheme.onSurfaceVariant,
-                          tooltip: 'סגור',
+                          tooltip: 'closed',
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {

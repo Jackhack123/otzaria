@@ -7,7 +7,7 @@ import 'package:otzaria/data/data_providers/tantivy_data_provider.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 
 class NavigationRepository {
-  /// בודק אם הספרייה ריקה - כלומר אם קובץ seforim.db לא קיים
+  /// בודק אם the library emptyה - כלומר אם file seforim.db no קיים
   bool checkLibraryIsEmpty() {
     final libraryPath =
         Settings.getValue<String>(SettingsRepository.keyLibraryPath);
@@ -16,7 +16,7 @@ class NavigationRepository {
       return true;
     }
 
-    // בדיקה שקובץ seforim.db קיים בנתיב המתאים
+    // check שfile seforim.db קיים בpath המתאים
     final databasePath = DatabaseConstants.getDatabasePath();
     final databaseFile = File(databasePath);
 
@@ -24,10 +24,10 @@ class NavigationRepository {
       return true;
     }
 
-    // Android: גם אם הקובץ "קיים" (stat עובד), ייתכן שה-native sqlite3
-    // לא יכול לפתוח אותו מאחסון Scoped Storage חיצוני.
-    // אם אין keyDbEffectivePath, המשמעות היא שה-flow לא הושלם — נחזיר true
-    // כדי שהמשתמש יגיע למסך הבחירה עם הדיאלוג המתאים.
+    // Android: גם אם הfile "קיים" (stat עובד), ייתyes שה-native sqlite3
+    // no יכול לopen אותו מאחסון Scoped Storage חיצוני.
+    // אם אין keyDbEffectivePath, המשמעות היא שה-flow no הושלם — נחזיר true
+    // כדי שהuser יגיע למסך הבחירה עם הדיאלוג המתאים.
     if (Platform.isAndroid && !_isNativeAccessible(databasePath)) {
       final effectivePath =
           Settings.getValue<String>(SettingsRepository.keyDbEffectivePath) ??
@@ -40,7 +40,7 @@ class NavigationRepository {
     return false;
   }
 
-  /// בודק אם נתיב נגיש ל-sqlite3 native ב-Android.
+  /// בודק אם path נגיש ל-sqlite3 native ב-Android.
   static bool _isNativeAccessible(String filePath) {
     if (filePath.startsWith('/data/')) return true;
     if (filePath.contains('/Android/data/')) return true;
@@ -49,18 +49,18 @@ class NavigationRepository {
   }
 
   Future<void> refreshLibrary() async {
-    // טעינת הספרייה מחדש
+    // טעינת the library again
     final libraryPath =
         Settings.getValue<String>(SettingsRepository.keyLibraryPath);
     if (libraryPath != null) {
-      // עדכון נתיב הספרייה
+      // update path the library
       FileSystemData.instance.libraryPath = libraryPath;
 
-      // טעינת הספרייה מחדש
+      // טעינת the library again
       DataRepository.instance.library = FileSystemData.instance.getLibrary();
       DataRepository.instance.invalidateExternalBooksCache();
 
-      // פתיחה מחדש של אינדקס החיפוש
+      // פתיחה again של אינדקס הsearch
       try {
         await TantivyDataProvider.instance.reopenIndex();
       } catch (e) {

@@ -8,7 +8,7 @@ import 'package:otzaria/plugins/models/plugin_permission_labels.dart';
 import 'package:otzaria/widgets/custom_ui_components.dart';
 import 'package:otzaria/settings/settings_card.dart';
 
-/// מסך אישור התקנת תוסף — מאפשר למשתמש לבחור אילו הרשאות להעניק
+/// מסך confirm התקנת תוסף — מאפשר לuser לselected אילו הרשאות להעניק
 class PluginInstallScreen extends StatefulWidget {
   final PluginManifest manifest;
   final String tempDirPath;
@@ -24,7 +24,7 @@ class PluginInstallScreen extends StatefulWidget {
 }
 
 class _PluginInstallScreenState extends State<PluginInstallScreen> {
-  /// מצב toggle לכל הרשאה — ברירת מחדל: הכל מופעל
+  /// מצב toggle לכל הרשאה — ברירת מחדל: הכל active
   late Map<String, bool> _permissionToggles;
 
   @override
@@ -59,7 +59,7 @@ class _PluginInstallScreenState extends State<PluginInstallScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
-      // מניעת יציאה בלי ניקוי — Back של מערכת מטופל ידנית
+      // מניעת יציאה בלי ניקוי — Back של System מטופל ידנית
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _onCancel();
@@ -67,19 +67,19 @@ class _PluginInstallScreenState extends State<PluginInstallScreen> {
       child: Scaffold(
       appBar: AppBar(
         title: const Text(
-          'אישור התקנת תוסף',
+          'confirm התקנת תוסף',
           textDirection: TextDirection.rtl,
         ),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
-          tooltip: 'ביטול',
+          tooltip: 'cancel',
           onPressed: _onCancel,
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // ===== כרטיס פרטי התוסף =====
+          // ===== כרטיס private התוסף =====
           SettingsCard(
             title: widget.manifest.name,
             subtitle: widget.manifest.description.isNotEmpty
@@ -141,7 +141,7 @@ class _PluginInstallScreenState extends State<PluginInstallScreen> {
           else ...[
             SettingsCard(
               title: 'הרשאות נדרשות',
-              subtitle: 'בחר אילו הרשאות להעניק לתוסף זה (ברירת מחדל: הכל מופעל)',
+              subtitle: 'בחר אילו הרשאות להעניק לתוסף זה (ברירת מחדל: הכל active)',
               children: widget.manifest.permissions.map((permission) {
                 final info = getPermissionInfo(permission);
                 final isGranted = _permissionToggles[permission] ?? true;
@@ -187,7 +187,7 @@ class _PluginInstallScreenState extends State<PluginInstallScreen> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'ניתן לשנות הרשאות בכל עת מהגדרות התוסף',
+                      'ניתן לשנות הרשאות בכל עת מsettings התוסף',
                       textDirection: TextDirection.rtl,
                       style: TextStyle(
                         fontSize: 12,
@@ -202,12 +202,12 @@ class _PluginInstallScreenState extends State<PluginInstallScreen> {
 
           const SizedBox(height: 32),
 
-          // ===== כפתורי פעולה =====
+          // ===== buttonי action =====
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               NeutralActionButton(
-                text: 'ביטול',
+                text: 'cancel',
                 onPressed: _onCancel,
               ),
               const SizedBox(width: 12),

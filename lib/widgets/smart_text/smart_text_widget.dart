@@ -6,25 +6,25 @@ import 'package:otzaria/utils/html_link_handler.dart';
 import 'package:otzaria/widgets/smart_text/render_settings.dart';
 import 'package:otzaria/widgets/smart_text/text_renderer_service.dart';
 
-/// ווידג'ט חכם להצגת טקסט עברי
+/// ווידג'ט חכם להצגת text עברי
 ///
-/// מרכז את כל הלוגיקה של עיבוד והצגת טקסט במקום אחד:
+/// מרכז את כל הלוגיקה של עיבוד והצגת text במקום אחד:
 /// - הסרת ניקוד וטעמים
-/// - החלפת שמות קדושים
-/// - הדגשת תוצאות חיפוש
+/// - החלפת names קדושים
+/// - הדגשת results search
 /// - עיצוב סוגריים
 /// - טיפול בקישורים פנימיים
 class SmartTextWidget extends StatelessWidget {
-  /// הטקסט הגולמי להצגה (יכול להכיל HTML)
+  /// הtext הגולמי להצגה (יכול להכיל HTML)
   final String text;
 
-  /// הגדרות הרינדור
+  /// settings הרינדור
   final RenderSettings settings;
 
-  /// callback לפתיחת ספר/טאב
+  /// callback לפתיחת book/טאב
   final Function(OpenedTab)? onOpenBook;
 
-  /// מפתח ייחודי לווידג'ט (לאופטימיזציה)
+  /// key ייoverrideי לווידג'ט (noופטימיזציה)
   final Key? widgetKey;
 
   /// מצב רינדור של HtmlWidget
@@ -41,7 +41,7 @@ class SmartTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // עיבוד הטקסט דרך השירות המרכזי
+    // עיבוד הtext דרך השירות המרכזי
     final processedHtml = TextRendererService.render(text, settings);
 
     if (processedHtml.contains('<sup') ||

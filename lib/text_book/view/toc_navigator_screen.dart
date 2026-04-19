@@ -162,7 +162,7 @@ class _TocViewerState extends State<TocViewer>
         _isManuallyScrolling = false;
         _lastScrolledTocIndex = null;
       });
-      // תמיד השתמש ב-scrollController - זה עובד גם בצורת הדף
+      // תמיד השתמש ב-scrollController - זה עובד גם בצורת הpage
       widget.scrollController.scrollTo(
         index: entry.index,
         duration: const Duration(milliseconds: 250),
@@ -275,7 +275,7 @@ class _TocViewerState extends State<TocViewer>
                 ),
                 child: Row(
                   children: [
-                    // אזור הטקסט לניווט
+                    // אזור הtext לניווט
                     Expanded(
                       child: InkWell(
                         onTap: navigateToEntry,
@@ -289,7 +289,7 @@ class _TocViewerState extends State<TocViewer>
                           child: Row(
                             children: [
                               Icon(
-                                // רק רמה 1 מקבלת אייקון ספר, שאר הרמות מקבלות רשימה
+                                // רק רמה 1 מקבלת אייקון book, שאר הרמות מקבלות list
                                 entry.level == 1
                                     ? FluentIcons.book_24_regular
                                     : FluentIcons.text_bullet_list_24_regular,
@@ -320,7 +320,7 @@ class _TocViewerState extends State<TocViewer>
                         ),
                       ),
                     ),
-                    // כפתור החץ לפתיחה/סגירה
+                    // button החץ לפתיחה/סגירה
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -368,7 +368,7 @@ class _TocViewerState extends State<TocViewer>
         if (current is! TextBookLoaded) return false;
         if (previous is! TextBookLoaded) return true;
 
-        // הפעל רק אם האינדקס הנבחר או האינדקס הנראה השתנו
+        // Enable רק אם the index הselected או the index הנראה השתנו
         final prevVisibleIndex = previous.visibleIndices.isNotEmpty
             ? previous.visibleIndices.first
             : -1;

@@ -75,29 +75,29 @@ class ShortcutValidator {
 
   /// Shortcut names for display
   static const Map<String, String> shortcutNames = {
-    'key-shortcut-open-library-browser': 'ספרייה',
-    currentWindowSearchKey: 'חיפוש בחלון הנוכחי',
+    'key-shortcut-open-library-browser': 'library',
+    currentWindowSearchKey: 'search בחלון הcurrent',
     'key-shortcut-open-find-ref': 'איתור',
-    'key-shortcut-close-tab': 'סגור ספר נוכחי',
-    'key-shortcut-close-all-tabs': 'סגור כל הספרים',
+    'key-shortcut-close-tab': 'closed book current',
+    'key-shortcut-close-all-tabs': 'closed כל הbooks',
     'key-shortcut-open-reading-screen': 'עיון',
-    'key-shortcut-open-new-search': 'חלון חיפוש חדש',
-    'key-shortcut-open-settings': 'הגדרות',
-    'key-shortcut-open-more': 'כלים',
+    'key-shortcut-open-new-search': 'חלון search חדש',
+    'key-shortcut-open-settings': 'settings',
+    'key-shortcut-open-more': 'Tools',
     'key-shortcut-open-bookmarks': 'סימניות',
     'key-shortcut-open-history': 'היסטוריה',
-    'key-shortcut-add-bookmark': 'הוסף סימניה',
-    'key-shortcut-add-note': 'הוספת הערה',
+    'key-shortcut-add-bookmark': 'Add סימניה',
+    'key-shortcut-add-note': 'הוספת note',
     'key-shortcut-switch-workspace': 'החלף שולחן עבודה',
     'key-shortcut-print': 'הדפסה',
-    'key-shortcut-toggle-pdf-view': 'החלף מצב תצוגה (PDF/טקסט)',
-    'key-shortcut-calendar-toggle-times': 'לוח שנה: פתיחה/סגירה זמני היום',
-    'key-shortcut-calendar-toggle-events': 'לוח שנה: פתיחה/סגירה אירועים',
-    'key-shortcut-calendar-today': 'לוח שנה: מעבר להיום',
-    'key-shortcut-calendar-create-event': 'לוח שנה: יצירת אירוע',
-    'key-shortcut-calendar-toggle-view': 'לוח שנה: מעבר בין תצוגות',
+    'key-shortcut-toggle-pdf-view': 'החלף מצב תצוגה (PDF/text)',
+    'key-shortcut-calendar-toggle-times': 'לוח year: פתיחה/סגירה זמני הday',
+    'key-shortcut-calendar-toggle-events': 'לוח year: פתיחה/סגירה אירועים',
+    'key-shortcut-calendar-today': 'לוח year: מעבר להday',
+    'key-shortcut-calendar-create-event': 'לוח year: יצירת אירוע',
+    'key-shortcut-calendar-toggle-view': 'לוח year: מעבר בין תצוגות',
     'key-shortcut-shamor-zachor-cycle-filter':
-        'שמור וזכור: מעבר בין הסינונים',
+        'Save וזכור: מעבר בין הסינונים',
   };
 
   /// Check for conflicts in current shortcuts
@@ -165,7 +165,7 @@ class ShortcutValidator {
     return matchingKeys.length > 1 && !_isCompatibleGroup(matchingKeys);
   }
 
-  /// מחזיר את ערך הקיצור הנוכחי עבור [settingKey] או את ברירת המחדל שלו.
+  /// מחזיר את value הקיצור הcurrent עבור [settingKey] או את ברירת המחדל שלו.
   static String? getShortcutValue(String settingKey) {
     final normalizedKey = canonicalSettingKey(settingKey);
     final directValue = Settings.getValue<String>(normalizedKey);

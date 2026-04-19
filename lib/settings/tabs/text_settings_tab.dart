@@ -9,10 +9,10 @@ import 'package:otzaria/theme/layout_tokens.dart';
 import 'package:otzaria/widgets/custom_ui_components.dart';
 import 'package:otzaria/core/ui_snack.dart';
 
-/// טאב הגדרות תצוגת ספרים
-/// ניתן להשתמש בו גם כתוכן בתוך דיאלוג וגם כטאב במסך הגדרות
+/// טאב settings תצוגת books
+/// ניתן להשתמש בו גם כcontent בתוך דיאלוג וגם כטאב במסך settings
 class TextSettingsTab extends StatelessWidget {
-  /// האם להציג כדיאלוג (עם כפתור סגירה) או כטאב (ללא)
+  /// האם להציג כדיאלוג (עם button סגירה) או כטאב (לno)
   final bool isDialog;
 
   const TextSettingsTab({super.key, this.isDialog = false});
@@ -45,7 +45,7 @@ class TextSettingsTab extends StatelessWidget {
 
   Widget _buildFontSection(BuildContext context, SettingsState state) {
     return SettingsCard(
-      title: 'הגדרות גופן ועיצוב',
+      title: 'settings גופן ועיצוב',
       children: [
         LayoutBuilder(
           builder: (context, constraints) {
@@ -60,13 +60,13 @@ class TextSettingsTab extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // שורה 1: גודל גופן הספר + גופן טקסט
+                // line 1: גודל גופן הbook + גופן text
                 if (isNarrow) ...[
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: _FontSizeSlider(
                       icon: FluentIcons.text_font_size_24_regular,
-                      label: 'גודל גופן הספר',
+                      label: 'גודל גופן הbook',
                       value: state.fontSize.clamp(15, 60),
                       min: 15,
                       max: 60,
@@ -80,7 +80,7 @@ class TextSettingsTab extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: _FontDropdown(
                       icon: FluentIcons.text_font_24_regular,
-                      label: 'גופן טקסט',
+                      label: 'גופן text',
                       value: state.fontFamily,
                       onChanged: (value) {
                         if (value != null) {
@@ -100,7 +100,7 @@ class TextSettingsTab extends StatelessWidget {
                         Expanded(
                           child: _FontSizeSlider(
                             icon: FluentIcons.text_font_size_24_regular,
-                            label: 'גודל גופן הספר',
+                            label: 'גודל גופן הbook',
                             value: state.fontSize.clamp(15, 60),
                             min: 15,
                             max: 60,
@@ -115,7 +115,7 @@ class TextSettingsTab extends StatelessWidget {
                         Expanded(
                           child: _FontDropdown(
                             icon: FluentIcons.text_font_24_regular,
-                            label: 'גופן טקסט',
+                            label: 'גופן text',
                             value: state.fontFamily,
                             onChanged: (value) {
                               if (value != null) {
@@ -132,13 +132,13 @@ class TextSettingsTab extends StatelessWidget {
 
                 divider,
 
-                // שורה 2: גודל גופן מפרשים + גופן מפרשים
+                // line 2: גודל גופן Commentators + גופן Commentators
                 if (isNarrow) ...[
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: _FontSizeSlider(
                       icon: FluentIcons.text_font_size_24_regular,
-                      label: 'גודל גופן מפרשים',
+                      label: 'גודל גופן Commentators',
                       value: state.commentatorsFontSize.clamp(10, 40),
                       min: 10,
                       max: 40,
@@ -154,7 +154,7 @@ class TextSettingsTab extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: _FontDropdown(
                       icon: FluentIcons.book_24_regular,
-                      label: 'גופן מפרשים',
+                      label: 'גופן Commentators',
                       value: state.commentatorsFontFamily,
                       onChanged: (value) {
                         if (value != null) {
@@ -174,7 +174,7 @@ class TextSettingsTab extends StatelessWidget {
                         Expanded(
                           child: _FontSizeSlider(
                             icon: FluentIcons.text_font_size_24_regular,
-                            label: 'גודל גופן מפרשים',
+                            label: 'גודל גופן Commentators',
                             value: state.commentatorsFontSize.clamp(10, 40),
                             min: 10,
                             max: 40,
@@ -189,7 +189,7 @@ class TextSettingsTab extends StatelessWidget {
                         Expanded(
                           child: _FontDropdown(
                             icon: FluentIcons.book_24_regular,
-                            label: 'גופן מפרשים',
+                            label: 'גופן Commentators',
                             value: state.commentatorsFontFamily,
                             onChanged: (value) {
                               if (value != null) {
@@ -206,14 +206,14 @@ class TextSettingsTab extends StatelessWidget {
 
                 divider,
 
-                // שורה 3: מרווח בין שורות (תמיד חצי רוחב)
+                // line 3: מרווח בין lines (תמיד חצי רוחב)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: isNarrow
                       ? _FontSizeSlider(
                           icon: FluentIcons
                               .text_align_distributed_vertical_24_regular,
-                          label: 'מרווח בין שורות',
+                          label: 'מרווח בין lines',
                           value: state.lineHeight.clamp(1.0, 3.0),
                           min: 1.0,
                           max: 3.0,
@@ -231,7 +231,7 @@ class TextSettingsTab extends StatelessWidget {
                               child: _FontSizeSlider(
                                 icon: FluentIcons
                                     .text_align_distributed_vertical_24_regular,
-                                label: 'מרווח בין שורות',
+                                label: 'מרווח בין lines',
                                 value: state.lineHeight.clamp(1.0, 3.0),
                                 min: 1.0,
                                 max: 3.0,
@@ -259,7 +259,7 @@ class TextSettingsTab extends StatelessWidget {
   }
 
   Widget _buildNikudSection(BuildContext context, SettingsState state) {
-    // קביעת הערך הנוכחי של הניקוד
+    // קביעת הvalue הcurrent של הניקוד
     String nikudValue;
     if (!state.defaultRemoveNikud) {
       nikudValue = 'show_always';
@@ -273,13 +273,13 @@ class TextSettingsTab extends StatelessWidget {
     String nikudSubtitle;
     switch (nikudValue) {
       case 'show_always':
-        nikudSubtitle = 'הניקוד יוצג בכל הספרים';
+        nikudSubtitle = 'הניקוד יוצג בכל הbooks';
         break;
       case 'show_tanach_only':
-        nikudSubtitle = 'הניקוד יוצג בספרי התנ"ך בלבד';
+        nikudSubtitle = 'הניקוד יוצג בbookי הWritten Torah בלבד';
         break;
       case 'hide_all':
-        nikudSubtitle = 'הניקוד לא יוצג בכלל';
+        nikudSubtitle = 'הניקוד no יוצג בכלל';
         break;
       default:
         nikudSubtitle = '';
@@ -294,7 +294,7 @@ class TextSettingsTab extends StatelessWidget {
           subtitle: nikudSubtitle,
           options: const [
             SegmentOption(value: 'show_always', label: 'הצג תמיד'),
-            SegmentOption(value: 'show_tanach_only', label: 'הצג בתנ"ך'),
+            SegmentOption(value: 'show_tanach_only', label: 'הצג בWritten Torah'),
             SegmentOption(value: 'hide_all', label: 'אל תציג'),
           ],
           currentValue: nikudValue,
@@ -332,14 +332,14 @@ class TextSettingsTab extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               children: const [
-                TextSpan(text: 'הצגת שם הקודש'),
+                TextSpan(text: 'הצגת name הקודש'),
               ],
             ),
           ),
           subtitle: Text(
             !state.replaceHolyNames
-                ? 'השם הקדוש יוצג'
-                : 'השם הקדוש לא יוצג מפני קדושתו',
+                ? 'הname הקדוש יוצג'
+                : 'הname הקדוש no יוצג מפני קדושתו',
             style: kSettingsSubtitleStyle,
           ),
           value: !state.replaceHolyNames,
@@ -350,7 +350,7 @@ class TextSettingsTab extends StatelessWidget {
         SwitchSettingsTile(
           title: const Text('הצגת טעמי המקרא', style: kSettingsTitleStyle),
           subtitle: Text(
-              state.showTeamim ? 'המקרא יוצג עם טעמים' : 'המקרא יוצג ללא טעמים',
+              state.showTeamim ? 'המקרא יוצג עם טעמים' : 'המקרא יוצג לno טעמים',
               style: kSettingsSubtitleStyle),
           value: state.showTeamim,
           onChanged: (value) {
@@ -363,7 +363,7 @@ class TextSettingsTab extends StatelessWidget {
 
   Widget _buildCopySection(BuildContext context, SettingsState state) {
     return SettingsCard(
-      title: 'הגדרות העתקה',
+      title: 'settings Copyה',
       children: [
         LayoutBuilder(
           builder: (context, constraints) {
@@ -379,7 +379,7 @@ class TextSettingsTab extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // העתקה עם כותרות
+                  // Copyה עם כותרות
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -389,7 +389,7 @@ class TextSettingsTab extends StatelessWidget {
                           children: [
                             const Icon(FluentIcons.copy_24_regular),
                             const SizedBox(width: 8),
-                            Text('העתקה עם כותרות', style: kSettingsTitleStyle),
+                            Text('Copyה עם כותרות', style: kSettingsTitleStyle),
                           ],
                         ),
                         const SizedBox(height: 8),
@@ -403,13 +403,13 @@ class TextSettingsTab extends StatelessWidget {
                           ),
                           isExpanded: true,
                           items: const [
-                            DropdownMenuItem(value: 'none', child: Text('ללא')),
+                            DropdownMenuItem(value: 'none', child: Text('לno')),
                             DropdownMenuItem(
                                 value: 'book_name',
-                                child: Text('שם הספר בלבד')),
+                                child: Text('name הbook בלבד')),
                             DropdownMenuItem(
                                 value: 'book_and_path',
-                                child: Text('שם הספר+נתיב')),
+                                child: Text('name הbook+path')),
                           ],
                           onChanged: (value) {
                             if (value != null) {
@@ -423,7 +423,7 @@ class TextSettingsTab extends StatelessWidget {
                     ),
                   ),
                   divider,
-                  // עיצוב העתקה
+                  // עיצוב Copyה
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -433,7 +433,7 @@ class TextSettingsTab extends StatelessWidget {
                           children: [
                             const Icon(FluentIcons.text_align_right_24_regular),
                             const SizedBox(width: 8),
-                            Text('עיצוב העתקה', style: kSettingsTitleStyle),
+                            Text('עיצוב Copyה', style: kSettingsTitleStyle),
                           ],
                         ),
                         const SizedBox(height: 8),
@@ -449,16 +449,16 @@ class TextSettingsTab extends StatelessWidget {
                           items: const [
                             DropdownMenuItem(
                                 value: 'same_line_after_brackets',
-                                child: Text('אותה שורה אחרי (עם סוגריים)')),
+                                child: Text('אותה line אחרי (עם סוגריים)')),
                             DropdownMenuItem(
                                 value: 'same_line_after_no_brackets',
-                                child: Text('אותה שורה אחרי (בלי סוגריים)')),
+                                child: Text('אותה line אחרי (בלי סוגריים)')),
                             DropdownMenuItem(
                                 value: 'same_line_before_brackets',
-                                child: Text('אותה שורה לפני (עם סוגריים)')),
+                                child: Text('אותה line לפני (עם סוגריים)')),
                             DropdownMenuItem(
                                 value: 'same_line_before_no_brackets',
-                                child: Text('אותה שורה לפני (בלי סוגריים)')),
+                                child: Text('אותה line לפני (בלי סוגריים)')),
                             DropdownMenuItem(
                                 value: 'separate_line_after',
                                 child: Text('פסקה נפרדת אחרי')),
@@ -490,7 +490,7 @@ class TextSettingsTab extends StatelessWidget {
                         children: [
                           const Icon(FluentIcons.copy_24_regular),
                           const SizedBox(width: 8),
-                          Text('העתקה עם כותרות', style: kSettingsTitleStyle),
+                          Text('Copyה עם כותרות', style: kSettingsTitleStyle),
                           const SizedBox(width: 12),
                           Expanded(
                             child: DropdownButtonFormField<String>(
@@ -504,13 +504,13 @@ class TextSettingsTab extends StatelessWidget {
                               isExpanded: true,
                               items: const [
                                 DropdownMenuItem(
-                                    value: 'none', child: Text('ללא')),
+                                    value: 'none', child: Text('לno')),
                                 DropdownMenuItem(
                                     value: 'book_name',
-                                    child: Text('שם הספר בלבד')),
+                                    child: Text('name הbook בלבד')),
                                 DropdownMenuItem(
                                     value: 'book_and_path',
-                                    child: Text('שם הספר+נתיב')),
+                                    child: Text('name הbook+path')),
                               ],
                               onChanged: (value) {
                                 if (value != null) {
@@ -530,7 +530,7 @@ class TextSettingsTab extends StatelessWidget {
                         children: [
                           const Icon(FluentIcons.text_align_right_24_regular),
                           const SizedBox(width: 8),
-                          Text('עיצוב העתקה', style: kSettingsTitleStyle),
+                          Text('עיצוב Copyה', style: kSettingsTitleStyle),
                           const SizedBox(width: 12),
                           Expanded(
                             child: DropdownButtonFormField<String>(
@@ -545,18 +545,18 @@ class TextSettingsTab extends StatelessWidget {
                               items: const [
                                 DropdownMenuItem(
                                     value: 'same_line_after_brackets',
-                                    child: Text('אותה שורה אחרי (עם סוגריים)')),
+                                    child: Text('אותה line אחרי (עם סוגריים)')),
                                 DropdownMenuItem(
                                     value: 'same_line_after_no_brackets',
                                     child:
-                                        Text('אותה שורה אחרי (בלי סוגריים)')),
+                                        Text('אותה line אחרי (בלי סוגריים)')),
                                 DropdownMenuItem(
                                     value: 'same_line_before_brackets',
-                                    child: Text('אותה שורה לפני (עם סוגריים)')),
+                                    child: Text('אותה line לפני (עם סוגריים)')),
                                 DropdownMenuItem(
                                     value: 'same_line_before_no_brackets',
                                     child:
-                                        Text('אותה שורה לפני (בלי סוגריים)')),
+                                        Text('אותה line לפני (בלי סוגריים)')),
                                 DropdownMenuItem(
                                     value: 'separate_line_after',
                                     child: Text('פסקה נפרדת אחרי')),
@@ -588,15 +588,15 @@ class TextSettingsTab extends StatelessWidget {
 
   Widget _buildPerBookSection(BuildContext context, SettingsState state) {
     return SettingsCard(
-      title: 'הגדרות לפי ספר',
+      title: 'settings לפי book',
       children: [
         SwitchSettingsTile(
-          title: const Text('שמירת התאמות לכל ספר בנפרד',
+          title: const Text('save התאמות לכל book בנפרד',
               style: kSettingsTitleStyle),
           subtitle: Text(
               state.enablePerBookSettings
-                  ? 'שינויים בסרגל הלחצנים יישמרו לכל ספר בנפרד'
-                  : 'כל הספרים ישתמשו בהגדרות הכלליות',
+                  ? 'שינויים בסרגל הלחצנים יישמרו לכל book בנפרד'
+                  : 'כל הbooks ישתמשו בsettings הgeneralות',
               style: kSettingsSubtitleStyle),
           value: state.enablePerBookSettings,
           onChanged: (value) {
@@ -612,7 +612,7 @@ class TextSettingsTab extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () => _resetPerBookSettings(context),
               icon: const Icon(FluentIcons.delete_24_regular),
-              label: const Text('אפס את כל הגדרות אלו, בכל הספרים'),
+              label: const Text('אפס את כל settings אלו, בכל הbooks'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.errorContainer,
                 foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
@@ -627,17 +627,17 @@ class TextSettingsTab extends StatelessWidget {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('אישור מחיקה'),
+        title: const Text('confirm delete'),
         content: const Text(
-            'האם אתה בטוח שברצונך למחוק את כל ההגדרות לפי ספר?\nפעולה זו אינה ניתנת לביטול.'),
+            'האם אתה בטוח שברצונך לdeleted את כל הsettings לפי book?\naction זו אינה ניתנת לcancel.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('ביטול'),
+            child: const Text('cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('מחק הכל'),
+            child: const Text('Delete הכל'),
           ),
         ],
       ),
@@ -645,7 +645,7 @@ class TextSettingsTab extends StatelessWidget {
 
     if (confirm == true && context.mounted) {
       await PerBookSettings.deleteAllSettings();
-      UiSnack.show('כל ההגדרות המיוחדות נמחקו בהצלחה');
+      UiSnack.show('כל הsettings המיוחדות נDeleteו בsuccess');
     }
   }
 }
@@ -778,7 +778,7 @@ class _FontDropdown extends StatelessWidget {
   }
 }
 
-// Widget עזר לסליידר רוחב טקסט
+// Widget עזר לסליידר רוחב text
 class _TextWidthSlider extends StatefulWidget {
   final SettingsState state;
 
@@ -805,7 +805,7 @@ class _TextWidthSliderState extends State<_TextWidthSlider> {
     }
 
     String getLevelDescription(int level) {
-      if (level == 0) return 'מלא';
+      if (level == 0) return 'full';
       final percent = 100 - (level * 5);
       return '$percent%';
     }
@@ -814,11 +814,11 @@ class _TextWidthSliderState extends State<_TextWidthSlider> {
       children: [
         ListTile(
           leading: const Icon(FluentIcons.text_align_justify_24_regular),
-          title: const Text('רוחב הטקסט', style: kSettingsTitleStyle),
+          title: const Text('רוחב הtext', style: kSettingsTitleStyle),
           subtitle: Text(
             currentLevel == 0
-                ? 'הטקסט ימלא את כל הרוחב הזמין'
-                : 'הטקסט יהיה צר יותר ומרוכז במסך',
+                ? 'הtext יfull את כל הרוחב הזמין'
+                : 'הtext יהיה צר יותר ומרוכז במסך',
             style: kSettingsSubtitleStyle,
           ),
           trailing: Text(

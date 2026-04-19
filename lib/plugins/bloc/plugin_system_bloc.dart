@@ -73,7 +73,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       emit(PluginSystemLoaded(plugins));
     } catch (e) {
       emit(PluginSystemError(e.toString()));
-      UiSnack.showError('שגיאה בטעינת תוספים: ${e.toString()}');
+      UiSnack.showError('error בטעינת תוספים: ${e.toString()}');
     }
   }
 
@@ -83,7 +83,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       await repository.updatePinState(event.pluginId, true);
       add(LoadPlugins());
     } catch (e) {
-      UiSnack.showError('שגיאה בהצמדת התוסף: ${e.toString()}');
+      UiSnack.showError('error בהצמדת התוסף: ${e.toString()}');
     }
   }
 
@@ -93,7 +93,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       await repository.updatePinState(event.pluginId, false);
       add(LoadPlugins());
     } catch (e) {
-      UiSnack.showError('שגיאה בהסרת הצמדת התוסף: ${e.toString()}');
+      UiSnack.showError('error בהסרת הצמדת התוסף: ${e.toString()}');
     }
   }
 
@@ -115,7 +115,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
         version: e.version,
       ));
     } catch (e) {
-      UiSnack.showError('שגיאה בהתקנת התוסף: ${e.toString()}');
+      UiSnack.showError('error בהתקנת התוסף: ${e.toString()}');
       add(LoadPlugins()); // Reset state
     }
   }
@@ -127,18 +127,18 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       await _installerService.finalizeInstall(
           event.tempDirPath, event.manifest);
 
-      // כתוב את כל בחירות המשתמש במפורש (גם true וגם false) —
-      // כך הבחירה הנוכחית גוברת על החלטות עבר בהתקנה חוזרת/עדכון
+      // כתוב את כל בחירות הuser במפורש (גם true וגם false) —
+      // כך הבחירה הcurrent גוברת על החלטות עבר בהתקנה חוזרת/update
       for (final entry in event.grantedPermissions.entries) {
         await repository.setPermission(
             event.manifest.id, entry.key, entry.value);
       }
 
-      UiSnack.showSuccess('התוסף הותקן בהצלחה');
+      UiSnack.showSuccess('התוסף הותקן בsuccess');
       add(LoadPlugins());
     } catch (e) {
       await _installerService.cancelInstall(event.tempDirPath);
-      UiSnack.showError('שגיאה באישור התקנה: ${e.toString()}');
+      UiSnack.showError('error בconfirm התקנה: ${e.toString()}');
       add(LoadPlugins());
     }
   }
@@ -156,7 +156,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       await _installerService.uninstallPlugin(event.pluginId);
       add(LoadPlugins());
     } catch (e) {
-      UiSnack.showError('שגיאה בהסרת התוסף: ${e.toString()}');
+      UiSnack.showError('error בהסרת התוסף: ${e.toString()}');
     }
   }
 
@@ -170,7 +170,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
         add(LoadPlugins());
       }
     } catch (e) {
-      UiSnack.showError('שגיאה בהפעלת התוסף: ${e.toString()}');
+      UiSnack.showError('error בEnableת התוסף: ${e.toString()}');
     }
   }
 
@@ -185,7 +185,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
         add(LoadPlugins());
       }
     } catch (e) {
-      UiSnack.showError('שגיאה בהשבתת התוסף: ${e.toString()}');
+      UiSnack.showError('error בהשבתת התוסף: ${e.toString()}');
     }
   }
 
@@ -207,7 +207,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       );
       add(LoadPlugins());
     } catch (e) {
-      UiSnack.showError('שגיאה בעדכון הרשאה: ${e.toString()}');
+      UiSnack.showError('error בupdate הרשאה: ${e.toString()}');
     }
   }
 
@@ -216,11 +216,11 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
     try {
       await devLoader.loadDevelopmentPlugin(event.directoryPath);
       add(LoadPlugins());
-      UiSnack.showSuccess('תוסף פיתוח נטען בהצלחה');
+      UiSnack.showSuccess('תוסף פיתוח נטען בsuccess');
     } catch (e, stackTrace) {
       debugPrint('[PluginDevLoader] Failed to load plugin from "${event.directoryPath}": $e');
       debugPrint('$stackTrace');
-      UiSnack.showError('שגיאה בטעינת תוסף פתוח: ${e.toString()}');
+      UiSnack.showError('error בטעינת תוסף open: ${e.toString()}');
     }
   }
 
@@ -232,7 +232,7 @@ class PluginSystemBloc extends Bloc<PluginSystemEvent, PluginSystemState> {
       devWatchService.stopWatcher(event.pluginId);
       add(LoadPlugins());
     } catch (e) {
-      UiSnack.showError('שגיאה בניתוק התוסף: ${e.toString()}');
+      UiSnack.showError('error בניתוק התוסף: ${e.toString()}');
     }
   }
 

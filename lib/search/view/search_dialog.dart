@@ -28,8 +28,8 @@ import 'package:otzaria/widgets/indexing_warning.dart';
 import 'package:otzaria/core/ui_snack.dart';
 import 'package:otzaria/utils/text_manipulation.dart' as utils;
 
-/// דיאלוג חיפוש מתקדם - מכיל את כל פקדי החיפוש וההגדרות
-/// כשמבצעים חיפוש, הדיאלוג נסגר ונפתחת לשונית תוצאות
+/// דיאלוג search מתקדם - מכיל את כל פקדי הsearch והsettings
+/// כשמבצעים search, הדיאלוג נסגר ונOpenת לשונית results
 class SearchDialog extends StatefulWidget {
   final SearchingTab? existingTab;
   final Function(
@@ -73,7 +73,7 @@ class _SearchDialogState extends State<SearchDialog> {
       final lastTypoTolerance =
           Settings.getValue<bool>('key-last-search-typo-tolerance') ?? false;
 
-      _searchTab = SearchingTab("חיפוש", lastTyping);
+      _searchTab = SearchingTab("search", lastTyping);
 
       final searchMode = switch (lastMode) {
         'fuzzy' => SearchMode.fuzzy,
@@ -98,14 +98,14 @@ class _SearchDialogState extends State<SearchDialog> {
       _selectedCategoryFacets = initialScopeFacets.toSet();
     }
 
-    // בדיקה אם האינדקס בתהליך בנייה
+    // check אם the index בתהליך בנייה
     final indexingState = context.read<IndexingBloc>().state;
     _showIndexWarning = indexingState is IndexingInProgress;
 
-    // מאזין לשינויים בתיבת החיפוש כדי לעדכן את האפשרויות ולשמור את ההקלדה
+    // מאזין לשינויים בתיבת הsearch כדי לעדyes את האפשרויות ולSave את ההקלדה
     _queryListener = () {
       if (!mounted) return;
-      // שמירת ההקלדה הנוכחית
+      // save ההקלדה הcurrent
       Settings.setValue<String>(
         'key-last-search-typing',
         _searchTab.queryController.text,
@@ -113,7 +113,7 @@ class _SearchDialogState extends State<SearchDialog> {
     };
     _searchTab.queryController.addListener(_queryListener);
 
-    // בקשת פוקוס לתיבת החיפוש + רישום כ-active restorer לשחזור לאחר אירועי חלון
+    // בקשת focus לתיבת הsearch + רישום כ-active restorer לשBack noחר אירועי חלון
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _searchTab.searchFieldFocusNode.requestFocus();
@@ -142,11 +142,11 @@ class _SearchDialogState extends State<SearchDialog> {
     );
   }
 
-  // בניית מגירת ההיסטוריה - מציג רק חיפושים מההיסטוריה הכללית
+  // בניית מגירת ההיסטוריה - מציג רק searchים מההיסטוריה הgeneral
   Widget _buildHistoryDropdown() {
     return BlocBuilder<HistoryBloc, HistoryState>(
       builder: (context, state) {
-        // סינון רק חיפושים
+        // סינון רק searchים
         final searchHistory =
             state.history.where((item) => item.isSearch).toList();
 
@@ -190,9 +190,9 @@ class _SearchDialogState extends State<SearchDialog> {
               ),
               itemBuilder: (context, index) {
                 final bookmark = recentSearches[index];
-                final query = bookmark.book.title; // הטקסט הפשוט של החיפוש
+                final query = bookmark.book.title; // הtext הפשוט של הsearch
                 final displayText =
-                    bookmark.ref; // הטקסט המעוצב (עם קידומות וסיומות)
+                    bookmark.ref; // הtext המעוצב (עם קידומות וendת)
 
                 return ListTile(
                   dense: true,
@@ -203,10 +203,10 @@ class _SearchDialogState extends State<SearchDialog> {
                     style: const TextStyle(fontSize: 14),
                   ),
                   onTap: () {
-                    // שחזור הטקסט הפשוט (ללא קידומות וסיומות)
+                    // שBack הtext הפשוט (לno קידומות וendת)
                     _searchTab.queryController.text = query;
 
-                    // שחזור האפשרויות הנוספות
+                    // שBack האפשרויות הנוספות
                     if (bookmark.searchOptions != null) {
                       _searchTab.searchOptions.clear();
                       _searchTab.searchOptions.addAll(bookmark.searchOptions!);
@@ -221,7 +221,7 @@ class _SearchDialogState extends State<SearchDialog> {
                       _searchTab.spacingValues.addAll(bookmark.spacingValues!);
                     }
 
-                    // עדכון התצוגה
+                    // update התצוגה
                     setState(() {
                       _showHistoryDropdown = false;
                     });
@@ -250,17 +250,17 @@ class _SearchDialogState extends State<SearchDialog> {
     String query = _searchTab.queryController.text.trim();
 
     if (query.isEmpty) {
-      UiSnack.show('נא להזין טקסט לחיפוש');
+      UiSnack.show('נא להזין text לsearch');
       return;
     }
 
-    // החיפוש עובד תמיד על טקסט ללא ניקוד.
+    // הsearch עובד תמיד על text לno ניקוד.
     if (utils.hasNikud(query)) {
       query = utils.removeVolwels(query);
     }
     query = SearchQueryBuilder.sanitizeQuery(query);
 
-    // שמירת מצב החיפוש האחרון
+    // save מצב הsearch האחרון
     final currentState = _searchTab.searchBloc.state;
     final currentMode = currentState.configuration.searchMode;
     final normalizedMode = currentMode == SearchMode.levenshtein
@@ -291,11 +291,11 @@ class _SearchDialogState extends State<SearchDialog> {
       return;
     }
 
-    // יצירת טאב חדש לגמרי - ללא קשר לטאב קודם
-    // שם הלשונית: "חיפוש: [מילות החיפוש]"
-    final newSearchTab = SearchingTab("חיפוש: $query", query);
+    // יצירת טאב חדש לגמרי - לno קשר לטאב previous
+    // name הלשונית: "search: [מילות הsearch]"
+    final newSearchTab = SearchingTab("search: $query", query);
 
-    // העתקת כל ההגדרות מהטאב הנוכחי לטאב החדש
+    // Copyת כל הsettings מהטאב הcurrent לטאב החדש
     newSearchTab.searchOptions.addAll(_searchTab.searchOptions);
     newSearchTab.alternativeWords.addAll(_searchTab.alternativeWords);
     newSearchTab.spacingValues.addAll(_searchTab.spacingValues);
@@ -306,14 +306,14 @@ class _SearchDialogState extends State<SearchDialog> {
       ),
     );
 
-    // הוספה להיסטוריה
+    // add להיסטוריה
     context.read<HistoryBloc>().add(AddHistory(newSearchTab));
 
-    // הגדרת ה-facets שנבחרו לפני ביצוע החיפוש
+    // הגדרת ה-facets שselectedו לפני ביצוע הsearch
     final facetsToSearch = _selectedCategoryFacets.toList();
     newSearchTab.searchBloc.add(SetFacetsWithoutSearch(facetsToSearch));
 
-    // ביצוע החיפוש בטאב החדש
+    // ביצוע הsearch בטאב החדש
     newSearchTab.searchBloc.add(
       UpdateSearchQuery(
         query,
@@ -400,10 +400,10 @@ class _SearchDialogState extends State<SearchDialog> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: FocusScope(
           onKeyEvent: (node, event) {
-            // תפיסת Enter ברמת הדיאלוג - FocusScope תופס אירועים מכל הילדים
+            // תפיסת Enter ברמת הדיאלוג - FocusScope תופס אירועים מכל הchildren
             if (event is KeyDownEvent &&
                 event.logicalKey == LogicalKeyboardKey.enter) {
-              // אם הפוקוס בתוך אפשרויות מתקדמות - תן לשדה לטפל
+              // אם הfocus בתוך אפשרויות מתקדמות - תן לfield לטפל
               if (_advancedControlsHasFocus.value) {
                 return KeyEventResult.ignored;
               }
@@ -426,8 +426,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     const SizedBox(width: 12),
                     Text(
                       widget.bookTitle != null
-                          ? 'חיפוש ב${widget.bookTitle}'
-                          : 'חיפוש',
+                          ? 'search ב${widget.bookTitle}'
+                          : 'search',
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold),
                     ),
@@ -435,7 +435,7 @@ class _SearchDialogState extends State<SearchDialog> {
                     IconButton(
                       icon: const Icon(FluentIcons.dismiss_24_regular),
                       onPressed: () => Navigator.of(context).pop(),
-                      tooltip: 'סגור',
+                      tooltip: 'closed',
                     ),
                   ],
                 ),
@@ -444,7 +444,7 @@ class _SearchDialogState extends State<SearchDialog> {
                 // אזהרת אינדקס
                 _buildIndexWarning(),
 
-                // תוכן הדיאלוג - Row עם ניווט מימין ותוכן משמאל
+                // content הדיאלוג - Row עם ניווט מימין וcontent משמאל
                 Expanded(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -493,17 +493,17 @@ class _SearchDialogState extends State<SearchDialog> {
 
                       const SizedBox(width: 16),
 
-                      // תוכן ראשי
+                      // content ראשי
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // שדה החיפוש + מרווח בין מילים (גובה קבוע)
+                            // field הsearch + מרווח בין מילים (גובה constant)
                             IntrinsicHeight(
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  // שדה החיפוש עם כפתורי היסטוריה וחיפוש
+                                  // field הsearch עם buttonי היסטוריה וsearch
                                   Expanded(
                                     child: Stack(
                                       children: [
@@ -518,7 +518,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                             onSubmit: _performSearch,
                                           ),
                                         ),
-                                        // כפתור חיפוש
+                                        // button search
                                         Positioned(
                                           right: 10,
                                           top: 8,
@@ -550,7 +550,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                             ),
                                           ),
                                         ),
-                                        // כפתור היסטוריה
+                                        // button היסטוריה
                                         Positioned(
                                           left: 48,
                                           top: 0,
@@ -565,7 +565,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                                         .history_24_regular,
                                                 size: 24,
                                               ),
-                                              tooltip: 'היסטוריית חיפושים',
+                                              tooltip: 'היסטוריית searchים',
                                               padding: EdgeInsets.zero,
                                               constraints:
                                                   const BoxConstraints(),
@@ -605,7 +605,7 @@ class _SearchDialogState extends State<SearchDialog> {
 
                             const SizedBox(height: 16),
 
-                            // תוכן תחתון - משתנה לפי מצב החיפוש
+                            // content תחתון - variable לפי מצב הsearch
                             Expanded(
                               child: BlocBuilder<SearchBloc, SearchState>(
                                 builder: (context, state) {
@@ -614,11 +614,11 @@ class _SearchDialogState extends State<SearchDialog> {
                                   final showTree = widget.bookTitle == null;
 
                                   if (isAdvanced && showTree) {
-                                    // מתקדם: בוחר קטגוריות שמאלה + אפשרויות מתקדמות ימינה
-                                    // (ב-RTL: ראשון בשורה = ימין, אחרון = שמאל)
+                                    // מתקדם: בוחר categories שמאלה + אפשרויות מתקדמות ימינה
+                                    // (ב-RTL: ראשון בline = ימין, אחרון = שמאל)
                                     return LayoutBuilder(
                                       builder: (context, constraints) {
-                                        // בדיקה אם יש מספיק רוחב לשני עמודות
+                                        // check אם יש מספיק רוחב לשני pageות
                                         // (אפשרויות מתקדמות צריכות לפחות ~320px)
                                         final isWide =
                                             constraints.maxWidth >= 520;
@@ -654,7 +654,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
-                                              // בוחר קטגוריות - שמאלה (אחרון ב-RTL)
+                                              // בוחר categories - שמאלה (אחרון ב-RTL)
                                               Expanded(child: categoryTree),
                                             ],
                                           );
@@ -680,7 +680,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                       },
                                     );
                                   } else if (isAdvanced) {
-                                    // מתקדם ללא עץ (חיפוש בספר ספציפי)
+                                    // מתקדם לno עץ (search בbook specific)
                                     return SingleChildScrollView(
                                       child: AdvancedSearchControls(
                                         tab: _searchTab,
@@ -691,7 +691,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                       ),
                                     );
                                   } else if (showTree) {
-                                    // מדויק/מקורב: עץ קטגוריות ממלא הכל
+                                    // מדויק/מקורב: עץ categories מfull הכל
                                     return SearchScopeSelector(
                                       selectedFacets: _selectedCategoryFacets,
                                       onSelectionChanged: (s) => setState(

@@ -4,7 +4,7 @@ import 'package:otzaria/widgets/rtl_text_field.dart';
 import 'package:otzaria/core/ui_snack.dart';
 import 'package:otzaria/widgets/mixins/dialog_navigation_mixin.dart';
 
-/// דיאלוג לאימות סיסמה למצב מוגן
+/// דיאלוג noימות סיסמה למצב מוגן
 class PasswordVerificationDialog extends StatefulWidget {
   final Future<bool> Function(String password) onVerify;
   final String title;
@@ -33,7 +33,7 @@ class _PasswordVerificationDialogState extends State<PasswordVerificationDialog>
   void initState() {
     super.initState();
 
-    // תן פוקוס לשדה הטקסט אחרי שהדיאלוג נפתח
+    // תן focus לfield הtext אחרי שהדיאלוג נOpen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _textFieldFocusNode.requestFocus();
     });
@@ -142,13 +142,13 @@ class _PasswordVerificationDialogState extends State<PasswordVerificationDialog>
         ),
         actions: [
           _buildButton(
-            text: 'ביטול',
+            text: 'cancel',
             isFocused: focusedButtonIndex == 0,
             onPressed: () => Navigator.of(context).pop(false),
             enabled: !_isVerifying,
           ),
           _buildButton(
-            text: 'אישור',
+            text: 'confirm',
             isFocused: focusedButtonIndex == 1,
             isConfirm: true,
             onPressed: _handleVerify,
@@ -226,7 +226,7 @@ class _SetPasswordDialogState extends State<SetPasswordDialog>
   @override
   void initState() {
     super.initState();
-    // תן פוקוס לשדה הראשון אחרי שהדיאלוג נפתח
+    // תן focus לfield הראשון אחרי שהדיאלוג נOpen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _passwordFocusNode.requestFocus();
     });
@@ -266,11 +266,11 @@ class _SetPasswordDialogState extends State<SetPasswordDialog>
 
       if (!mounted) return;
 
-      UiSnack.show('הסיסמה נשמרה בהצלחה');
+      UiSnack.show('הסיסמה נשמרה בsuccess');
       Navigator.of(context).pop(true);
     } catch (e) {
       if (!mounted) return;
-      UiSnack.showError('שגיאה בשמירת הסיסמה: $e');
+      UiSnack.showError('error בsave הסיסמה: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -306,7 +306,7 @@ class _SetPasswordDialogState extends State<SetPasswordDialog>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'הגדר סיסמה להגנה על ההגדרות',
+                'הגדר סיסמה להגנה על הsettings',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -369,13 +369,13 @@ class _SetPasswordDialogState extends State<SetPasswordDialog>
         ),
         actions: [
           _buildButton(
-            text: 'ביטול',
+            text: 'cancel',
             isFocused: focusedButtonIndex == 0,
             onPressed: () => Navigator.of(context).pop(false),
             enabled: !_isSaving,
           ),
           _buildButton(
-            text: 'שמור',
+            text: 'Save',
             isFocused: focusedButtonIndex == 1,
             isConfirm: true,
             onPressed: _handleSave,

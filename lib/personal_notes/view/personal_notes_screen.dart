@@ -80,8 +80,8 @@ class _PersonalNotesManagerScreenState
   }
 
   Future<void> _loadBooks() async {
-    // בריענון - לא מציגים ספינר אם כבר יש ספרים
-    // בטעינה ראשונה - נשאר במצב טעינה
+    // בריענון - no מציגים ספינר אם כבר יש books
+    // בloading ראשונה - נשאר במצב loading
     final isRefresh = _books.isNotEmpty;
 
     if (!isRefresh) {
@@ -112,7 +112,7 @@ class _PersonalNotesManagerScreenState
           _isLoadingBooks = false;
         });
       } else {
-        UiSnack.showError('שגיאה בטעינת רשימת ההערות: $e');
+        UiSnack.showError('error בטעינת רשימת הnotes: $e');
       }
     }
   }
@@ -195,7 +195,7 @@ class _PersonalNotesManagerScreenState
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'אירעה שגיאה בעת טעינת רשימת ההערות:\n${_booksError!}',
+              'אירעה error בעת טעינת רשימת הnotes:\n${_booksError!}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -246,9 +246,9 @@ class _PersonalNotesManagerScreenState
           },
           child: Column(
             children: [
-              // שורת כלים עליונה לכל רוחב העמוד
+              // שורת Tools עליונה לכל רוחב הpage
               _buildTopBar(),
-              // תוכן העמוד
+              // content הpage
               Expanded(
                 child: PrimaryScrollController(
                   controller: _contentScrollController,
@@ -293,7 +293,7 @@ class _PersonalNotesManagerScreenState
           leadingItems: [
             AppTopBarItem(
               widget: IconButton(
-                tooltip: _isNavigationVisible ? 'הסתר ניווט' : 'הצג ניווט',
+                tooltip: _isNavigationVisible ? 'hide ניווט' : 'הצג ניווט',
                 onPressed: () {
                   setState(() {
                     _isNavigationVisible = !_isNavigationVisible;
@@ -323,7 +323,7 @@ class _PersonalNotesManagerScreenState
           center: OtzariaSearchField(
             controller: _searchController,
             focusNode: _searchFocusNode,
-            hintText: 'חפש בהערות...',
+            hintText: 'חפש בnotes...',
             onSubmitted: (_) => requestKeyboardFocus(),
             onChanged: (value) {
               setState(() {
@@ -340,7 +340,7 @@ class _PersonalNotesManagerScreenState
             AppTopBarItem(
               widget: ToolbarActionButton(
                 compact: isCompact,
-                tooltip: 'רענן',
+                tooltip: 'Refresh',
                 icon: FluentIcons.arrow_clockwise_24_regular,
                 onPressed: _loadBooks,
               ),
@@ -348,7 +348,7 @@ class _PersonalNotesManagerScreenState
             AppTopBarItem(
               widget: ToolbarActionButton(
                 compact: isCompact,
-                tooltip: 'ייצוא הערות',
+                tooltip: 'ייצוא notes',
                 icon: FluentIcons.arrow_download_24_regular,
                 onPressed: _exportNotes,
               ),
@@ -356,7 +356,7 @@ class _PersonalNotesManagerScreenState
             AppTopBarItem(
               widget: ToolbarActionButton(
                 compact: isCompact,
-                tooltip: 'ייבוא הערות',
+                tooltip: 'ייבוא notes',
                 icon: FluentIcons.arrow_upload_24_regular,
                 onPressed: _importNotes,
               ),
@@ -389,7 +389,7 @@ class _PersonalNotesManagerScreenState
     if (selection == null || selection.notes.isEmpty) return;
 
     final path = await FilePicker.platform.saveFile(
-      dialogTitle: 'בחר מיקום לשמירת קובץ הייצוא',
+      dialogTitle: 'בחר location לsave file הייצוא',
       fileName: 'otzaria_notes_export.json',
       allowedExtensions: ['json'],
       type: FileType.custom,
@@ -404,12 +404,12 @@ class _PersonalNotesManagerScreenState
     );
 
     if (!mounted) return;
-    UiSnack.show('הייצוא הושלם בהצלחה');
+    UiSnack.show('הייצוא הושלם בsuccess');
   }
 
   Future<void> _importNotes() async {
     final picked = await FilePicker.platform.pickFiles(
-      dialogTitle: 'בחר קובץ ייבוא',
+      dialogTitle: 'בחר file ייבוא',
       allowedExtensions: ['json'],
       type: FileType.custom,
     );
@@ -419,8 +419,8 @@ class _PersonalNotesManagerScreenState
     final strategy = await showDialog<NotesImportConflictStrategy>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('ייבוא הערות - טיפול בהתנגשויות'),
-        content: const Text('כיצד לטפל בהערות קיימות עם אותו מזהה?'),
+        title: const Text('ייבוא notes - טיפול בהתנגשויות'),
+        content: const Text('כיצד לטפל בnotes קיימות עם אותו מזהה?'),
         actions: [
           TextButton(
             onPressed: () =>
@@ -435,7 +435,7 @@ class _PersonalNotesManagerScreenState
           TextButton(
             onPressed: () =>
                 Navigator.of(context).pop(NotesImportConflictStrategy.keepBoth),
-            child: const Text('שמור גם וגם'),
+            child: const Text('Save גם וגם'),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context)
@@ -487,9 +487,9 @@ class _PersonalNotesManagerScreenState
           children: [
             Column(
               children: [
-                // Root "הערות אישיות" folder
+                // Root "notes אישיות" folder
                 NavigationTreeTile.category(
-                  title: 'הערות אישיות',
+                  title: 'notes אישיות',
                   level: 0,
                   isSelected: isRootSelected,
                   isExpanded: isRootExpanded,
@@ -588,7 +588,7 @@ class _PersonalNotesManagerScreenState
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'הערות ללא מיקום',
+                'notes לno location',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -722,7 +722,7 @@ class _PersonalNotesManagerScreenState
       }
     }
 
-    // סינון לפי חיפוש
+    // סינון לפי search
     if (_searchQuery.isNotEmpty) {
       final query = _searchQuery.toLowerCase();
       allNotes.removeWhere((noteWithBook) {
@@ -786,7 +786,7 @@ class _PersonalNotesManagerScreenState
 
     if (displayNotes.isEmpty) {
       return const Center(
-        child: Text('אין הערות להצגה'),
+        child: Text('אין notes להצגה'),
       );
     }
 
@@ -905,7 +905,7 @@ class _PersonalNotesManagerScreenState
                 children: [
                   Expanded(
                     child: Text(
-                      isMissing ? 'הערה ללא מיקום' : note.title,
+                      isMissing ? 'note לno location' : note.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: cs.onSurface,
@@ -947,7 +947,7 @@ class _PersonalNotesManagerScreenState
                         if (isMissing && note.lastKnownLineNumber != null)
                           _InfoChip(
                             icon: FluentIcons.location_24_regular,
-                            text: 'שורה קודמת: ${note.lastKnownLineNumber}',
+                            text: 'line קודמת: ${note.lastKnownLineNumber}',
                             backgroundColor: cs.surfaceContainerHighest,
                             foregroundColor: cs.onSurfaceVariant,
                           ),
@@ -966,18 +966,18 @@ class _PersonalNotesManagerScreenState
                       ),
                       if (isMissing)
                         ToolbarActionButton(
-                          tooltip: 'מיקום מחדש',
+                          tooltip: 'location again',
                           icon: FluentIcons.location_24_regular,
                           onPressed: () => _repositionMissing(note),
                         ),
                       if (!isMissing)
                         ToolbarActionButton(
-                          tooltip: 'פתח ספר בשורה',
+                          tooltip: 'Open book בline',
                           icon: FluentIcons.book_open_24_regular,
                           onPressed: () => _openNoteInBook(note),
                         ),
                       ToolbarActionButton(
-                        tooltip: 'מחיקה',
+                        tooltip: 'delete',
                         icon: FluentIcons.delete_24_regular,
                         onPressed: () => _deleteNote(note),
                       ),
@@ -996,7 +996,7 @@ class _PersonalNotesManagerScreenState
     final result = await showDialog<PersonalNoteEditorResult>(
       context: context,
       builder: (context) => PersonalNoteEditorDialog(
-        title: 'ערוך הערה',
+        title: 'ערוך note',
         initialContent: note.content,
         initialContentFormat: note.contentFormat,
         referenceText: note.displayTitle,
@@ -1012,7 +1012,7 @@ class _PersonalNotesManagerScreenState
 
     final trimmed = result.contentPlain.trim();
     if (trimmed.isEmpty) {
-      UiSnack.show('ההערה ריקה, לא נשמרה');
+      UiSnack.show('הnote emptyה, no נשמרה');
       return;
     }
 
@@ -1026,15 +1026,15 @@ class _PersonalNotesManagerScreenState
             contentFormat: result.contentFormat,
           ),
         );
-    UiSnack.show('ההערה עודכנה');
+    UiSnack.show('הnote עודכנה');
   }
 
   Future<void> _deleteNote(PersonalNote note) async {
     final shouldDelete = await showConfirmationDialog(
       context: context,
-      title: 'מחיקת הערה',
-      content: 'האם למחוק את ההערה לצמיתות?',
-      confirmText: 'מחק',
+      title: 'מחיקת note',
+      content: 'האם לdeleted את הnote לצמיתות?',
+      confirmText: 'Delete',
       isDangerous: true,
     );
 
@@ -1046,18 +1046,18 @@ class _PersonalNotesManagerScreenState
               noteId: note.id,
             ),
           );
-      UiSnack.show('ההערה נמחקה');
+      UiSnack.show('הnote נDeleteה');
     }
   }
 
   Future<void> _repositionMissing(PersonalNote note) async {
     final result = await showInputDialog(
       context: context,
-      title: 'מיקום מחדש של הערה',
+      title: 'location again של note',
       subtitle: note.lastKnownLineNumber != null
-          ? 'שורה קודמת: ${note.lastKnownLineNumber}'
+          ? 'line קודמת: ${note.lastKnownLineNumber}'
           : null,
-      labelText: 'מספר שורה חדש',
+      labelText: 'מbook line חדש',
       initialValue: (note.lastKnownLineNumber ?? '').toString(),
       keyboardType: TextInputType.number,
     );
@@ -1073,27 +1073,27 @@ class _PersonalNotesManagerScreenState
               lineNumber: newLine,
             ),
           );
-      UiSnack.show('ההערה הועברה לשורה $newLine');
+      UiSnack.show('הnote הועברה לline $newLine');
     }
   }
 
   Future<void> _openNoteInBook(PersonalNote note) async {
     if (note.lineNumber == null) {
-      UiSnack.show('להערה הזו אין מיקום');
+      UiSnack.show('לnote הזו אין location');
       return;
     }
 
     final libraryState = context.read<LibraryBloc>().state;
     final library = libraryState.library;
     if (library == null) {
-      UiSnack.show('הספרייה לא נטענה עדיין');
+      UiSnack.show('the library no נטענה עדיין');
       return;
     }
 
     final book = library.findBookByTitle(note.bookId, TextBook) ??
         library.findBookByTitle(note.bookId, null);
     if (book == null) {
-      UiSnack.show('הספר לא נמצא: ${note.bookId}');
+      UiSnack.show('הbook no נמצא: ${note.bookId}');
       return;
     }
 

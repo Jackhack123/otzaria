@@ -5,7 +5,7 @@ abstract class EmptyLibraryState extends Equatable {
   final String? selectedPath;
   final String? errorMessage;
   final List<String>? zipFiles;
-  // non-null = כפתור ההורדה מושבת + הסיבה מוצגת למשתמש
+  // non-null = button הparentדה מושבת + הסיבה מוצגת לuser
   final String? downloadDisabledReason;
 
   const EmptyLibraryState({
@@ -118,16 +118,16 @@ class EmptyLibraryAskingDeleteZip extends EmptyLibraryState {
       ];
 }
 
-/// Android בלבד: שואל את המשתמש אם להעתיק או להעביר את seforim.db
-/// מאחסון חיצוני (לא נגיש ל-sqlite3 native) לאחסון פנימי.
+/// Android בלבד: שואל את הuser אם להעתיק או להעביר את seforim.db
+/// מאחסון חיצוני (no נגיש ל-sqlite3 native) noחסון פנימי.
 class EmptyLibraryAskingDbCopy extends EmptyLibraryState {
-  /// הנתיב החיצוני של seforim.db (שנבחר ע"י המשתמש)
+  /// הpath החיצוני של seforim.db (שselected ע"י הuser)
   final String externalDbPath;
 
-  /// תיקיית הספרייה שנבחרה (תישמר ב-keyLibraryPath ללא שינוי)
+  /// תיקיית the library שselectedה (תישמר ב-keyLibraryPath לno שינוי)
   final String libraryPath;
 
-  /// הנתיב הפנימי המוצע שאליו יועתק/יועבר seforim.db
+  /// הpath הפנימי המוצע שאליו יועתק/יועבר seforim.db
   final String internalDbPath;
 
   /// גודל seforim.db בבייטים

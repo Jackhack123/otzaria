@@ -71,7 +71,7 @@ class PluginSidePanel extends StatelessWidget {
                 if (showDevTools)
                   IconButton(
                     icon: const Icon(FluentIcons.arrow_sync_24_regular),
-                    tooltip: 'רענן תוספים',
+                    tooltip: 'Refresh תוספים',
                     onPressed: () => context.read<PluginSystemBloc>().add(RefreshPlugins()),
                   ),
               ],
@@ -88,7 +88,7 @@ class PluginSidePanel extends StatelessWidget {
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text('שגיאה: ${state.message}'),
+                      child: Text('error: ${state.message}'),
                     ),
                   );
                 }
@@ -96,7 +96,7 @@ class PluginSidePanel extends StatelessWidget {
                   final plugins = state.plugins;
                   if (plugins.isEmpty) {
                     return const Center(
-                      child: Text('לא הותקנו תוספים'),
+                      child: Text('no הותקנו תוספים'),
                     );
                   }
                   return ListView.builder(
@@ -113,7 +113,7 @@ class PluginSidePanel extends StatelessWidget {
                                 right: -8,
                                 top: -8,
                                 child: Tooltip(
-                                  message: 'תוסף פיתוח המוטען מתיקייה מקומית',
+                                  message: 'תוסף פיתוח המוטען מfolder מקומית',
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                     decoration: BoxDecoration(
@@ -140,7 +140,7 @@ class PluginSidePanel extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(FluentIcons.settings_24_regular),
-                              tooltip: 'הגדרות תוסף',
+                              tooltip: 'settings תוסף',
                               onPressed: () async {
                                 final result = await Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => PluginSettingsScreen(plugin: plugin),

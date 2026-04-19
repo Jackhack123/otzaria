@@ -5,22 +5,22 @@ class SearchCatalogueOrderHelper {
   SearchCatalogueOrderHelper._();
 
   static const List<String> _orderedTopCategories = [
-    'תנ"ך',
+    'Written Torah',
     'מדרש',
-    'משנה',
-    'תלמוד בבלי',
-    'תלמוד ירושלמי',
+    'מyear',
+    'Talmud בבלי',
+    'Talmud ירושלמי',
     'תוספתא',
     'הלכה',
     'שו"ת',
     'קבלה',
-    'סדר התפילה',
+    'order התפילה',
     'מחשבת ישראל',
     'חסידות',
-    'ספרי מוסר',
-    'מילונים וספרי יעץ',
+    'bookי מוסר',
+    'מילונים וbookי יעץ',
     'לימוד יומי',
-    'ספרות עזר',
+    'bookות עזר',
     'בית שני',
   ];
 

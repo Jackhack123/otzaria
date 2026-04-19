@@ -316,7 +316,7 @@ const String _footerXml =
     <w:pPr>
       <w:pStyle w:val="Footer"/>
     </w:pPr>
-    <w:r><w:t xml:space="preserve">עמוד </w:t></w:r>
+    <w:r><w:t xml:space="preserve">page </w:t></w:r>
     <w:r><w:fldChar w:fldCharType="begin"/></w:r>
     <w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>
     <w:r><w:fldChar w:fldCharType="separate"/></w:r>
@@ -328,7 +328,7 @@ const String _footerXml =
     <w:r><w:fldChar w:fldCharType="separate"/></w:r>
     <w:r><w:t>1</w:t></w:r>
     <w:r><w:fldChar w:fldCharType="end"/></w:r>
-    <w:r><w:t xml:space="preserve">  |  הודפס מתוך אוצריא</w:t></w:r>
+    <w:r><w:t xml:space="preserve">  |  הודפס מתוך Otzaria</w:t></w:r>
   </w:p>
 </w:ftr>''';
 

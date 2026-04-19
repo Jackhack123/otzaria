@@ -4,9 +4,9 @@ import 'package:otzaria/tabs/models/pdf_tab.dart';
 import 'package:otzaria/text_book/bloc/text_book_state.dart';
 import 'package:otzaria/utils/ref_helper.dart';
 
-/// Snapshot של מיקום הקריאה הנוכחי
+/// Snapshot של location הקריאה הcurrent
 ///
-/// מכיל את כל המידע הדרוש כדי לזהות את המיקום המדויק בקורא
+/// מכיל את כל המידע הדרוש כדי לזהות את הlocation המדויק בקורא
 class ReaderLocationSnapshot {
   final String? currentBook;
   final String? currentBookId;
@@ -20,9 +20,9 @@ class ReaderLocationSnapshot {
     required this.currentRef,
   });
 
-  /// יוצר signature ייחודי למיקום זה
+  /// יוצר signature ייoverrideי לlocation זה
   ///
-  /// משמש ל-dedupe - אם ה-signature זהה, המיקום לא השתנה
+  /// משמש ל-dedupe - אם ה-signature זהה, הlocation no השתנה
   String signature() =>
       '${currentBook ?? ''}|$currentIndex|${currentRef ?? ''}';
 
@@ -45,9 +45,9 @@ class ReaderLocationSnapshot {
   int get hashCode => signature().hashCode;
 }
 
-/// פותר את מיקום הקריאה הנוכחי מטאב נתון
+/// פותר את location הקריאה הcurrent מטאב נתון
 ///
-/// פונקציה מרכזית אחת שמשמשת גם את reader.getCurrentRef
+/// function מרכזית אחת שמשמשת גם את reader.getCurrentRef
 /// וגם את האירוע reader.current_ref_changed
 Future<ReaderLocationSnapshot?> resolveReaderLocation(
     OpenedTab? currentTab) async {
@@ -55,7 +55,7 @@ Future<ReaderLocationSnapshot?> resolveReaderLocation(
     return null;
   }
 
-  // טיפול בספר טקסט
+  // טיפול בbook text
   if (currentTab is TextBookTab) {
     return await _resolveTextBookLocation(currentTab);
   }
@@ -68,7 +68,7 @@ Future<ReaderLocationSnapshot?> resolveReaderLocation(
   return null;
 }
 
-/// פותר מיקום עבור ספר טקסט
+/// פותר location עבור book text
 Future<ReaderLocationSnapshot?> _resolveTextBookLocation(
     TextBookTab tab) async {
   // ניסיון ראשון: currentTitle מה-ValueNotifier
@@ -128,7 +128,7 @@ Future<ReaderLocationSnapshot?> _resolveTextBookLocation(
   );
 }
 
-/// פותר מיקום עבור PDF
+/// פותר location עבור PDF
 ReaderLocationSnapshot _resolvePdfBookLocation(PdfBookTab tab) {
   // ניסיון ראשון: currentTitle מה-ValueNotifier
   final currentTitle = tab.currentTitle.value.trim();
@@ -141,8 +141,8 @@ ReaderLocationSnapshot _resolvePdfBookLocation(PdfBookTab tab) {
     );
   }
 
-  // ניסיון שני: ref ברירת מחדל לפי מספר עמוד
-  final defaultRef = tab.pageNumber > 0 ? 'עמוד ${tab.pageNumber}' : null;
+  // ניסיון שני: ref ברירת מחדל לפי מbook page
+  final defaultRef = tab.pageNumber > 0 ? 'page ${tab.pageNumber}' : null;
 
   return ReaderLocationSnapshot(
     currentBook: tab.title,

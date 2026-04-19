@@ -92,12 +92,12 @@ class _WindowControlsState extends State<WindowControls> with WindowListener {
               icon: Icon(settingsState.isFullscreen
                   ? FluentIcons.full_screen_minimize_24_regular
                   : FluentIcons.full_screen_maximize_24_regular),
-              tooltip: settingsState.isFullscreen ? 'צא ממסך מלא' : 'מסך מלא',
+              tooltip: settingsState.isFullscreen ? 'צא ממסך full' : 'מסך full',
             ),
             IconButton(
               onPressed: () => windowManager.close(),
               icon: const Icon(FluentIcons.dismiss_24_regular),
-              tooltip: 'סגור',
+              tooltip: 'closed',
             ),
           ],
         );

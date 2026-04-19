@@ -184,7 +184,7 @@ class _ScrollableTabBarWithArrowsState
     return AlignmentDirectional.centerStart;
   }
 
-  /// בונה כפתור חץ לגלילה
+  /// בונה button חץ לגלילה
   Widget _buildArrowButton({
     required String keyValue,
     required bool canScroll,
@@ -230,27 +230,27 @@ class _ScrollableTabBarWithArrowsState
 
     return Row(
       children: [
-        // חץ שמאלי – מוסתר לגמרי אם אין גלילה והאפשרות מופעלת
+        // חץ שמאלי – מוסתר לגמרי אם אין גלילה והאפשרות activeת
         if (showArrows)
           _buildArrowButton(
             keyValue: 'left-arrow',
             canScroll: _canScrollLeft,
             onPressed: _scrollLeft,
             icon: FluentIcons.chevron_left_24_regular,
-            tooltip: 'גלול שמאלה',
+            tooltip: 'scroll שמאלה',
           ),
         // TabBar משופר עם עיצוב יפה יותר
         Expanded(
           child: _buildTabBar(),
         ),
-        // חץ ימני – מוסתר לגמרי אם אין גלילה והאפשרות מופעלת
+        // חץ ימני – מוסתר לגמרי אם אין גלילה והאפשרות activeת
         if (showArrows)
           _buildArrowButton(
             keyValue: 'right-arrow',
             canScroll: _canScrollRight,
             onPressed: _scrollRight,
             icon: FluentIcons.chevron_right_24_regular,
-            tooltip: 'גלול ימינה',
+            tooltip: 'scroll ימינה',
           ),
       ],
     );

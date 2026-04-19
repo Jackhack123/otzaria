@@ -4,7 +4,7 @@ import 'package:otzaria/widgets/resizable_drag_handle.dart';
 
 /// פריסת קריאה עם שתי חלוניות צד עצמאיות.
 ///
-/// נועד למסכים כמו PDF שבהם יש גם חלונית ניווט וגם חלונית מפרשים/הערות,
+/// נועד למסכים כמו PDF שבהם יש גם חלונית ניווט וגם חלונית Commentators/notes,
 /// בלי להשאיר את ניהול ה-layout מפוזר בתוך המסך עצמו.
 class DualAdaptiveReaderPane extends StatelessWidget {
   final Widget mainContent;

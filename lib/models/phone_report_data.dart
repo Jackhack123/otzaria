@@ -22,8 +22,8 @@ class ErrorType extends Equatable {
   /// Static list of common error types with their IDs and Hebrew labels
   static const List<ErrorType> errorTypes = [
     ErrorType(id: 1, hebrewLabel: 'שגיאת כתיב'),
-    ErrorType(id: 2, hebrewLabel: 'טקסט חסר'),
-    ErrorType(id: 3, hebrewLabel: 'טקסט מיותר'),
+    ErrorType(id: 2, hebrewLabel: 'text חסר'),
+    ErrorType(id: 3, hebrewLabel: 'text מיותר'),
     ErrorType(id: 4, hebrewLabel: 'שגיאת עיצוב'),
     ErrorType(id: 5, hebrewLabel: 'שגיאת מקור'),
     ErrorType(id: 6, hebrewLabel: 'אחר'),

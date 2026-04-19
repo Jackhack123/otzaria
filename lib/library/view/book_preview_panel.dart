@@ -16,11 +16,11 @@ import 'package:otzaria/widgets/password_dialog.dart';
 import 'package:otzaria/pdf_book/pdf_scrollbar.dart';
 import 'package:otzaria/widgets/widgets_exports.dart';
 
-/// פאנל תצוגה מקדימה של ספר בספרייה
-/// מציג את תוכן הספר בלי כרטיסיות, בדומה לחלון העיון
+/// פאנל תצוגה מקדימה של book בlibrary
+/// מציג את content הbook בלי כרטיסיות, בדומה לחלון העיון
 class BookPreviewPanel extends StatefulWidget {
   final Book? book;
-  final Function(int index)? onOpenInReader; // מקבל את המיקום הנוכחי
+  final Function(int index)? onOpenInReader; // מקבל את current location
   final VoidCallback? onClose;
 
   const BookPreviewPanel({
@@ -49,7 +49,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
   void didUpdateWidget(BookPreviewPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // אם הספר השתנה, נצור tab חדש
+    // אם הbook השתנה, נצור tab חדש
     if (widget.book != oldWidget.book) {
       _disposeCurrentTab();
       if (widget.book != null) {
@@ -61,7 +61,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
   @override
   void initState() {
     super.initState();
-    // קבלת גודל הפונט מההגדרות
+    // קבלת גודל הפונט מהsettings
     _fontSize = Settings.getValue<double>('key-font-size', defaultValue: 18.0)!;
     if (widget.book != null) {
       _createNewTab();
@@ -189,7 +189,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
             ),
             const SizedBox(height: 16),
             Text(
-              'בחר ספר לתצוגה מקדימה',
+              'בחר book לתצוגה מקדימה',
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context)
@@ -203,7 +203,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
       );
     }
 
-    // אם זה ספר חיצוני
+    // אם זה book חיצוני
     if (widget.book is ExternalLibraryBook) {
       return Center(
         child: Column(
@@ -228,7 +228,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
             ),
             const SizedBox(height: 8),
             Text(
-              'ספר חיצוני - לחץ פעמיים לפתיחה',
+              'book חיצוני - לחץ פעמיים לפתיחה',
               style: TextStyle(
                 fontSize: 14,
                 color: Theme.of(context)
@@ -240,7 +240,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
             ),
             const SizedBox(height: 16),
             RecommendedActionButton(
-              text: 'פתח בעיון',
+              text: 'Open בעיון',
               icon: FluentIcons.open_24_regular,
               onPressed: () => widget.onOpenInReader?.call(0),
             ),
@@ -249,19 +249,19 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
       );
     }
 
-    // תצוגת ספר PDF
+    // תצוגת book PDF
     if (widget.book is PdfBook && _pdfController != null) {
       return _buildPdfViewer((widget.book as PdfBook).path);
     }
 
-    // תצוגת ספר טקסט
+    // תצוגת book text
     if (_currentTextTab == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
     return Stack(
       children: [
-        // תוכן הספר (מלא את כל השטח)
+        // content הbook (full את כל השטח)
         GestureDetector(
           onDoubleTap: _openCurrentPreviewInReader,
           child: BlocProvider.value(
@@ -278,7 +278,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                           showSplitView: false,
                           removeNikud: settingsState.defaultRemoveNikud,
                           loadCommentators:
-                              false, // אל תטען מפרשים בתצוגה מקדימה
+                              false, // אל תטען Commentators בתצוגה מקדימה
                         ),
                       );
                       return _buildSkeletonLoading();
@@ -290,7 +290,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
 
                     if (state is TextBookError) {
                       return Center(
-                        child: Text('שגיאה: ${state.message}'),
+                        child: Text('error: ${state.message}'),
                       );
                     }
 
@@ -316,7 +316,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
             ),
           ),
         ),
-        // כפתורים צפים בפינה השמאלית העליונה
+        // buttons צפים בפינה השמאלית העליונה
         Positioned(
           top: 8,
           left: 8,
@@ -326,7 +326,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _PreviewPanelSecondaryButton(
-                    tooltip: 'הגדל טקסט',
+                    tooltip: 'הגדל text',
                     icon: FluentIcons.zoom_in_24_regular,
                     onPressed: () {
                       setState(() {
@@ -339,7 +339,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                   ),
                   const SizedBox(width: 6),
                   _PreviewPanelSecondaryButton(
-                    tooltip: 'הקטן את גודל הטקסט',
+                    tooltip: 'הsmall את גודל הtext',
                     icon: FluentIcons.zoom_out_24_regular,
                     onPressed: () {
                       setState(() {
@@ -352,7 +352,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                   ),
                   const SizedBox(width: 6),
                   ToolNavigateButton(
-                    tooltip: 'פתח בעיון (או לחץ פעמיים על הספר)',
+                    tooltip: 'Open בעיון (או לחץ פעמיים על הbook)',
                     onPressed: () {
                       widget.onOpenInReader?.call(_currentTextTab?.index ?? 0);
                     },
@@ -360,7 +360,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                   if (widget.onClose != null) ...[
                     const SizedBox(width: 6),
                     _PreviewPanelSecondaryButton(
-                      tooltip: 'הסתר תצוגה מקדימה',
+                      tooltip: 'hide תצוגה מקדימה',
                       icon: FluentIcons.dismiss_24_regular,
                       onPressed: widget.onClose!,
                     ),
@@ -374,7 +374,7 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
     );
   }
 
-  /// בניית PDF viewer דרך נתיב הקובץ
+  /// בניית PDF viewer דרך path הfile
   Widget _buildPdfViewer(String filePath) {
     return Stack(
       children: [
@@ -447,25 +447,25 @@ class _BookPreviewPanelState extends State<BookPreviewPanel> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _PreviewPanelSecondaryButton(
-                    tooltip: 'הגדל את גודל הטקסט',
+                    tooltip: 'הגדל את גודל הtext',
                     icon: FluentIcons.zoom_in_24_regular,
                     onPressed: () => _pdfController?.zoomUp(),
                   ),
                   const SizedBox(width: 6),
                   _PreviewPanelSecondaryButton(
-                    tooltip: 'הקטן את גודל הטקסט',
+                    tooltip: 'הsmall את גודל הtext',
                     icon: FluentIcons.zoom_out_24_regular,
                     onPressed: () => _pdfController?.zoomDown(),
                   ),
                   const SizedBox(width: 6),
                   ToolNavigateButton(
-                    tooltip: 'פתח בעיון (או לחץ פעמיים על הספר)',
+                    tooltip: 'Open בעיון (או לחץ פעמיים על הbook)',
                     onPressed: _openCurrentPreviewInReader,
                   ),
                   if (widget.onClose != null) ...[
                     const SizedBox(width: 6),
                     _PreviewPanelSecondaryButton(
-                      tooltip: 'הסתר תצוגה מקדימה',
+                      tooltip: 'hide תצוגה מקדימה',
                       icon: FluentIcons.dismiss_24_regular,
                       onPressed: widget.onClose!,
                     ),

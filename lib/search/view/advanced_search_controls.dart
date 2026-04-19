@@ -8,7 +8,7 @@ import 'package:otzaria/search/bloc/search_state.dart';
 import 'package:otzaria/tabs/models/searching_tab.dart';
 import 'package:otzaria/widgets/rtl_text_field.dart';
 
-/// ווידג'ט לניהול אפשרויות חיפוש מתקדמות לכל מילה בנפרד.
+/// ווידג'ט לניהול אפשרויות search מתקדמות לכל מילה בנפרד.
 /// מחליף את שכפול הקוד בין SearchDialog ל-SearchEditPanel.
 class AdvancedSearchControls extends StatefulWidget {
   final SearchingTab tab;
@@ -198,7 +198,7 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
               ),
               const SizedBox(height: 16),
               Text(
-                'לחץ על מילה בשדה החיפוש כדי להגדיר אפשרויות מתקדמות',
+                'לחץ על מילה בfield הsearch כדי להגדיר אפשרויות מתקדמות',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey.shade600,
@@ -303,7 +303,7 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'שגיאות כתיב',
+                    'errors כתיב',
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       fontSize: 14,
@@ -354,7 +354,7 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
           onPressed: isEnabled && _wordIndex! < _words.length - 1
               ? () => _navigateToWord(_wordIndex! + 1)
               : null,
-          tooltip: 'מילה הבאה',
+          tooltip: 'מילה nextה',
         ),
       ],
     );
@@ -376,7 +376,7 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
                 ? _getSpacingFocusNode(_wordIndex!, _wordIndex! + 1)
                 : null,
             decoration: InputDecoration(
-              labelText: 'מרווח למילה הבאה',
+              labelText: 'מרווח למילה nextה',
               hintText: '0-30',
               border: const OutlineInputBorder(),
               contentPadding:
@@ -415,7 +415,7 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
                 final key = '${_wordIndex!}-${_wordIndex! + 1}';
                 widget.tab.spacingValues[key] = text.trim();
                 widget.tab.spacingValuesChanged.value++;
-                // הפעלת חיפוש גם כאשר יש ערך
+                // Enableת search גם כאשר יש value
                 widget.onEmptySubmit?.call();
               } else {
                 widget.onEmptySubmit?.call();
@@ -521,10 +521,10 @@ class _AdvancedSearchControlsState extends State<AdvancedSearchControls> {
   Widget _buildCheckboxGrid(bool isEnabled, {required bool compactMode}) {
     const List<String> options = [
       'קידומות דקדוקיות',
-      'סיומות דקדוקיות',
+      'endת דקדוקיות',
       'קידומות',
-      'סיומות',
-      'כתיב מלא/חסר',
+      'endת',
+      'כתיב full/חסר',
       'חלק ממילה',
     ];
 

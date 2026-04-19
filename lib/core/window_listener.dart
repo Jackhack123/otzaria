@@ -16,8 +16,8 @@ typedef FullscreenCallback = void Function(bool isFullscreen);
 class AppWindowListener extends WindowListener {
   FullscreenCallback? onFullscreenChanged;
 
-  /// נקרא לאחר אירועי מצב חלון דיסקרטיים שעלולים לגרום לאיבוד פוקוס:
-  /// maximize, unmaximize, restore, כניסה/יציאה ממסך מלא.
+  /// נקרא noחר אירועי מצב חלון דיסקרטיים שעלולים לגרום noיבוד focus:
+  /// maximize, unmaximize, restore, כניסה/יציאה ממסך full.
   VoidCallback? onWindowStateChanged;
 
   /// נקרא בכל אירוע resize רציף — מיועד ל-debounced restore.
@@ -86,7 +86,7 @@ class AppWindowListener extends WindowListener {
 
       if (!kIsWeb &&
           (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
-        // שמירת מצב החלון
+        // save מצב החלון
         await WindowPersistence.saveNow();
         // סגירה רגילה דרך ה-WindowManager
         await windowManager.destroy();
@@ -95,7 +95,7 @@ class AppWindowListener extends WindowListener {
       if (kDebugMode) {
         print('Error during window close: $e');
       }
-      // נשמור על exit(0) רק למקרה חירום של קריסה בתהליך הסגירה
+      // נSave על exit(0) רק למקרה חירום של קריסה בתהליך הסגירה
       exit(0);
     }
   }
@@ -105,9 +105,9 @@ class AppWindowListener extends WindowListener {
     if (kDebugMode) {
       //print('Window focused');
     }
-    // איפוס מצב המקלדת בעת קבלת פוקוס, למנוע AssertionError ב-HardwareKeyboard
-    // כאשר המשתמש מחזיק מקש, מחליף חלון, ומשחרר - Flutter לא מקבל KeyUpEvent
-    // ובעת חזרה לחלון, מקש ה-KeyDown הבא גורם ל-assertion failure
+    // איפוס מצב המקלדת בעת קבלת focus, למנוע AssertionError ב-HardwareKeyboard
+    // כאשר הuser מחזיק מקש, מחליף חלון, ומשחרר - Flutter no מקבל KeyUpEvent
+    // ובעת חזרה לחלון, מקש ה-KeyDown next גורם ל-assertion failure
     // ignore: invalid_use_of_visible_for_testing_member
     HardwareKeyboard.instance.clearState();
   }

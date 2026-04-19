@@ -1,4 +1,4 @@
-// Barrel export לכל קבצי theme של אוצריא
+// Barrel export לכל קבצי theme של Otzaria
 //
 // שימוש:
 //   import 'package:otzaria/theme/theme_exports.dart';

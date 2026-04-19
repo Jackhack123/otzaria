@@ -42,31 +42,31 @@ class ReportingNumbersWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Wrap מאפשר לנתונים להיות באותה שורה ולעבור לשורה הבאה אם אין מקום
+            // Wrap מאפשר לנתונים להיות באותה line ולעבור לline nextה אם אין מקום
             Wrap(
               spacing: 16, // מרווח אופקי בין הפריטים
-              runSpacing: 8, // מרווח אנכי בין השורות
+              runSpacing: 8, // מרווח אנכי בין הlines
               children: [
                 _buildCompactNumberItem(
                   context,
-                  'מספר גירסה',
+                  'מbook גירסה',
                   libraryVersion,
                 ),
                 _buildCompactNumberItem(
                   context,
-                  'מספר ספר',
-                  bookId?.toString() ?? 'לא זמין',
+                  'מbook book',
+                  bookId?.toString() ?? 'no זמין',
                   enabled: bookId != null,
                 ),
                 _buildCompactNumberItem(
                   context,
-                  'מספר שורה',
+                  'מbook line',
                   lineNumber.toString(),
                 ),
                 _buildCompactNumberItem(
                   context,
-                  'מספר שגיאה',
-                  errorId?.toString() ?? 'לא נבחר',
+                  'מbook error',
+                  errorId?.toString() ?? 'no selected',
                   enabled: errorId != null,
                 ),
               ],
@@ -139,7 +139,7 @@ class ReportingNumbersWidget extends StatelessWidget {
           children: [
             // 1. הכותרת שתוצג בצד ימין
             Text(
-              'קו אוצריא:',
+              'קו Otzaria:',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -149,7 +149,7 @@ class ReportingNumbersWidget extends StatelessWidget {
             // 2. Spacer שתופס את כל המקום הפנוי ודוחף את שאר הווידג'טים שמאלה
             const Spacer(),
 
-            // 3. מספר הטלפון מודגש (כבר לא צריך להיות בתוך Expanded)
+            // 3. מbook הטלפון מודגש (כבר no צריך להיות בתוך Expanded)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -191,15 +191,15 @@ class ReportingNumbersWidget extends StatelessWidget {
             ),
             const SizedBox(width: 8),
 
-            // 4. כפתור ההעתקה
+            // 4. button הCopyה
             IconButton(
               onPressed: () => _copyToClipboard(context, _phoneNumber),
               icon: const Icon(FluentIcons.copy_24_regular, size: 18),
-              tooltip: 'העתק מספר טלפון',
+              tooltip: 'Copy מbook טלפון',
               visualDensity: VisualDensity.compact,
             ),
 
-            // 5. כפתור החיוג (למובייל)
+            // 5. button החיוג (למובייל)
             if (isMobile) ...[
               const SizedBox(width: 4),
               IconButton(
@@ -213,7 +213,7 @@ class ReportingNumbersWidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        // טקסט המשנה נשאר כמו שהיה
+        // text המyear נשאר כמו שהיה
         Text(
           'לפירוט נוסף, השאר הקלטה ברורה!',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -234,7 +234,7 @@ class ReportingNumbersWidget extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        UiSnack.showError('שגיאה בהעתקה ללוח');
+        UiSnack.showError('error בCopyה ללוח');
       }
     }
   }
@@ -246,12 +246,12 @@ class ReportingNumbersWidget extends StatelessWidget {
         await launchUrl(phoneUri);
       } else {
         if (context.mounted) {
-          UiSnack.showError('לא ניתן לפתוח את אפליקציית הטלפון');
+          UiSnack.showError('no ניתן לopen את אפליקציית הטלפון');
         }
       }
     } catch (e) {
       if (context.mounted) {
-        UiSnack.showError('שגיאה בפתיחת אפליקציית הטלפון');
+        UiSnack.showError('error בפתיחת אפליקציית הטלפון');
       }
     }
   }

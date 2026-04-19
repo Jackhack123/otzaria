@@ -36,7 +36,7 @@ class PdfZoomBar extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // כפתור איפוס
+            // button איפוס
             TextButton(
               onPressed: onResetZoom,
               style: TextButton.styleFrom(
@@ -55,11 +55,11 @@ class PdfZoomBar extends StatelessWidget {
               color: isDark ? Colors.grey[700] : Colors.grey[300],
               margin: const EdgeInsets.symmetric(horizontal: 4),
             ),
-            // כפתור הגדלה
+            // button הגדלה
             IconButton(
               icon: const Icon(FluentIcons.add_24_regular, size: 20),
               onPressed: onZoomIn,
-              tooltip: 'הגדל את גודל הטקסט',
+              tooltip: 'הגדל את גודל הtext',
               padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(
                 minWidth: 36,
@@ -72,11 +72,11 @@ class PdfZoomBar extends StatelessWidget {
               color: isDark ? Colors.grey[700] : Colors.grey[300],
               margin: const EdgeInsets.symmetric(horizontal: 4),
             ),
-            // כפתור הקטנה
+            // button הקטנה
             IconButton(
               icon: const Icon(FluentIcons.subtract_24_regular, size: 20),
               onPressed: onZoomOut,
-              tooltip: 'הקטן את גודל הטקסט',
+              tooltip: 'הsmall את גודל הtext',
               padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(
                 minWidth: 36,

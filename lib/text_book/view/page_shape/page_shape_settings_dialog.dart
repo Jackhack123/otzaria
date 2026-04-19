@@ -8,17 +8,17 @@ import 'package:otzaria/text_book/models/commentator_group.dart';
 import 'package:otzaria/utils/text_manipulation.dart' as utils;
 import 'package:otzaria/widgets/rtl_text_field.dart';
 
-/// סוג שמירת הגדרות מפרשים
+/// סוג save settings Commentators
 enum CommentatorSaveScope {
-  book, // לספר הנוכחי בלבד
-  category, // לכל הספרים בקטגוריה
+  book, // לbook הcurrent בלבד
+  category, // לכל הbooks בcategory
 }
 
-/// דיאלוג הגדרות צורת הדף - בחירת מפרשים לכל מיקום
+/// דיאלוג settings צורת הpage - בחירת Commentators לכל location
 class PageShapeSettingsDialog extends StatefulWidget {
   final List<String> availableCommentators;
   final String bookTitle;
-  final String? heCategories; // קטגוריות הספר
+  final String? heCategories; // categories הbook
   final String? currentLeft;
   final String? currentRight;
   final String? currentBottom;
@@ -60,13 +60,13 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
     'bottom': true,
   };
 
-  // הגדרה חדשה: האם לשמור לספר הנוכחי בלבד (להגדרות תצוגה)
+  // setting חדשה: האם לSave לbook הcurrent בלבד (לsettings תצוגה)
   bool _saveForCurrentBookOnly = false;
 
-  // הגדרה חדשה: היכן לשמור את בחירת המפרשים
+  // setting חדשה: היyes לSave את בחירת הCommentators
   CommentatorSaveScope _commentatorSaveScope = CommentatorSaveScope.book;
-  String? _selectedCategory; // הקטגוריה שנבחרה לשמירה
-  List<String> _availableCategories = []; // רשימת הקטגוריות הזמינות
+  String? _selectedCategory; // הcategory שselectedה לsave
+  List<String> _availableCategories = []; // רשימת הcategories הזמינות
 
   @override
   void initState() {
@@ -76,24 +76,24 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
   }
 
   void _loadCurrentSettings() {
-    // בדיקה אם יש הגדרות פר-ספר
+    // check אם יש settings פר-book
     _saveForCurrentBookOnly =
         PageShapeSettingsManager.hasBookSpecificSettings(widget.bookTitle);
 
-    // טעינת קטגוריות זמינות
+    // טעינת categories זמינות
     _availableCategories =
         PageShapeSettingsManager.parseCategories(widget.heCategories);
 
-    // אם אין קטגוריות, נסה לחלץ מהכותרת
+    // אם אין categories, נסה לחלץ מהכותרת
     if (_availableCategories.isEmpty && widget.bookTitle.contains(',')) {
-      // למשל: "משנה תורה, הלכות שבת" → ["משנה תורה"]
+      // למשל: "מyear תורה, הלכות שבת" → ["מyear תורה"]
       final firstPart = widget.bookTitle.split(',').first.trim();
       if (firstPart.isNotEmpty) {
         _availableCategories = [firstPart];
       }
     }
 
-    // בדיקה מאיפה נטענו הגדרות המפרשים
+    // check מאיפה נטענו settings הCommentators
     final activeCategory =
         PageShapeSettingsManager.getActiveCategory(widget.heCategories);
     if (activeCategory != null) {
@@ -150,14 +150,14 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
     final eras = await utils.splitByEra(widget.availableCommentators);
 
     final known = <String>{
-      ...?eras['תורה שבכתב'],
+      ...?eras['תורה שבFont'],
       ...?eras['חז"ל'],
       ...?eras['ראשונים'],
       ...?eras['אחרונים'],
       ...?eras['מחברי זמננו'],
     };
 
-    final others = (eras['מפרשים נוספים'] ?? [])
+    final others = (eras['Commentators נוספים'] ?? [])
         .toSet()
         .union(widget.availableCommentators
             .where((c) => !known.contains(c))
@@ -169,8 +169,8 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
       setState(() {
         _groups = [
           CommentatorGroup(
-            title: 'תורה שבכתב',
-            commentators: eras['תורה שבכתב'] ?? const [],
+            title: 'תורה שבFont',
+            commentators: eras['תורה שבFont'] ?? const [],
           ),
           CommentatorGroup(
             title: 'חז"ל',
@@ -189,7 +189,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
             commentators: eras['מחברי זמננו'] ?? const [],
           ),
           CommentatorGroup(
-            title: 'שאר מפרשים',
+            title: 'שאר Commentators',
             commentators: others,
           ),
         ];
@@ -199,7 +199,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
   }
 
   Future<void> _saveSettings() async {
-    // שמירת הגדרות מפרשים - לספר או לקטגוריה לפי הבחירה
+    // save settings Commentators - לbook או לcategory לפי הבחירה
     final config = {
       'left': _leftCommentator,
       'right': _rightUsesMultipleSelection
@@ -214,35 +214,35 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
 
     if (_commentatorSaveScope == CommentatorSaveScope.category &&
         _selectedCategory != null) {
-      // שמירה לקטגוריה
+      // save לcategory
       await PageShapeSettingsManager.saveConfiguration(
         widget.bookTitle,
         config,
         saveToCategory: _selectedCategory,
       );
-      // מחיקת הגדרות מפרשים ספציפיות לספר אם יש
+      // מחיקת settings Commentators specificות לbook אם יש
       await PageShapeSettingsManager.resetBookCommentatorConfig(
           widget.bookTitle);
     } else {
-      // שמירה לספר ספציפי
+      // save לbook specific
       await PageShapeSettingsManager.saveConfiguration(
         widget.bookTitle,
         config,
       );
     }
 
-    // שמירת הגופן של המפרשים התחתונים (תמיד גלובלי)
+    // save הגופן של הCommentators התחתונים (תמיד גלובלי)
     await Settings.setValue<String>(
         'page_shape_bottom_font', _bottomFontFamily);
 
-    // שמירת הגדרת הדגשה - גלובלי או פר-ספר לפי הבחירה
+    // save הגדרת הדגשה - גלובלי או פר-book לפי הבחירה
     await PageShapeSettingsManager.saveHighlightSetting(
       widget.bookTitle,
       _highlightRelatedCommentators,
       saveAsGlobal: !_saveForCurrentBookOnly,
     );
 
-    // שמירת הגדרות visibility - גלובלי או פר-ספר לפי הבחירה
+    // save settings visibility - גלובלי או פר-book לפי הבחירה
     await PageShapeSettingsManager.saveColumnVisibility(
       widget.bookTitle,
       _columnVisibility,
@@ -255,7 +255,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
     setState(() {
       setter(value);
       _hasChanges = true;
-      // אם בחרו מפרש והטור מוסתר - הצג אותו אוטומטית
+      // אם בחרו commentator והטור מוסתר - הצג אותו אוטומטית
       if (value != null &&
           visibilityKey != null &&
           _columnVisibility[visibilityKey] == false) {
@@ -304,10 +304,10 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
     _saveSettings();
   }
 
-  /// איפוס הגדרות תצוגה פר-ספר וחזרה לגלובלי (לא משפיע על בחירת מפרשים)
+  /// איפוס settings תצוגה פר-book וחזרה לגלובלי (no משפיע על בחירת Commentators)
   Future<void> _resetDisplaySettingsToGlobal() async {
     await PageShapeSettingsManager.resetBookDisplaySettings(widget.bookTitle);
-    // טעינה מחדש של הגדרות התצוגה הגלובליות (לא מפרשים!)
+    // loading again של settings התצוגה הגלובליות (no Commentators!)
     final highlight =
         PageShapeSettingsManager.getHighlightSetting(widget.bookTitle);
     final visibility =
@@ -324,7 +324,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('הגדרות צורת הדף'),
+      title: const Text('settings צורת הpage'),
       content: SizedBox(
         width: 450,
         child: SingleChildScrollView(
@@ -332,7 +332,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // בחירה בין גלובלי לפר-ספר (להגדרות תצוגה בלבד)
+              // בחירה בין גלובלי לפר-book (לsettings תצוגה בלבד)
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -358,8 +358,8 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                         Expanded(
                           child: Text(
                             _saveForCurrentBookOnly
-                                ? 'הגדרות תצוגה לספר הנוכחי בלבד'
-                                : 'הגדרות תצוגה גלובליות',
+                                ? 'settings תצוגה לbook הcurrent בלבד'
+                                : 'settings תצוגה גלובליות',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.primary,
@@ -372,13 +372,13 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                     SwitchListTile(
                       title: Text(
                         _saveForCurrentBookOnly
-                            ? 'שמירה לספר הנוכחי בלבד'
-                            : 'שמירה גלובלית (לכל הספרים)',
+                            ? 'save לbook הcurrent בלבד'
+                            : 'save גלובלית (לכל הbooks)',
                       ),
                       subtitle: Text(
                         _saveForCurrentBookOnly
                             ? 'הדגשה והצגת טורים יחולו רק על "${widget.bookTitle}"'
-                            : 'הדגשה והצגת טורים יחולו על כל הספרים',
+                            : 'הדגשה והצגת טורים יחולו על כל הbooks',
                         style: const TextStyle(fontSize: 12),
                       ),
                       value: _saveForCurrentBookOnly,
@@ -387,15 +387,15 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                           final confirm = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('חזרה להגדרות גלובליות'),
+                              title: const Text('חזרה לsettings גלובליות'),
                               content: const Text(
-                                'האם לאפס את הגדרות התצוגה הספציפיות לספר זה ולחזור להגדרות הגלובליות?',
+                                'האם noפס את settings התצוגה הspecificות לbook זה ולBack לsettings הגלובליות?',
                               ),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(context, false),
-                                  child: const Text('ביטול'),
+                                  child: const Text('cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, true),
@@ -422,7 +422,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                 ),
               ),
 
-              // בחירת היכן לשמור את הגדרות המפרשים
+              // בחירת היyes לSave את settings הCommentators
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -451,7 +451,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'שמירת בחירת מפרשים',
+                          'save בחירת Commentators',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.primary,
@@ -460,7 +460,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    // אפשרות 1: לספר הנוכחי
+                    // אפשרות 1: לbook הcurrent
                     RadioGroup<CommentatorSaveScope>(
                       groupValue: _commentatorSaveScope,
                       onChanged: (value) {
@@ -496,9 +496,9 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text('לספר הנוכחי בלבד'),
+                                        const Text('לbook הcurrent בלבד'),
                                         Text(
-                                          'המפרשים יחולו רק על "${widget.bookTitle}"',
+                                          'הCommentators יחולו רק על "${widget.bookTitle}"',
                                           style: const TextStyle(fontSize: 11),
                                         ),
                                       ],
@@ -508,7 +508,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                               ),
                             ],
                           ),
-                          // אפשרות 2: לקטגוריה - רק אם יש קטגוריות זמינות
+                          // אפשרות 2: לcategory - רק אם יש categories זמינות
                           if (_availableCategories.isNotEmpty)
                             Row(
                               children: [
@@ -532,10 +532,10 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Text('לכל הספרים בקטגוריה'),
+                                          const Text('לכל הbooks בcategory'),
                                           if (_selectedCategory != null)
                                             Text(
-                                              'המפרשים יחולו על כל ספרי "$_selectedCategory"',
+                                              'הCommentators יחולו על כל bookי "$_selectedCategory"',
                                               style:
                                                   const TextStyle(fontSize: 11),
                                             ),
@@ -549,7 +549,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                         ],
                       ),
                     ),
-                    // בחירת קטגוריה
+                    // בחירת category
                     if (_commentatorSaveScope ==
                             CommentatorSaveScope.category &&
                         _availableCategories.isNotEmpty) ...[
@@ -557,7 +557,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                       DropdownButtonFormField<String>(
                         initialValue: _selectedCategory,
                         decoration: InputDecoration(
-                          labelText: 'בחר קטגוריה',
+                          labelText: 'בחר category',
                           border: const OutlineInputBorder(),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
@@ -586,14 +586,14 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
 
               const SizedBox(height: 16),
               const Text(
-                'בחר מפרשים להצגה:',
+                'בחר Commentators להצגה:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               SwitchListTile(
                 title: const Text('הדגש פרשנים קשורים'),
                 subtitle:
-                    const Text('הדגשת קטעים בפרשנים הקשורים לשורה שנבחרה'),
+                    const Text('הדגשת קטעים בפרשנים הקשורים לline שselectedה'),
                 value: _highlightRelatedCommentators,
                 onChanged: (value) {
                   setState(() {
@@ -605,7 +605,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ),
               const Divider(),
               const SizedBox(height: 8),
-              // הסבר על כפתורי העין
+              // הסבר על buttonי העין
               Row(
                 children: [
                   Icon(
@@ -633,7 +633,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ),
               const SizedBox(height: 12),
               _buildCommentatorDropdown(
-                label: 'מפרש ימני',
+                label: 'commentator ימני',
                 value: _leftCommentator,
                 onChanged: (value) => _onCommentatorChanged(
                     value, (v) => _leftCommentator = v,
@@ -642,7 +642,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ),
               const SizedBox(height: 12),
               _buildCommentatorDropdown(
-                label: 'מפרש שמאלי',
+                label: 'commentator שמאלי',
                 value: _rightUsesMultipleSelection
                     ? pageShapeMultipleCommentatorsModeValue
                     : _rightSingleCommentator,
@@ -656,7 +656,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ],
               const SizedBox(height: 12),
               _buildCommentatorDropdown(
-                label: 'מפרש תחתון',
+                label: 'commentator תחתון',
                 value: _bottomCommentator,
                 onChanged: (value) => _onCommentatorChanged(
                     value, (v) => _bottomCommentator = v,
@@ -665,7 +665,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               ),
               const SizedBox(height: 12),
               _buildCommentatorDropdown(
-                label: 'מפרש תחתון נוסף',
+                label: 'commentator תחתון נוסף',
                 value: _bottomRightCommentator,
                 onChanged: (value) => _onCommentatorChanged(
                     value, (v) => _bottomRightCommentator = v),
@@ -673,13 +673,13 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
               const SizedBox(height: 20),
               const Divider(),
               const SizedBox(height: 12),
-              // גודל גופן המפרשים
+              // גודל גופן הCommentators
               Row(
                 children: [
                   const SizedBox(
                     width: 140,
                     child: Text(
-                      'גודל גופן מפרשים:',
+                      'גודל גופן Commentators:',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -728,7 +728,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                   const SizedBox(
                     width: 140,
                     child: Text(
-                      'גופן מפרשים תחתונים:',
+                      'גופן Commentators תחתונים:',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -769,22 +769,22 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
         ),
       ),
       actions: [
-        // כפתור איפוס הגדרות מפרשים
+        // button איפוס settings Commentators
         TextButton.icon(
           onPressed: () async {
             final navigator = Navigator.of(context);
             final confirm = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('איפוס הגדרות מפרשים'),
+                title: const Text('איפוס settings Commentators'),
                 content: const Text(
-                  'האם לאפס את הגדרות המפרשים לברירות המחדל?\n\n'
-                  'פעולה זו תמחק את ההגדרות השמורות ותטען את המפרשים המתאימים לפי סוג הספר.',
+                  'האם noפס את settings הCommentators לברירות המחדל?\n\n'
+                  'action זו תDelete את הsettings הSaveות ותטען את הCommentators המתאימים לפי סוג הbook.',
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, false),
-                    child: const Text('ביטול'),
+                    child: const Text('cancel'),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context, true),
@@ -795,17 +795,17 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
             );
 
             if (confirm == true) {
-              // מחיקת הגדרות מפרשים פר-ספר
+              // מחיקת settings Commentators פר-book
               await PageShapeSettingsManager.resetBookCommentatorConfig(
                   widget.bookTitle);
 
-              // טעינה מחדש של ברירות המחדל
+              // loading again של ברירות המחדל
               if (!mounted) return;
               navigator.pop(true); // סגירת הדיאלוג עם סימון שהיו שינויים
             }
           },
           icon: const Icon(FluentIcons.arrow_reset_24_regular, size: 18),
-          label: const Text('איפוס מפרשים'),
+          label: const Text('איפוס Commentators'),
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(context).colorScheme.error,
           ),
@@ -813,7 +813,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
         const SizedBox(width: 12),
         TextButton(
           onPressed: () => Navigator.of(context).pop(_hasChanges),
-          child: const Text('סגור'),
+          child: const Text('closed'),
         ),
       ],
     );
@@ -833,7 +833,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
 
     return Row(
       children: [
-        // כפתור הצגה/הסתרה
+        // button הצגה/hideה
         if (visibilityKey != null)
           IconButton(
             icon: Icon(
@@ -848,7 +848,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
                       .onSurface
                       .withValues(alpha: 0.4),
             ),
-            tooltip: isVisible ? 'הסתר טור' : 'הצג טור',
+            tooltip: isVisible ? 'hide טור' : 'הצג טור',
             onPressed: () => _toggleColumnVisibility(visibilityKey, !isVisible),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -896,7 +896,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
 
   Widget _buildRightPaneInfo() {
     final selectionLabel = _rightCommentators.isEmpty
-        ? 'לא נבחרו מפרשים'
+        ? 'no selectedו Commentators'
         : formatPageShapeCommentatorSelection(
             encodePageShapeCommentatorsSelection(
               _rightCommentators,
@@ -962,7 +962,7 @@ class _PageShapeSettingsDialogState extends State<PageShapeSettingsDialog> {
   }
 }
 
-/// דיאלוג בחירת מפרש עם חיפוש וקיבוץ
+/// דיאלוג בחירת commentator עם search וקיבוץ
 class _CommentatorPickerDialog extends StatefulWidget {
   final List<CommentatorGroup> groups;
   final String? currentValue;
@@ -1031,7 +1031,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
     }
 
     return pageShapeRemainingCommentatorsLabel.contains(query) ||
-        'מפרשים נוספים'.contains(query);
+        'Commentators נוספים'.contains(query);
   }
 
   bool _shouldShowMultipleOption() {
@@ -1058,7 +1058,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'בחר מפרש',
+                'בחר commentator',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1069,7 +1069,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
                 controller: _searchController,
                 autofocus: true,
                 decoration: InputDecoration(
-                  hintText: "חיפוש מפרש...",
+                  hintText: "search commentator...",
                   prefixIcon: const Icon(FluentIcons.search_24_regular),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
@@ -1101,12 +1101,12 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('ביטול'),
+                    child: const Text('cancel'),
                   ),
                   const SizedBox(width: 8),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop('__NONE__'),
-                    child: const Text('ללא מפרש'),
+                    child: const Text('לno commentator'),
                   ),
                 ],
               ),
@@ -1163,7 +1163,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
     if (_filteredCommentators.isEmpty && !_shouldShowRemainingOption()) {
       return const Center(
         child: Text(
-          'לא נמצאו מפרשים',
+          'no נמצאו Commentators',
           textDirection: TextDirection.rtl,
         ),
       );
@@ -1189,7 +1189,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
         textDirection: TextDirection.rtl,
       ),
       subtitle: const Text(
-        'הבחירה המפורטת תיעשה מתוך חלונית המפרשים',
+        'הבחירה המפורטת תיעשה מתוך חלונית הCommentators',
         textDirection: TextDirection.rtl,
       ),
       selected: isSelected,
@@ -1211,7 +1211,7 @@ class _CommentatorPickerDialogState extends State<_CommentatorPickerDialog> {
         textDirection: TextDirection.rtl,
       ),
       subtitle: const Text(
-        'כל המפרשים שלא שובצו בחלוניות האחרות',
+        'כל הCommentators שno שובצו בחלוניות האחרות',
         textDirection: TextDirection.rtl,
       ),
       selected: isSelected,

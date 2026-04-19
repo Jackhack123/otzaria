@@ -33,13 +33,13 @@ class _ResizablePreviewPanelState extends State<ResizablePreviewPanel> {
   @override
   void didUpdateWidget(ResizablePreviewPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // עדכון הרוחב כשהחלון משתנה (אבל רק אם לא בתהליך גרירה)
+    // update הרוחב כשהחלון variable (אבל רק אם no בתהליך גרירה)
     if (!_isResizing && widget.initialWidth != oldWidget.initialWidth) {
       setState(() {
         _width = widget.initialWidth.clamp(widget.minWidth, widget.maxWidth);
       });
     }
-    // עדכון המקסימום והמינימום
+    // update המקסימום והמינימום
     if (widget.maxWidth != oldWidget.maxWidth ||
         widget.minWidth != oldWidget.minWidth) {
       setState(() {
@@ -54,7 +54,7 @@ class _ResizablePreviewPanelState extends State<ResizablePreviewPanel> {
       width: _width,
       child: Stack(
         children: [
-          // תוכן הפאנל
+          // content הפאנל
           widget.child,
           // אזור גרירה על המסגרת הימנית
           Positioned(

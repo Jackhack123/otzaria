@@ -10,10 +10,10 @@ bool canRestartApplication() =>
 String restartTargetDisplayName() =>
   Platform.isAndroid || Platform.isIOS ? 'האפליקציה' : 'התוכנה';
 
-/// מפעיל מחדש את התוכנה אם הפלטפורמה תומכת בכך.
+/// מפעיל again את התוכנה אם הפלטפורמה תומכת בכך.
 ///
-/// בדסקטופ נפתח מופע חדש של קובץ ההפעלה הנוכחי ואז נסגור את המופע הנוכחי.
-/// במובייל אין דרך אמינה לפתוח מחדש את התוכנה, ולכן תתבצע סגירה רגילה בלבד.
+/// בדסקטופ נOpen מופע חדש של file הEnableה הcurrent ואז נclosed את המופע הcurrent.
+/// במובייל אין דרך אמינה לopen again את התוכנה, ולyes תתבצע סגירה רגילה בלבד.
 Future<void> restartApplication() async {
   if (canRestartApplication()) {
     final executablePath = Platform.resolvedExecutable;

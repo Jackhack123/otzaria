@@ -3,9 +3,9 @@
 // AppTopBar — סרגל עליון בסגנון Chrome / M3.
 //
 // שינויים v3:
-// • תוקן: Colors.black → cs.shadow (לא hardcoded colors, עמידה ב-AGENTS.md)
-// • תוקן: shadowColor משתמש ב-cs.shadow בהתאמה לבהיר/כהה
-// • ללא שינוי ב-API.
+// • תוקן: Colors.black → cs.shadow (no hardcoded colors, עמידה ב-AGENTS.md)
+// • תוקן: shadowColor user ב-cs.shadow בהתאמה לבהיר/כהה
+// • לno שינוי ב-API.
 //
 // שינויים v4:
 // • הוספת תלות אוטומטית ב-SettingsBloc לקביעת isCompact
@@ -37,10 +37,10 @@ class AppTopBarItem {
 /// סרגל עליון אחיד לכל מסכי האפליקציה.
 ///
 /// תכונות:
-/// - שורה ראשית: [leadingItems] | [center] | [trailingItems]
-/// - שורה שניה אופציונלית עם אנימציית גלילה (SizeTransition + FadeTransition)
+/// - line ראשית: [leadingItems] | [center] | [trailingItems]
+/// - line שניה אופציונלית עם אנימציית גלילה (SizeTransition + FadeTransition)
 /// - [isCompact] מתקבל אוטומטית מ-SettingsBloc (compactMenuMode)
-/// - [secondaryRowVisible] – ValueNotifier חיצוני לשליטה בשורה שניה
+/// - [secondaryRowVisible] – ValueNotifier חיצוני לשליטה בline שניה
 /// - [scrollDebounceMs] – debounce למניעת flicker בגלילה (ברירת מחדל: 80ms)
 class AppTopBar extends StatefulWidget {
   final List<AppTopBarItem> leadingItems;
@@ -50,7 +50,7 @@ class AppTopBar extends StatefulWidget {
   final ValueNotifier<bool>? secondaryRowVisible;
   final ValueNotifier<double>? totalHeightNotifier;
 
-  /// דיבאונס לעדכון השורה השניה (ms) — מונע rebuild חוזר בגלילה מהירה.
+  /// דיבאונס לupdate הline השניה (ms) — מונע rebuild חוזר בגלילה מהירה.
   final int scrollDebounceMs;
 
   const AppTopBar({
@@ -241,10 +241,10 @@ class _AppTopBarState extends State<AppTopBar>
           ),
         );
 
-        // תמיד מחזירים Column כדי לשמור על מיקום יציב של mainBar (position 0).
-        // שינוי מ-Material ישיר ל-Column גורם ל-Flutter למחוק ולאחזר את mainBar
-        // (ולאבד פוקוס מקלדת). עם Column קבוע, mainBar תמיד ב-position 0
-        // ו-Flutter שומר על ה-element (ועל הפוקוס) גם כשהשורה השניה מופיעה/נעלמת.
+        // תמיד מחזירים Column כדי לSave על location יציב של mainBar (position 0).
+        // שינוי מ-Material ישיר ל-Column גורם ל-Flutter לdeleted וnoחזר את mainBar
+        // (וnoבד focus מקלדת). עם Column constant, mainBar תמיד ב-position 0
+        // ו-Flutter שומר על ה-element (ועל הfocus) גם כשהline השניה מופיעה/נעלמת.
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

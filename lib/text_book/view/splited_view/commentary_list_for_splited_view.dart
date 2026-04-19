@@ -69,7 +69,7 @@ class _CommentaryListState extends State<CommentaryList> {
   void _scrollToSearchResult() {
     if (_totalSearchResultsNotifier.value == 0) return;
 
-    // מחשבים באיזה פריט נמצאת התוצאה הנוכחית
+    // מחשבים באיזה פריט נמצאת התוצאה הcurrent
     int cumulativeIndex = 0;
     int targetItemIndex = 0;
 
@@ -89,7 +89,7 @@ class _CommentaryListState extends State<CommentaryList> {
         duration: const Duration(milliseconds: 300),
       );
     } catch (e) {
-      // אם יש בעיה עם הגלילה, נתעלם מהשגיאה
+      // אם יש issue with הגלילה, נתעלם מהerror
     }
   }
 
@@ -146,7 +146,7 @@ class _CommentaryListState extends State<CommentaryList> {
                               return RtlTextField(
                                 controller: _searchController,
                                 decoration: InputDecoration(
-                                  hintText: 'חפש בתוך המפרשים המוצגים...',
+                                  hintText: 'חפש בתוך הCommentators המוצגים...',
                                   prefixIcon:
                                       const Icon(FluentIcons.search_24_regular),
                                   suffixIcon: query.isNotEmpty
@@ -279,10 +279,10 @@ class _CommentaryListState extends State<CommentaryList> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (thisLinksSnapshot.data!.isEmpty) {
-                  return const Center(child: Text("לא נמצאו מפרשים להצגה"));
+                  return const Center(child: Text("no נמצאו Commentators להצגה"));
                 }
 
-                // יצירת מפתח ייחודי לאינדקסים הנוכחיים
+                // יצירת key ייoverrideי noינדקסים הcurrent
                 final indexesKey = currentIndexes.join(',');
 
                 return ProgressiveScroll(

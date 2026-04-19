@@ -29,7 +29,7 @@ class SearchRepository {
       Map<String, Map<String, bool>>? searchOptions}) async {
     final index = await TantivyDataProvider.instance.engine;
 
-    // בדיקה אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות חיפוש
+    // check אם יש מרווחים מותאמים אישית, מילים חילופיות או אפשרויות search
     final hasCustomSpacing = customSpacing != null && customSpacing.isNotEmpty;
     final hasAlternativeWords =
         alternativeWords != null && alternativeWords.isNotEmpty;
@@ -42,7 +42,7 @@ class SearchRepository {
     debugPrint('🔍 hasSearchOptions: $hasSearchOptions');
     debugPrint('🔍 hasAlternativeWords: $hasAlternativeWords');
 
-    // המרת החיפוש לפורמט המנוע החדש
+    // המרת הsearch לפורמט המנוע החדש
     debugPrint('🔍 Using prepareQueryParams');
     final params = SearchQueryBuilder.prepareQueryParams(
         query, fuzzy, distance, customSpacing, alternativeWords, searchOptions);
@@ -186,7 +186,7 @@ class SearchRepository {
       Map<String, Map<String, bool>>? searchOptions}) async* {
     final index = await TantivyDataProvider.instance.engine;
 
-    // המרת החיפוש לפורמט המנוע החדש
+    // המרת הsearch לפורמט המנוע החדש
     final params = SearchQueryBuilder.prepareQueryParams(
         query, fuzzy, distance, customSpacing, alternativeWords, searchOptions);
     final List<String> regexTerms = params['regexTerms'] as List<String>;

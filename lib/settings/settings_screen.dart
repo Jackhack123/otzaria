@@ -12,13 +12,13 @@ import 'package:otzaria/theme/app_surfaces.dart';
 import 'package:otzaria/theme/layout_tokens.dart';
 import 'package:otzaria/widgets/tool_ui_helpers.dart';
 
-/// רוחב מקסימלי לתוכן ההגדרות — מרכוז על מסכים רחבים
-// kSettingsContentMaxWidth הוסר — משתמשים ב-LayoutConstraints.panelContentMaxWidth מ-layout_tokens.dart
+/// רוחב מקסימלי לcontent הsettings — מרכוז על מסכים רחבים
+// kSettingsContentMaxWidth הוסר — users ב-LayoutConstraints.panelContentMaxWidth מ-layout_tokens.dart
 
-/// מייצג את לשוניות מסך ההגדרות שניתן לנווט אליהן בקוד.
+/// מייצג את לשוניות מסך הsettings שניתן לנווט אליהן בקוד.
 enum SettingsTab { design, text, library, tools, shortcuts, system, about }
 
-/// בקר פשוט לפתיחת לשונית מסוימת במסך ההגדרות.
+/// בקר פשוט לפתיחת לשונית מסוימת במסך הsettings.
 class SettingsScreenController extends ChangeNotifier {
   SettingsTab? _requestedTab;
 
@@ -76,7 +76,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
 
   void _changeTab(int index) {
     setState(() => _selectedIndex = index);
-    // בטוח רק בdesktop layout — במוד mobile ה-node לא מחובר לעץ הפוקוס
+    // בטוח רק בdesktop layout — במוד mobile ה-node no מחובר לעץ הfocus
     if (_contentFocusNode.enclosingScope != null) {
       _contentFocusNode.requestFocus();
     }
@@ -84,8 +84,8 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
 
   void _requestSettingsFocus() {
     if (!mounted) return;
-    // מעדכן את ה-screen restorer עם canRestore תלוי-layout —
-    // במוד mobile ה-contentFocusNode לא מחובר לעץ הפוקוס ולכן canRestore=false.
+    // מעדyes את ה-screen restorer עם canRestore תלוי-layout —
+    // במוד mobile ה-contentFocusNode no מחובר לעץ הfocus ולyes canRestore=false.
     FocusRepository().setScreenRestorer(
       restore: () {
         if (mounted && _contentFocusNode.enclosingScope != null) {
@@ -126,7 +126,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
       _selectedIndex = tabIndex;
       _showMobileMenu = false;
     });
-    // בטוח רק בdesktop layout — במוד mobile ה-node לא מחובר לעץ הפוקוס
+    // בטוח רק בdesktop layout — במוד mobile ה-node no מחובר לעץ הfocus
     if (_contentFocusNode.enclosingScope != null) {
       _contentFocusNode.requestFocus();
     }
@@ -137,56 +137,56 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
           ({String label, IconData icon, Widget Function() pageBuilder})>
       _tabsData = [
     (
-      label: 'מראה',
+      label: 'Appearance',
       icon: FluentIcons.paint_brush_24_regular,
       pageBuilder: () => const DesignSettingsTab(),
     ),
     (
-      label: 'כתב',
+      label: 'Font',
       icon: FluentIcons.book_24_regular,
       pageBuilder: () => const TextSettingsTab(),
     ),
     (
-      label: 'ספריה',
+      label: 'Library',
       icon: FluentIcons.library_24_regular,
       pageBuilder: () => const LibrarySettingsTab(),
     ),
     (
-      label: 'כלים',
+      label: 'Tools',
       icon: FluentIcons.wrench_24_regular,
       pageBuilder: () => ToolsSettingsTab(
             calendarCubit: context.read<CalendarCubit>(),
           ),
     ),
     (
-      label: 'קיצורים',
+      label: 'Shortcuts',
       icon: FluentIcons.keyboard_24_regular,
       pageBuilder: () => const ShortcutsSettingsTab(),
     ),
     (
-      label: 'מערכת',
+      label: 'System',
       icon: FluentIcons.settings_24_regular,
       pageBuilder: () => const SystemSettingsTab(),
     ),
     (
-      label: 'אודות',
+      label: 'About',
       icon: FluentIcons.people_team_24_regular,
       pageBuilder: () => const AboutDevTab(),
     ),
   ];
 
-  // ── קבוצות למובייל ────────────────────────────────────────────────────────
-  // כל קבוצה: (כותרת, רשימת אינדקסים מ-_tabsData)
+  // ── groups למובייל ────────────────────────────────────────────────────────
+  // כל group: (כותרת, רשימת אינדקסים מ-_tabsData)
   static const _mobileGroups = [
-    (label: 'תצוגה ותוכן', indices: <int>[0, 1, 2]),
-    (label: 'כלים', indices: <int>[3, 4]),
-    (label: 'מערכת', indices: <int>[5, 6]),
+    (label: 'View &content', indices: <int>[0, 1, 2]),
+    (label: 'Tools', indices: <int>[3, 4]),
+    (label: 'System', indices: <int>[5, 6]),
   ];
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    // panelBackground מוגדר ב-AppSurfaces ומשמש גם ספריה, כלים, והגדרות
+    // panelBackground מוגדר ב-AppSurfaces ומשמש גם Library, Tools, וsettings
     final bgColor = AppSurfaces.panelBackground(context);
 
     return ProtectedSettingsWrapper(
@@ -209,7 +209,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
                     appBar: AppBar(
                       backgroundColor: bgColor,
                       elevation: 0,
-                      title: const Text('הגדרות'),
+                      title: const Text('settings'),
                     ),
                     body: ListView(
                       padding: const EdgeInsets.all(12),
@@ -252,7 +252,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
                       elevation: 0,
                       title: Text(_tabsData[_selectedIndex].label),
                       leading: Tooltip(
-                        message: 'חזור (Backspace)',
+                        message: 'Back (Backspace)',
                         child: IconButton(
                           icon: const Icon(Icons.arrow_forward),
                           onPressed: () =>
@@ -266,7 +266,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
               }
             }
 
-            // ── מצב דסקטופ: KeyboardNavigator + sidebar + תוכן ──────────
+            // ── מצב דסקטופ: KeyboardNavigator + sidebar + content ──────────
             return KeyboardNavigator(
               currentTabIndex: _selectedIndex,
               totalTabs: _tabsData.length,
@@ -275,7 +275,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
               child: Scaffold(
                 backgroundColor: bgColor,
                 body: Listener(
-                  // [תיקון גלילה] גלגל עכבר מכל מקום (כולל sidebar) גולל את התוכן
+                  // [תיקון גלילה] גלגל עכבר מכל מקום (כולל sidebar) גולל את הcontent
                   onPointerSignal: (event) {
                     if (event is PointerScrollEvent &&
                         _contentScrollController.hasClients) {
@@ -305,7 +305,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
                                 padding: const EdgeInsets.only(
                                     right: 12, left: 12, bottom: 20),
                                 child: Text(
-                                  'הגדרות',
+                                  'settings',
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall
@@ -373,7 +373,7 @@ class _MySettingsScreenState extends State<MySettingsScreen> {
                         ),
                       ),
 
-                      // ── אזור תוכן ────────────────────────────────────
+                      // ── אזור content ────────────────────────────────────
                       Expanded(
                         child: PrimaryScrollController(
                           controller: _contentScrollController,

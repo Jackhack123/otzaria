@@ -33,12 +33,12 @@ import 'package:otzaria/text_book/view/selection/selected_text_restore.dart';
 import 'package:otzaria/tools/dictionary/dictionary_context_menu_entries.dart';
 import 'package:otzaria/tools/dictionary/repository/dictionary_lookup_repository.dart';
 
-/// מחזירה האם אירוע המקלדת צריך להניע גלילה רציפה בצורת הדף.
+/// מחזירה האם אירוע המקלדת צריך להניע גלילה רציפה בצורת הpage.
 bool shouldHandlePageShapeNavigationKeyEvent(KeyEvent event) {
   return event is KeyDownEvent || event is KeyRepeatEvent;
 }
 
-/// קובעת מאיזה אינדקס יתחיל ניווט המקלדת בצורת הדף.
+/// קובעת מאיזה אינדקס יתחיל ניווט המקלדת בצורת הpage.
 int resolvePageShapeNavigationBaseIndex({
   required int? selectedIndex,
   required List<int> liveVisibleIndices,
@@ -69,7 +69,7 @@ int resolvePageShapeNavigationBaseIndex({
   return selectedIndex ?? 0;
 }
 
-/// תצוגת טקסט פשוטה - משמשת גם לטקסט המרכזי וגם למפרשים
+/// תצוגת text פשוטה - משמשת גם לtext המרכזי וגם לCommentators
 class SimpleTextViewer extends StatefulWidget {
   final List<String> content;
   final double fontSize;
@@ -77,15 +77,15 @@ class SimpleTextViewer extends StatefulWidget {
   final Function(OpenedTab) openBookCallback;
   final ItemScrollController? scrollController;
   final ItemPositionsListener? positionsListener;
-  final bool isMainText; // האם זה הטקסט המרכזי או מפרש
+  final bool isMainText; // האם זה הtext המרכזי או commentator
   final String? title; // כותרת (לכותרת עליונה)
-  final String? bookTitle; // שם הספר (למפרשים - לפתיחה בטאב נפרד)
-  final Set<int>? highlightedIndices; // אינדקסים להדגשה (למפרשים)
-  final VoidCallback? onCommentatorChanged; // callback לרענון אחרי החלפת מפרש
+  final String? bookTitle; // name הbook (לCommentators - לפתיחה בטאב נפרד)
+  final Set<int>? highlightedIndices; // אינדקסים להדגשה (לCommentators)
+  final VoidCallback? onCommentatorChanged; // callback לrefresh אחרי החלפת commentator
   final bool useInternalScroll; // האם להשתמש בגלילה פנימית
   final ValueChanged<int>? onOpenSidebarTab;
   final ValueChanged<String?>?
-      onOpenSearch; // callback לפתיחת חיפוש עם הטקסט הנבחר
+      onOpenSearch; // callback לפתיחת search עם הtext הselected
   final TextBook? reportBook;
 
   const SimpleTextViewer({
@@ -112,9 +112,9 @@ class SimpleTextViewer extends StatefulWidget {
 }
 
 class _SimpleTextViewerState extends State<SimpleTextViewer> {
-  // דגל סטטי: מונע מהטקסט הראשי לדרוס העתקה שכבר בוצעה ע"י מפרש
+  // דגל סטטי: מונע מהtext הראשי לדרוס Copyה שכבר בוצעה ע"י commentator
   static bool _commentaryCopyHandled = false;
-  // מצביע סטטי: רק הפרשן האחרון שנבחר בו טקסט מטפל ב-Ctrl+C
+  // מצביע סטטי: רק הפרשן האחרון שselected בו text מטפל ב-Ctrl+C
   static _SimpleTextViewerState? _lastActiveCommentary;
 
   late final ItemScrollController _scrollController;
@@ -194,12 +194,12 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
         widget.positionsListener ?? ItemPositionsListener.create();
     _resolvedKeyboardFocusNode;
 
-    // מאזין גלובלי ל-Ctrl+C במפרשים (ללא צורך בפוקוס)
+    // מאזין גלובלי ל-Ctrl+C בCommentators (לno צורך בfocus)
     if (!widget.isMainText) {
       HardwareKeyboard.instance.addHandler(_handleCommentaryCopyKeyEvent);
     }
 
-    // גלילה למיקום הנוכחי אחרי בניית הווידג'ט (רק לטקסט המרכזי)
+    // גלילה לlocation הcurrent אחרי בניית הווידג'ט (רק לtext המרכזי)
     if (widget.isMainText) {
       _scheduleInitialScrollRestore();
 
@@ -223,7 +223,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
   }
 
   bool _handleCommentaryCopyKeyEvent(KeyEvent event) {
-    // רק הפרשן שנבחר בו טקסט לאחרונה מטפל
+    // רק הפרשן שselected בו text noחרונה מטפל
     if (_lastActiveCommentary != this) return false;
     if (event is! KeyDownEvent) return false;
     final isCtrlC = HardwareKeyboard.instance.isControlPressed &&
@@ -291,7 +291,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     });
   }
 
-  /// גלילה למיקום הנוכחי (visibleIndices או selectedIndex)
+  /// גלילה לlocation הcurrent (visibleIndices או selectedIndex)
   bool _scrollToCurrentPosition() {
     final bloc = context.read<TextBookBloc>();
     final state = bloc.state;
@@ -618,13 +618,13 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
 
     if (widget.isMainText) {
       entries.add(AppContextMenuEntry(
-        label: 'חיפוש',
+        label: 'search',
         icon: FluentIcons.search_24_regular,
         onTap: () {
           if (widget.onOpenSearch != null) {
             widget.onOpenSearch!(_savedSelectedText);
           } else {
-            UiSnack.show('חיפוש לא זמין בתצוגה זו');
+            UiSnack.show('search no זמין בתצוגה זו');
           }
         },
       ));
@@ -657,25 +657,25 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     entries.add(const AppContextMenuEntry.divider());
     entries.addAll([
       AppContextMenuEntry(
-        label: 'הוסף הערה אישית ',
+        label: 'Add note אישית ',
         icon: FluentIcons.note_add_24_regular,
         onTap: () => _createNoteForCurrentLine(index),
       ),
       AppContextMenuEntry(
-        label: 'דווח על טעות בספר',
+        label: 'דווח על טעות בbook',
         icon: FluentIcons.error_circle_24_regular,
         onTap: () => _openErrorReportDialog(_savedSelectedText ?? ''),
       ),
       const AppContextMenuEntry.divider(),
       AppContextMenuEntry(
-        label: 'העתק',
+        label: 'Copy',
         icon: FluentIcons.copy_24_regular,
         enabled:
             _savedSelectedText != null && _savedSelectedText!.trim().isNotEmpty,
         onTap: _copyFormattedText,
       ),
       AppContextMenuEntry(
-        label: 'העתק את כל הפסקה',
+        label: 'Copy את כל הפסקה',
         icon: FluentIcons.document_copy_24_regular,
         enabled: index >= 0 && index < widget.content.length,
         onTap: () => _copyParagraphByIndex(index),
@@ -702,7 +702,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     return result;
   }
 
-  /// יצירת הערה לשורה הנוכחית
+  /// יצירת note לline הcurrent
   Future<void> _createNoteForCurrentLine(int index) async {
     final state = context.read<TextBookBloc>().state;
     if (state is! TextBookLoaded) return;
@@ -733,7 +733,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
         ));
   }
 
-  /// פתיחת דיאלוג דיווח על טעות בספר
+  /// פתיחת דיאלוג דיווח על טעות בbook
   void _openErrorReportDialog(String selectedText) {
     final state = context.read<TextBookBloc>().state;
     if (state is! TextBookLoaded) return;
@@ -763,7 +763,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
   //   }
   // }
 
-  /// העתקת פסקה לפי אינדקס
+  /// Copyת פסקה לפי אינדקס
   Future<void> _copyParagraphByIndex(int index) async {
     if (index < 0 || index >= widget.content.length) return;
 
@@ -846,7 +846,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     await SystemClipboard.instance?.write([item]);
   }
 
-  /// עיצוב טקסט כ-HTML עם הגדרות הגופן הנוכחיות
+  /// עיצוב text כ-HTML עם settings הגופן הcurrentות
   String _formatTextAsHtml(String text) {
     final settingsState = context.read<SettingsBloc>().state;
     return CopyUtils.buildStyledHtml(
@@ -856,15 +856,15 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     );
   }
 
-  /// העתקת טקסט מעוצב
+  /// Copyת text מעוצב
   Future<void> _copyFormattedText() async {
-    // מפרש כבר טיפל בהעתקה - לא נדרוס
+    // commentator כבר טיפל בCopyה - no נדרוס
     if (widget.isMainText && _commentaryCopyHandled) return;
 
     final plainText = _savedSelectedText;
 
     if (plainText == null || plainText.trim().isEmpty) {
-      UiSnack.show('אנא בחר טקסט להעתקה');
+      UiSnack.show('אנא בחר text לCopyה');
       return;
     }
 
@@ -887,7 +887,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
       );
     } catch (e) {
       if (mounted) {
-        UiSnack.showError('שגיאה בהעתקה מעוצבת: $e');
+        UiSnack.showError('error בCopyה מעוצבת: $e');
       }
     }
   }
@@ -920,7 +920,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
               ),
             ),
           ),
-        // תוכן
+        // content
         Expanded(
           child: BlocBuilder<TextBookBloc, TextBookState>(
             builder: (context, state) {
@@ -940,7 +940,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
                   }
 
                   return SelectionArea(
-                    // ביטול תפריט ברירת המחדל של Flutter - נשתמש רק ב-ContextMenuRegion
+                    // cancel תפריט ברירת המחדל של Flutter - נשתמש רק ב-ContextMenuRegion
                     contextMenuBuilder: (context, selectableRegionState) =>
                         const SizedBox.shrink(),
                     onSelectionChanged: (selection) {
@@ -952,7 +952,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
                           _lastActiveCommentary = this;
                         } else if (selection == null &&
                             _lastActiveCommentary == this) {
-                          // בחירה בוטלה לחלוטין — מנקים כדי לא לאפשר העתקה "רפאים"
+                          // בחירה בוטלה לחלוטין — מנקים כדי no noפשר Copyה "רפאים"
                           _lastActiveCommentary = null;
                         }
                       }
@@ -1046,7 +1046,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     final isSelected = widget.isMainText && state.selectedIndex == index;
     final isHighlighted = widget.isMainText && state.highlightedLine == index;
 
-    // בדיקה חדשה - האם השורה מודגשת כפרשן קשור (מקומי)
+    // check חדשה - האם הline מודגשת כפרשן קשור (מקומי)
     final isCommentaryHighlighted = !widget.isMainText &&
         (widget.highlightedIndices?.contains(index) ?? false);
 
@@ -1057,7 +1057,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
             .withAlpha((0.4 * 255).round());
       }
       if (isCommentaryHighlighted || isSelected) {
-        // צבע הדגשה למפרש קשור - כמו השורה הנבחרת
+        // צבע הדגשה לcommentator קשור - כמו הline הselectedת
         return theme.colorScheme.primary.withAlpha((0.08 * 255).round());
       }
       return null;
@@ -1070,12 +1070,12 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
       onTap: widget.isMainText
           ? () {
               _requestKeyboardFocus('line-tap-$index');
-              // איפוס הטקסט השמור
+              // איפוס הtext הSave
               setState(() {
                 _savedSelectedText = null;
                 _savedSelectedIndex = null;
               });
-              // עדכון selectedIndex רק בטקסט המרכזי
+              // update selectedIndex רק בtext המרכזי
               if (isSelected) {
                 context
                     .read<TextBookBloc>()
@@ -1087,7 +1087,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
           : null,
       onDoubleTap: !widget.isMainText && widget.bookTitle != null
           ? () {
-              // לחיצה כפולה במפרש - פתיחה בטאב נפרד
+              // tap כפולה בcommentator - פתיחה בטאב נפרד
               widget.openBookCallback(TextBookTab(
                 book: TextBook(title: widget.bookTitle!),
                 index: index,
@@ -1099,7 +1099,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
             }
           : null,
       onSecondaryTapDown: (details) {
-        // שמירת האינדקס לשימוש בתפריט ההקשר
+        // save the index לשימוש בתפריט ההקשר
         setState(() {
           _savedSelectedIndex = index;
         });
@@ -1118,7 +1118,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
               final data = widget.content[index];
               final targetTitle =
                   widget.isMainText ? state.book.title : widget.bookTitle;
-              // אם המשתמש לחץ על כפתור ניקוד (override), נשתמש בערך מה-state
+              // אם הuser לחץ על button ניקוד (override), נשתמש בvalue מה-state
               final bool? overrideRemoveNikud =
                   widget.isMainText ? state.removeNikud : null;
               final removeNikudFuture = (overrideRemoveNikud != null)
@@ -1154,7 +1154,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
                           ),
                         ));
 
-              // הדגשת טקסט חיפוש רק בטקסט המרכזי
+              // הדגשת text search רק בtext המרכזי
               final searchText = widget.isMainText ? state.searchText : '';
 
               final textWidget = FutureBuilder<bool>(
@@ -1206,9 +1206,9 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
                       onLongPress: () {
                         showSingleActionDialog(
                           context: context,
-                          title: 'הערה לשורה זו',
+                          title: 'note לline זו',
                           customContent: PersonalNoteContentView(note: note),
-                          confirmText: 'סגור',
+                          confirmText: 'closed',
                         );
                       },
                       child: Padding(
@@ -1231,13 +1231,13 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
     );
   }
 
-  /// בניית תפריט החלפת מפרש
+  /// בניית תפריט החלפת commentator
   List<AppContextMenuEntry> _buildCommentatorSwitchMenu(TextBookLoaded state) {
     final availableCommentators = state.availableCommentators;
     if (availableCommentators.isEmpty) return [];
 
     final groups = state.commentatorGroups;
-    final tanachGroup = CommentatorGroup.groupByTitle(groups, 'תורה שבכתב');
+    final tanachGroup = CommentatorGroup.groupByTitle(groups, 'תורה שבFont');
     final chazalGroup = CommentatorGroup.groupByTitle(groups, 'חז"ל');
     final rishonimGroup = CommentatorGroup.groupByTitle(groups, 'ראשונים');
     final acharonimGroup = CommentatorGroup.groupByTitle(groups, 'אחרונים');
@@ -1296,20 +1296,20 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
 
     return [
       AppContextMenuEntry(
-        label: 'החלף מפרש',
+        label: 'החלף commentator',
         icon: FluentIcons.arrow_swap_24_regular,
         children: normalized,
       ),
     ];
   }
 
-  /// החלפת מפרש
+  /// החלפת commentator
   void _switchCommentator(String newCommentator, TextBookLoaded state) {
     if (newCommentator == widget.bookTitle) {
-      return; // כבר מוצג מפרש זה
+      return; // כבר מוצג commentator זה
     }
 
-    // צריך למצוא באיזה טור המפרש הנוכחי מוצג ולהחליף אותו
+    // צריך למצוא באיזה טור הcommentator הcurrent מוצג ולהחליף אותו
     final config = PageShapeSettingsManager.loadConfiguration(
       state.book.title,
       heCategories: state.book.heCategories,
@@ -1317,13 +1317,13 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
 
     if (config == null) return;
 
-    // מציאת הטור שבו המפרש הנוכחי מוצג
+    // מציאת הטור שבו הcommentator הcurrent מוצג
     String? columnToUpdate;
     String? matchedSelection;
     for (final entry in config.entries) {
       if (entry.value == null) continue;
 
-      // בדיקה אם המפרש הנוכחי תואם לערך בהגדרה
+      // check אם הcommentator הcurrent תואם לvalue בsetting
       final configValue = entry.value!;
       final currentTitle = widget.bookTitle!;
 
@@ -1361,7 +1361,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
       return;
     }
 
-    // עדכון ההגדרה
+    // update הsetting
     final updatedConfig = Map<String, String?>.from(config);
     if (matchedSelection != null) {
       final updatedSelection =
@@ -1375,12 +1375,12 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
       updatedConfig[columnToUpdate] = newCommentator;
     }
 
-    // בדיקה אם יש הגדרה ספציפית לספר (לא רק הדגל, אלא הגדרה ממשית)
+    // check אם יש setting specificת לbook (no רק הדגל, אno setting ממשית)
     final hasActualBookConfig =
         PageShapeSettingsManager.loadConfiguration(state.book.title) != null;
 
-    // אם יש הגדרה ספציפית לספר - שומרים לספר
-    // אחרת - שומרים לקטגוריה (אם יש)
+    // אם יש setting specificת לbook - שומרים לbook
+    // אחרת - שומרים לcategory (אם יש)
     final categoryToSave = !hasActualBookConfig &&
             state.book.heCategories != null &&
             state.book.heCategories!.isNotEmpty
@@ -1394,7 +1394,7 @@ class _SimpleTextViewerState extends State<SimpleTextViewer> {
       saveToCategory: categoryToSave,
     );
 
-    // קריאה ל-callback לרענון המסך
+    // קריאה ל-callback לrefresh המסך
     widget.onCommentatorChanged?.call();
   }
 }

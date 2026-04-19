@@ -11,14 +11,14 @@ class SearchState {
   final String searchQuery;
   final int totalResults;
 
-  /// רלוונטי רק בחיפוש עם תיקון שגיאות כתיב: האם ייתכן שיש עוד תוצאות מעבר לנטענות.
-  /// מבודד מ-totalResults כדי שה-UI יציג מספר אמיתי ולא sentinel.
+  /// רלוונטי רק בsearch עם תיקון errors כתיב: האם ייתyes שיש עוד results מעבר לנטענות.
+  /// מבודד מ-totalResults כדי שה-UI יציג מbook אמיתי וno sentinel.
   final bool hasMoreResults;
 
-  // מידע על ספירות לכל facet - מתעדכן עם כל חיפוש
+  // מידע על ספירות לכל facet - מתעדyes עם כל search
   final Map<String, int> facetCounts;
 
-  // הגדרות החיפוש מרוכזות במחלקה נפרדת
+  // settings הsearch מרוכזות בclass נפרדת
   final SearchConfiguration configuration;
 
   const SearchState({
@@ -60,7 +60,7 @@ class SearchState {
     );
   }
 
-  // Getters לנוחות גישה להגדרות (backward compatibility)
+  // Getters לנוחות גישה לsettings (backward compatibility)
   int get distance => configuration.distance;
   bool get fuzzy => configuration.fuzzy;
   bool get isAdvancedSearchEnabled => configuration.isAdvancedSearchEnabled;

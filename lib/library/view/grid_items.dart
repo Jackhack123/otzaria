@@ -604,7 +604,7 @@ class _BookGridActionColumn extends StatelessWidget {
                 entries: const [
                   AppMenuEntry<String>(
                     value: 'delete',
-                    label: 'מחק מה-DB',
+                    label: 'Delete מה-DB',
                     icon: FluentIcons.delete_24_regular,
                     isDestructive: true,
                   ),
@@ -1003,11 +1003,11 @@ Future<void> _showDeleteBookDialog(
     BuildContext context, Book book, VoidCallback? onBookDeleted) async {
   final confirmed = await showWarningDialog(
     context: context,
-    title: 'למחוק את הספר?',
-    content: 'הספר "${book.title}" יימחק ממסד הנתונים.',
-    subtitle: 'לא ניתן לשחזר ספר שנמחק.',
-    cancelText: 'ביטול',
-    confirmText: 'מחק',
+    title: 'לdeleted את הbook?',
+    content: 'הbook "${book.title}" ייDelete ממסד הנתונים.',
+    subtitle: 'no ניתן לשחזר book שנDelete.',
+    cancelText: 'cancel',
+    confirmText: 'Delete',
   );
 
   if (confirmed != true) {

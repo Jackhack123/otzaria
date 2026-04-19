@@ -21,7 +21,7 @@ class PersonalNoteEditorDialog extends StatefulWidget {
     super.key,
     this.initialContent = '',
     this.initialContentFormat = PersonalNoteContentFormat.plain,
-    this.title = 'הערה חדשה',
+    this.title = 'note חדשה',
     this.referenceText,
     this.icon,
     this.bookId,
@@ -36,7 +36,7 @@ class PersonalNoteEditorDialog extends StatefulWidget {
 }
 
 class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
-  int _focusedButtonIndex = 1; // 0 = ביטול, 1 = שמור (ברירת מחדל)
+  int _focusedButtonIndex = 1; // 0 = cancel, 1 = Save (ברירת מחדל)
   final FocusNode _textFieldFocusNode = FocusNode();
   late final PersonalNoteEditorController _editorController;
   late final ScrollController _scrollController;
@@ -87,21 +87,21 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
     final result = await showDialog<_DraftDecision>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('אזהרה'),
-        content: const Text('ההערה לא נשמרה. לשמור טיוטה?'),
+        title: const Text('Warning'),
+        content: const Text('הnote no נשמרה. לSave טיוטה?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(_DraftDecision.cancel),
-            child: const Text('ביטול'),
+            child: const Text('cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(_DraftDecision.discard),
-            child: const Text('סגור בלי לשמור'),
+            child: const Text('closed בלי לSave'),
           ),
           FilledButton(
             onPressed: () =>
                 Navigator.of(context).pop(_DraftDecision.saveDraft),
-            child: const Text('שמור טיוטה'),
+            child: const Text('Save טיוטה'),
           ),
         ],
       ),
@@ -128,7 +128,7 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
   }
 
   void _submit() async {
-    // במצב מוגן, נדרוש סיסמה לפני שמירה
+    // במצב מוגן, נדרוש סיסמה לפני save
     if (!await verifyPasswordForAction(context) || !mounted) {
       return;
     }
@@ -186,12 +186,12 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
           return KeyEventResult.handled;
         }
 
-        // אם הפוקוס בשדה הטקסט, אנטר רגיל עושה ירידת שורה
+        // אם הfocus בfield הtext, אנטר רגיל עושה ירידת line
         if (_textFieldFocusNode.hasFocus) {
           return KeyEventResult.ignored;
         }
 
-        // אם הפוקוס בכפתורים - חיצים ואנטר
+        // אם הfocus בbuttons - חיצים ואנטר
         if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
             event.logicalKey == LogicalKeyboardKey.arrowRight) {
           setState(() {
@@ -209,7 +209,7 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
           return KeyEventResult.handled;
         }
 
-        // Escape - ביטול
+        // Escape - cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           _handleCancel();
           return KeyEventResult.handled;
@@ -259,12 +259,12 @@ class _PersonalNoteEditorDialogState extends State<PersonalNoteEditorDialog> {
           ),
           actions: [
             _buildButton(
-              text: 'ביטול',
+              text: 'cancel',
               isFocused: _focusedButtonIndex == 0,
               onPressed: _handleCancel,
             ),
             _buildButton(
-              text: 'שמור',
+              text: 'Save',
               isFocused: _focusedButtonIndex == 1,
               isConfirm: true,
               onPressed: _submit,

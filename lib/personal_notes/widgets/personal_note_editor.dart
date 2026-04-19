@@ -209,7 +209,7 @@ class _PersonalNoteEditorBodyState extends State<PersonalNoteEditorBody> {
                         expands: false,
                         padding: const EdgeInsets.all(12),
                         placeholder:
-                            widget.hintText ?? 'כתוב כאן... (Alt+Enter לשמירה)',
+                            widget.hintText ?? 'כתוב כאן... (Alt+Enter לsave)',
                         customShortcuts: _rtlArrowShortcuts,
                       ),
                     ),
@@ -320,12 +320,12 @@ class _PersonalNoteToolbar extends StatelessWidget {
           onPressed: () => _toggleAttribute(quill.Attribute.h2),
         ),
         IconButton(
-          tooltip: 'רשימה',
+          tooltip: 'list',
           icon: const Icon(FluentIcons.text_bullet_list_24_regular, size: 18),
           onPressed: () => _toggleAttribute(quill.Attribute.ul),
         ),
         IconButton(
-          tooltip: 'רשימה ממוספרת',
+          tooltip: 'list ממוbookת',
           icon: const Icon(
             FluentIcons.text_number_list_rtl_24_regular,
             size: 18,
@@ -338,7 +338,7 @@ class _PersonalNoteToolbar extends StatelessWidget {
           onPressed: () => _toggleAttribute(quill.Attribute.blockQuote),
         ),
         IconButton(
-          tooltip: 'הוסף קישור',
+          tooltip: 'Add קישור',
           icon: const Icon(FluentIcons.link_24_regular, size: 18),
           onPressed: onInsertLink,
         ),

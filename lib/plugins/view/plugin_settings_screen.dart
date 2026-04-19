@@ -55,15 +55,15 @@ class _PluginSettingsScreenState extends State<PluginSettingsScreen> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: Text('הגדרות תוסף: ${currentPlugin.name}')),
+          appBar: AppBar(title: Text('settings תוסף: ${currentPlugin.name}')),
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
               SettingsCard(
-                title: 'הגדרות כלליות',
+                title: 'settings generalות',
                 children: [
                   SwitchListTile(
-                    title: const Text('מצב מופעל (Enabled)'),
+                    title: const Text('מצב active (Enabled)'),
                     subtitle: const Text('כיבוי ימנע מהתוסף לרוץ לחלוטין באפליקציה'),
                     value: currentPlugin.enabled,
                     onChanged: (val) {
@@ -81,7 +81,7 @@ class _PluginSettingsScreenState extends State<PluginSettingsScreen> {
                 const SizedBox(height: 16),
                 SettingsCard(
                   title: 'ניהול הרשאות',
-                  subtitle: 'אפשר או חסום הרשאות ספציפיות כפי שנדרש במניפסט',
+                  subtitle: 'אפשר או חסום הרשאות specificות כפי שנדרש במניפסט',
                   children: currentPlugin.manifest.permissions.map((p) {
                     final info = getPermissionInfo(p);
                     final isGranted = _permissions[p] ?? true;
@@ -127,11 +127,11 @@ class _PluginSettingsScreenState extends State<PluginSettingsScreen> {
                   title: 'פיתוח',
                   children: [
                     ListTile(
-                      title: const Text('נתיב תיקייה'),
+                      title: const Text('path folder'),
                       subtitle: Text(currentPlugin.resolvedRootPath),
                     ),
                     ListTile(
-                      title: const Text('רענן עכשיו'),
+                      title: const Text('Refresh עכשיו'),
                       trailing: const Icon(FluentIcons.arrow_clockwise_24_regular),
                       onTap: () {
                          context.read<PluginSystemBloc>().add(ReloadDevelopmentPluginRequested(currentPlugin.pluginId));
@@ -139,7 +139,7 @@ class _PluginSettingsScreenState extends State<PluginSettingsScreen> {
                       hoverColor: Colors.transparent,
                     ),
                     ListTile(
-                      title: const Text('פתח מחדש את הצפייה'),
+                      title: const Text('Open again את הצפייה'),
                       trailing: const Icon(FluentIcons.window_new_24_regular),
                       onTap: () {
                          context.read<PluginSystemBloc>().add(ReloadDevelopmentPluginRequested(currentPlugin.pluginId));
@@ -164,10 +164,10 @@ class _PluginSettingsScreenState extends State<PluginSettingsScreen> {
                     final confirm = await showWarningDialog(
                        context: context,
                        title: 'מחיקת תוסף סופית',
-                       content: 'האם אתה בטוח שברצונך למחוק את התוסף "${currentPlugin.name}"?',
-                       subtitle: 'המחיקה תכלול את כל נתוני התוסף, המטמון והפעולות שלו. הליך זה סופי.',
-                       cancelText: 'ביטול',
-                       confirmText: 'מחק',
+                       content: 'האם אתה בטוח שברצונך לdeleted את התוסף "${currentPlugin.name}"?',
+                       subtitle: 'הdelete תכלול את כל נתוני התוסף, המטמון והactions שלו. הליך זה סופי.',
+                       cancelText: 'cancel',
+                       confirmText: 'Delete',
                     );
                     if (confirm == true && context.mounted) {
                        context.read<PluginSystemBloc>().add(UninstallPluginRequested(currentPlugin.pluginId));

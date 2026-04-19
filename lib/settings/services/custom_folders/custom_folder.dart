@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-/// מודל לתיקייה מותאמת אישית שהמשתמש הוסיף
+/// מודל לfolder מותאמת אישית שהuser הוסיף
 class CustomFolder {
-  /// נתיב התיקייה במערכת הקבצים
+  /// path הfolder בSystem הfiles
   final String path;
 
-  /// האם להכניס את תוכן התיקייה ל-DB
+  /// האם להכניס את content הfolder ל-DB
   final bool addToDatabase;
 
-  /// תאריך הוספה
+  /// date add
   final DateTime addedAt;
 
   const CustomFolder({
@@ -17,7 +17,7 @@ class CustomFolder {
     required this.addedAt,
   });
 
-  /// שם התיקייה (ללא הנתיב המלא)
+  /// name הfolder (לno הpath הfull)
   String get name => path.split(RegExp(r'[/\\]')).last;
 
   CustomFolder copyWith({
@@ -58,9 +58,9 @@ class CustomFolder {
   int get hashCode => path.hashCode;
 }
 
-/// מנהל תיקיות מותאמות אישית
+/// admin folders מותאמות אישית
 class CustomFoldersManager {
-  /// טעינת רשימת התיקיות מההגדרות
+  /// טעינת רשימת הfolders מהsettings
   static List<CustomFolder> loadFolders(String? jsonString) {
     if (jsonString == null || jsonString.isEmpty) {
       return [];
@@ -75,20 +75,20 @@ class CustomFoldersManager {
     }
   }
 
-  /// האם קיימות תיקיות מותאמות אישית פעילות
+  /// האם קיימות folders מותאמות אישית פעילות
   static bool hasFolders(String? jsonString) {
     return loadFolders(jsonString).isNotEmpty;
   }
 
-  /// שמירת רשימת התיקיות להגדרות
+  /// save רשימת הfolders לsettings
   static String saveFolders(List<CustomFolder> folders) {
     return jsonEncode(folders.map((f) => f.toJson()).toList());
   }
 
-  /// הוספת תיקייה חדשה
+  /// הוספת folder חדשה
   static List<CustomFolder> addFolder(List<CustomFolder> folders, String path) {
     if (folders.any((f) => f.path == path)) {
-      return folders; // התיקייה כבר קיימת
+      return folders; // הfolder כבר קיימת
     }
     return [
       ...folders,
@@ -96,13 +96,13 @@ class CustomFoldersManager {
     ];
   }
 
-  /// הסרת תיקייה
+  /// הסרת folder
   static List<CustomFolder> removeFolder(
       List<CustomFolder> folders, String path) {
     return folders.where((f) => f.path != path).toList();
   }
 
-  /// עדכון הגדרת addToDatabase לתיקייה
+  /// update הגדרת addToDatabase לfolder
   static List<CustomFolder> updateFolderDbSetting(
       List<CustomFolder> folders, String path, bool addToDatabase) {
     return folders.map((f) {

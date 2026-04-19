@@ -41,7 +41,7 @@ class PluginInstallerService {
         final filename = file.name;
         final targetPath = p.normalize(p.join(tempDir.path, filename));
         if (!p.isWithin(tempDir.path, targetPath)) {
-          throw Exception('נתיב חולץ מקובץ ZIP באופן לא חוקי: $filename');
+          throw Exception('path חולץ מfile ZIP באופן no חוקי: $filename');
         }
 
         if (file.isFile) {
@@ -57,7 +57,7 @@ class PluginInstallerService {
       // 2. Read manifest
       final manifestFile = File(p.join(tempDir.path, 'manifest.json'));
       if (!manifestFile.existsSync()) {
-        throw Exception('manifest.json לא נמצא בחבילת התוסף');
+        throw Exception('manifest.json no נמצא בחבילת התוסף');
       }
 
       final manifestJson = jsonDecode(await manifestFile.readAsString());
@@ -70,7 +70,7 @@ class PluginInstallerService {
             _compareVersionsStrict(manifest.version, existingPlugin.version);
         if (diff < 0) {
           throw Exception(
-              'לא ניתן להתקין גרסה ${manifest.version} על פני גרסה חדישה יותר ${existingPlugin.version}. מחיקה נדרשת קודם.');
+              'no ניתן להתקין גרסה ${manifest.version} על פני גרסה חדישה יותר ${existingPlugin.version}. delete נדרשת previous.');
         } else if (diff == 0 && !forceOverwrite) {
           throw PluginOverwriteException(manifest.name, manifest.version);
         }

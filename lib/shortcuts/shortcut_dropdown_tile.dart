@@ -7,7 +7,7 @@ import 'package:otzaria/shortcuts/custom_shortcut_dialog.dart';
 import 'package:otzaria/widgets/app_menu.dart';
 import 'package:otzaria/widgets/widgets_exports.dart';
 
-/// שדה בחירת קיצור דרך שמסנן קיצורים שכבר נמצאים בשימוש.
+/// field בחירת קיצור דרך שמסנן Shortcuts שכבר נמצאים בשימוש.
 class ShortcutDropDownTile extends StatefulWidget {
   final String settingKey;
   final String title;
@@ -193,7 +193,7 @@ class _ShortcutDropDownTileState extends State<ShortcutDropDownTile> {
 
       if (conflictingNames.isNotEmpty) {
         UiSnack.showWarning(
-          'אזהרה: קיצור זה כבר בשימוש עבור: $conflictingNames',
+          'Warning: קיצור זה כבר בשימוש עבור: $conflictingNames',
           duration: const Duration(seconds: 3),
         );
       }

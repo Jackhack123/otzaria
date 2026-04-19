@@ -87,7 +87,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(state.copyWith(
       searchQuery: query,
       isLoading: true,
-      hasMoreResults: false, // מאפס דגל levenshtein בכל תחילת חיפוש חדש
+      hasMoreResults: false, // מאפס דגל levenshtein בכל תחילת search חדש
       facetCounts: shouldPreserveFacetCounts ? state.facetCounts : const {},
     ));
 
@@ -100,9 +100,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     try {
-      // חיפוש עם תיקון שגיאות כתיב - מסלול נפרד לחלוטין.
-      // countByBook פועל עם regex/slop ולא מייצג את query הזה,
-      // לכן לא מפעילים facet refresh ולא streaming.
+      // search עם תיקון errors כתיב - מסלול נפרד לחלוטין.
+      // countByBook פועל עם regex/slop וno מייצג את query הזה,
+      // לyes no מפעילים facet refresh וno streaming.
       if (state.isTypoToleranceEnabled) {
         final results = await _repository.searchTextsLevenshtein(
           SearchQueryBuilder.sanitizeQuery(query),
@@ -114,23 +114,23 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         if (requestId != _searchRequestId) return;
         emit(state.copyWith(
           results: results,
-          totalResults: results.length, // המספר האמיתי של התוצאות שנטענו
-          hasMoreResults: results.length == state.numResults, // ייתכן שיש עוד
+          totalResults: results.length, // המbook האמיתי של הresults שנטענו
+          hasMoreResults: results.length == state.numResults, // ייתyes שיש עוד
           isLoading: false,
-          facetCounts: const {}, // מנקה counts ישנים ממצב/חיפוש קודם
+          facetCounts: const {}, // מנקה counts ישנים ממצב/search previous
         ));
         return;
       }
 
-      // התחל לבנות את עץ ה-facets המלא במקביל כבר מתחילת החיפוש.
+      // התחל לבנות את עץ ה-facets הfull במקביל כבר מתחילת הsearch.
       unawaited(_refreshFacetCountsForAllBooks(event, requestId));
 
-      // שימוש ב-streaming לתוצאות מהירות יותר
+      // שימוש ב-streaming לresults מהירות יותר
       final stream = _repository.searchTextsStream(
         SearchQueryBuilder.sanitizeQuery(query),
         requestedFacets,
         state.numResults,
-        chunkSize: 50, // 50 תוצאות בכל chunk
+        chunkSize: 50, // 50 results בכל chunk
         fuzzy: state.fuzzy,
         distance: state.distance,
         order: state.sortBy,
@@ -144,12 +144,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
       await for (final chunk in stream) {
         if (requestId != _searchRequestId) {
-          return; // החיפוש בוטל
+          return; // הsearch בוטל
         }
 
         allResults.addAll(chunk);
 
-        // עדכון ה-UI עם כל chunk
+        // update ה-UI עם כל chunk
         if (isFirstChunk) {
           // Chunk ראשון - בנה ספירות חלקיות
           isFirstChunk = false;
@@ -170,7 +170,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                     : partialFacetCounts,
           ));
         } else {
-          // Chunks נוספים - רק עדכן תוצאות
+          // Chunks נוספים - רק עדyes results
           emit(state.copyWith(
             results: List.from(allResults),
             totalResults: allResults.length,
@@ -179,7 +179,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         }
       }
 
-      // סיום - כל התוצאות התקבלו
+      // end - כל הresults התקבלו
       if (requestId != _searchRequestId) {
         return;
       }
@@ -223,11 +223,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (query.isEmpty) return;
     if (requestId != _searchRequestId) return;
 
-    // קבל את כל הספרים מהספרייה כדי למפות key -> Book
+    // קבל את כל הbooks מthe library כדי לmaps key -> Book
     final library = await DataRepository.instance.library;
     final bookByIndexedFilePath = _buildBooksByIndexedFilePath(library);
 
-    // סופר ברמת ספר במנוע עצמו, בלי למשוך עשרות אלפי snippets לדארט.
+    // סופר ברמת book במנוע עצמו, בלי למשוך עשרות אלפי snippets לדארט.
     final activeFacets = List<String>.from(state.searchScopeFacets);
     final bookCounts = await TantivyDataProvider.instance.countByBook(
       SearchQueryBuilder.sanitizeQuery(query),
@@ -303,7 +303,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) {
     // מעבר בין שלושת המצבים: מתקדם -> מדוייק -> מקורב -> מתקדם
-    // levenshtein נבחר ישירות מה-UI ולא נכנס ל-cycle הזה
+    // levenshtein selected ישירות מה-UI וno נכנס ל-cycle הזה
     SearchMode newMode;
     switch (state.configuration.searchMode) {
       case SearchMode.advanced:
@@ -459,7 +459,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       return 0;
     }
 
-    // קודם נבדוק אם יש לנו את הספירה ב-state
+    // previous נבדוק אם יש לנו את הספירה ב-state
     if (state.facetCounts.containsKey(facet)) {
       return state.facetCounts[facet]!;
     }
@@ -483,7 +483,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     return result;
   }
 
-  /// ספירה מקבצת של תוצאות עבור מספר facets בבת אחת - לשיפור ביצועים
+  /// ספירה מקבצת של results עבור מbook facets בבת אחת - לשיפור ביצועים
   Future<Map<String, int>> countForMultipleFacets(
     List<String> facets, {
     Map<String, String>? customSpacing,
@@ -494,7 +494,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       return {for (final facet in facets) facet: 0};
     }
 
-    // קודם נבדוק כמה facets יש לנו כבר ב-state
+    // previous נבדוק כמה facets יש לנו כבר ב-state
     final results = <String, int>{};
     final missingFacets = <String>[];
 
@@ -588,7 +588,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     debugPrint(
         '📝 Updating facet counts: ${event.facetCounts.entries.where((e) => e.value > 0).map((e) => '${e.key}: ${e.value}').join(', ')}');
     final newFacetCounts = event.facetCounts.isEmpty
-        ? <String, int>{} // אם מעבירים מפה ריקה, מנקים הכל
+        ? <String, int>{} // אם מעבירים map emptyה, מנקים הכל
         : {...state.facetCounts, ...event.facetCounts};
     emit(state.copyWith(
       facetCounts: newFacetCounts,
@@ -618,7 +618,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     // תנאי עצירה לפי mode:
-    // תיקון שגיאות כתיב — לפי hasMoreResults (totalResults = מה שנטען בפועל)
+    // תיקון errors כתיב — לפי hasMoreResults (totalResults = מה שנטען בפועל)
     // שאר המצבים — לפי totalResults שמייצג total אמיתי מה-engine
     final canLoadMore = state.isTypoToleranceEnabled
         ? state.hasMoreResults
@@ -644,14 +644,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         final allResults = [...state.results, ...nextResults];
         emit(state.copyWith(
           results: allResults,
-          totalResults: allResults.length, // המספר האמיתי שנטען
+          totalResults: allResults.length, // המbook האמיתי שנטען
           hasMoreResults: nextResults.length == state.numResults,
           isLoading: false,
         ));
         return;
       }
 
-      // מבקשים את כל התוצאות עד עכשיו + עוד numResults תוצאות
+      // מבקשים את כל הresults עד עכשיו + עוד numResults results
       final nextResults = await _repository.searchTexts(
         SearchQueryBuilder.sanitizeQuery(state.searchQuery),
         state.currentFacets,

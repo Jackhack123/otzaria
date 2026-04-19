@@ -2,10 +2,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:otzaria/shortcuts/key_map.dart';
 
-/// פונקציות עזר לטיפול בקיצורי מקשים.
+/// functions עזר לטיפול בקיצורי מקשים.
 ///
-/// מסתמך על [KeyMap] כמקור-האמת היחיד למיפוי שמות מקשים ← [LogicalKeyboardKey].
-/// לכל הוספה/שינוי של מקש יש לעדכן רק את [KeyMap].
+/// מסתמך על [KeyMap] כמקור-האמת היחיד למיפוי names מקשים ← [LogicalKeyboardKey].
+/// לכל add/שינוי של מקש יש לעדyes רק את [KeyMap].
 class ShortcutHelper {
   ShortcutHelper._();
 
@@ -15,7 +15,7 @@ class ShortcutHelper {
   /// בודק אם האירוע [event] תואם להגדרת הקיצור [shortcutSetting].
   ///
   /// [shortcutSetting] הוא מחרוזת כגון `'ctrl+shift+f'`, `'f11'`, `'ctrl+comma'`.
-  /// הפרמטרים האופציונליים מאפשרים בדיקות יחידה מבלי להסתמך על מצב חומרה אמיתי.
+  /// הפרמטרים האופציונליים מאפשרים tests יחידה מבלי להסתמך על מצב חומרה אמיתי.
   static bool matchesShortcut(
     KeyEvent event,
     String shortcutSetting, {
@@ -50,7 +50,7 @@ class ShortcutHelper {
     if (requiresAlt != altPressed) return false;
     if (requiresMeta != metaPressed) return false;
 
-    // מציאת המקש הראשי (לא modifier)
+    // מציאת המקש הראשי (no modifier)
     final mainKey = parts.where((p) => !_modifiers.contains(p)).firstOrNull;
     if (mainKey == null) return false;
 
@@ -62,12 +62,12 @@ class ShortcutHelper {
       return pressedKeyLabel == mainKey;
     }
 
-    // חיפוש ב-KeyMap (ספרות, מקשים מיוחדים, חצים, F-keys וכו׳)
+    // search ב-KeyMap (bookות, מקשים מיוחדים, חצים, F-keys וכו׳)
     final expectedKey = KeyMap.keyFor(mainKey);
     return expectedKey != null && event.logicalKey == expectedKey;
   }
 
-  /// ממיר קבוצה של [LogicalKeyboardKey] למחרוזת קיצור (כגון `'ctrl+shift+f'`).
+  /// ממיר group של [LogicalKeyboardKey] למחרוזת קיצור (כגון `'ctrl+shift+f'`).
   static String formatKeysToShortcut(Set<LogicalKeyboardKey> keys) {
     if (keys.isEmpty) return '';
 
@@ -109,7 +109,7 @@ class ShortcutHelper {
     return parts.join('+');
   }
 
-  /// מחזיר את שם המחרוזת של [key] לצורכי שמירה/ניתוח.
+  /// מחזיר את name המחרוזת של [key] לצורכי save/ניתוח.
   ///
   /// עבור אותיות מחזיר תו בודד (e.g. `'f'`).
   /// עבור שאר המקשים מסתמך על [KeyMap.labelFor].
@@ -120,7 +120,7 @@ class ShortcutHelper {
       return label.toLowerCase();
     }
 
-    // חיפוש ב-KeyMap
+    // search ב-KeyMap
     return KeyMap.labelFor(key) ?? label.toLowerCase();
   }
 

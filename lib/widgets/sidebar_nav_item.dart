@@ -3,9 +3,9 @@
 // SidebarNavItem — פריט ניווט לסיידבר בסגנון Material 3.
 //
 // מממש את הסגנון המשותף ל-SettingsScreen ו-MoreScreen:
-//  • רקע secondaryContainer כשנבחר (pill עגול)
-//  • אייקון filled כשנבחר, regular כשלא
-//  • תמיכה ב-imageAsset (עבור אייקונים מקובץ)
+//  • רקע secondaryContainer כשselected (pill עגול)
+//  • אייקון filled כשselected, regular כשno
+//  • תמיכה ב-imageAsset (עבור אייקונים מfile)
 //  • hover / pressed states דרך InkWell
 //  • אנימציה חלקה של החלפת אייקון (AnimatedSwitcher)
 //
@@ -14,15 +14,15 @@
 // SidebarNavItem(
 //   icon: FluentIcons.calendar_24_regular,
 //   iconFilled: FluentIcons.calendar_24_filled,
-//   label: 'לוח שנה',
+//   label: 'לוח year',
 //   isSelected: _selectedIndex == 0,
 //   onTap: () => _changeTab(0),
 // )
 //
 // // עם imageAsset:
 // SidebarNavItem(
-//   imageAsset: 'assets/icon/שמור וזכור שחור ריק.png',
-//   label: 'שמור וזכור',
+//   imageAsset: 'assets/icon/Save וזכור שחור empty.png',
+//   label: 'Save וזכור',
 //   isSelected: _selectedIndex == 1,
 //   onTap: () => _changeTab(1),
 // )
@@ -31,22 +31,22 @@
 import 'package:flutter/material.dart';
 
 class SidebarNavItem extends StatelessWidget {
-  /// אייקון רגיל (כשלא נבחר) — חובה אם לא מסופק [imageAsset]
+  /// אייקון רגיל (כשno selected) — חובה אם no מסופק [imageAsset]
   final IconData? icon;
 
-  /// אייקון filled (כשנבחר) — אופציונלי; אם null משתמש ב-[icon]
+  /// אייקון filled (כשselected) — אופציונלי; אם null user ב-[icon]
   final IconData? iconFilled;
 
-  /// נתיב לאסט אייקון (חלופה ל-[icon]) — למשל 'assets/icon/foo.png'
+  /// path noסט אייקון (חלופה ל-[icon]) — למשל 'assets/icon/foo.png'
   final String? imageAsset;
 
-  /// טקסט התווית
+  /// text התווית
   final String label;
 
-  /// האם פריט זה נבחר כרגע
+  /// האם פריט זה selected כרגע
   final bool isSelected;
 
-  /// Callback בעת לחיצה
+  /// Callback בעת tap
   final VoidCallback onTap;
 
   /// ריפוד אנכי (ברירת מחדל: 2)
@@ -138,11 +138,11 @@ class SidebarNavItem extends StatelessWidget {
   }
 }
 
-/// TopNavItem — פריט ניווט עליון בסגנון הישן של מסך הכלים.
+/// TopNavItem — פריט ניווט עליון בסגנון הישן של מסך הTools.
 ///
 /// מתאים לשורת בחירה אופקית:
-///  • אייקון מעל הטקסט
-///  • רקע secondaryContainer כשנבחר
+///  • אייקון מעל הtext
+///  • רקע secondaryContainer כשselected
 ///  • אנימציית החלפת אייקון regular ↔ filled
 ///  • hover / pressed states דרך InkWell
 class TopNavItem extends StatelessWidget {

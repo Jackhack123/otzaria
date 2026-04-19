@@ -198,12 +198,12 @@ class FileSystemData {
       return Library(categories: []);
     }
 
-    // קבלת שם התיקייה מההגדרות
+    // קבלת name הfolder מהsettings
     final folderName =
         Settings.getValue<String>(SettingsRepository.keyLibraryFolderName) ??
             '';
 
-    // בדיקה שתיקיית הספרים קיימת
+    // check שתיקיית הbooks קיימת
     final otzariaPath =
         folderName.isEmpty ? libraryPath : path.join(libraryPath, folderName);
     final otzariaDir = Directory(otzariaPath);
@@ -245,7 +245,7 @@ class FileSystemData {
   ///
   /// Links are stored in JSON files named '[book_title]_links.json' in the links directory.
   ///
-  /// For commentary books whose title starts with "הערות על", this function will also
+  /// For commentary books whose title starts with "notes על", this function will also
   /// retrieve reverse links from the source book, creating bidirectional navigation.
   Future<List<Link>> getAllLinksForBook(String title) async {
     try {
@@ -260,7 +260,7 @@ class FileSystemData {
         directLinks = jsonList.map((json) => Link.fromJson(json)).toList();
       }
 
-      // Check if this is a commentary book (starts with "הערות על")
+      // Check if this is a commentary book (starts with "notes על")
       final sourceBookTitle = _getSourceBookFromCommentary(title);
       if (sourceBookTitle != null) {
         // Load the source book's links and create reverse links
@@ -277,12 +277,12 @@ class FileSystemData {
     }
   }
 
-  /// Checks if a book title starts with "הערות על" and extracts the source book name.
+  /// Checks if a book title starts with "notes על" and extracts the source book name.
   ///
-  /// For example, "הערות על סוכה" returns "סוכה".
-  /// Returns null if the title doesn't start with "הערות על".
+  /// For example, "notes על סוכה" returns "סוכה".
+  /// Returns null if the title doesn't start with "notes על".
   String? _getSourceBookFromCommentary(String title) {
-    const commentaryPrefix = 'הערות על ';
+    const commentaryPrefix = 'notes על ';
     if (title.startsWith(commentaryPrefix)) {
       return title.substring(commentaryPrefix.length);
     }
@@ -380,37 +380,37 @@ class FileSystemData {
       // Validate link data first
       if (link.path2.isEmpty) {
         debugPrint('⚠️ Empty path in link');
-        return 'שגיאה: נתיב ריק';
+        return 'error: path empty';
       }
 
       if (link.index2 <= 0) {
         debugPrint('⚠️ Invalid index in link: ${link.index2}');
-        return 'שגיאה: אינדקס לא תקין';
+        return 'error: אינדקס no תקין';
       }
 
       String path = await _getBookPath(getTitleFromPath(link.path2));
       if (path.startsWith('error:')) {
         debugPrint('⚠️ Book path not found for: ${link.path2}');
-        return 'שגיאה בטעינת קובץ: ${link.path2}';
+        return 'error בטעינת file: ${link.path2}';
       }
 
       // Check if file exists before trying to read it
       final file = File(path);
       if (!await file.exists()) {
         debugPrint('⚠️ File does not exist: $path');
-        return 'שגיאה: הקובץ לא נמצא';
+        return 'error: הfile no נמצא';
       }
 
       return await getLineFromFile(path, link.index2).timeout(
         const Duration(seconds: 3),
         onTimeout: () {
           debugPrint('⚠️ Timeout reading line from file: $path');
-          return 'שגיאה: פג זמן קריאת הקובץ';
+          return 'error: פג time קריאת הfile';
         },
       );
     } catch (e) {
       debugPrint('⚠️ Error loading link content: $e');
-      return 'שגיאה בטעינת תוכן המפרש: $e';
+      return 'error בטעינת content הcommentator: $e';
     }
   }
 
@@ -462,13 +462,13 @@ class FileSystemData {
       // Validate that file exists
       if (!await file.exists()) {
         debugPrint('⚠️ File does not exist: $path');
-        return 'שגיאה: הקובץ לא נמצא';
+        return 'error: הfile no נמצא';
       }
 
       // Validate index is positive
       if (index <= 0) {
         debugPrint('⚠️ Invalid line index: $index for file: $path');
-        return 'שגיאה: אינדקס שורה לא תקין';
+        return 'error: אינדקס line no תקין';
       }
 
       // Add timeout to prevent hanging
@@ -487,19 +487,19 @@ class FileSystemData {
 
       if (lines.isEmpty) {
         debugPrint('⚠️ No lines found in file: $path');
-        return 'שגיאה: הקובץ ריק';
+        return 'error: הfile empty';
       }
 
       if (lines.length < index) {
         debugPrint(
             '⚠️ Line index $index exceeds file length ${lines.length} in: $path');
-        return 'שגיאה: אינדקס השורה חורג מגודל הקובץ';
+        return 'error: אינדקס הline חורג מגודל הfile';
       }
 
       return lines.last;
     } catch (e) {
       debugPrint('⚠️ Error reading line from file $path: $e');
-      return 'שגיאה בקריאת הקובץ: $e';
+      return 'error בקריאת הfile: $e';
     }
   }
 

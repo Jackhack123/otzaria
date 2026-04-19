@@ -29,11 +29,11 @@ class _NotesSearchHeaderState extends State<NotesSearchHeader> {
   @override
   void didUpdateWidget(covariant NotesSearchHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // איפוס החיפוש כשעוברים לספר אחר (כולל אותו שם בקטגוריה שונה)
+    // איפוס הsearch כשעוברים לbook אחר (כולל אותו name בcategory שונה)
     if (oldWidget.bookId != widget.bookId ||
         oldWidget.categoryId != widget.categoryId) {
       _searchController.clear();
-      // ה-BLoC כבר מתאפס ב-Sidebar, אז לא צריך לשלוח אירוע כאן
+      // ה-BLoC כבר מתאפס ב-Sidebar, אז no צריך לשלוח אירוע כאן
     }
   }
 
@@ -62,7 +62,7 @@ class _NotesSearchHeaderState extends State<NotesSearchHeader> {
                   Expanded(
                     child: OtzariaSearchField(
                       controller: _searchController,
-                      hintText: 'חפש בהערות...',
+                      hintText: 'חפש בnotes...',
                       onChanged: (value) {
                         context
                             .read<PersonalNotesBloc>()
@@ -77,7 +77,7 @@ class _NotesSearchHeaderState extends State<NotesSearchHeader> {
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    tooltip: 'רענן',
+                    tooltip: 'Refresh',
                     onPressed: () {
                       context.read<PersonalNotesBloc>().add(
                             LoadPersonalNotes(
@@ -115,8 +115,8 @@ class _NotesSearchHeaderState extends State<NotesSearchHeader> {
                             Expanded(
                               child: Text(
                                 widget.isPdf
-                                    ? 'הצג רק הערות לעמוד המוצג'
-                                    : 'הצג רק הערות לטקסט הנראה',
+                                    ? 'הצג רק notes לpage המוצג'
+                                    : 'הצג רק notes לtext הנראה',
                                 style: Theme.of(context).textTheme.bodySmall,
                                 overflow: TextOverflow.ellipsis,
                               ),

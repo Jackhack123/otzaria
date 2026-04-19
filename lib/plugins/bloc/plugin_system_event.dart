@@ -23,7 +23,7 @@ class ConfirmPluginInstall extends PluginSystemEvent {
   final String tempDirPath;
   final PluginManifest manifest;
 
-  /// מיפוי הרשאה → האם הוענקה. הרשאות עם ערך false יישמרו כחסומות.
+  /// מיפוי הרשאה → האם הוענקה. הרשאות עם value false יישמרו כחסומות.
   final Map<String, bool> grantedPermissions;
 
   const ConfirmPluginInstall(

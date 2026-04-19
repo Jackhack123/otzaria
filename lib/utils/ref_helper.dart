@@ -37,10 +37,10 @@ Future<String> refFromIndex(
   return texts.join(', ');
 }
 
-/// מחזירה כתובת תצוגה מלאה ואחידה עבור ספר יעד.
+/// מחזירה כתובת תצוגה fullה ואחידה עבור book יעד.
 ///
 /// אם קיימת כתובת מחושבת מתוך ה-TOC היא מועדפת, אחרת נעשה שימוש
-/// בכתובת הגיבוי הקיימת. שם הספר יתווסף רק אם הוא עדיין לא חלק מהכתובת.
+/// בכתובת הגיבוי הקיימת. name הbook יתווסף רק אם הוא עדיין no חלק מהכתובת.
 String formatDisplayReference({
   required String bookTitle,
   String? resolvedRef,
@@ -112,15 +112,15 @@ int _referenceSpecificityScore(String ref) {
   const markers = [
     'פרק',
     'פסוק',
-    'דף',
-    'עמוד',
+    'page',
+    'page',
     'סימן',
     'סעיף',
     'הלכה',
     'פסקה',
-    'משנה',
+    'מyear',
     'מאמר',
-    'קטן',
+    'small',
   ];
 
   var score = 0;
@@ -141,20 +141,20 @@ bool _referencesAreRelated(String resolvedDisplay, String fallbackDisplay) {
       resolvedDisplay.contains(fallbackDisplay);
 }
 
-/// מוסיף את שם הספר לכותרת אם הוא לא מופיע
-/// ומטפל במקרים מיוחדים כמו כותרת ריקה או פסיק מיותר
+/// מוסיף את name הbook לכותרת אם הוא no מופיע
+/// ומטפל במקרים מיוחדים כמו כותרת emptyה או פסיק מיותר
 String addBookTitleToRef(String ref, String bookTitle) {
-  // אם הכותרת כבר מתחילה בשם הספר, לא צריך להוסיף
+  // אם הכותרת כבר מתחילה בname הbook, no צריך להוסיף
   if (ref.startsWith(bookTitle)) {
     return ref;
   }
 
-  // אם הכותרת ריקה, נחזיר רק את שם הספר
+  // אם הכותרת emptyה, נחזיר רק את name הbook
   if (ref.trim().isEmpty) {
     return bookTitle;
   }
 
-  // אחרת, נוסיף את שם הספר עם פסיק
+  // אחרת, נוסיף את name הbook עם פסיק
   return '$bookTitle, $ref';
 }
 

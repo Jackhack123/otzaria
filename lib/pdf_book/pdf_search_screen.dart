@@ -211,7 +211,7 @@ class _PdfBookSearchViewState extends State<PdfBookSearchView> {
       return;
     }
 
-    // הסרת ניקוד כברירת מחדל, אלא אם המשתמש לחץ על כפתור "עם ניקוד"
+    // הסרת ניקוד כברירת מחדל, אno אם הuser לחץ על button "עם ניקוד"
     if (!_searchWithNikud && utils.hasNikud(query)) {
       query = utils.removeVolwels(query);
     }
@@ -233,7 +233,7 @@ class _PdfBookSearchViewState extends State<PdfBookSearchView> {
     try {
       final List<SearchResult> rawResults;
       if (_usesTypoTolerance) {
-        // חיפוש Levenshtein בתוך הספר — ללא regex/slop, רק מילים נקיות
+        // search Levenshtein בתוך הbook — לno regex/slop, רק מילים נקיות
         rawResults = await _searchRepository.searchTextsLevenshtein(
           query,
           [_bookPath!],
@@ -314,7 +314,7 @@ class _PdfBookSearchViewState extends State<PdfBookSearchView> {
       progressWidget:
           _isSearching ? const LinearProgressIndicator(minHeight: 4) : null,
       resultCountString: _searchResults.isNotEmpty
-          ? 'נמצאו ${_searchResults.length} תוצאות'
+          ? 'נמצאו ${_searchResults.length} results'
           : null,
       resultsWidget: ListView.builder(
         key: Key(widget.searchController.text),
@@ -329,7 +329,7 @@ class _PdfBookSearchViewState extends State<PdfBookSearchView> {
               builder: (context, settingsState) {
                 var text = _pageTitles[item]?.isNotEmpty == true
                     ? _pageTitles[item]!
-                    : 'עמוד $item';
+                    : 'page $item';
 
                 if (settingsState.replaceHolyNames) {
                   text = utils.replaceHolyNames(text);
@@ -419,7 +419,7 @@ class _PdfBookSearchViewState extends State<PdfBookSearchView> {
           : null,
       hintText: 'חפש כאן..',
       onAdvancedSearch: () {
-        final tempTab = SearchingTab('חיפוש', widget.searchController.text);
+        final tempTab = SearchingTab('search', widget.searchController.text);
         tempTab.searchOptions.addAll(_searchOptions);
         tempTab.alternativeWords.addAll(_alternativeWords);
         tempTab.spacingValues.addAll(_spacingValues);

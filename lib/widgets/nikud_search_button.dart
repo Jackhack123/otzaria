@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
-/// כפתור לחיפוש עם ניקוד - מופיע רק כאשר הטקסט מכיל ניקוד
+/// button לsearch עם ניקוד - מופיע רק כאשר הtext מכיל ניקוד
 class NikudSearchButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isActive;

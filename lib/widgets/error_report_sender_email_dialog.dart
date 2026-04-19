@@ -5,16 +5,16 @@ import 'package:otzaria/widgets/rtl_text_field.dart';
 Future<String?> showErrorReportSenderEmailDialog({
   required BuildContext context,
   String initialValue = '',
-  String title = 'כתובת מייל לזיהוי',
+  String title = 'כתובת מייל לidentify',
   String subtitle =
-      'כתובת זו תצורף לדיווח כדי שצוות אוצריא יוכל לחזור אליכם במקרה הצורך.',
+      'כתובת זו תצורף לדיווח כדי שצוות Otzaria יוכל לBack אליכם במקרה הצורך.',
 }) async {
   final controller = TextEditingController(text: initialValue);
 
   final confirmed = await showSingleActionDialog(
     context: context,
     title: title,
-    confirmText: 'שמור',
+    confirmText: 'Save',
     customContent: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,

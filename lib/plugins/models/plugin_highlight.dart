@@ -1,4 +1,4 @@
-/// מודל המייצג הדגשה צבעונית של שורה בטקסט, שנוצרה על ידי פלאגין.
+/// מודל המייצג הדגשה צבעונית של line בtext, שcreatedה על ידי פnoגין.
 class PluginHighlight {
   final String bookId;
   final int index;

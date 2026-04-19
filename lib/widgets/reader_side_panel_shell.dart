@@ -4,8 +4,8 @@ import 'package:otzaria/widgets/floating_panel.dart';
 
 /// מעטפת עיצובית לחלוניות הצד במסכי הקריאה.
 ///
-/// מוסיפה מראה צף עם פינות מעוגלות, צל ורווח קטן מהקצה החיצוני,
-/// כדי להבדיל את החלונית מתוכן הקריאה עצמו.
+/// מוסיפה Appearance צף עם פינות מעוגלות, צל ורווח small מהקצה החיצוני,
+/// כדי להבדיל את החלונית מcontent הקריאה עצמו.
 class ReaderSidePanelShell extends StatelessWidget {
   final Widget child;
   final AlignmentDirectional alignment;

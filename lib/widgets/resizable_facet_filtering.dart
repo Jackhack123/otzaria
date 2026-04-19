@@ -5,8 +5,8 @@ import 'package:otzaria/tabs/models/searching_tab.dart';
 import 'package:otzaria/widgets/resizable_drag_handle.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 
-/// Widget שמאפשר שינוי גודל של אזור סינון התוצאות
-/// ושומר את הגודל בהגדרות המשתמש
+/// Widget שמאפשר שינוי גודל של אזור סינון הresults
+/// ושומר את הגודל בsettings הuser
 class ResizableFacetFiltering extends StatefulWidget {
   final SearchingTab tab;
   final double minWidth;
@@ -30,7 +30,7 @@ class _ResizableFacetFilteringState extends State<ResizableFacetFiltering> {
   @override
   void initState() {
     super.initState();
-    // טעינת הרוחב מההגדרות
+    // טעינת הרוחב מהsettings
     final settingsState = context.read<SettingsBloc>().state;
     _currentWidth = settingsState.facetFilteringWidth.clamp(widget.minWidth, widget.maxWidth);
   }
@@ -39,7 +39,7 @@ class _ResizableFacetFilteringState extends State<ResizableFacetFiltering> {
   Widget build(BuildContext context) {
     return BlocListener<SettingsBloc, SettingsState>(
       listener: (context, state) {
-        // עדכון הרוחב כאשר ההגדרות משתנות מבחוץ
+        // update הרוחב כאשר הsettings משתנות מבחוץ
         if (state.facetFilteringWidth != _currentWidth) {
           setState(() {
             _currentWidth = state.facetFilteringWidth.clamp(widget.minWidth, widget.maxWidth);
@@ -61,7 +61,7 @@ class _ResizableFacetFilteringState extends State<ResizableFacetFiltering> {
             onDragStart: null,
             onDragDelta: (delta) {
               setState(() {
-                // עדכון הרוחב בהתאם לתנועת העכבר
+                // update הרוחב בהתאם לתנועת העכבר
                 // delta חיובי = ימינה, שלילי = שמאלה
                 _currentWidth = (_currentWidth - delta)
                     .clamp(widget.minWidth, widget.maxWidth);

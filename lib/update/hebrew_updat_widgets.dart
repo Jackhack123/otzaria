@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// רכיב לחיצה (chip) בעברית - דומה ל-flatChip המקורי
+/// רכיב tap (chip) בעברית - דומה ל-flatChip המקורי
 Widget hebrewFlatChip({
   required BuildContext context,
   required String? latestVersion,
@@ -34,11 +34,11 @@ Widget hebrewFlatChip({
       }
     });
     return Tooltip(
-      message: 'עדכון לגרסה ${latestVersion!.toString()}',
+      message: 'update לגרסה ${latestVersion!.toString()}',
       child: TextButton.icon(
         onPressed: openDialog,
         icon: const Icon(FluentIcons.arrow_download_24_regular),
-        label: const Text('עדכון זמין'),
+        label: const Text('update זמין'),
       ),
     );
   }
@@ -66,24 +66,24 @@ Widget hebrewFlatChip({
       child: TextButton.icon(
         onPressed: launchInstaller,
         icon: const Icon(FluentIcons.checkmark_circle_24_regular),
-        label: const Text('מוכן להתקנה'),
+        label: const Text('מוyes להתקנה'),
       ),
     );
   }
 
   if (UpdatStatus.error == status) {
-    // לא להציג הודעת שגיאה במצב אופליין
+    // no להציג הודעת error במצב אופליין
     final isOfflineMode =
         Settings.getValue<bool>(SettingsRepository.keyOfflineMode) ?? false;
     if (isOfflineMode) {
       return Container();
     }
     return Tooltip(
-      message: 'אירעה שגיאה בעדכון. אנא נסה שוב.',
+      message: 'אירעה error בupdate. אנא נסה שוב.',
       child: TextButton.icon(
         onPressed: startUpdate,
         icon: const Icon(FluentIcons.warning_24_regular),
-        label: const Text('שגיאה בחיבור לרשת במהלך בדיקת עדכונים'),
+        label: const Text('error בחיבור לרשת במהלך בדיקת עדכונים'),
       ),
     );
   }
@@ -91,7 +91,7 @@ Widget hebrewFlatChip({
   return Container();
 }
 
-/// רכיב לחיצה מורחב בעברית עם הורדה שקטה - דומה ל-floatingExtendedChipWithSilentDownload
+/// רכיב tap מורחב בעברית עם parentדה שקטה - דומה ל-floatingExtendedChipWithSilentDownload
 Widget hebrewFloatingExtendedChipWithSilentDownload({
   required BuildContext context,
   required String? latestVersion,
@@ -117,7 +117,7 @@ Widget hebrewFloatingExtendedChipWithSilentDownload({
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "מוריד עדכון...",
+              "מוריד update...",
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -153,7 +153,7 @@ Widget hebrewFloatingExtendedChipWithSilentDownload({
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "עדכון מוכן",
+              "update מוyes",
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -163,12 +163,12 @@ Widget hebrewFloatingExtendedChipWithSilentDownload({
             ),
             const SizedBox(height: 8),
             Text(
-              "אתה משתמש כרגע בגרסה $appVersion.",
+              "אתה user כרגע בגרסה $appVersion.",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              "עדכן כעת כדי לקבל את התכונות והתיקונים החדשים.",
+              "עדyes כעת כדי לקבל את התכונות והתיקונים החדשים.",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 15),
@@ -219,7 +219,7 @@ void hebrewDefaultDialog({
             Theme.of(context).useMaterial3 ? Axis.vertical : Axis.horizontal,
         children: const [
           Icon(FluentIcons.arrow_sync_24_regular),
-          Text('עדכון זמין'),
+          Text('update זמין'),
         ],
       ),
       content: Column(
@@ -261,14 +261,14 @@ void hebrewDefaultDialog({
             Navigator.pop(context);
             startUpdate();
           },
-          child: const Text('עדכן כעת'),
+          child: const Text('עדyes כעת'),
         ),
       ],
     ),
   );
 }
 
-/// פונקציה שעוטפת את _flatChipAutoHideError אבל עם הרכיב העברי
+/// function שעוטפת את _flatChipAutoHideError אבל עם הרכיב העברי
 Widget hebrewFlatChipAutoHideError({
   required BuildContext context,
   required String? latestVersion,

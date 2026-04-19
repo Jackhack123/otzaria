@@ -29,12 +29,12 @@ class Category {
 
   /// returns the path of this category e.g תנך/ראשונים/רשי/תורה
   String get path {
-    if (title == 'ספריית אוצריא') {
+    if (title == 'bookיית Otzaria') {
       return '/';
     }
     String path = title;
     Category? parent = this.parent;
-    while (parent != null && parent.title != 'ספריית אוצריא') {
+    while (parent != null && parent.title != 'bookיית Otzaria') {
       path = '${parent.title}/$path';
       parent = parent.parent;
     }
@@ -106,7 +106,7 @@ class Library extends Category {
   /// this library.
   Library({required List<Category> categories})
       : super(
-            title: 'ספריית אוצריא',
+            title: 'bookיית Otzaria',
             description: '',
             shortDescription: '',
             order: 0,
@@ -118,8 +118,8 @@ class Library extends Category {
 
   /// מחפש TextBook לפי כותרת ו-categoryId.
   ///
-  /// מחפש התאמה מדויקת לפי categoryId (אם סופק), עם fallback לפי שם בלבד.
-  /// שימושי כשצריך למצוא TextBook שמתאים לספר PDF עם אותו שם.
+  /// מחפש התאמה מדויקת לפי categoryId (אם סופק), עם fallback לפי name בלבד.
+  /// שימושי כשצריך למצוא TextBook שמתאים לbook PDF עם אותו name.
   TextBook? findTextBookByTitleAndCategory(
     String title, {
     int? categoryId,
@@ -156,13 +156,13 @@ class Library extends Category {
     }
   }
 
-  /// מחפש ספר נלווה (Companion Book) כמו גרסת PDF לגרסת טקסט או להיפך.
-  /// החיפוש מתבצע תחילה תחת אותה קטגוריה בה נמצא הספר המקורי.
-  /// אם לא נמצא - נופל לחיפוש גלובלי עם מניעת התנגשויות (ירושלמי <-> בבלי כדוגמה).
+  /// מחפש book נלווה (Companion Book) כמו גרסת PDF לגרסת text או להיפך.
+  /// הsearch מתבצע תחילה תחת אותה category בה נמצא הbook המקורי.
+  /// אם no נמצא - נופל לsearch גלובלי עם מניעת התנגשויות (ירושלמי <-> בבלי כexample).
   Book? getCompanionBook(Book book, Type companionType) {
     final normalizedTitle = _normalizeTitle(book.title);
     
-    // 1. חיפוש באותה קטגוריה בדיוק:
+    // 1. search באותה category בדיוק:
     if (book.category != null) {
       final companion = book.category!.books.where(
         (b) => _normalizeTitle(b.title) == normalizedTitle && b.runtimeType == companionType
@@ -171,7 +171,7 @@ class Library extends Category {
       if (companion != null) return companion;
     }
     
-    // 2. חיפוש גלובלי (מאפשר התאמה לפי נרמול הכותרת כפי שמקובל):
+    // 2. search גלובלי (מאפשר התאמה לפי נרמול הכותרת כפי שמקובל):
     final candidates = getAllBooks().where(
       (b) => b.runtimeType == companionType && _normalizeTitle(b.title) == normalizedTitle
     ).toList();
@@ -189,20 +189,20 @@ class Library extends Category {
     return filtered.firstOrNull;
   }
 
-  /// מחפש ספר לפי כותרת עם חיפוש גמיש יותר.
+  /// מחפש book לפי כותרת עם search גמיש יותר.
   ///
-  /// אם לא נמצא התאמה מדויקת, מנסה למצוא ספר עם כותרת דומה:
+  /// אם no נמצא התאמה מדויקת, מנסה למצוא book עם כותרת דומה:
   /// - מסיר רווחים מיותרים
   /// - מתעלם מהבדלי גרשיים וסימני פיסוק
   /// - מחפש התאמה חלקית
   ///
-  /// [title] - כותרת הספר לחיפוש
-  /// [type] - סוג הספר (למשל PdfBook, TextBook)
-  /// מחזיר את הספר הראשון שנמצא או null
+  /// [title] - כותרת הbook לsearch
+  /// [type] - סוג הbook (למשל PdfBook, TextBook)
+  /// מחזיר את הbook הראשון שנמצא או null
   Book? findBookByTitleFlexible(String title, Type? type) {
     List<Book> allBooks = getAllBooks();
 
-    // ניסיון ראשון: חיפוש מדויק
+    // ניסיון ראשון: search מדויק
     try {
       if (type == null) {
         return allBooks.firstWhere((book) => book.title == title);
@@ -210,13 +210,13 @@ class Library extends Category {
       return allBooks.firstWhere(
           (book) => book.title == title && book.runtimeType == type);
     } catch (e) {
-      // לא נמצא - ממשיכים לחיפוש גמיש
+      // no נמצא - ממשיכים לsearch גמיש
     }
 
-    // נרמול הכותרת לחיפוש
+    // נרמול הכותרת לsearch
     String normalizedTitle = _normalizeTitle(title);
 
-    // חיפוש עם נרמול
+    // search עם נרמול
     List<Book> candidates = allBooks.where((book) {
       if (type != null && book.runtimeType != type) return false;
       return _normalizeTitle(book.title) == normalizedTitle;
@@ -226,7 +226,7 @@ class Library extends Category {
       return candidates.first;
     }
 
-    // חיפוש חלקי - האם הכותרת מכילה או מוכלת
+    // search חלקי - האם הכותרת מכילה או מוכלת
     candidates = allBooks.where((book) {
       if (type != null && book.runtimeType != type) return false;
       String bookNormalized = _normalizeTitle(book.title);

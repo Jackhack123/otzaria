@@ -9,16 +9,16 @@ import 'package:flutter/services.dart';
 //
 //  שאר קבצי ניווט מקלדת נשארים נפרדים:
 //  • keyboard_navigator.dart  — ניווט Ctrl+Tab בין טאבים (מטרה שונה)
-//  • keyboard_list_focus.dart — ניהול פוקוס ברשימות עם גלילה (מטרה שונה)
+//  • keyboard_list_focus.dart — ניהול focus בlists עם גלילה (מטרה שונה)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Widget לניהול קיצורי מקלדת בדיאלוגים.
 ///
 /// מספק:
-/// - חיצים ◄► למעבר בין כפתורים
-/// - Enter ללחיצה על הכפתור הממוקד
-/// - Escape לביטול
-/// - Enter בשדה טקסט → שליחת הטופס
+/// - חיצים ◄► למעבר בין buttons
+/// - Enter לtap על הbutton המfocus
+/// - Escape לcancel
+/// - Enter בfield text → שליחת הטופס
 class DialogKeyboardNavigator extends StatelessWidget {
   final Widget child;
   final VoidCallback? onConfirm;
@@ -46,7 +46,7 @@ class DialogKeyboardNavigator extends StatelessWidget {
       onKeyEvent: (node, event) {
         if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
-        // אם הפוקוס בשדה הטקסט, Enter שולח את הטופס
+        // אם הfocus בfield הtext, Enter שולח את הטופס
         if (textFieldFocusNode?.hasFocus ?? false) {
           if (event.logicalKey == LogicalKeyboardKey.enter) {
             onConfirm?.call();
@@ -55,14 +55,14 @@ class DialogKeyboardNavigator extends StatelessWidget {
           return KeyEventResult.ignored;
         }
 
-        // חיצים ◄► — מעבר בין כפתורים
+        // חיצים ◄► — מעבר בין buttons
         if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
             event.logicalKey == LogicalKeyboardKey.arrowRight) {
           onFocusChange(focusedIndex == 0 ? 1 : 0);
           return KeyEventResult.handled;
         }
 
-        // Enter — לחיצה על הכפתור הממוקד
+        // Enter — tap על הbutton המfocus
         if (event.logicalKey == LogicalKeyboardKey.enter) {
           if (focusedIndex == 1) {
             onConfirm?.call();
@@ -72,7 +72,7 @@ class DialogKeyboardNavigator extends StatelessWidget {
           return KeyEventResult.handled;
         }
 
-        // Escape — ביטול
+        // Escape — cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           onCancel?.call();
           return KeyEventResult.handled;
@@ -107,7 +107,7 @@ class DialogKeyboardNavigator extends StatelessWidget {
 /// }
 /// ```
 mixin DialogNavigationMixin<T extends StatefulWidget> on State<T> {
-  /// 0 = Cancel, 1 = Confirm (ברירת מחדל: Confirm ממוקד)
+  /// 0 = Cancel, 1 = Confirm (ברירת מחדל: Confirm מfocus)
   int focusedButtonIndex = 1;
 
   Widget buildKeyboardNavigator({

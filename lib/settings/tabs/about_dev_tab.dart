@@ -6,7 +6,7 @@ import 'package:otzaria/settings/settings_card.dart';
 import 'package:otzaria/theme/app_theme.dart';
 import 'package:otzaria/widgets/ad_popup_dialog.dart';
 
-/// טאב "חכמי לב" — אודות, קהילה, תורמים ומפתחים.
+/// טאב "חכמי לב" — About, קהילה, תורמים וkeyים.
 class AboutDevTab extends StatelessWidget {
   const AboutDevTab({super.key});
 
@@ -26,7 +26,7 @@ class AboutDevTab extends StatelessWidget {
     {
       'name': 'NHLOCAL',
       'url': 'https://github.com/NHLOCAL/Shamor-Zachor',
-      'description': "מפתח 'שמור וזכור'",
+      'description': "key 'Save וזכור'",
     },
   ];
 
@@ -47,7 +47,7 @@ class AboutDevTab extends StatelessWidget {
           'https://forum.otzaria.org/user/%D7%94%D7%90%D7%93%D7%9D-%D7%94%D7%97%D7%95%D7%A9%D7%91',
     },
     {
-      'name': 'י. ח. מ.', // יום חדש מתחיל
+      'name': 'י. ח. מ.', // day חדש מתחיל
       'url':
           'https://forum.otzaria.org/user/%D7%99%D7%95%D7%9D-%D7%97%D%93%D7%A9-%D7%9E%D7%AA%D7%97%D7%99%D7%9C',
     },
@@ -61,12 +61,12 @@ class AboutDevTab extends StatelessWidget {
           'https://forum.otzaria.org/user/%D7%99%D7%94%D7%95%D7%93%D7%99-%D7%A6%D7%A2%D7%99%D7%A8',
     },
     // {
-    //   'name': 'דורש טוב',  // כרגע לא רוצה
+    //   'name': 'דורש טוב',  // כרגע no רוצה
     //   'url':
     //       'https://forum.otzaria.org/user/%D7%93%D7%95%D7%A8%D7%A9-%D7%98%D7%95%D7%91',
     // },
     // {
-    //   'name': 'מ. פינק', // כרגע לא רוצה
+    //   'name': 'מ. פינק', // כרגע no רוצה
     // },
     // {
     //   'name': 'זקצ',
@@ -93,7 +93,7 @@ class AboutDevTab extends StatelessWidget {
           'https://forum.otzaria.org/user/%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99-%D7%92%D7%95-%D7%A0%D7%99%D7%95%D7%A8',
     },
     {
-      'name': 'ה. ה.', // גאון גדול - הבל הבלים
+      'name': 'ה. ה.', // גאון large - הבל הבלים
       'url':
           'https://forum.otzaria.org/user/%D7%94%D7%91%D7%9C-%D7%94%D7%91%D7%9C%D7%99%D7%9D',
     },
@@ -103,7 +103,7 @@ class AboutDevTab extends StatelessWidget {
     },
   ];
 
-  // מהדירים שההדירו בין 5 ל-10 ספרים
+  // מהדירים שההדירו בין 5 ל-10 books
   static const _regularEditors = <Map<String, String>>[
     {
       'name': 'מויטיו',
@@ -152,14 +152,14 @@ class AboutDevTab extends StatelessWidget {
                 icon: FluentIcons.payment_24_regular,
                 title: 'תרום לפרויקט',
                 subtitle:
-                    'תרומתך תעזור לנו להמשיך לפתח ולשפר את אוצריא עבור כלל הציבור.',
+                    'תרומתך תעזור לנו להמשיך לOpen ולשפר את Otzaria עבור כלל הציבור.',
                 buttonLabel: 'נדרים+',
                 buttonIcon: FluentIcons.payment_24_regular,
                 onTap: () => _openUrl('https://nedar.im/ezOd'),
               ),
               _ActionTile(
                 icon: FluentIcons.shield_task_24_filled,
-                title: 'אוצריא מתגייסת לעזרת לומדי התורה',
+                title: 'Otzaria מתגייסת לעזרת לומדי התורה',
                 subtitle: 'מרכז המידע על ארגוני סיוע ללומדי התורה',
                 buttonLabel: 'למידע נוסף',
                 onTap: () => _openAdPopup(context),
@@ -174,14 +174,14 @@ class AboutDevTab extends StatelessWidget {
               _ActionTile(
                 icon: FluentIcons.edit_24_regular,
                 title: 'הצטרף לצוות העריכה',
-                subtitle: 'עזור לנו להוסיף ספרים חדשים לספריית אוצריא',
+                subtitle: 'עזור לנו להוסיף new books לbookיית Otzaria',
                 buttonLabel: 'הצטרף לעריכה',
                 onTap: () => _openUrl('https://www.otzaria.org/library'),
               ),
               _ActionTile(
                 icon: FluentIcons.code_24_regular,
                 title: 'הצטרף לפיתוח',
-                subtitle: 'מפתחים מוזמנים לתרום לקהילה התורנית',
+                subtitle: 'keyים מוזמנים לתרום לקהילה התורנית',
                 buttonLabel: 'הצטרף עכשיו',
                 onTap: () => _openUrl('https://github.com/otzaria/otzaria'),
               ),
@@ -201,9 +201,9 @@ class AboutDevTab extends StatelessWidget {
             ],
           ),
 
-          // ── מפתחים ──
+          // ── keyים ──
           SettingsCard(
-            title: 'מפתחים',
+            title: 'keyים',
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -217,7 +217,7 @@ class AboutDevTab extends StatelessWidget {
 
           // ── אנשים חיוניים ──
           SettingsCard(
-            title: 'התוכנה נעזרה רבות ב:',
+            title: 'התוכנה נHelp רבות ב:',
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -229,19 +229,19 @@ class AboutDevTab extends StatelessWidget {
             ],
           ),
 
-          // ── מהדירי ספרים ──
+          // ── מהדירי books ──
           SettingsCard(
-            title: 'מהדירי ספרים',
+            title: 'מהדירי books',
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _editorCategory(context, '10 ספרים ומעלה', _topEditors),
+                    _editorCategory(context, '10 books ומעלה', _topEditors),
                     const SizedBox(height: 20),
                     _editorCategory(
-                        context, 'בין 5 ל-10 ספרים', _regularEditors),
+                        context, 'בין 5 ל-10 books', _regularEditors),
                     const SizedBox(height: 12),
                     _editorsNote(context),
                   ],
@@ -272,7 +272,7 @@ class AboutDevTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'אוצריא',
+                  'Otzaria',
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall
@@ -321,8 +321,8 @@ class AboutDevTab extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'באם שמכם אינו מופיע ברשימה או שאתם מעוניינים בשינוי, '
-              'אנא פנו למייל המערכת.',
+              'באם שמכם אינו מופיע בlist או שאתם מעוניינים בשינוי, '
+              'אנא פנו למייל הSystem.',
               style: kSettingsSubtitleStyle,
             ),
           ),
@@ -341,7 +341,7 @@ class AboutDevTab extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       builder: (context) => const AdPopupDialog(
-        title: 'אוצריא מתגייסת לעזרת לומדי התורה',
+        title: 'Otzaria מתגייסת לעזרת לומדי התורה',
       ),
     );
   }

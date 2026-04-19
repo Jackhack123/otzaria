@@ -39,7 +39,7 @@ class PersonalNotesBloc extends Bloc<PersonalNotesEvent, PersonalNotesState> {
         bookId: event.bookId,
         categoryId: event.categoryId,
         errorMessage: null,
-        // איפוס החיפוש כשטוענים ספר חדש
+        // איפוס הsearch כשטוענים new book
         searchQuery: '',
         visibleLineIndices: [],
       ),
@@ -236,7 +236,7 @@ class PersonalNotesBloc extends Bloc<PersonalNotesEvent, PersonalNotesState> {
     bool showOnlyVisible,
     List<int> visibleLineIndices,
   ) {
-    // סינון לפי טקסט נראה
+    // סינון לפי text נראה
     var filteredLocated = locatedNotes;
     if (showOnlyVisible && visibleLineIndices.isNotEmpty) {
       filteredLocated = locatedNotes.where((note) {
@@ -245,7 +245,7 @@ class PersonalNotesBloc extends Bloc<PersonalNotesEvent, PersonalNotesState> {
       }).toList();
     }
 
-    // סינון לפי חיפוש
+    // סינון לפי search
     if (searchQuery.isNotEmpty) {
       final query = searchQuery.toLowerCase();
       filteredLocated = filteredLocated.where((note) {
@@ -254,7 +254,7 @@ class PersonalNotesBloc extends Bloc<PersonalNotesEvent, PersonalNotesState> {
       }).toList();
     }
 
-    // הערות חסרות מיקום - מוצגות רק אם לא מסננים לפי טקסט נראה
+    // notes חסרות location - מוצגות רק אם no מסננים לפי text נראה
     var filteredMissing = <PersonalNote>[];
     if (!showOnlyVisible) {
       filteredMissing = missingNotes;

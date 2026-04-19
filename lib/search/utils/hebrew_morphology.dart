@@ -1,8 +1,8 @@
 import 'package:otzaria/search/utils/regex_patterns.dart';
 
-/// כלים לטיפול בקידומות, סיומות וכתיב מלא/חסר בעברית (גרסה משולבת ומשופרת)
+/// Tools לטיפול בקידומות, endת וכתיב full/חסר בעברית (גרסה משולבת ומשופרת)
 ///
-/// הערה: הרגקסים הבסיסיים עברו לקובץ regex_patterns.dart לארגון טוב יותר
+/// note: הרגקסים הבסיסיים עברו לfile regex_patterns.dart noרגון טוב יותר
 class HebrewMorphology {
   // קידומות דקדוקיות בסיסיות
   static const List<String> _basicPrefixes = [
@@ -34,35 +34,35 @@ class HebrewMorphology {
     'מש', 'משה'
   ];
 
-  // סיומות דקדוקיות (מסודרות לפי אורך יורד)
+  // endת דקדוקיות (מסודרות לפי אורך יורד)
   static const List<String> _allSuffixes = [
     // צירופים לנקבה רבות + שייכות (הארוכים ביותר)
-    'ותיהם', 'ותיהן', 'ותיכם', 'ותיכן', 'ותינו',
-    'ותֵיהם', 'ותֵיהן', 'ותֵיכם', 'ותֵיכן', 'ותֵינוּ',
+    'ותיהם', 'ותיהן', 'ותיכם', 'ותיyes', 'ותינו',
+    'ותֵיהם', 'ותֵיהן', 'ותֵיכם', 'ותֵיyes', 'ותֵינוּ',
     'ותיך', 'ותיו', 'ותיה', 'ותי',
     'ותֶיךָ', 'ותַיִךְ', 'ותָיו', 'ותֶיהָ', 'ותַי',
     // צירופי ריבוי + שייכות
-    'יהם', 'יהן', 'יכם', 'יכן', 'ינו', 'יות', 'יי', 'יך', 'יו', 'יה', 'יא',
+    'יהם', 'יהן', 'יכם', 'יyes', 'ינו', 'יות', 'יי', 'יך', 'יו', 'יה', 'יא',
     'יַי', 'יךָ', 'יִךְ', 'יהָ',
-    // סיומות בסיסיות
-    'ים', 'ות', 'כם', 'כן', 'נו', 'הּ',
+    // endת בסיסיות
+    'ים', 'ות', 'כם', 'yes', 'נו', 'הּ',
     'י', 'ך', 'ו', 'ה', 'ם', 'ן',
     'ךָ', 'ךְ'
   ];
 
   // --- מתודות ליצירת Regex (מהקוד הראשון - היעיל יותר) ---
 
-  /// יוצר דפוס רגקס קומפקטי לחיפוש מילה עם קידומות דקדוקיות
+  /// יוצר דפוס רגקס קומפקטי לsearch מילה עם קידומות דקדוקיות
   static String createPrefixRegexPattern(String word) {
     return SearchRegexPatterns.createPrefixPattern(word);
   }
 
-  /// יוצר דפוס רגקס קומפקטי לחיפוש מילה עם סיומות דקדוקיות
+  /// יוצר דפוס רגקס קומפקטי לsearch מילה עם endת דקדוקיות
   static String createSuffixRegexPattern(String word) {
     return SearchRegexPatterns.createSuffixPattern(word);
   }
 
-  /// יוצר דפוס רגקס קומפקטי לחיפוש מילה עם קידומות וסיומות דקדוקיות יחד
+  /// יוצר דפוס רגקס קומפקטי לsearch מילה עם קידומות וendת דקדוקיות יחד
   static String createFullMorphologicalRegexPattern(
     String word, {
     bool includePrefixes = true,
@@ -71,9 +71,9 @@ class HebrewMorphology {
     return SearchRegexPatterns.createFullMorphologicalPattern(word);
   }
 
-  // --- מתודות ליצירת רשימות וריאציות (נשמרו כפי שהן) ---
+  // --- מתודות ליצירת lists וריאציות (נשמרו כפי שהן) ---
 
-  /// יוצר רשימה של כל האפשרויות עם קידומות דקדוקיות
+  /// יוצר list של כל האפשרויות עם קידומות דקדוקיות
   static List<String> generatePrefixVariations(String word) {
     if (word.isEmpty) return [word];
     final variations = <String>{word};
@@ -82,7 +82,7 @@ class HebrewMorphology {
     return variations.toList();
   }
 
-  /// יוצר רשימה של כל האפשרויות עם סיומות דקדוקיות
+  /// יוצר list של כל האפשרויות עם endת דקדוקיות
   static List<String> generateSuffixVariations(String word) {
     if (word.isEmpty) return [word];
     final variations = <String>{word};
@@ -90,7 +90,7 @@ class HebrewMorphology {
     return variations.toList();
   }
 
-  /// יוצר רשימה של כל האפשרויות עם קידומות וסיומות יחד
+  /// יוצר list של כל האפשרויות עם קידומות וendת יחד
   static List<String> generateFullMorphologicalVariations(String word) {
     if (word.isEmpty) return [word];
     final variations = <String>{word};
@@ -115,26 +115,26 @@ class HebrewMorphology {
     return SearchRegexPatterns.hasGrammaticalSuffix(word);
   }
 
-  /// מחלץ את השורש של מילה (מסיר קידומות וסיומות)
+  /// מחלץ את השורש של מילה (מסיר קידומות וendת)
   static String extractRoot(String word) {
     return SearchRegexPatterns.extractRoot(word);
   }
 
-  /// מחזיר רשימה של קידומות בסיסיות (לתמיכה לאחור)
+  /// מחזיר list של קידומות בסיסיות (לתמיכה noחור)
   static List<String> getBasicPrefixes() => ['ה', 'ו', 'ב', 'ל', 'מ', 'כ', 'ש'];
 
-  /// מחזיר רשימה של סיומות בסיסיות (לתמיכה לאחור)
+  /// מחזיר list של endת בסיסיות (לתמיכה noחור)
   static List<String> getBasicSuffixes() =>
-      ['ים', 'ות', 'י', 'ך', 'ו', 'ה', 'נו', 'כם', 'כן', 'ם', 'ן'];
+      ['ים', 'ות', 'י', 'ך', 'ו', 'ה', 'נו', 'כם', 'yes', 'ם', 'ן'];
 
-  // --- מתודות לכתיב מלא/חסר (מהקוד השני) ---
+  // --- מתודות לכתיב full/חסר (מהקוד השני) ---
 
-  /// יוצר דפוס רגקס לכתיב מלא/חסר על בסיס רשימת וריאציות
+  /// יוצר דפוס רגקס לכתיב full/חסר על בסיס רשימת וריאציות
   static String createFullPartialSpellingPattern(String word) {
     return SearchRegexPatterns.createFullPartialSpellingPattern(word);
   }
 
-  /// יוצר רשימה של וריאציות כתיב מלא/חסר
+  /// יוצר list של וריאציות כתיב full/חסר
   static List<String> generateFullPartialSpellingVariations(String word) {
     return SearchRegexPatterns.generateFullPartialSpellingVariations(word);
   }

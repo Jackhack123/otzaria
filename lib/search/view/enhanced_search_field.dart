@@ -17,11 +17,11 @@ import 'package:otzaria/utils/text_manipulation.dart' as utils;
 class EnhancedSearchField extends StatefulWidget {
   final dynamic widget;
 
-  /// האם להציג את כפתור החיפוש המובנה בתוך השדה.
+  /// האם להציג את button הsearch המובנה בתוך הfield.
   final bool showInlineSearchButton;
 
-  /// callback חיצוני שיופעל במקום לוגיקת החיפוש הפנימית כשמוגדר.
-  /// משמש בדיאלוג החיפוש המתקדם כך ש-Enter מוליך לחיפוש הנכון.
+  /// callback חיצוני שיופעל במקום לוגיקת הsearch הפנימית כשמוגדר.
+  /// משמש בדיאלוג הsearch המתקדם כך ש-Enter מוליך לsearch הtrue.
   final VoidCallback? onSubmit;
 
   const EnhancedSearchField({
@@ -83,7 +83,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
     final bool drawerWasOpen = _searchOptionsOverlay != null;
     final text = widget.tab.queryController.text;
 
-    // אם שדה החיפוש התרוקן, נקה הכל ונסגור את המגירה
+    // אם field הsearch התרוקן, נקה הכל ונclosed את המגירה
     if (text.trim().isEmpty) {
       widget.tab.searchOptions.clear();
       if (drawerWasOpen) {
@@ -93,7 +93,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
       return;
     }
 
-    // עדכון המגירה אם היא פתוחה
+    // update המגירה אם היא openה
     if (drawerWasOpen) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _updateSearchOptionsOverlay();
@@ -102,7 +102,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
   }
 
   void _onCursorPositionChanged() {
-    // עדכון המגירה כשהסמן זז (אם היא פתוחה)
+    // update המגירה כשהסמן זז (אם היא openה)
     if (_searchOptionsOverlay != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _updateSearchOptionsOverlay();
@@ -111,15 +111,15 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
   }
 
   void _updateSearchOptionsOverlay() {
-    // עדכון המגירה אם היא פתוחה
+    // update המגירה אם היא openה
     if (_searchOptionsOverlay != null) {
-      // שמירת מיקום הסמן לפני העדכון
+      // save location הסמן לפני הupdate
       final currentSelection = widget.tab.queryController.selection;
 
       _hideSearchOptionsOverlay();
       _showSearchOptionsOverlay();
 
-      // החזרת מיקום הסמן אחרי העדכון
+      // החזרת location הסמן אחרי הupdate
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           debugPrint(
@@ -154,12 +154,12 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
               textFieldBox.size.height,
             );
 
-            // אזור המגירה המשוער - אנחנו לא יודעים את הגובה המדויק אז ניקח טווח סביר
+            // אזור המגירה המשוער - אנחנו no יודעים את הגובה המדויק אז ניקח טווח סביר
             final drawerRect = Rect.fromLTWH(
               textFieldGlobalPosition.dx,
               textFieldGlobalPosition.dy + textFieldBox.size.height,
               textFieldBox.size.width,
-              120.0, // גובה משוער מקסימלי לשתי שורות
+              120.0, // גובה משוער מקסימלי לשתי lines
             );
 
             if (!textFieldRect.contains(clickPosition) &&
@@ -181,7 +181,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                   curve: Curves.easeInOut,
                   alignment: Alignment.topCenter,
                   child: Container(
-                    // height: 40.0, // 2. מסירים את הגובה הקבוע
+                    // height: 40.0, // 2. מסירים את הגובה הconstant
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       boxShadow: [
@@ -222,20 +222,20 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
     );
     overlayState.insert(_searchOptionsOverlay!);
 
-    // החזרת מיקום הסמן אחרי יצירת ה-overlay
+    // החזרת location הסמן אחרי יצירת ה-overlay
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         widget.tab.queryController.selection = currentSelection;
       }
     });
 
-    // וידוא שה-overlay מוכן לקבל לחיצות
+    // וידוא שה-overlay מוyes לקבל לחיצות
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ה-overlay כעת מוכן לקבל לחיצות
+      // ה-overlay כעת מוyes לקבל לחיצות
     });
   }
 
-  // המילה הנוכחית (לפי מיקום הסמן)
+  // המילה הcurrent (לפי location הסמן)
   Map<String, dynamic>? _getCurrentWordInfo() {
     final text = widget.tab.queryController.text;
     final cursorPosition = widget.tab.queryController.selection.baseOffset;
@@ -266,13 +266,13 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
   Widget _buildSearchOptionsContent() {
     final wordInfo = _getCurrentWordInfo();
 
-    // אם אין מילה נוכחית, נציג הודעה המתאימה
+    // אם אין מילה current, נציג Message המתאימה
     if (wordInfo == null ||
         wordInfo['word'] == null ||
         wordInfo['word'].isEmpty) {
       return const Center(
         child: Text(
-          'הקלד או הצב את הסמן על מילה כלשהיא, כדי לבחור אפשרויות חיפוש',
+          'הקלד או הצב את הסמן על מילה כלשהיא, כדי לselected אפשרויות search',
           style: TextStyle(fontSize: 12, color: Colors.grey),
           textAlign: TextAlign.center,
         ),
@@ -287,7 +287,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
       onOptionsChanged: _onSearchOptionsChanged,
       key: ValueKey(
         '${wordInfo['word']}_${wordInfo['index']}',
-      ), // מפתח ייחודי לעדכון
+      ), // key ייoverrideי לupdate
     );
   }
 
@@ -297,24 +297,24 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
   }
 
   void _notifyDropdownClosed() {
-    // עדכון מצב הכפתור כשהמגירה נסגרת מבחוץ
+    // update מצב הbutton כשהמגירה נסגרת מבחוץ
     setState(() {
-      // זה יגרום לעדכון של הכפתור ב-build
+      // זה יגרום לupdate של הbutton ב-build
     });
   }
 
   void _onSearchOptionsChanged() {
-    // עדכון התצוגה כשמשתמש משנה אפשרויות
+    // update התצוגה כשuser מyear אפשרויות
     setState(() {
-      // זה יגרום לעדכון של התצוגה
+      // זה יגרום לupdate של התצוגה
     });
 
-    // עדכון ה-notifier כדי שהתצוגה של מילות החיפוש תתעדכן
+    // update ה-notifier כדי שהתצוגה של מילות הsearch תתעדyes
     widget.tab.searchOptionsChanged.value++;
   }
 
   void _performSearch() {
-    // אם קיים callback חיצוני (למשל מהדיאלוג), משתמשים בו במקום לוגיקת החיפוש הפנימית
+    // אם קיים callback חיצוני (למשל מהדיאלוג), users בו במקום לוגיקת הsearch הפנימית
     if (widget.onSubmit != null) {
       widget.onSubmit!();
       return;
@@ -322,7 +322,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
 
     String query = widget.tab.queryController.text.trim();
     if (query.isNotEmpty) {
-      // החיפוש עובד תמיד על טקסט ללא ניקוד.
+      // הsearch עובד תמיד על text לno ניקוד.
       if (utils.hasNikud(query)) {
         query = utils.removeVolwels(query);
       }
@@ -360,7 +360,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
       child: KeyboardListener(
         focusNode: FocusNode(),
         onKeyEvent: (KeyEvent event) {
-          // טיפול ב-Enter גם כשהפוקוס לא בתיבת החיפוש
+          // טיפול ב-Enter גם כשהfocus no בתיבת הsearch
           if (event is KeyDownEvent &&
               event.logicalKey == LogicalKeyboardKey.enter &&
               !widget.tab.searchFieldFocusNode.hasFocus) {
@@ -382,7 +382,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                   child: KeyboardListener(
                     focusNode: FocusNode(),
                     onKeyEvent: (KeyEvent event) {
-                      // עדכון המגירה כשמשתמשים בחצים במקלדת
+                      // update המגירה כשusers בחצים במקלדת
                       if (event is KeyDownEvent) {
                         final isArrowKey =
                             event.logicalKey.keyLabel == 'Arrow Left' ||
@@ -403,7 +403,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                       focusNode: widget.tab.searchFieldFocusNode,
                       controller: widget.tab.queryController,
                       onChanged: (text) {
-                        // עדכון המגירה כשהטקסט משתנה
+                        // update המגירה כשהtext variable
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (_searchOptionsOverlay != null) {
                             _updateSearchOptionsOverlay();
@@ -418,7 +418,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                         fillColor: colorScheme.surfaceContainerHigh,
                         border: const OutlineInputBorder(),
                         hintText: "חפש כאן...",
-                        labelText: "לחיפוש הקש אנטר או לחץ על סמל החיפוש",
+                        labelText: "לsearch הקש אנטר או לחץ על סמל הsearch",
                         contentPadding: widget.showInlineSearchButton
                             ? null
                             : const EdgeInsets.only(
@@ -436,7 +436,7 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                         suffixIcon: IconButton(
                           icon: const Icon(FluentIcons.dismiss_24_regular),
                           onPressed: () {
-                            // ניקוי מלא של כל הנתונים
+                            // ניקוי full של כל הנתונים
                             widget.tab.queryController.clear();
                             widget.tab.searchOptions.clear();
                             context
@@ -454,8 +454,8 @@ class _EnhancedSearchFieldState extends State<EnhancedSearchField> {
                 ),
               ),
             ),
-            // אזורי ריחוף הוסרו - לא נחוצים יותר
-            // כפתורי ה+ וכפתורי המרווח הוסרו - עכשיו משתמשים בבקרים בדיאלוג
+            // אזורי ריחוף הוסרו - no נחוצים יותר
+            // buttonי ה+ וbuttonי המרווח הוסרו - עכשיו users בבקרים בדיאלוג
           ],
         ),
       ),

@@ -8,21 +8,21 @@ import 'package:otzaria/tabs/models/text_tab.dart';
 import 'package:otzaria/text_book/bloc/text_book_bloc.dart';
 import 'package:otzaria/text_book/bloc/text_book_state.dart';
 
-/// מחלקה לטיפול בקישורי HTML בתוך הטקסט
+/// class לטיפול בקישורי HTML בתוך הtext
 class HtmlLinkHandler {
-  /// מנסה לפענח URL בצורה בטוחה, תומך בטקסט רגיל ו-URL encoded
+  /// מנסה לפענח URL בצורה בטוחה, תומך בtext רגיל ו-URL encoded
   static String _safeDecode(String text) {
     if (text.isEmpty) return text;
 
     try {
-      // אם הטקסט מכיל % זה כנראה מקודד
+      // אם הtext מכיל % זה כנראה מקודד
       if (text.contains('%')) {
         return Uri.decodeComponent(text);
       }
-      // אחרת, זה כבר טקסט רגיל
+      // אחרת, זה כבר text רגיל
       return text;
     } catch (e) {
-      // אם הפענוח נכשל, נחזיר את הטקסט המקורי
+      // אם הפענוח נכשל, נחזיר את הtext המקורי
       debugPrint('Failed to decode URL component: $text, error: $e');
       return text;
     }
@@ -42,29 +42,29 @@ class HtmlLinkHandler {
       final ref = _safeDecode(uri.queryParameters['ref'] ?? '');
 
       if (path.isEmpty) {
-        throw Exception('נתיב לא תקין בקישור');
+        throw Exception('path no תקין בקישור');
       }
 
-      // המרת האינדקס למספר (index2 מגיע כ-1-based, אבל אנחנו צריכים 0-based)
+      // המרת the index למbook (index2 מגיע כ-1-based, אבל אנחנו צריכים 0-based)
       final index = int.tryParse(indexStr);
       if (index == null) {
-        throw Exception('אינדקס לא תקין בקישור');
+        throw Exception('אינדקס no תקין בקישור');
       }
 
-      // מציאת הספר על פי הנתיב
+      // מציאת הbook על פי הpath
       final bookTitle = _getTitleFromPath(path);
       final library = await DataRepository.instance.library;
       final foundBook = library.findBookByTitle(bookTitle, TextBook);
 
       if (foundBook == null) {
-        throw Exception('לא נמצא ספר בשם: $bookTitle');
+        throw Exception('no נמצא book בname: $bookTitle');
       }
 
       if (foundBook is! TextBook) {
-        throw Exception('הספר $bookTitle אינו ספר טקסט');
+        throw Exception('הbook $bookTitle אינו book text');
       }
 
-      // פתיחת הספר באינדקס הנכון (המרה ל-0-based)
+      // פתיחת הbook באינדקס הtrue (המרה ל-0-based)
       final tab = TextBookTab(
         book: foundBook,
         index: index - 1, // המרה מ-1-based ל-0-based
@@ -75,20 +75,20 @@ class HtmlLinkHandler {
       openBookCallback(tab);
 
       if (context.mounted && ref.isNotEmpty) {
-        UiSnack.show('נפתח: $ref');
+        UiSnack.show('נOpen: $ref');
       }
     } catch (e) {
-      debugPrint('שגיאה בטיפול בקישור מבוסס תווים: $e');
+      debugPrint('error בטיפול בקישור מבוסס תווים: $e');
 
       if (context.mounted) {
-        UiSnack.show('לא ניתן לפתוח את הקישור: $e');
+        UiSnack.show('no ניתן לopen את הקישור: $e');
       }
     }
   }
 
-  /// מחלץ שם ספר מנתיב קובץ
+  /// מחלץ name book מpath file
   static String _getTitleFromPath(String path) {
-    // הסרת סיומת קובץ ונתיב
+    // הסרת סיומת file וpath
     String title = path.split('/').last.split('\\').last;
     if (title.endsWith('.txt')) {
       title = title.substring(0, title.length - 4);
@@ -96,56 +96,56 @@ class HtmlLinkHandler {
     return title;
   }
 
-  /// מטפל בלחיצה על קישור HTML
+  /// מטפל בtap על קישור HTML
   ///
-  /// הפונקציה מפרשת קישורים בפורמטים הבאים:
-  /// - book://שם_הסxxxxxxxxח ספר בתחילת הספר
-  /// - book://שם_הספר#כותרת - פותח ספר ומנווט לכותרת ספציפית
-  /// - #כותרת - מנווט לכותרת באותו ספר
+  /// הfunction commentatorת קישורים בפורמטים nextים:
+  /// - book://name_הסxxxxxxxxח book בתחילת הbook
+  /// - book://name_הbook#כותרת - פותח book ומנווט לכותרת specificת
+  /// - #כותרת - מנווט לכותרת באותו book
   /// - otzaria://inline-link?path={path}&index={index}&ref={ref} - קישור מבוסס תווים
   ///
-  /// דוגמאות:
+  /// examples:
   /// - <a href="book://ברכות">ברכות</a>
-  /// - <a href="book://ברכות#דף ב">ברכות דף ב</a>
-  /// - <a href="#דף ג">דף ג</a>
+  /// - <a href="book://ברכות#page ב">ברכות page ב</a>
+  /// - <a href="#page ג">page ג</a>
   static Future<bool> handleLink(
     BuildContext context,
     String url,
     Function(TextBookTab) openBookCallback,
   ) async {
     try {
-      // בדיקה אם זה קישור מבוסס תווים (inline-link)
+      // check אם זה קישור מבוסס תווים (inline-link)
       if (url.startsWith('otzaria://inline-link')) {
         await _handleInlineLink(context, url, openBookCallback);
         return true;
       }
 
-      // בדיקה אם זה קישור פנימי לכותרת באותו ספר
+      // check אם זה קישור פנימי לכותרת באותו book
       if (url.startsWith('#')) {
         final headerName = _safeDecode(url.substring(1));
         await _navigateToHeader(context, headerName);
         return true;
       }
 
-      // בדיקה אם זה קישור לספר
+      // check אם זה קישור לbook
       if (url.startsWith('book://')) {
         final bookUrl = url.substring(7); // הסרת "book://"
 
         String bookTitle;
         String? headerName;
 
-        // בדיקה אם יש כותרת ספציפית
+        // check אם יש כותרת specificת
         if (bookUrl.contains('#')) {
           final parts = bookUrl.split('#');
           bookTitle = _safeDecode(parts[0]);
 
-          // טיפול במבנה תלמודי: ספר#דף#צד
+          // טיפול במבנה Talmudי: book#page#צד
           if (parts.length >= 2) {
             if (parts.length == 3) {
-              // מבנה מלא: ספר#דף#צד
+              // מבנה full: book#page#צד
               headerName = _safeDecode('${parts[1]} ${parts[2]}');
             } else {
-              // מבנה רגיל: ספר#כותרת
+              // מבנה רגיל: book#כותרת
               headerName = _safeDecode(parts[1]);
             }
           }
@@ -158,38 +158,38 @@ class HtmlLinkHandler {
         return true;
       }
 
-      // אם זה לא קישור שאנחנו מטפלים בו, נחזיר false
+      // אם זה no קישור שאנחנו מטפלים בו, נחזיר false
       return false;
     } catch (e, stackTrace) {
-      debugPrint('שגיאה בטיפול בקישור: $e');
+      debugPrint('error בטיפול בקישור: $e');
       debugPrint('Stack trace: $stackTrace');
 
-      // הצגת הודעת שגיאה למשתמש
+      // הצגת הודעת error לuser
       if (context.mounted) {
-        UiSnack.show('שגיאה בפתיחת הקישור: $e');
+        UiSnack.show('error בפתיחת הקישור: $e');
       }
 
       return false;
     }
   }
 
-  /// מנווט לכותרת באותו ספר הנוכחי
+  /// מנווט לכותרת באותו book הcurrent
   static Future<void> _navigateToHeader(
       BuildContext context, String headerName) async {
     try {
-      // נקבל את הספר הנוכחי מה-BLoC
+      // נקבל את הbook הcurrent מה-BLoC
       final textBookBloc = context.read<TextBookBloc>();
       final state = textBookBloc.state;
 
       if (state is! TextBookLoaded) {
-        throw Exception('לא ניתן לנווט - הספר לא נטען');
+        throw Exception('no ניתן לנווט - הbook no נטען');
       }
 
-      // חיפוש הכותרת בתוכן הספציפי
+      // search הכותרת בcontent הspecific
       final index = await _findHeaderIndex(state.book, headerName);
 
       if (index != null) {
-        // ניווט לאינדקס שנמצא
+        // ניווט noינדקס שנמצא
         state.scrollController.scrollTo(
           index: index,
           duration: const Duration(milliseconds: 250),
@@ -200,18 +200,18 @@ class HtmlLinkHandler {
           UiSnack.show('נווט ל: $headerName');
         }
       } else {
-        throw Exception('לא נמצאה הכותרת: $headerName');
+        throw Exception('no נמצאה הכותרת: $headerName');
       }
     } catch (e) {
-      debugPrint('שגיאה בניווט לכותרת: $e');
+      debugPrint('error בניווט לכותרת: $e');
 
       if (context.mounted) {
-        UiSnack.show('לא ניתן לנווט לכותרת: $headerName');
+        UiSnack.show('no ניתן לנווט לכותרת: $headerName');
       }
     }
   }
 
-  /// פותח ספר ומנווט לכותרת ספציפית (אם צוינה)
+  /// פותח book ומנווט לכותרת specificת (אם צוינה)
   static Future<void> _openBookWithHeader(
     BuildContext context,
     String bookTitle,
@@ -219,10 +219,10 @@ class HtmlLinkHandler {
     Function(TextBookTab) openBookCallback,
   ) async {
     try {
-      // חיפוש הספר בספרייה
+      // search הbook בlibrary
       final library = await DataRepository.instance.library;
 
-      // קבלת רשימת כל הספרים לבדיקה
+      // קבלת רשימת כל הbooks לtest
       final allBooks = library.getAllBooks();
 
       final foundBook = library.findBookByTitle(bookTitle, TextBook);
@@ -233,38 +233,38 @@ class HtmlLinkHandler {
 
         if (anyBook != null) {
           throw Exception(
-              'הספר "$bookTitle" נמצא אבל הוא מטיפוס ${anyBook.runtimeType}, לא TextBook');
+              'הbook "$bookTitle" נמצא אבל הוא מטיפוס ${anyBook.runtimeType}, no TextBook');
         }
 
-        // הצגת רשימת ספרים זמינים למשתמש
+        // הצגת רשימת books זמינים לuser
         final availableBooks = allBooks.take(10).map((b) => b.title).join(', ');
         throw Exception(
-            'לא נמצא ספר בשם: "$bookTitle".\nספרים זמינים (דוגמאות): $availableBooks');
+            'no נמצא book בname: "$bookTitle".\nbooks זמינים (examples): $availableBooks');
       }
 
       // וידוא שזה TextBook
       if (foundBook is! TextBook) {
-        throw Exception('הספר $bookTitle אינו ספר טקסט');
+        throw Exception('הbook $bookTitle אינו book text');
       }
 
       final book = foundBook;
       int startIndex = 0;
 
-      // אם צוינה כותרת, נחפש את האינדקס שלה
+      // אם צוינה כותרת, נחפש את the index שלה
       if (headerName != null && headerName.isNotEmpty) {
         final headerIndex = await _findHeaderIndex(book, headerName);
         if (headerIndex != null) {
           startIndex = headerIndex;
         } else {
-          // אם לא נמצאה הכותרת, נציג אזהרה אבל עדיין נפתח את הספר
+          // אם no נמצאה הכותרת, נציג Warning אבל עדיין נOpen את הbook
           if (context.mounted) {
             UiSnack.show(
-                'לא נמצאה הכותרת "$headerName" בספר $bookTitle, פותח את תחילת הספר');
+                'no נמצאה הכותרת "$headerName" בbook $bookTitle, פותח את תחילת הbook');
           }
         }
       }
 
-      // פתיחת הספר
+      // פתיחת הbook
       final tab = TextBookTab(
         book: book,
         index: startIndex,
@@ -275,32 +275,32 @@ class HtmlLinkHandler {
       openBookCallback(tab);
 
       if (context.mounted && headerName != null && headerName.isNotEmpty) {
-        UiSnack.show('פתח ספר: $bookTitle - $headerName');
+        UiSnack.show('Open book: $bookTitle - $headerName');
       }
     } catch (e) {
-      debugPrint('שגיאה בפתיחת ספר: $e');
+      debugPrint('error בפתיחת book: $e');
 
       if (context.mounted) {
-        UiSnack.show('לא ניתן לפתוח את הספר: $bookTitle');
+        UiSnack.show('no ניתן לopen את הbook: $bookTitle');
       }
     }
   }
 
-  /// מחפש את האינדקס של כותרת בספר
+  /// מחפש את the index של כותרת בbook
   static Future<int?> _findHeaderIndex(TextBook book, String headerName) async {
     try {
-      // קבלת תוכן הספציפי
+      // קבלת content הspecific
       final tableOfContents = await book.tableOfContents;
 
-      // חיפוש בתוכן העניינים - קודם חיפוש מדויק
+      // search בcontent העניינים - previous search מדויק
       for (final entry in tableOfContents) {
         if (isHeaderMatch(entry.text, headerName)) {
           return entry.index;
         }
       }
 
-      // אם לא נמצא, ננסה לחפש רק לפי מספר הדף (בלי עמוד)
-      // זה עוזר כשהקישור כולל עמוד שלא קיים בתוכן העניינים
+      // אם no נמצא, ננסה לחפש רק לפי מbook הpage (בלי page)
+      // זה עוזר כשהקישור כולל page שno קיים בcontent העניינים
       final pageOnlyMatch = _extractPageNumber(headerName);
       if (pageOnlyMatch != null) {
         for (final entry in tableOfContents) {
@@ -311,11 +311,11 @@ class HtmlLinkHandler {
         }
       }
 
-      // אם לא נמצא בתוכן העניינים, נחפש בתוכן הספר עצמו
+      // אם no נמצא בcontent העניינים, נחפש בcontent הbook עצמו
       final content = await book.text;
       final lines = content.split('\n');
 
-      // חיפוש מדויק
+      // search מדויק
       for (int i = 0; i < lines.length; i++) {
         final line = lines[i];
         final cleanLine = line.replaceAll(RegExp(r'<[^>]*>'), '').trim();
@@ -325,7 +325,7 @@ class HtmlLinkHandler {
         }
       }
 
-      // חיפוש לפי דף בלבד
+      // search לפי page בלבד
       if (pageOnlyMatch != null) {
         for (int i = 0; i < lines.length; i++) {
           final line = lines[i];
@@ -340,21 +340,21 @@ class HtmlLinkHandler {
 
       return null;
     } catch (e) {
-      debugPrint('שגיאה בחיפוש כותרת: $e');
+      debugPrint('error בsearch כותרת: $e');
       return null;
     }
   }
 
-  /// מחלץ את מספר הדף מכותרת (למשל "דף כג א" -> "כג")
+  /// מחלץ את מbook הpage מכותרת (למשל "page כג א" -> "כג")
   static String? _extractPageNumber(String text) {
-    // דפוס לזיהוי מספר דף עברי
-    final pagePattern = RegExp(r'דף\s+([א-ת]{1,3})');
+    // דפוס לidentify מbook page עברי
+    final pagePattern = RegExp(r'page\s+([א-ת]{1,3})');
     final match = pagePattern.firstMatch(text);
     if (match != null) {
       return match.group(1);
     }
 
-    // אם אין "דף", ננסה למצוא מספר עברי בתחילת המחרוזת
+    // אם אין "page", ננסה למצוא מbook עברי בתחילת המחרוזת
     final numberPattern = RegExp(r'^([א-ת]{1,3})(?:\s|$)');
     final numberMatch = numberPattern.firstMatch(text.trim());
     if (numberMatch != null) {
@@ -364,9 +364,9 @@ class HtmlLinkHandler {
     return null;
   }
 
-  /// בדיקה אם טקסט תואם לכותרת המבוקשת
+  /// check אם text תואם לכותרת המבוקשת
   static bool isHeaderMatch(String text, String headerName) {
-    // ניקוי הטקסטים לצורך השוואה
+    // ניקוי הtextים לצורך השוואה
     final cleanText = text.trim().replaceAll(RegExp(r'\s+'), ' ');
     final cleanHeader = headerName.trim().replaceAll(RegExp(r'\s+'), ' ');
 
@@ -375,17 +375,17 @@ class HtmlLinkHandler {
       return true;
     }
 
-    // השוואה ללא רגישות לרווחים
+    // השוואה לno רגישות לרווחים
     if (cleanText.replaceAll(' ', '') == cleanHeader.replaceAll(' ', '')) {
       return true;
     }
 
-    // בדיקה אם הכותרת מכילה את הטקסט המבוקש
+    // check אם הכותרת מכילה את הtext המבוקש
     if (cleanText.contains(cleanHeader)) {
       return true;
     }
 
-    // בדיקה הפוכה - אם הטקסט המבוקש מכיל את הכותרת
+    // check הפוכה - אם הtext המבוקש מכיל את הכותרת
     if (cleanHeader.contains(cleanText)) {
       return true;
     }

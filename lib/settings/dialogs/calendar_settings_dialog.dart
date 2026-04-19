@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otzaria/tools/calendar/ulits/calendar_cubit.dart';
 import 'package:otzaria/settings/panels/calendar_settings_panel.dart';
 
-/// פונקציה גלובלית להצגת דיאלוג הגדרות לוח שנה
+/// function גלובלית להצגת דיאלוג settings לוח year
 /// ניתן לקרוא לה מכל מקום באפליקציה
 void showCalendarSettingsDialog(
   BuildContext context, {
@@ -13,7 +13,7 @@ void showCalendarSettingsDialog(
     context: context,
     builder: (dialogContext) => AlertDialog(
       title: const Text(
-        'הגדרות לוח שנה',
+        'settings לוח year',
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
@@ -28,7 +28,7 @@ void showCalendarSettingsDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('סגור'),
+          child: const Text('closed'),
         ),
       ],
     ),

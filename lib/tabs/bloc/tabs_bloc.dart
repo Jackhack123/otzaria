@@ -114,7 +114,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     final currentTabIndex = _repository.loadCurrentTabIndex();
     final sideBySideMode = _repository.loadSideBySideMode();
 
-    // וידוא שהאינדקסים של side-by-side תקינים
+    // וידוא שthe indexים של side-by-side תקינים
     SideBySideMode? validatedMode;
     if (sideBySideMode != null && tabs.isNotEmpty) {
       if (sideBySideMode.leftTabIndex < tabs.length &&
@@ -122,7 +122,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
           sideBySideMode.leftTabIndex != sideBySideMode.rightTabIndex) {
         validatedMode = sideBySideMode;
       } else {
-        debugPrint('DEBUG: מצב side-by-side לא תקין, מתעלם');
+        debugPrint('DEBUG: מצב side-by-side no תקין, מתעלם');
       }
     }
 
@@ -165,13 +165,13 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     final newIndex = min(state.currentTabIndex + 1, newTabs.length);
     newTabs.insert(newIndex, event.tab);
 
-    // עדכון אינדקסים במצב side-by-side אם קיים
+    // update אינדקסים במצב side-by-side אם קיים
     SideBySideMode? newSideBySideMode = state.sideBySideMode;
     if (state.sideBySideMode != null) {
       var newLeftIndex = state.sideBySideMode!.leftTabIndex;
       var newRightIndex = state.sideBySideMode!.rightTabIndex;
 
-      // אם הטאב החדש נוסף לפני אחד מהטאבים במצב side-by-side, מעדכנים את האינדקס
+      // אם הטאב החדש נוסף לפני אחד מהטאבים במצב side-by-side, מעדכנים את the index
       if (newIndex <= newLeftIndex) newLeftIndex++;
       if (newIndex <= newRightIndex) newRightIndex++;
 
@@ -181,7 +181,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       );
 
       debugPrint(
-          'DEBUG: עדכון אינדקסים במצב side-by-side: left=$newLeftIndex, right=$newRightIndex');
+          'DEBUG: update אינדקסים במצב side-by-side: left=$newLeftIndex, right=$newRightIndex');
     }
 
     emit(state.copyWith(
@@ -437,16 +437,16 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
     _maybeStopPdfWorker(previousTabs: previousTabs, nextTabs: newTabs);
 
-    // בדיקה אם הטאב שנסגר היה חלק ממצב side-by-side
+    // check אם הטאב שנסגר היה חלק ממצב side-by-side
     SideBySideMode? newSideBySideMode = state.sideBySideMode;
     if (state.sideBySideMode != null) {
       if (removedTabIndex == state.sideBySideMode!.leftTabIndex ||
           removedTabIndex == state.sideBySideMode!.rightTabIndex) {
         // אם סגרנו אחד מהטאבים במצב side-by-side, מבטלים את המצב
-        debugPrint('DEBUG: ביטול מצב side-by-side כי נסגר טאב שהיה חלק ממנו');
+        debugPrint('DEBUG: cancel מצב side-by-side כי נסגר טאב שהיה חלק ממנו');
         newSideBySideMode = null;
       } else {
-        // עדכון האינדקסים אם הם השתנו
+        // update the indexים אם הם השתנו
         var newLeftIndex = state.sideBySideMode!.leftTabIndex;
         var newRightIndex = state.sideBySideMode!.rightTabIndex;
 
@@ -460,7 +460,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       }
     }
 
-    // אם אין טאבים נותרים, נשאיר את האינדקס ב-0
+    // אם אין טאבים נותרים, נשאיר את the index ב-0
     if (newTabs.isEmpty) {
       emit(state.copyWith(
         tabs: newTabs,
@@ -471,12 +471,12 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       return;
     }
 
-    // חישוב האינדקס החדש - אם סגרנו טאב לפני או בדיוק על הטאב הפעיל, זזים אינדקס אחד אחורה
+    // חישוב the index החדש - אם סגרנו טאב לפני או בדיוק על הטאב הפעיל, זזים אינדקס אחד אחורה
     var newIndex = removedTabIndex <= state.currentTabIndex
         ? max(state.currentTabIndex - 1, 0)
         : state.currentTabIndex;
 
-    // וידוא שהאינדקס תקין (לא חורג מגבולות הרשימה)
+    // וידוא שthe index תקין (no חורג מגבולות הlist)
     newIndex = min(newIndex, newTabs.length - 1);
 
     emit(state.copyWith(
@@ -491,8 +491,8 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
   Future<void> _onSetCurrentTab(
       SetCurrentTab event, Emitter<TabsState> emit) async {
     if (event.index >= 0 && event.index < state.tabs.length) {
-      // לא מבטלים את מצב side-by-side - פשוט עוברים לטאב
-      // הפונקציה _shouldShowSideBySideView תחליט אם להציג side-by-side או TabBarView
+      // no מבטלים את מצב side-by-side - פשוט עוברים לטאב
+      // הfunction _shouldShowSideBySideView תחליט אם להציג side-by-side או TabBarView
       final tabsToSave = state.tabs;
       final modeToSave = state.sideBySideMode;
       emit(state.copyWith(currentTabIndex: event.index));
@@ -508,7 +508,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       CloseAllTabs event, Emitter<TabsState> emit) async {
     final previousTabs = List<OpenedTab>.from(state.tabs);
 
-    // שמירת טאבים מוצמדים בלבד
+    // save טאבים מוצמדים בלבד
     final pinnedTabs = state.tabs.where((tab) => tab.isPinned).toList();
 
     // ניקוי משאבים של כל הטאבים שאינם מוצמדים
@@ -523,7 +523,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
     _maybeStopPdfWorker(previousTabs: previousTabs, nextTabs: pinnedTabs);
 
-    // ביטול מצב side-by-side כי סגרנו טאבים
+    // cancel מצב side-by-side כי סגרנו טאבים
     emit(state.copyWith(
       tabs: pinnedTabs,
       currentTabIndex: newIndex,
@@ -547,7 +547,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
     _maybeStopPdfWorker(previousTabs: previousTabs, nextTabs: newTabs);
 
-    // ביטול מצב side-by-side כי נשאר רק טאב אחד
+    // cancel מצב side-by-side כי נשאר רק טאב אחד
     emit(state.copyWith(
       tabs: newTabs,
       currentTabIndex: 0,
@@ -568,13 +568,13 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     newTabs.insert(event.newIndex, event.tab);
     final newIndex = newTabs.indexOf(currentTab);
 
-    // עדכון אינדקסים במצב side-by-side אם קיים
+    // update אינדקסים במצב side-by-side אם קיים
     SideBySideMode? newSideBySideMode = state.sideBySideMode;
     if (state.sideBySideMode != null) {
       var newLeftIndex = state.sideBySideMode!.leftTabIndex;
       var newRightIndex = state.sideBySideMode!.rightTabIndex;
 
-      // עדכון האינדקסים לפי התזוזה
+      // update the indexים לפי התזוזה
       if (oldIndex == newLeftIndex) {
         newLeftIndex = event.newIndex;
       } else if (oldIndex < newLeftIndex && event.newIndex >= newLeftIndex) {
@@ -636,17 +636,17 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     debugPrint(
         'DEBUG: הצמדת טאב ${event.tab.title} - isPinned: ${event.tab.isPinned}');
 
-    // יצירת רשימה חדשה לחלוטין כדי לגרום ל-Equatable לזהות שינוי
+    // יצירת list חדשה לחלוטין כדי לגרום ל-Equatable לזהות שינוי
     final newTabs = List<OpenedTab>.from(state.tabs);
 
-    // עדכון ה-state כדי לגרום ל-rebuild - עם forceUpdate
+    // update ה-state כדי לגרום ל-rebuild - עם forceUpdate
     final indexToSave = state.currentTabIndex;
     emit(state.copyWith(
       tabs: newTabs,
       currentTabIndex: state.currentTabIndex,
       forceUpdate: true,
     ));
-    // שמירת השינויים
+    // save השינויים
     await _repository.saveTabs(newTabs, indexToSave);
   }
 
@@ -656,14 +656,14 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     final leftIndex = state.tabs.indexOf(event.leftTab);
 
     if (rightIndex == -1 || leftIndex == -1) {
-      debugPrint('ERROR: לא נמצאו הטאבים למצב side-by-side');
+      debugPrint('ERROR: no נמצאו הטאבים למצב side-by-side');
       return;
     }
 
     debugPrint(
-        'DEBUG: הפעלת מצב side-by-side: right=${event.rightTab.title}, left=${event.leftTab.title}');
+        'DEBUG: Enableת מצב side-by-side: right=${event.rightTab.title}, left=${event.leftTab.title}');
 
-    // יצירת עותקים נפרדים כדי לא לשתף controllers עם הטאבים שעדיין מפורקים מהעץ.
+    // יצירת עותקים נפרדים כדי no לשתף controllers עם הטאבים שעדיין מפורקים מהעץ.
     final combinedTab = CombinedTab(
       rightTab: OpenedTab.from(event.rightTab),
       leftTab: OpenedTab.from(event.leftTab),
@@ -673,10 +673,10 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     // הסרת שני הטאבים המקוריים והוספת הטאב המשולב במקומם
     final newTabs = List<OpenedTab>.from(state.tabs);
 
-    // מוצאים את האינדקס הנמוך יותר כדי להכניס שם את הטאב המשולב
+    // מוצאים את the index הנמוך יותר כדי להכניס name את הטאב המשולב
     final insertIndex = rightIndex < leftIndex ? rightIndex : leftIndex;
 
-    // מסירים את שני הטאבים (מהגבוה לנמוך כדי לא לשבש אינדקסים)
+    // מסירים את שני הטאבים (מהגבוה לנמוך כדי no לשבש אינדקסים)
     if (rightIndex > leftIndex) {
       newTabs.removeAt(rightIndex);
       newTabs.removeAt(leftIndex);
@@ -688,7 +688,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
     // מוסיפים את הטאב המשולב
     newTabs.insert(insertIndex, combinedTab);
 
-    // האינדקס הנוכחי יהיה האינדקס של הטאב המשולב
+    // the index הcurrent יהיה the index של הטאב המשולב
     final newCurrentIndex = insertIndex;
 
     emit(state.copyWith(
@@ -705,7 +705,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
   Future<void> _onDisableSideBySideMode(
       DisableSideBySideMode event, Emitter<TabsState> emit) async {
-    // אם הטאב הנוכחי הוא CombinedTab, נפרק אותו לשני טאבים נפרדים
+    // אם הטאב הcurrent הוא CombinedTab, נפרק אותו לשני טאבים נפרדים
     if (state.currentTab is CombinedTab) {
       final combinedTab = state.currentTab as CombinedTab;
       final newTabs = List<OpenedTab>.from(state.tabs);
@@ -714,11 +714,11 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       // מסירים את הטאב המשולב
       newTabs.removeAt(combinedIndex);
 
-      // מוסיפים עותקים נפרדים כדי לא לשתף controllers עם ה-combined view
+      // מוסיפים עותקים נפרדים כדי no לשתף controllers עם ה-combined view
       newTabs.insert(combinedIndex, OpenedTab.from(combinedTab.rightTab));
       newTabs.insert(combinedIndex + 1, OpenedTab.from(combinedTab.leftTab));
 
-      // האינדקס הנוכחי יהיה הטאב הימני
+      // the index הcurrent יהיה הטאב הימני
       final newCurrentIndex = combinedIndex;
 
       emit(state.copyWith(
@@ -731,7 +731,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
       _disposeTabLater(combinedTab);
     } else {
-      // אם זה לא טאב משולב, פשוט מנקים את המצב
+      // אם זה no טאב משולב, פשוט מנקים את המצב
       final tabsToSave = state.tabs;
       final indexToSave = state.currentTabIndex;
       emit(state.copyWith(
@@ -744,12 +744,12 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
 
   Future<void> _onUpdateSplitRatio(
       UpdateSplitRatio event, Emitter<TabsState> emit) async {
-    // עדכון היחס של הטאב המשולב
+    // update היחס של הטאב המשולב
     if (state.currentTab is CombinedTab) {
       final combinedTab = state.currentTab as CombinedTab;
       combinedTab.splitRatio = event.ratio;
 
-      // שמירת השינוי
+      // save השינוי
       final tabsToSave = state.tabs;
       final indexToSave = state.currentTabIndex;
       emit(state.copyWith(
@@ -775,7 +775,7 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
         isPinned: combinedTab.isPinned,
       );
 
-      // עדכון הרשימה
+      // update הlist
       final newTabs = List<OpenedTab>.from(state.tabs);
       newTabs[state.currentTabIndex] = newCombinedTab;
 

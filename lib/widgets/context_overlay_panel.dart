@@ -1,14 +1,14 @@
 // lib/widgets/context_overlay_panel.dart
 //
-// ContextOverlayPanel — פאנל הגדרות overlay שצף מעל התוכן
+// ContextOverlayPanel — פאנל settings overlay שצף מעל הcontent
 //
-// רכיב behavior/layout שמשתמש ב-FloatingPanel כמעטפת עיצובית.
-// מטרתו לאחד את ההתנהגות של פאנלי הגדרות בלוח שנה, ספריה, וגימטריה.
+// רכיב behavior/layout שuser ב-FloatingPanel כמעטפת עיצובית.
+// מטרתו noחד את ההתנהגות של פאנלי settings בלוח year, Library, וגימטריה.
 //
 // **מאפיינים:**
 // • פתיחה וסגירה באנימציית slide מהצד
 // • scrim לחיץ לסגירה
-// • גובה מלא של אזור התוכן
+// • גובה full של אזור הcontent
 // • צבע רקע לפי AppTopBar (surfaceContainerHigh)
 // • תמיכה בימין/שמאל
 //
@@ -31,13 +31,13 @@ import 'package:flutter/material.dart';
 import 'package:otzaria/widgets/floating_panel.dart';
 
 class ContextOverlayPanel extends StatelessWidget {
-  /// האם הפאנל פתוח
+  /// האם הפאנל open
   final bool isOpen;
 
   /// callback לסגירת הפאנל
   final VoidCallback onClose;
 
-  /// תוכן הפאנל
+  /// content הפאנל
   final Widget child;
 
   /// רוחב הפאנל (ברירת מחדל: 400)
@@ -49,7 +49,7 @@ class ContextOverlayPanel extends StatelessWidget {
   /// צבע רקע (ברירת מחדל: surfaceContainerHigh)
   final Color? backgroundColor;
 
-  /// ריפוד פנימי אחיד לתוכן הפאנל
+  /// ריפוד פנימי אחיד לcontent הפאנל
   final EdgeInsetsGeometry contentPadding;
 
   const ContextOverlayPanel({

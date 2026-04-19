@@ -14,7 +14,7 @@ class DatabaseConstants {
       'otzar-HB_catalog.db.zst';
 
   /// The bundled PDF directory name for Talmud Bavli.
-  static const String talmudBavliFolderName = 'תלמוד בבלי';
+  static const String talmudBavliFolderName = 'Talmud בבלי';
 
   /// The name of the external catalogs version file in GitHub releases
   static const String externalCatalogVersionFileName = 'version.txt';

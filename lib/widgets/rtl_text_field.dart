@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
-/// TextField מותאם אישית עם תמיכה מלאה ב-RTL
+/// TextField מותאם אישית עם תמיכה fullה ב-RTL
 ///
-/// מתקן בעיות ידועות ב-Flutter Desktop עם RTL:
+/// מתקן issues ידועות ב-Flutter Desktop עם RTL:
 /// 1. מקשי החיצים פועלים הפוך (כולל Shift+חיצים)
-/// 2. Collapse של Selection בכיוון הנכון
+/// 2. Collapse של Selection בכיוון הtrue
 /// 3. נראות מיידית של הסמן בניווט
-/// 4. תפריט ההקשר המובנה לא מתאים
+/// 4. תפריט ההקשר המובנה no מתאים
 /// 5. בעיית autofocus באנדרואיד (המקלדת קופצת ונעלמת)
 class RtlTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -60,11 +60,11 @@ class _RtlTextFieldState extends State<RtlTextField> {
   void initState() {
     super.initState();
 
-    // יצירת controller פנימי אם לא סופק
+    // יצירת controller פנימי אם no סופק
     _effectiveController = widget.controller ?? TextEditingController();
 
     // תיקון לבעיית autofocus באנדרואיד
-    // במקום להשתמש ב-autofocus: true ישירות, נבקש פוקוס אחרי שהמסך נבנה
+    // במקום להשתמש ב-autofocus: true ישירות, נבקש focus אחרי שהמסך נבנה
     if (widget.autofocus && widget.focusNode != null && Platform.isAndroid) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted && widget.focusNode != null) {
@@ -77,7 +77,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
   @override
   void didUpdateWidget(RtlTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // עדכון controller אם השתנה
+    // update controller אם השתנה
     if (widget.controller != oldWidget.controller) {
       _effectiveController = widget.controller ?? TextEditingController();
     }
@@ -96,7 +96,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
   Widget build(BuildContext context) {
     final bool isRtl = Directionality.of(context) == TextDirection.rtl;
 
-    // באנדרואיד, לא משתמשים ב-autofocus ישירות אלא דרך requestFocus ב-initState
+    // באנדרואיד, no users ב-autofocus ישירות אno דרך requestFocus ב-initState
     final shouldUseAutofocus =
         widget.autofocus && (widget.focusNode == null || !Platform.isAndroid);
 
@@ -126,7 +126,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
     if (isRtl) {
       textField = CallbackShortcuts(
         bindings: {
-          // חיצים רגילים (ללא Shift)
+          // חיצים רגילים (לno Shift)
           const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
               _handleArrowKey(isVisualRight: false, extendSelection: false),
           const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
@@ -154,7 +154,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
     );
   }
 
-  /// מטפל בלחיצת חץ עם תמיכה מלאה ב-RTL
+  /// מטפל בלחיצת חץ עם תמיכה fullה ב-RTL
   ///
   /// [isVisualRight] - האם המקש שנלחץ הוא חץ ימין (ויזואלית)
   /// [extendSelection] - האם להרחיב בחירה (Shift לחוץ)
@@ -166,11 +166,11 @@ class _RtlTextFieldState extends State<RtlTextField> {
     final selection = _effectiveController.selection;
 
     // לוגיקה ל-RTL:
-    // אינדקס 0 נמצא בצד ימין (תחילת הטקסט). אינדקס מקסימלי בצד שמאל (סוף הטקסט).
-    // חץ ימינה (Visual Right) -> מקטין אינדקס (נע לקראת ההתחלה, offset נמוך יותר).
+    // אינדקס 0 נמצא בצד ימין (תחילת הtext). אינדקס מקסימלי בצד שמאל (סוף הtext).
+    // חץ ימינה (Visual Right) -> מקטין אינדקס (נע לקראת הstart, offset נמוך יותר).
     // חץ שמאלה (Visual Left) -> מגדיל אינדקס (נע לקראת הסוף, offset גבוה יותר).
 
-    // טיפול ב-Selection Collapse (ללא Shift)
+    // טיפול ב-Selection Collapse (לno Shift)
     if (!extendSelection && selection.isValid && !selection.isCollapsed) {
       final int targetOffset;
       if (isVisualRight) {
@@ -197,7 +197,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
 
     if (extendSelection) {
       // מרחיבים/מצמצמים את הבחירה
-      // base נשאר קבוע, extent זז
+      // base נשאר constant, extent זז
       _effectiveController.selection = TextSelection(
         baseOffset: selection.baseOffset,
         extentOffset: newOffset,
@@ -233,7 +233,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
         _buildMenuItem(
           context,
           'copy',
-          'העתק',
+          'Copy',
           FluentIcons.copy_24_regular,
         ),
       ]);
@@ -273,7 +273,7 @@ class _RtlTextFieldState extends State<RtlTextField> {
     ).then((value) async {
       if (value == null) return;
 
-      // שיפור: טיפול במצב שבו הטקסט השתנה בזמן שהתפריט היה פתוח
+      // שיפור: טיפול במצב שבו הtext השתנה בtime שהתפריט היה open
       final currentText = controller.text;
       final currentSelection = controller.selection;
 

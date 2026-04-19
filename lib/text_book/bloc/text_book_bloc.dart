@@ -206,7 +206,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
   String? _cachedPageShapeTargetBookTitlesKey;
   List<String>? _cachedPageShapeTargetBookTitles;
   bool _isLoadingLinks = false;
-  bool _pendingLinksReload = false; // בקשת טעינה שנדחתה בגלל _isLoadingLinks
+  bool _pendingLinksReload = false; // בקשת loading שנדחתה בגלל _isLoadingLinks
   bool _awaitingInitialPageShapeVisibleSync = false;
 
   TextBookBloc({
@@ -363,7 +363,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
 
     bool initialShowPageShapeView = false;
 
-    // שמירת מפרשים קיימים כדי לא לאבד אותם ב-preserveState reload
+    // save Commentators קיימים כדי no noבד אותם ב-preserveState reload
     List<String> existingAvailableCommentators = const [];
     List<CommentatorGroup> existingCommentatorGroups = const [];
     bool? preservedRemoveNikud;
@@ -414,10 +414,10 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
 
     try {
       // ── שלב 1: התחלת טעינות מקבילות ──
-      // מתחילים את טעינת TOC במקביל לטעינת התוכן כדי לחסוך זמן
+      // מתחילים את טעינת TOC במקביל לטעינת הcontent כדי לחסוך time
       final tocFuture = repository.getTableOfContents(book);
 
-      // טעינת תוכן הספר (עם fallback ל-preview אם ריק)
+      // טעינת content הbook (עם fallback ל-preview אם empty)
       String content = await repository.getBookContent(book);
       List<String>? contentLines;
       if (content.isEmpty) {
@@ -444,11 +444,11 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
 
       contentLines ??= await _splitContentLines(content);
 
-      // ── שלב 2: המתנה ל-TOC (כבר רץ במקביל, צפוי להיות מוכן) ──
+      // ── שלב 2: המתנה ל-TOC (כבר רץ במקביל, צפוי להיות מוyes) ──
       final tableOfContents = await tocFuture;
 
-      // ── שלב 3: חישובים מהירים שלא דורשים I/O כבד ──
-      // חישוב כותרת נוכחית (תלוי ב-TOC שכבר מוכן)
+      // ── שלב 3: חישובים מהירים שno דורשים I/O כבד ──
+      // חישוב כותרת current (תלוי ב-TOC שכבר מוyes)
       String? currentTitle;
       if (visibleIndices.isNotEmpty) {
         try {
@@ -459,7 +459,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         }
       }
 
-      // הגדרות ניקוד (קריאות Settings סינכרוניות + בדיקת נתיב קלה)
+      // settings ניקוד (קריאות Settings סינכרוניות + בדיקת path קלה)
       final defaultRemoveNikud =
           Settings.getValue<bool>('key-default-nikud') ?? false;
       final removeNikudFromTanach =
@@ -475,7 +475,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         isTanach: isTanach,
       );
 
-      // קישורים מתחילים ריקים - יטענו ברקע אחרי הצגת הספר
+      // קישורים מתחילים emptyים - יטענו ברקע אחרי הצגת הbook
       const List<Link> emptyLinks = [];
       const List<Link> emptyVisibleLinks = [];
 
@@ -535,9 +535,9 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
 
       _setAwaitingInitialPageShapeVisibleSync(initialShowPageShapeView);
 
-      // ── שלב 4: EMIT ראשוני - הצגת הספר מיידית! ──
-      // בטעינה ראשונית: מפרשים ריקים, ייטענו ברקע
-      // ב-preserveState: שימור מפרשים קיימים כדי למנוע הבהוב
+      // ── שלב 4: EMIT ראשוני - הצגת הbook מיידית! ──
+      // בloading ראשונית: Commentators emptyים, ייטענו ברקע
+      // ב-preserveState: שימור Commentators קיימים כדי למנוע הבהוב
       emit(TextBookLoaded(
         book: book,
         content: contentLines,
@@ -582,16 +582,16 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
             : null,
       ));
 
-      // ── שלב 5: טעינות ברקע - לא חוסמות את ה-UI ──
+      // ── שלב 5: טעינות ברקע - no חוסמות את ה-UI ──
       _resetLoadedLinksWindow(book);
 
-      // טעינת קישורים ברקע אחרי הצגת הספר
+      // טעינת קישורים ברקע אחרי הצגת הbook
       _loadLinksInBackground(
         book,
         visibleIndices,
       );
 
-      // טעינת מפרשים ברקע (רשימת מפרשים זמינים + חלוקה לתקופות)
+      // טעינת Commentators ברקע (רשימת Commentators זמינים + חלוקה לתקופות)
       if (event.loadCommentators) {
         _loadCommentatorsInBackground(book);
       }
@@ -673,7 +673,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
   ) {
     if (state is TextBookLoaded) {
       final currentState = state as TextBookLoaded;
-      // שמירת ההגדרה ב-Settings כדי שתישמר כברירת מחדל
+      // save הsetting ב-Settings כדי שתישמר כברירת מחדל
       Settings.setValue<bool>('key-splited-view', event.show);
       final updatedState = currentState.copyWith(
         showSplitView: event.show,
@@ -699,7 +699,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         showTzuratHadafView: event.show,
         showPageShapeView: false, // כיבוי התצוגה החדשה
         selectedIndex: currentState.selectedIndex,
-        // סגור את חלונית הניווט/חיפוש כשעוברים לצורת הדף
+        // closed את חלונית הניווט/search כשעוברים לצורת הpage
         showLeftPane: event.show ? false : currentState.showLeftPane,
       ));
     }
@@ -712,19 +712,19 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
     if (state is TextBookLoaded) {
       final currentState = state as TextBookLoaded;
 
-      // שמירת העדפת התצוגה לספר זה
+      // save העדפת התצוגה לbook זה
       PageShapeSettingsManager.saveViewModePreference(
         currentState.book.title,
         event.show,
       );
 
-      // מצב צורת הדף נשמר פר-ספר (ב-toJson של הטאב), לא גלובלית
+      // מצב צורת הpage נשמר פר-book (ב-toJson של הטאב), no גלובלית
       _setAwaitingInitialPageShapeVisibleSync(event.show);
       final updatedState = currentState.copyWith(
         showPageShapeView: event.show,
-        showTzuratHadafView: false, // כיבוי התצוגה הישנה
+        showTzuratHadafView: false, // כיבוי התצוגה היyear
         selectedIndex: currentState.selectedIndex,
-        // סגור את חלונית הניווט/חיפוש כשעוברים לצורת הדף
+        // closed את חלונית הניווט/search כשעוברים לצורת הpage
         showLeftPane: event.show ? false : currentState.showLeftPane,
       );
       emit(updatedState);
@@ -734,7 +734,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         force: true,
       );
 
-      // כשיוצאים ממצב צורת הדף למצב רגיל, גלול למיקום הנוכחי
+      // כשיוצאים ממצב צורת הpage למצב רגיל, scroll לlocation הcurrent
       if (!event.show && currentState.selectedIndex != null) {
         Future.delayed(const Duration(milliseconds: 100), () {
           if (scrollController.isAttached) {
@@ -755,7 +755,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
     if (state is TextBookLoaded) {
       final currentState = state as TextBookLoaded;
 
-      // עדכון המפרשים הפעילים בלבד, ללא שינוי של סוג התצוגה
+      // update הCommentators הפעילים בלבד, לno שינוי של סוג התצוגה
       final updatedState = currentState.copyWith(
         activeCommentators: event.commentators,
         selectedIndex: currentState.selectedIndex,
@@ -820,15 +820,15 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         _setAwaitingInitialPageShapeVisibleSync(false);
       }
 
-      // בדיקה אם האינדקסים באמת השתנו
+      // check אם the indexים באמת השתנו
       if (_listsEqual(currentState.visibleIndices, event.visibleIndecies)) {
-        return; // אין שינוי, לא צריך לעדכן
+        return; // אין שינוי, no צריך לעדyes
       }
 
       try {
         String? newTitle = currentState.currentTitle;
 
-        // עדכון הכותרת רק אם האינדקס הראשון השתנה
+        // update הכותרת רק אם the index הראשון השתנה
         if (event.visibleIndecies.isNotEmpty &&
             (currentState.visibleIndices.isEmpty ||
                 currentState.visibleIndices.first !=
@@ -838,7 +838,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         }
 
         int? index = currentState.selectedIndex;
-        // איפוס selectedIndex רק אם היתה גלילה משמעותית (יותר מ-3 שורות)
+        // איפוס selectedIndex רק אם היתה גלילה משמעותית (יותר מ-3 lines)
         // כדי למנוע איפוס כשפשוט עוברים בין tabs
         if (index != null && !event.visibleIndecies.contains(index)) {
           final oldFirst = currentState.visibleIndices.isNotEmpty
@@ -848,13 +848,13 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
               ? event.visibleIndecies.first
               : 0;
 
-          // רק אם גללנו יותר מ-3 שורות, נאפס את הבחירה
+          // רק אם גללנו יותר מ-3 lines, נאפס את הבחירה
           if ((oldFirst - newFirst).abs() > 3) {
             index = null;
           }
         }
 
-        // אופטימיזציה: חישוב ומיון קישורים נראים רק אם החלונית פתוחה או שיש שורה נבחרת לתפריט ההקשר
+        // אופטימיזציה: חישוב ומיון קישורים נראים רק אם החלונית openה או שיש line selectedת לתפריט ההקשר
         final List<Link> visibleLinks;
         if (currentState.showLeftPane || index != null) {
           visibleLinks = _computeVisibleLinks(
@@ -1067,7 +1067,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         : state.visibleIndices;
   }
 
-  /// בדיקה אם שתי רשימות שוות
+  /// check אם שתי lists שוות
   bool _listsEqual(List<int> list1, List<int> list2) {
     if (list1.length != list2.length) return false;
     for (int i = 0; i < list1.length; i++) {
@@ -1093,8 +1093,8 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         clearSelectedIndex: event.index == null,
         visibleLinks: visibleLinks,
       ));
-      // במצב מפרשים מתחת, קישורים לא נטענים ברקע באופן שוטף —
-      // נטען עבור הקטע הנבחר כדי להציג expansion tiles
+      // במצב Commentators מתחת, קישורים no נטענים ברקע באופן שוטף —
+      // נטען עבור הקטע הselected כדי להציג expansion tiles
       if (!currentState.showSplitView &&
           !currentState.showPageShapeView &&
           event.index != null) {
@@ -1186,7 +1186,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
     Emitter<TextBookState> emit,
   ) {
     // כרגע זה רק מציין שהאירוע התקבל
-    // הלוגיקה האמיתית תהיה בכפתור בשורת הכלים
+    // הלוגיקה האמיתית תהיה בbutton בשורת הTools
   }
 
   void _onUpdateSelectedTextForNote(
@@ -1525,7 +1525,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
     final window = _calculateLinksWindow(visibleIndices);
 
     if (_isLoadingLinks) {
-      // בקשה חדשה הגיעה בזמן שטעינה אחרת רצה — מסמנים לנסות שוב אחריה
+      // בקשה חדשה הגיעה בtime שloading אחרת רצה — מסמנים לנסות שוב אחריה
       _pendingLinksReload = true;
       return;
     }
@@ -1713,7 +1713,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
     }
 
     try {
-      // ניסיון 1: טעינה ממסד הנתונים
+      // ניסיון 1: loading ממסד הנתונים
       final sqliteProvider = SqliteDataProvider.instance;
       if (await sqliteProvider.databaseExists() &&
           sqliteProvider.isInitialized) {
@@ -1748,7 +1748,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         }
       }
 
-      // ניסיון 2: טעינה מ-metadata
+      // ניסיון 2: loading מ-metadata
       if (book.heCategories == null || book.heCategories!.isEmpty) {
         final metadata = await FileSystemData.instance.metadata;
         final bookMetadata = metadata[book.title];
@@ -1764,21 +1764,21 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         }
       }
 
-      // ניסיון 3: חילוץ מהנתיב
+      // ניסיון 3: חילוץ מהpath
       if (book.heCategories == null || book.heCategories!.isEmpty) {
         final titleToPath = await FileSystemData.instance.titleToPath;
         final bookPath = titleToPath[book.title];
         if (bookPath != null) {
-          // titleToPath יכול להכיל נתיב קובץ (FS) או נתיב קטגוריה מה-DB.
+          // titleToPath יכול להכיל path file (FS) או path category מה-DB.
           if (bookPath.contains(Platform.pathSeparator)) {
             final pathParts = bookPath.split(Platform.pathSeparator);
-            final otzariaIndex = pathParts.indexOf('אוצריא');
+            final otzariaIndex = pathParts.indexOf('Otzaria');
             if (otzariaIndex >= 0 && otzariaIndex < pathParts.length - 2) {
               final categories =
                   pathParts.sublist(otzariaIndex + 1, pathParts.length - 1);
               book.heCategories = categories.join(', ');
               debugPrint(
-                  '📚 Background: נטען heCategories מהנתיב: "${book.heCategories}"');
+                  '📚 Background: נטען heCategories מהpath: "${book.heCategories}"');
             }
           } else {
             final normalizedCategories = bookPath
@@ -1789,7 +1789,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
             if (normalizedCategories.isNotEmpty) {
               book.heCategories = normalizedCategories;
               debugPrint(
-                  '📚 Background: נטען heCategories מנתיב קטגוריה: "${book.heCategories}"');
+                  '📚 Background: נטען heCategories מpath category: "${book.heCategories}"');
             }
           }
         }
@@ -1802,14 +1802,14 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
   List<CommentatorGroup> _buildCommentatorGroups(
       Map<String, List<String>> eras, List<String> availableCommentators) {
     final known = <String>{
-      ...?eras['תורה שבכתב'],
+      ...?eras['תורה שבFont'],
       ...?eras['חז"ל'],
       ...?eras['ראשונים'],
       ...?eras['אחרונים'],
       ...?eras['מחברי זמננו'],
     };
 
-    final others = (eras['מפרשים נוספים'] ?? [])
+    final others = (eras['Commentators נוספים'] ?? [])
         .toSet()
         .union(availableCommentators
             .where((c) => !known.contains(c))
@@ -1819,8 +1819,8 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
 
     return [
       CommentatorGroup(
-        title: 'תורה שבכתב',
-        commentators: eras['תורה שבכתב'] ?? const [],
+        title: 'תורה שבFont',
+        commentators: eras['תורה שבFont'] ?? const [],
       ),
       CommentatorGroup(
         title: 'חז"ל',
@@ -1839,7 +1839,7 @@ class TextBookBloc extends Bloc<TextBookEvent, TextBookState> {
         commentators: eras['מחברי זמננו'] ?? const [],
       ),
       CommentatorGroup(
-        title: 'שאר מפרשים',
+        title: 'שאר Commentators',
         commentators: others,
       ),
     ];

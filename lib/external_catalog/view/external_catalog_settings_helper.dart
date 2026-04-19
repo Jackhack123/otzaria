@@ -74,8 +74,8 @@ class ExternalCatalogSettingsHelper {
         context: context,
         title: 'מסד הקטלוגים חסר',
         content: settingsState.isOfflineMode
-            ? 'לא ניתן להוריד את מסד הקטלוגים החיצוני במצב מנותק.'
-            : 'לא ניתן להוריד את מסד הקטלוגים כשהאפשרות עדכוני תוכנה וספרים מושבתת.',
+            ? 'no ניתן לparentיד את מסד הקטלוגים החיצוני במצב מנותק.'
+            : 'no ניתן לparentיד את מסד הקטלוגים כשהאפשרות עדכוני תוכנה וbooks מושבתת.',
         confirmText: 'הבנתי',
       );
       return false;
@@ -85,13 +85,13 @@ class ExternalCatalogSettingsHelper {
       context: context,
       title: 'מסד הקטלוגים חסר',
       content:
-          'כדי להציג ספרים מאוצר החכמה ומהיברובוקס צריך להוריד את מסד הקטלוגים החיצוני. האם להוריד אותו עכשיו?',
-      cancelText: 'לא עכשיו',
-      confirmText: 'הורד',
+          'כדי להציג books מאוצר החכמה ומהיברובוקס צריך לparentיד את מסד הקטלוגים החיצוני. האם לparentיד אותו עכשיו?',
+      cancelText: 'no עכשיו',
+      confirmText: 'parentד',
     );
 
     if (shouldDownload != true) {
-      UiSnack.show('ללא מסד הקטלוגים לא יוצגו ספרים חיצוניים');
+      UiSnack.show('לno מסד הקטלוגים no יוצגו books חיצוניים');
       return false;
     }
     if (!context.mounted) {
@@ -102,10 +102,10 @@ class ExternalCatalogSettingsHelper {
       UiSnack.show('מוריד את מסד הקטלוגים החיצוני...');
       await repository.downloadLatestDatabase();
       DataRepository.instance.invalidateExternalBooksCache();
-      UiSnack.showSuccess('מסד הקטלוגים הורד בהצלחה');
+      UiSnack.showSuccess('מסד הקטלוגים parentד בsuccess');
       return true;
     } catch (e) {
-      UiSnack.showError('שגיאה בהורדת מסד הקטלוגים: $e');
+      UiSnack.showError('error בparentדת מסד הקטלוגים: $e');
       return false;
     }
   }
@@ -135,7 +135,7 @@ class ExternalCatalogSettingsHelper {
             DataRepository.instance.invalidateExternalBooksCache)();
       }
     } catch (e) {
-      UiSnack.showError('שגיאה בסנכרון הקטלוגים: $e');
+      UiSnack.showError('error בסנכרון הקטלוגים: $e');
     } finally {
       _isAutoSyncInProgress = false;
     }

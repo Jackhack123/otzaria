@@ -66,7 +66,7 @@ class SetFacet extends SearchEvent {
       {this.customSpacing, this.alternativeWords, this.searchOptions});
 }
 
-/// הגדרת מספר facets בבת אחת ללא הפעלת חיפוש
+/// הגדרת מbook facets בבת אחת לno Enableת search
 class SetFacetsWithoutSearch extends SearchEvent {
   final List<String> facets;
   const SetFacetsWithoutSearch(this.facets);
@@ -84,7 +84,7 @@ class UpdateNumResults extends SearchEvent {
 
 class ResetSearch extends SearchEvent {}
 
-// Events חדשים להגדרות רגקס
+// Events חדשים לsettings רגקס
 class ToggleRegex extends SearchEvent {}
 
 class ToggleCaseSensitive extends SearchEvent {}
@@ -95,7 +95,7 @@ class ToggleDotAll extends SearchEvent {}
 
 class ToggleUnicode extends SearchEvent {}
 
-// Event פנימי לעדכון facet counts
+// Event פנימי לupdate facet counts
 class UpdateFacetCounts extends SearchEvent {
   final Map<String, int> facetCounts;
   UpdateFacetCounts(this.facetCounts);
@@ -106,7 +106,7 @@ class ReplaceFacetCounts extends SearchEvent {
   ReplaceFacetCounts(this.facetCounts);
 }
 
-// Event לטעינת תוצאות נוספות
+// Event לטעינת results נוספות
 class LoadMoreResults extends SearchEvent {
   final Map<String, String>? customSpacing;
   final Map<int, List<String>>? alternativeWords;

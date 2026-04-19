@@ -6,7 +6,7 @@ class StartupWorkGate {
   bool _indexingPendingOrRunning = false;
   bool _startupWorkStarted = false;
 
-  /// מסמן שהספרייה נטענה.
+  /// מסמן שthe library נטענה.
   void markLibraryLoaded() {
     _libraryLoaded = true;
   }
@@ -17,7 +17,7 @@ class StartupWorkGate {
     _indexingPendingOrRunning = expectIndexing;
   }
 
-  /// מעדכן את מצב האינדוקס בפועל.
+  /// מעדyes את מצב האינדוקס בפועל.
   void markIndexingRunning(bool isRunning) {
     _indexingPendingOrRunning = isRunning;
   }

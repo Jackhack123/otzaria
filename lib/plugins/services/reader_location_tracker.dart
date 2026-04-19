@@ -17,11 +17,11 @@ typedef ReaderLocationEventDispatcher = Future<void> Function(
   Map<String, dynamic> payload,
 );
 
-/// עוקב אחרי שינויי מיקום בקורא ומפיץ אירועים לתוספים
+/// עוקב אחרי שינויי location בקורא ומפיץ אירועים לתוספים
 ///
 /// אחראי על:
 /// - מעקב אחרי הטאב הפעיל
-/// - זיהוי שינויי מיקום (index, ref, page)
+/// - identify שינויי location (index, ref, page)
 /// - dedupe של אירועים זהים
 /// - שליחת reader.current_ref_changed
 class ReaderLocationTracker {
@@ -69,7 +69,7 @@ class ReaderLocationTracker {
       _generation++; // הגדלת generation למניעת race
       _connectToTab(currentTab);
 
-      // שינוי טאב = שינוי מיקום, לכן נבדוק מיד
+      // שינוי טאב = שינוי location, לyes נבדוק מיד
       _scheduleLocationCheck();
     }
   }
@@ -95,8 +95,8 @@ class ReaderLocationTracker {
       };
       tab.currentTitle.addListener(_currentTabValueListener!);
 
-      // האזנה גם לשינויי עמוד דרך ה-controller
-      // (זה יקרה אוטומטית כי PdfBookTab מעדכן את pageNumber שלו)
+      // האזנה גם לשינויי page דרך ה-controller
+      // (זה יקרה אוטומטית כי PdfBookTab מעדyes את pageNumber שלו)
     }
   }
 
@@ -118,7 +118,7 @@ class ReaderLocationTracker {
     }
   }
 
-  /// מתזמן בדיקת מיקום עם debounce קטן
+  /// מתtime בדיקת location עם debounce small
   void _scheduleLocationCheck() {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(_debounceDuration, () {
@@ -128,9 +128,9 @@ class ReaderLocationTracker {
 
   Future<void> _checkAndDispatchLocationChange() async {
     final currentTab = _tabsBloc.state.currentTab;
-    final generationAtStart = _generation; // שמירת generation לפני async
+    final generationAtStart = _generation; // save generation לפני async
 
-    // אם אין טאב פעיל, מאפסים את ה-signature כדי שפתיחה מחדש תשלח event
+    // אם אין טאב פעיל, מאפסים את ה-signature כדי שפתיחה again תשלח event
     if (currentTab == null) {
       _lastSignature = null;
       return;
@@ -138,19 +138,19 @@ class ReaderLocationTracker {
 
     final snapshot = await _resolveLocation(currentTab);
 
-    // בדיקה שהטאב לא השתנה בזמן ה-async
+    // check שהטאב no השתנה בtime ה-async
     if (generationAtStart != _generation) {
       return; // הטאב השתנה, מתעלמים מ-snapshot הישן
     }
 
     if (snapshot == null) {
-      // לא הצלחנו לפתור את המיקום
+      // no הצלחנו לפתור את הlocation
       return;
     }
 
     final signature = snapshot.signature();
 
-    // dedupe: אם ה-signature זהה, לא נשלח אירוע
+    // dedupe: אם ה-signature זהה, no נשלח אירוע
     if (signature == _lastSignature) {
       return;
     }

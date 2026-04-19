@@ -11,7 +11,7 @@ class PickArchiveFileRequested extends EmptyLibraryEvent {}
 
 class DownloadLibraryRequested extends EmptyLibraryEvent {}
 
-/// בודק מקום פנוי בהתקנה וקובע אם כפתור ההורדה זמין.
+/// בודק מקום פנוי בהתקנה וקובע אם button הparentדה זמין.
 /// נשלח בעת טעינת המסך.
 class CheckDiskSpaceRequested extends EmptyLibraryEvent {}
 
@@ -30,19 +30,19 @@ class DeleteZipAnswered extends EmptyLibraryEvent {
   List<Object?> get props => [shouldDelete, zipPath, extractedPath];
 }
 
-/// בחירת קובץ seforim.db ישירות דרך file picker (SAF-aware).
-/// משמש כאשר הגישה לנתיב הפיזי נכשלת ב-Android Scoped Storage.
+/// בחירת file seforim.db ישירות דרך file picker (SAF-aware).
+/// משמש כאשר הגישה לpath הפיזי נכשלת ב-Android Scoped Storage.
 class PickDbFileRequested extends EmptyLibraryEvent {
-  /// תיקיית הספרייה שנבחרה (תישמר ב-keyLibraryPath)
+  /// תיקיית the library שselectedה (תישמר ב-keyLibraryPath)
   final String libraryPath;
 
-  /// הנתיב הפנימי שאליו יועתק הקובץ
+  /// הpath הפנימי שאליו יועתק הfile
   final String internalDbPath;
 
-  /// הנתיב החיצוני המקורי של seforim.db (למחיקה אם shouldMove == true)
+  /// הpath החיצוני המקורי של seforim.db (לdelete אם shouldMove == true)
   final String externalDbPath;
 
-  /// אם true — ינסה למחוק את הקובץ החיצוני המקורי לאחר ההעתקה.
+  /// אם true — ינסה לdeleted את הfile החיצוני המקורי noחר הCopyה.
   final bool shouldMove;
 
   PickDbFileRequested({

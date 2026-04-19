@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/widgets/mixins/dialog_navigation_mixin.dart';
 
-/// דיאלוג אישור עם תמיכה באנטר וחיצים
+/// דיאלוג confirm עם תמיכה באנטר וחיצים
 class ConfirmationDialog extends StatefulWidget {
   final String title;
   final String content;
@@ -14,8 +14,8 @@ class ConfirmationDialog extends StatefulWidget {
     super.key,
     required this.title,
     required this.content,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'אישור',
+    this.cancelText = 'cancel',
+    this.confirmText = 'confirm',
     this.confirmColor,
     this.isDangerous = false,
   });
@@ -80,13 +80,13 @@ class _ConfirmationDialogState extends State<ConfirmationDialog>
   }
 }
 
-/// הצגת דיאלוג אישור
+/// הצגת דיאלוג confirm
 Future<bool?> showConfirmationDialog({
   required BuildContext context,
   required String title,
   required String content,
-  String cancelText = 'ביטול',
-  String confirmText = 'אישור',
+  String cancelText = 'cancel',
+  String confirmText = 'confirm',
   Color? confirmColor,
   bool isDangerous = false,
   bool barrierDismissible = true,

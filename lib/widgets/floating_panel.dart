@@ -8,10 +8,10 @@
 // **מתי להשתמש:**
 // • סרגל ניווט / AppBar שצף מעל הרקע
 // • סרגל צד (Sidebar) שצף במסך רחב
-// • כרטיס-מיכל (Container Card) לתוכן מקובץ
+// • כרטיס-מיכל (Container Card) לcontent מfile
 //
 // **Elevation מומלץ (M3 Elevation Levels):**
-// • elevation 1 — שכבה עדינה (SettingsCard, Sidebar)
+// • elevation 1 — שDisable עדינה (SettingsCard, Sidebar)
 // • elevation 2 — AppBar / TabBar (ברירת מחדל)
 // • elevation 4 — Floating Action / Dialog Card
 //
@@ -55,13 +55,13 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 
-/// רוחב מינימלי של פאנל צד בלוח שנה ובמסכים אחרים
+/// רוחב מינימלי של פאנל צד בלוח year ובמסכים אחרים
 const double kSidePanelWidth = 340.0;
 
-/// רוחב מינימלי של תוכן ראשי לצד פאנל צד
+/// רוחב מינימלי של content ראשי לצד פאנל צד
 const double kMainPanelMinWidth = 500.0;
 
-/// סך הרוחב המינימלי להצגת פאנל צד ותוכן ראשי זה לצד זה
+/// סך הרוחב המינימלי להצגת פאנל צד וcontent ראשי זה לצד זה
 const double kSideBySideMinWidth = kSidePanelWidth + kMainPanelMinWidth;
 
 /// פאנל צף בסגנון M3 — elevation + shadow + clip.
@@ -72,7 +72,7 @@ const double kSideBySideMinWidth = kSidePanelWidth + kMainPanelMinWidth;
 /// - מצב כהה: [ColorScheme.surfaceContainer] (אפור כהה)
 /// ניתן לדרוס עם [color].
 class FloatingPanel extends StatelessWidget {
-  /// התוכן בתוך הפאנל
+  /// הcontent בתוך הפאנל
   final Widget child;
 
   /// רדיוס פינות — ברירת מחדל: [AppTokens.radiusMD] (12px)

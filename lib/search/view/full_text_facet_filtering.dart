@@ -104,7 +104,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
       child: RtlTextField(
         controller: _filterQuery,
         decoration: InputDecoration(
-          hintText: 'איתור ספר…',
+          hintText: 'איתור book…',
           prefixIcon: const Icon(FluentIcons.filter_24_regular),
           suffixIcon: IconButton(
             onPressed: _clearFilter,
@@ -141,7 +141,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
       return const SizedBox.shrink();
     }
 
-    // בניית facet בהתאם לפורמט האינדקס: /<topics>/<bookKey>
+    // בניית facet בהתאם לפורמט the index: /<topics>/<bookKey>
     final resolvedCategoryPath =
         categoryPath ?? FacetHelper.resolveCategoryPath(book);
     final facet = FacetHelper.buildBookFacet(resolvedCategoryPath, book);
@@ -154,7 +154,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
       onLongPress: () => _handleFacetToggle(context, facet),
       child: Container(
         padding: EdgeInsets.only(
-          right: 16.0 + (level * 12.0) + 24.0, // הזחה נוספת לספרים
+          right: 16.0 + (level * 12.0) + 24.0, // הזחה נוספת לbooks
           left: 16.0,
           top: 10.0,
           bottom: 10.0,
@@ -206,7 +206,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
                 },
               ),
             ),
-            // מספר התוצאות
+            // מbook הresults
             if (count != -1)
               Text(
                 '($count)',
@@ -232,12 +232,12 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
     SearchState state,
     Map<String, int> facetCounts,
   ) {
-    // אם אין ספרים, הצג הודעה
+    // אם אין books, הצג Message
     if (books.isEmpty) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text('לא נמצאו ספרים'),
+          child: Text('no נמצאו books'),
         ),
       );
     }
@@ -276,10 +276,10 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
 
     return Column(
       children: [
-        // שורת הקטגוריה - סגנון ספרייה
+        // שורת הcategory - סגנון library
         InkWell(
           onTap: () {
-            // Ctrl+לחיצה = toggle, לחיצה רגילה = set
+            // Ctrl+tap = toggle, tap רגילה = set
             if (HardwareKeyboard.instance.isControlPressed) {
               _handleFacetToggle(context, category.path);
             } else {
@@ -350,7 +350,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
                     },
                   ),
                 ),
-                // מספר התוצאות
+                // מbook הresults
                 if (count != -1)
                   Text(
                     '($count)',
@@ -366,7 +366,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
                     child: CircularProgressIndicator(strokeWidth: 1.5),
                   ),
                 const SizedBox(width: 8),
-                // כפתור החץ - מרחיב/מכווץ בלבד
+                // button החץ - מרחיב/מכווץ בלבד
                 InkWell(
                   onTap: toggle,
                   borderRadius: BorderRadius.circular(4),
@@ -385,7 +385,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
           ),
         ),
 
-        // ילדים
+        // children
         if (isExpanded)
           Column(
             children: _buildCategoryChildren(
@@ -418,7 +418,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
               .compareTo(SearchCatalogueOrderHelper.normalizeOrder(b.order)));
     }
 
-    // הוספת תת-קטגוריות
+    // הוספת תת-categories
     for (final subCategory in filteredSubCategories) {
       final count = facetCounts[subCategory.path] ?? 0;
       children.add(
@@ -426,7 +426,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
       );
     }
 
-    // איחוד ספרים כפולים (למשל PDF וטקסט של אותו ספר) לאותה כותרת
+    // איoverride books כפולים (למשל PDF וtext של אותו book) noותה כותרת
     final uniqueBooksInCategory = <String, Book>{};
     for (final book in category.books) {
       uniqueBooksInCategory[_bookDedupKey(book)] ??= book;
@@ -435,7 +435,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
     final filteredBooks = uniqueBooksInCategory.values.toList();
     filteredBooks.sort((a, b) => a.order.compareTo(b.order));
 
-    // הוספת ספרים
+    // הוספת books
     for (final book in filteredBooks) {
       final categoryPath = category.path;
       final fullFacet = FacetHelper.buildBookFacet(categoryPath, book);
@@ -458,7 +458,7 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
     final List<Book> allBooks = [];
 
     void collectBooks(Category cat) {
-      // איחוד ספרים כפולים (למשל PDF וטקסט של אותו ספר) לאותה כותרת
+      // איoverride books כפולים (למשל PDF וtext של אותו book) noותה כותרת
       final uniqueBooksInCategory = <String, Book>{};
       for (final book in cat.books) {
         uniqueBooksInCategory[_bookDedupKey(book)] ??= book;
@@ -508,9 +508,9 @@ class _SearchFacetFilteringState extends State<SearchFacetFiltering>
             final rootCategory = libraryState.library!;
             final facetCounts = searchState.facetCounts;
 
-            // בדיקה אם יש סינון ספרים
+            // check אם יש סינון books
             if (_filterQuery.text.length >= _kMinQueryLength) {
-              // סינון ידנית מהספרייה
+              // סינון ידנית מthe library
               final allBooks = _getAllBooksFromLibrary(rootCategory);
               final filtered = allBooks
                   .where((book) => book.title

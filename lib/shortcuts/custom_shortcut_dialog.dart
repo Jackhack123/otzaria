@@ -51,7 +51,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
       autofocus: true,
       onKeyEvent: (KeyEvent event) {
         if (!_isRecording) {
-          // אם לא מקליטים, אפשר אנטר לאישור
+          // אם no מקליטים, אפשר אנטר לconfirm
           if (event is KeyDownEvent &&
               event.logicalKey == LogicalKeyboardKey.enter &&
               _pressedKeys.isNotEmpty) {
@@ -67,7 +67,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
           });
           _updateDisplay();
         } else if (event is KeyUpEvent) {
-          // כאשר משחררים מקש, לא מסירים אותו מיד
+          // כאשר משחררים מקש, no מסירים אותו מיד
           // נחכה שכל המקשים ישוחררו
         }
       },
@@ -157,7 +157,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ביטול'),
+            child: const Text('cancel'),
           ),
           TextButton(
             onPressed: _pressedKeys.isEmpty
@@ -167,7 +167,7 @@ class _CustomShortcutDialogState extends State<CustomShortcutDialog> {
                         ShortcutHelper.formatKeysToShortcut(_pressedKeys);
                     Navigator.pop(context, shortcut);
                   },
-            child: const Text('אישור'),
+            child: const Text('confirm'),
           ),
         ],
       ),

@@ -4,14 +4,14 @@ import 'package:otzaria/services/book_details_service.dart';
 import 'package:otzaria/core/ui_snack.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// המרת שם המקור לטקסט מתאים עם קישור
+/// המרת name המקור לtext מתאים עם קישור
 Map<String, String> getSourceDisplayInfo(String source) {
   final normalized = source.trim().toLowerCase();
   switch (normalized) {
     case 'ben-yehuda':
       return {'text': 'פרוייקט בן-יהודה', 'url': 'https://benyehuda.org/'};
     case 'dicta':
-      return {'text': 'ספריית דיקטה', 'url': 'https://library.dicta.org.il/'};
+      return {'text': 'bookיית דיקטה', 'url': 'https://library.dicta.org.il/'};
     case 'onyourway':
       return {'text': 'ובלכתך בדרך', 'url': 'https://mobile.tora.ws/'};
     case 'orayta':
@@ -20,12 +20,12 @@ Map<String, String> getSourceDisplayInfo(String source) {
         'url': 'https://github.com/MosheWagner/Orayta-Books'
       };
     case 'sefaria':
-      return {'text': 'ספריא', 'url': 'https://www.sefaria.org/texts'};
+      return {'text': 'bookיא', 'url': 'https://www.sefaria.org/texts'};
     case 'morebooks':
-      return {'text': 'ספרים פרטיים או מקורות נוספים', 'url': ''};
+      return {'text': 'books privateים או מקורות נוספים', 'url': ''};
     case 'wiki_jewish_books':
       return {
-        'text': 'אוצר הספרים היהודי השיתופי',
+        'text': 'אוצר הbooks היהודי השיתופי',
         'url': 'https://wiki.jewishbooks.org.il/'
       };
     case 'tashma':
@@ -36,7 +36,7 @@ Map<String, String> getSourceDisplayInfo(String source) {
         'url': 'http://www.toratemetfreeware.com/index.html?downloads;1;'
       };
     case 'wikisource':
-      return {'text': 'ויקיטקסט', 'url': 'https://he.wikisource.org/wiki'};
+      return {'text': 'ויקיtext', 'url': 'https://he.wikisource.org/wiki'};
     case 'pninim':
       return {'text': 'פנינים', 'url': 'https://pninim.org/'};
     default:
@@ -44,7 +44,7 @@ Map<String, String> getSourceDisplayInfo(String source) {
   }
 }
 
-/// הצגת דיאלוג אודות הספר
+/// הצגת דיאלוג About הbook
 Future<void> showBookSourceDialog(
   BuildContext context,
   TextBookLoaded state,
@@ -53,7 +53,7 @@ Future<void> showBookSourceDialog(
     debugPrint('Opening book source dialog for: "${state.book.title}"');
 
     final bookDetails = await BookDetailsService().getBookDetails(state.book);
-    final bookSource = bookDetails['תיקיית המקור'] ?? 'לא נמצא מקור';
+    final bookSource = bookDetails['תיקיית המקור'] ?? 'no נמצא מקור';
 
     // קבלת מידע התצוגה עבור המקור
     final sourceInfo = getSourceDisplayInfo(bookSource);
@@ -70,7 +70,7 @@ Future<void> showBookSourceDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text(
-          'אודות הספר',
+          'About הbook',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
@@ -89,13 +89,13 @@ Future<void> showBookSourceDialog(
 
                 const Divider(height: 24),
 
-                // מקור הספר
+                // מקור הbook
                 const Text(
-                  'מקור הספר:',
+                  'מקור הbook:',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                // אם יש URL, הצג כקישור, אחרת הצג כטקסט רגיל
+                // אם יש URL, הצג כקישור, אחרת הצג כtext רגיל
                 url.isNotEmpty
                     ? InkWell(
                         onTap: () async {
@@ -124,7 +124,7 @@ Future<void> showBookSourceDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('סגור'),
+            child: const Text('closed'),
           ),
         ],
       ),
@@ -132,7 +132,7 @@ Future<void> showBookSourceDialog(
   } catch (e) {
     debugPrint('Error showing book source dialog: $e');
     if (context.mounted) {
-      UiSnack.showError('שגיאה בטעינת מידע הספר: ${e.toString()}');
+      UiSnack.showError('error בטעינת מידע הbook: ${e.toString()}');
     }
   }
 }

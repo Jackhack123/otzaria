@@ -14,22 +14,22 @@ class SearchingTab extends OpenedTab {
   final ItemScrollController scrollController = ItemScrollController();
   List<Book> allBooks = [];
 
-  // אפשרויות חיפוש לכל מילה (מילה_אינדקס -> אפשרויות)
+  // אפשרויות search לכל מילה (מילה_אינדקס -> אפשרויות)
   final Map<String, Map<String, bool>> searchOptions = {};
 
   // מילים חילופיות לכל מילה (אינדקס_מילה -> רשימת מילים חילופיות)
   final Map<int, List<String>> alternativeWords = {};
 
-  // מרווחים בין מילים (מפתח_מרווח -> ערך_מרווח)
+  // מרווחים בין מילים (key_מרווח -> value_מרווח)
   final Map<String, String> spacingValues = {};
 
-  // notifier לעדכון התצוגה כשמשתמש משנה אפשרויות
+  // notifier לupdate התצוגה כשuser מyear אפשרויות
   final ValueNotifier<int> searchOptionsChanged = ValueNotifier(0);
 
-  // notifier לעדכון התצוגה כשמשתמש משנה מילים חילופיות
+  // notifier לupdate התצוגה כשuser מyear מילים חילופיות
   final ValueNotifier<int> alternativeWordsChanged = ValueNotifier(0);
 
-  // notifier לעדכון התצוגה כשמשתמש משנה מרווחים
+  // notifier לupdate התצוגה כשuser מyear מרווחים
   final ValueNotifier<int> spacingValuesChanged = ValueNotifier(0);
 
   // מטמון של בקשות ספירה פעילות כדי למנוע קריאות כפולות
@@ -38,9 +38,9 @@ class SearchingTab extends OpenedTab {
   static String titleForQuery(String query) {
     final trimmedQuery = query.trim();
     if (trimmedQuery.isEmpty) {
-      return 'חיפוש';
+      return 'search';
     }
-    return 'חיפוש: $trimmedQuery';
+    return 'search: $trimmedQuery';
   }
 
   SearchingTab(
@@ -51,7 +51,7 @@ class SearchingTab extends OpenedTab {
     titleNotifier = ValueNotifier(title);
     if (searchText != null) {
       queryController.text = searchText;
-      // החיפוש מופעל לעצמאי כשהטאב מוצג לראשונה (ראה TantivyFullTextSearch.initState)
+      // הsearch active לעצמאי כשהטאב מוצג לראשונה (ראה TantivyFullTextSearch.initState)
     }
   }
 
@@ -65,7 +65,7 @@ class SearchingTab extends OpenedTab {
   }
 
   String _normalizeFacet(String s) =>
-      s.trim().replaceAll(RegExp(r'/+'), '/'); // אחידות סלאשים + רווחים
+      s.trim().replaceAll(RegExp(r'/+'), '/'); // אחידות סnoשים + רווחים
 
   String _optionsHash() {
     String normMap(Map m) => Map.fromEntries(m.entries.toList()
@@ -83,7 +83,7 @@ class SearchingTab extends OpenedTab {
   String _cacheKey(String facet) {
     final f = _normalizeFacet(facet);
     final q = (searchBloc.state.searchQuery).trim();
-    final bVer = searchBloc.state.booksToSearch.length.toString(); // מספר ספרים
+    final bVer = searchBloc.state.booksToSearch.length.toString(); // מbook books
     return '$f|q=$q|o=${_optionsHash()}|b=$bVer';
   }
 
@@ -96,7 +96,7 @@ class SearchingTab extends OpenedTab {
     );
   }
 
-  /// ספירה מקבצת של תוצאות עבור מספר facets בבת אחת - לשיפור ביצועים
+  /// ספירה מקבצת של results עבור מbook facets בבת אחת - לשיפור ביצועים
   Future<Map<String, int>> countForMultipleFacets(List<String> facets) {
     return searchBloc.countForMultipleFacets(
       facets,
@@ -106,7 +106,7 @@ class SearchingTab extends OpenedTab {
     );
   }
 
-  /// ספירה חכמה - מחזירה תוצאות מהירות מה-state או מבצעת ספירה
+  /// ספירה חכמה - מחזירה results מהירות מה-state או מבצעת ספירה
   Future<int> countForFacetCached(String facet) async {
     final f = _normalizeFacet(facet);
 
@@ -117,7 +117,7 @@ class SearchingTab extends OpenedTab {
       return v;
     }
 
-    // 1) מפתח קאש כולל query/אפשרויות/גרסת ספרים
+    // 1) key קאש כולל query/אפשרויות/גרסת books
     final key = _cacheKey(facet);
 
     // 2) אם ספירה פעילה — הצמד אליה
@@ -137,7 +137,7 @@ class SearchingTab extends OpenedTab {
       searchBloc.add(UpdateFacetCounts({f: result}));
       return result;
     }).whenComplete(() {
-      // תמיד מנקים, גם בשגיאה
+      // תמיד מנקים, גם בerror
       _inflight.remove(key);
     });
 

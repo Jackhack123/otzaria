@@ -24,7 +24,7 @@ class PluginRuntimeDispatcher {
     _permissionCache.remove(pluginId);
   }
 
-  /// מנקה את ה-cache של תוסף ספציפי - יש לקרוא כשמשתמש משנה enabled/permissions
+  /// מנקה את ה-cache של תוסף specific - יש לקרוא כשuser מyear enabled/permissions
   void invalidatePlugin(String pluginId) {
     _enabledCache.remove(pluginId);
     _permissionCache.remove(pluginId);
@@ -56,7 +56,7 @@ class PluginRuntimeDispatcher {
       final controller = entry.value;
 
       try {
-        // בדוק שהתוסף מופעל - עם cache למניעת שאילתות SQLite חוזרות
+        // בדוק שהתוסף active - עם cache למניעת שאילתות SQLite חוזרות
         final isEnabled = _enabledCache[pluginId] ??
             await _repository.getIsEnabled(pluginId);
         _enabledCache[pluginId] = isEnabled;
@@ -78,8 +78,8 @@ class PluginRuntimeDispatcher {
     }
   }
 
-  /// שולח event לפלאגין ספציפי בלבד (ללא בדיקת הרשאת subscribe).
-  /// משמש לאירועים ממוקדים כמו reader.context_menu_item_clicked.
+  /// שולח event לפnoגין specific בלבד (לno בדיקת הרשאת subscribe).
+  /// משמש noירועים מfocusים כמו reader.context_menu_item_clicked.
   Future<void> dispatchEventToPlugin(
     String pluginId,
     String topic,

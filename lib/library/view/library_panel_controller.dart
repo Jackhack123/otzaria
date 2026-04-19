@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 
-/// בורר גלובלי לפאנלים של ספרייה.
+/// בורר גלובלי לפאנלים של library.
 ///
-/// משמש כדי לפתוח או לסגור את פאנל ההגדרות/תצוגה המקדימה גם מהקיצור
+/// משמש כדי לopen או לclosed את פאנל הsettings/תצוגה המקדימה גם מהקיצור
 /// הגלובלי ומהסרגל העליון, בלי להציג דיאלוג.
 class LibraryPanelController {
   LibraryPanelController._();
@@ -87,7 +87,7 @@ class LibraryPanelController {
   }
 }
 
-/// פותחת את פאנל הגדרות הספרייה דרך בקר הפאנלים.
+/// פותחת את פאנל settings the library דרך בקר הפאנלים.
 void showLibrarySettingsDialog(BuildContext context) {
   LibraryPanelController.toggleSettingsPanel();
 }

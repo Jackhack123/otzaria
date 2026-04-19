@@ -48,19 +48,19 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
     final errors = <String>[];
 
     if (widget.selectedText.isEmpty) {
-      errors.add('בחירת הטקסט שבו נמצאת השגיאה');
+      errors.add('בחירת הtext שבו נמצאת הerror');
     }
 
     if (_selectedErrorType == null) {
-      errors.add('סוג השגיאה');
+      errors.add('סוג הerror');
     }
 
     if (widget.bookId == null) {
-      errors.add('לא ניתן למצוא את הספר במאגר הנתונים');
+      errors.add('no ניתן למצוא את הbook במאגר הנתונים');
     }
 
     if (widget.libraryVersion == 'unknown') {
-      errors.add('לא ניתן לקרוא את גירסת הספרייה');
+      errors.add('no ניתן לקרוא את גירסת the library');
     }
 
     return errors;
@@ -98,7 +98,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'הוראות לדיווח טלפוני:',
+              'parentאות לדיווח טלפוני:',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -107,8 +107,8 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
             ),
             const SizedBox(height: 8),
             Text(
-              '1. בחר את סוג השגיאה   •  '
-              '2. השתמש במספרים המוצגים למטה כשתתקשר',
+              '1. בחר את סוג הerror   •  '
+              '2. השתמש במbooks המוצגים למטה כשתתקשר',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
@@ -125,7 +125,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'הטקסט שנבחר:',
+          'הtext שselected:',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -164,7 +164,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'בחר סוג שגיאה:',
+          'בחר סוג error:',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -172,8 +172,8 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
         ),
         const SizedBox(height: 12),
         Wrap(
-          spacing: 8, // מרווח אופקי בין הכפתורים
-          runSpacing: 8, // מרווח אנכי בין השורות
+          spacing: 8, // מרווח אופקי בין הbuttons
+          runSpacing: 8, // מרווח אנכי בין הlines
           children: ErrorType.errorTypes.map((errorType) {
             final isSelected = _selectedErrorType?.id == errorType.id;
 
@@ -245,7 +245,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'אי אפשר להתקדם... עדיין לא מילאתם בטופס...',
+                    'אי אפשר להתקדם... עדיין no מיnoתם בטופס...',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onErrorContainer,
@@ -282,7 +282,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
                     ],
                   ),
                 )),
-            // השורה האחרונה עם כפתור ביטול בצד שמאל
+            // הline האחרונה עם button cancel בצד שמאל
             if (errors.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
@@ -307,18 +307,18 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // כפתור ביטול בצד שמאל של השורה האחרונה
+                    // button cancel בצד שמאל של הline האחרונה
                     Container(
                       padding:
-                          const EdgeInsets.all(3), // מרווח לבן מסביב הכפתור
+                          const EdgeInsets.all(3), // מרווח לבן מסביב הbutton
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius:
-                            BorderRadius.circular(20), // עיגול כמו כפתור רגיל
+                            BorderRadius.circular(20), // עיגול כמו button רגיל
                       ),
                       child: TextButton(
                         onPressed: widget.onCancel,
-                        child: const Text('ביטול הדיווח'),
+                        child: const Text('cancel הדיווח'),
                       ),
                     ),
                   ],
@@ -331,8 +331,8 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    // אם יש שגיאות ולידציה, הכפתור ביטול מוצג במלבן השגיאות
-    // אחרת, מציגים כפתור ביטול רגיל
+    // אם יש errors ולידציה, הbutton cancel מוצג במלבן הerrors
+    // אחרת, מציגים button cancel רגיל
     final errors = _validationErrors;
     if (errors.isNotEmpty) {
       return const SizedBox.shrink();
@@ -343,7 +343,7 @@ class _PhoneReportTabState extends State<PhoneReportTab> {
       children: [
         TextButton(
           onPressed: widget.onCancel,
-          child: const Text('ביטול הדיווח'),
+          child: const Text('cancel הדיווח'),
         ),
       ],
     );

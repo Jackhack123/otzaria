@@ -4,13 +4,13 @@
 //
 // שינויים מ-v4:
 // • הוסר shrinkOnScroll / isShrunkenNotifier — הגובה נקבע אך ורק לפי [slim].
-//   פונקציית ה"כיווץ בגלילה" נגרמה לבלבול בין גובה הסרגל לגובה השדה,
+//   פונקציית ה"כיווץ בגלילה" נגרמה לבלבול בין גובה הסרגל לגובה הfield,
 //   ופעלה בצורה שונה על מסכים שונים.
 // • [slim] = null (ברירת מחדל): יורש מ-[compactMenuMode] אם זמין ב-SettingsBloc
 // • [slim] = false (touch / מרווח): גובה 48px, גופן 16px
 // • [slim] = true  (desktop / compact): גובה 36px, גופן 13px
 // • אין גלילה ב-RtlTextField: scrollPhysics = NeverScrollableScrollPhysics
-// • שאר ה-API ללא שינוי; שדות shrinkOnScroll / isShrunkenNotifier הוסרו.
+// • שאר ה-API לno שינוי; fields shrinkOnScroll / isShrunkenNotifier הוסרו.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +44,7 @@ abstract class _ST {
 class OtzariaSearchAction {
   OtzariaSearchAction._();
 
-  /// מונה תוצאות: "3/12"
+  /// מונה results: "3/12"
   static Widget resultCounter({
     required int current,
     required int total,
@@ -70,21 +70,21 @@ class OtzariaSearchAction {
   static Widget prevResult({required VoidCallback? onPressed}) =>
       _NavButton(icon: FluentIcons.chevron_up_24_regular, onPressed: onPressed);
 
-  /// תוצאה הבאה ↓
+  /// תוצאה nextה ↓
   static Widget nextResult({required VoidCallback? onPressed}) => _NavButton(
       icon: FluentIcons.chevron_down_24_regular, onPressed: onPressed);
 
-  /// כפתור הגדרות
+  /// button settings
   static Widget settings({
     required VoidCallback onPressed,
-    String tooltip = 'הגדרות חיפוש',
+    String tooltip = 'settings search',
   }) =>
       _ActionButton(
           icon: FluentIcons.settings_24_regular,
           onPressed: onPressed,
           tooltip: tooltip);
 
-  /// כפתור עם אייקון מותאם
+  /// button עם אייקון מותאם
   static Widget icon({
     required IconData iconData,
     required VoidCallback onPressed,
@@ -96,7 +96,7 @@ class OtzariaSearchAction {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  כפתורים פנימיים
+//  buttons פנימיים
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _NavButton extends StatelessWidget {
@@ -152,13 +152,13 @@ class _ActionButton extends StatelessWidget {
 //  OtzariaSearchField
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// שדה חיפוש של אוצריא.
+/// field search של Otzaria.
 ///
 /// מצבים:
 /// • [slim] = null: יורש אוטומטית מ-[compactMenuMode] אם זמין
 /// • [slim] = false (touch / מרווח): גובה 48px, גופן 16px
 /// • [slim] = true  (desktop / compact): גובה 36px, גופן 13px
-/// • [isCompact] = true: מתכווץ לאייקון עגול (scroll-hide)
+/// • [isCompact] = true: מתכווץ noייקון עגול (scroll-hide)
 class OtzariaSearchField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
@@ -172,10 +172,10 @@ class OtzariaSearchField extends StatefulWidget {
   final List<Widget>? trailingActions;
 
   /// `null` = יורש אוטומטית מ-compactMenuMode אם זמין.
-  /// `true` = שדה צר, `false` = שדה רחב.
+  /// `true` = field צר, `false` = field רחב.
   final bool? slim;
 
-  /// כשאמת — מתכווץ לאייקון עגול (M3 scroll-hide)
+  /// כשאמת — מתכווץ noייקון עגול (M3 scroll-hide)
   final bool isCompact;
   final VoidCallback? onExpand;
   final bool selectAllOnFocus;
@@ -295,7 +295,7 @@ class _OtzariaSearchFieldState extends State<OtzariaSearchField> {
     );
   }
 
-  // ── שדה מלא ──────────────────────────────────────────────────────────────
+  // ── field full ──────────────────────────────────────────────────────────────
 
   Widget _buildField(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -347,7 +347,7 @@ class _OtzariaSearchFieldState extends State<OtzariaSearchField> {
 
     // Prefix icon color
     // slim (בסרגל secondaryContainer) → onSecondaryContainer
-    // לא-slim (רקע surface) → primary (M3 standard)
+    // no-slim (רקע surface) → primary (M3 standard)
     final Color focusedIconColor =
         isSlim ? cs.onSecondaryContainer : cs.primary;
 

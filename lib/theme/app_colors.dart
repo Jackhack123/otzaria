@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // ════════════════════════════════════════════════════════════════════════════
 //  app_colors.dart
 //  ════════════════════════════════════════════════════════════════════════════
-//  צבעים קבועים (hard-coded) של אוצריא.
+//  צבעים constants (hard-coded) של Otzaria.
 //
 //  **מה שייך לכאן:**
 //    צבעים שאינם חלק מה-ColorScheme הדינמי —
@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 //
 //  **מה שאינו שייך לכאן:**
 //    • primary, secondary, surface וכו' — אלו נגזרים מ-ColorScheme.fromSeed
-//      ב-AppTheme ו-app.dart, ואין צורך לדעת את ערכם הספציפי
+//      ב-AppTheme ו-app.dart, ואין צורך לדעת את ערכם הspecific
 //    • צבעים הדורשים BuildContext (כגון Theme.of(context).colorScheme.xxx)
 //      — הם שייכים ל-AppSurfaces
 // ════════════════════════════════════════════════════════════════════════════
 
-/// צבעים קבועים שאינם חלק מה-ColorScheme הדינמי
+/// צבעים constants שאינם חלק מה-ColorScheme הדינמי
 class AppColors {
   AppColors._();
 
@@ -31,7 +31,7 @@ class AppColors {
   static const Color darkAppBar = Color(0xFF2A2A2A);
 
   // ── Dark Mode Text & Icons ────────────────────────────────────────────────
-  /// צבע טקסט ואייקונים ראשיים במצב כהה
+  /// צבע text ואייקונים ראשיים במצב כהה
   static const Color darkOnSurface = Color(0xFFE0E0E0);
 
   // ── Dark Mode Borders ────────────────────────────────────────────────────

@@ -1,52 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/search/models/search_configuration.dart';
 
-/// הגדרות לרינדור טקסט
+/// settings לרינדור text
 ///
-/// מחלקה זו מכילה את כל הפרמטרים הדרושים לעיבוד והצגת טקסט,
-/// כולל הגדרות חיפוש, עיצוב, והסרת סימנים מיוחדים.
+/// class זו מכילה את כל הפרמטרים הדרושים לעיבוד והצגת text,
+/// כולל settings search, עיצוב, והסרת סימנים מיוחדים.
 @immutable
 class RenderSettings {
-  /// האם להסיר ניקוד מהטקסט
+  /// האם להסיר ניקוד מהtext
   final bool removeNikud;
 
-  /// האם להסיר סימני פיסוק מהטקסט
+  /// האם להסיר סימני פיסוק מהtext
   final bool removePunctuation;
 
-  /// האם להסיר טעמים מהטקסט
+  /// האם להסיר טעמים מהtext
   final bool removeTeamim;
 
-  /// האם להחליף שמות קדושים
+  /// האם להחליף names קדושים
   final bool replaceHolyNames;
 
-  /// טקסט לחיפוש והדגשה
+  /// text לsearch והדגשה
   final String searchText;
 
-  /// אינדקס תוצאת החיפוש הנוכחית (-1 להדגשת הכל)
+  /// אינדקס תוצאת הsearch הcurrent (-1 להדגשת הכל)
   final int currentSearchIndex;
 
-  /// אפשרויות חיפוש מתקדמות (כתיב מלא/חסר וכו')
+  /// אפשרויות search מתקדמות (כתיב full/חסר וכו')
   final Map<String, Map<String, bool>> searchOptions;
 
-  /// מילים חילופיות לחיפוש
+  /// מילים חילופיות לsearch
   final Map<int, List<String>> alternativeWords;
 
-  /// ערכי מרווח לחיפוש
+  /// ערכי מרווח לsearch
   final Map<String, String> spacingValues;
 
-  /// האם זה חיפוש fuzzy
+  /// האם זה search fuzzy
   final bool isFuzzySearch;
 
-  /// מצב החיפוש
+  /// מצב הsearch
   final SearchMode searchMode;
 
-  /// גודל הטקסט
+  /// גודל הtext
   final double fontSize;
 
   /// משפחת הגופן
   final String? fontFamily;
 
-  /// גובה השורה
+  /// גובה הline
   final double lineHeight;
 
   /// האם להפעיל קישורים inline
@@ -55,7 +55,7 @@ class RenderSettings {
   /// האם לעצב סוגריים
   final bool formatParentheses;
 
-  /// האם ליישר טקסט ב-justify
+  /// האם ליישר text ב-justify
   final bool justifyText;
 
   const RenderSettings({

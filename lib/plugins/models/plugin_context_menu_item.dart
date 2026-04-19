@@ -1,4 +1,4 @@
-/// מודל המייצג פריט תפריט הקשר שנרשם על ידי פלאגין.
+/// מודל המייצג פריט תפריט הקשר שנרname על ידי פnoגין.
 class PluginContextMenuItem {
   final String id;
   final String label;

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 /// רקעי מסך לסביבות שימוש שונות באפליקציה
 ///
 /// משמש ליצירת עקביות ויזואלית בין מסכי "לוח" (panel screens):
-/// הגדרות, ספריה, כלים — בניגוד למסך העיון (המסך הראשי).
+/// settings, Library, Tools — בניגוד למסך העיון (המסך הראשי).
 class AppSurfaces {
   AppSurfaces._();
 
-  /// צבע ברירת המחדל לכרטיסי תוכן באפליקציה.
+  /// צבע ברירת המחדל לכרטיסי content באפליקציה.
   ///
-  /// תואם לכרטיסי הגדרות ולכרטיסי תוצאות בכלים:
+  /// תואם לכרטיסי settings ולכרטיסי results בTools:
   /// - מצב כהה: [ColorScheme.surfaceContainer]
   /// - מצב בהיר: [ColorScheme.surface]
   static Color card(BuildContext context) {
@@ -19,7 +19,7 @@ class AppSurfaces {
         : theme.colorScheme.surface;
   }
 
-  /// רקע מסכי לוח — הגדרות, ספריה, כלים וכל מסך משני
+  /// רקע מסכי לוח — settings, Library, Tools וכל מסך משני
   ///
   /// מחזיר:
   /// - מצב כהה: שחור מוחלט (כרטיסי SettingsCard בולטים מעליו)
@@ -41,7 +41,7 @@ class AppSurfaces {
   }
 
   /// גרסה אטומה של רקע מסכי הלוח לשימוש בתוך חלוניות/כרטיסים
-  /// כך שצבע המסגרת או הרקע שמתחת לא ישפיעו על גוון התוכן.
+  /// כך שצבע המסגרת או הרקע שמתחת no ישפיעו על גוון הcontent.
   static Color solidPanelBackground(BuildContext context) {
     final theme = Theme.of(context);
     final color = panelBackground(context);

@@ -69,33 +69,33 @@ class CombinedView extends StatefulWidget {
 }
 
 class _CombinedViewState extends State<CombinedView> {
-  // שמירת הטקסט הנבחר האחרון
+  // save הtext הselected האחרון
   final ValueNotifier<String?> _savedSelectedText =
       ValueNotifier<String?>(null);
-  // שמירת האינדקס של השורה שממנה הטקסט הודגש
+  // save the index של הline שממנה הtext הודגש
   final ValueNotifier<int?> _savedSelectedIndex = ValueNotifier<int?>(null);
 
-  // שמירת reference ל-BLoC לשימוש ב-listeners
+  // save reference ל-BLoC לשימוש ב-listeners
   late final TextBookBloc _textBookBloc;
 
   bool _hasScrolledToInitialPosition = false;
 
-  // מנהל בחירת טקסט משופר
+  // admin בחירת text משופר
   late final TextSelectionManager _selectionManager;
 
-  // מפתח גלובלי ל-SelectionArea כדי לכפות rebuild
+  // key גלובלי ל-SelectionArea כדי לכפות rebuild
   final GlobalKey _selectionAreaKey = GlobalKey();
 
-  // listener לניקוי בחירה - נשמור אותו כדי להסיר אותו ב-dispose
+  // listener לניקוי בחירה - נSave אותו כדי להסיר אותו ב-dispose
   void _onSelectionModeChanged() {
     if (!_selectionManager.isInSelectionMode && mounted) {
-      // כשיוצאים ממצב בחירה, קוראים ל-setState כדי לכפות בנייה מחדש
+      // כשיוצאים ממצב בחירה, קוראים ל-setState כדי לכפות בנייה again
       // של SelectionArea ולנקות את הבחירה באופן ויזואלי.
       setState(() {});
     }
   }
 
-  /// פתיחת חלון הצד של המפרשים רק אם מוסיפים מפרשים ומפרשים מוגדרים בצד הטקסט (לא מתחת)
+  /// פתיחת חלון הצד של הCommentators רק אם מוסיפים Commentators וCommentators מוגדרים בצד הtext (no מתחת)
   void _openCommentatorsPane({required bool isAdding}) {
     if (isAdding &&
         !widget.showCommentaryAsExpansionTiles &&
@@ -108,7 +108,7 @@ class _CombinedViewState extends State<CombinedView> {
 
   bool _didRequestInitialFocus = false;
 
-  // שמירת גובה הבלוק בפועל לחישובים דינאמיים
+  // save גובה הבלוק בפועל לחישובים דינאמיים
   double _viewportHeight = 0;
 
   ScrollController? _previewScrollController;
@@ -122,10 +122,10 @@ class _CombinedViewState extends State<CombinedView> {
       _previewScrollController = ScrollController();
     }
     _focusNode = FocusNode();
-    // שמירת ה-BLoC מראש
+    // save ה-BLoC מראש
     _textBookBloc = context.read<TextBookBloc>();
 
-    // אתחול מנהל הבחירה
+    // אתחול admin הבחירה
     _selectionManager = TextSelectionManager();
 
     // האזנה לשינויים במצב הבחירה כדי לכפות rebuild של SelectionArea
@@ -138,19 +138,19 @@ class _CombinedViewState extends State<CombinedView> {
           .add(LoadPersonalNotes(widget.tab.book.title));
     });
 
-    // האזנה לשינויים במיקומי הפריטים כדי לאפס את הבחירה בגלילה
+    // האזנה לשינויים במיקומי הפריטים כדי noפס את הבחירה בגלילה
     widget.tab.positionsListener.itemPositions.addListener(_onScroll);
-    // עדכון האינדקס ב-tab בזמן אמת
+    // update the index ב-tab בtime אמת
     widget.tab.positionsListener.itemPositions.addListener(_updateTabIndex);
 
-    // האזנה לשינויים ב-state כדי לגלול למיקום הנכון בפעם הראשונה
+    // האזנה לשינויים ב-state כדי לscroll לlocation הtrue בפעם הראשונה
     _textBookBloc.stream.listen((state) {
       if (state is TextBookLoaded &&
           !_hasScrolledToInitialPosition &&
           state.visibleIndices.isNotEmpty) {
         _hasScrolledToInitialPosition = true;
         final initialIndex = state.visibleIndices.first;
-        debugPrint('DEBUG: גלילה אוטומטית למיקום שמור: $initialIndex');
+        debugPrint('DEBUG: גלילה אוטומטית לlocation Save: $initialIndex');
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted && widget.tab.scrollController.isAttached) {
             widget.tab.scrollController.scrollTo(
@@ -163,8 +163,8 @@ class _CombinedViewState extends State<CombinedView> {
       }
     });
 
-    // מוודא שהפוקוס מגיע לאזור הקריאה מיד אחרי פתיחת ספר
-    // כדי שגלילה בחיצים תעבוד בלי לחיצה בעכבר, אך בלי לגנוב פוקוס משדות טקסט.
+    // מוודא שהfocus מגיע noזור הקריאה מיד אחרי פתיחת book
+    // כדי שגלילה בחיצים תעבוד בלי tap בעכבר, אך בלי לגנוב focus מfields text.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _didRequestInitialFocus) return;
       _didRequestInitialFocus = true;
@@ -204,19 +204,19 @@ class _CombinedViewState extends State<CombinedView> {
     super.dispose();
   }
 
-  // עדכון האינדקס הנוכחי ב-tab
+  // update the index הcurrent ב-tab
   void _updateTabIndex() {
     final positions = widget.tab.positionsListener.itemPositions.value;
     if (positions.isNotEmpty) {
-      // שומר את האינדקס של הפריט הראשון הנראה
+      // שומר את the index של הפריט הראשון הנראה
       widget.tab.index = positions.first.index;
     }
   }
 
-  // פונקציה שתשלח אירוע איפוס ל-selectedIndex אם יש גלילה משמעותית
+  // function שתשלח אירוע איפוס ל-selectedIndex אם יש גלילה משמעותית
   void _onScroll() {
     // אנחנו רוצים את הלוגיקה הזו רק בתצוגה המפוצלת (SimpleBookView לשעבר)
-    // שבה המפרשים מוצגים בפאנל צד (כלומר: לא ExpansionTiles)
+    // שבה הCommentators מוצגים בפאנל צד (כלומר: no ExpansionTiles)
     if (widget.showCommentaryAsExpansionTiles) return;
 
     final state = _textBookBloc.state;
@@ -225,7 +225,7 @@ class _CombinedViewState extends State<CombinedView> {
     final currentSelectedIndex = state.selectedIndex;
 
     if (currentSelectedIndex != null) {
-      // אם האינדקס הנבחר כבר לא נראה (האינדקסים הנראים שונו עקב גלילה)
+      // אם the index הselected כבר no נראה (the indexים הנראים שונו עקב גלילה)
       final visibleIndices = state.visibleIndices;
       if (!visibleIndices.contains(currentSelectedIndex)) {
         _textBookBloc.add(const UpdateSelectedIndex(null));
@@ -233,7 +233,7 @@ class _CombinedViewState extends State<CombinedView> {
     }
   }
 
-  // מעקב אחר האינדקס הנוכחי שנבחר (לשימוש בהעתקה עם כותרות)
+  // מעקב אחר the index הcurrent שselected (לשימוש בCopyה עם כותרות)
   final ValueNotifier<int?> _currentSelectedIndex = ValueNotifier<int?>(null);
 
   void _prefetchDictionaryLookups(String? selectedText) {
@@ -255,7 +255,7 @@ class _CombinedViewState extends State<CombinedView> {
     }
   }
 
-  /// helper קטן שמחזיר רשימת AppContextMenuEntry מקבוצה אחת
+  /// helper small שמחזיר רשימת AppContextMenuEntry מgroup אחת
   List<AppContextMenuEntry> _buildGroup(
     String groupName,
     List<String>? group,
@@ -301,14 +301,14 @@ class _CombinedViewState extends State<CombinedView> {
     ];
   }
 
-  // בניית תפריט קונטקסט לאינדקס ספציפי של פסקה
+  // בניית תפריט קונtext noינדקס specific של פסקה
   List<AppContextMenuEntry> _buildContextMenuForIndex(TextBookLoaded state,
       int paragraphIndex, BuildContext menuContext, String? selectedText) {
     // מצב תצוגה מקדימה — תפריט מינימלי
     if (widget.isPreviewMode) {
       return [
         AppContextMenuEntry(
-          label: 'העתק',
+          label: 'Copy',
           icon: FluentIcons.copy_24_regular,
           enabled: selectedText != null && selectedText.trim().isNotEmpty,
           onTap: _copyFormattedText,
@@ -317,12 +317,12 @@ class _CombinedViewState extends State<CombinedView> {
     }
 
     final groups = state.commentatorGroups;
-    final tanachGroup = CommentatorGroup.groupByTitle(groups, 'תורה שבכתב');
+    final tanachGroup = CommentatorGroup.groupByTitle(groups, 'תורה שבFont');
     final chazalGroup = CommentatorGroup.groupByTitle(groups, 'חז"ל');
     final rishonimGroup = CommentatorGroup.groupByTitle(groups, 'ראשונים');
     final acharonimGroup = CommentatorGroup.groupByTitle(groups, 'אחרונים');
     final modernGroup = CommentatorGroup.groupByTitle(groups, 'מחברי זמננו');
-    final ungroupedGroup = CommentatorGroup.groupByTitle(groups, 'שאר מפרשים');
+    final ungroupedGroup = CommentatorGroup.groupByTitle(groups, 'שאר Commentators');
 
     final allActive = state.activeCommentators
         .toSet()
@@ -330,7 +330,7 @@ class _CombinedViewState extends State<CombinedView> {
 
     final commentatorChildren = <AppContextMenuEntry>[
       AppContextMenuEntry(
-        label: 'הצג את כל המפרשים',
+        label: 'הצג את כל הCommentators',
         icon: allActive ? FluentIcons.checkmark_24_regular : null,
         onTap: () {
           context.read<TextBookBloc>().add(
@@ -398,12 +398,12 @@ class _CombinedViewState extends State<CombinedView> {
 
     return [
       AppContextMenuEntry(
-        label: 'חיפוש',
+        label: 'search',
         icon: FluentIcons.search_24_regular,
         onTap: () => widget.openLeftPaneTab(1, searchText: selectedText),
       ),
       AppContextMenuEntry(
-        label: 'מפרשים',
+        label: 'Commentators',
         icon: FluentIcons.book_24_regular,
         enabled: state.availableCommentators.isNotEmpty,
         children: commentatorChildren,
@@ -430,12 +430,12 @@ class _CombinedViewState extends State<CombinedView> {
       })(),
       const AppContextMenuEntry.divider(),
       AppContextMenuEntry(
-        label: 'הוסף הערה אישית',
+        label: 'Add note אישית',
         icon: FluentIcons.note_add_24_regular,
         onTap: _showNoteEditor,
       ),
       AppContextMenuEntry(
-        label: 'דווח על טעות בספר',
+        label: 'דווח על טעות בbook',
         icon: FluentIcons.error_circle_24_regular,
         onTap: () => _openErrorReportDialog(
           selectedText ?? '',
@@ -444,23 +444,23 @@ class _CombinedViewState extends State<CombinedView> {
       ),
       const AppContextMenuEntry.divider(),
       AppContextMenuEntry(
-        label: 'העתק',
+        label: 'Copy',
         icon: FluentIcons.copy_24_regular,
         enabled: selectedText != null && selectedText.trim().isNotEmpty,
         onTap: _copyFormattedText,
       ),
       AppContextMenuEntry(
-        label: 'העתק את כל הפסקה',
+        label: 'Copy את כל הפסקה',
         icon: FluentIcons.document_copy_24_regular,
         enabled: paragraphIndex >= 0 && paragraphIndex < widget.data.length,
         onTap: () => _copyParagraphByIndex(paragraphIndex),
       ),
       AppContextMenuEntry(
-        label: 'העתק טקסט מוצג',
+        label: 'Copy text מוצג',
         icon: FluentIcons.document_copy_24_regular,
         onTap: _copyVisibleText,
       ),
-      // פריטי תפריט מפלאגינים
+      // פריטי תפריט מפnoגינים
       ...() {
         final pluginItems = ContextMenuRegistry.instance.getAll();
         if (pluginItems.isEmpty) return const <AppContextMenuEntry>[];
@@ -492,7 +492,7 @@ class _CombinedViewState extends State<CombinedView> {
     ];
   }
 
-  /// פתיחת דיאלוג דיווח על טעות בספר
+  /// פתיחת דיאלוג דיווח על טעות בbook
   void _openErrorReportDialog(
     String selectedText, {
     int? fallbackLineIndex,
@@ -510,14 +510,14 @@ class _CombinedViewState extends State<CombinedView> {
     );
   }
 
-  /// העתקת פסקה לפי אינדקס (משתמש ב־widget.data[index] ומייצר גם HTML)
+  /// Copyת פסקה לפי אינדקס (user ב־widget.data[index] ומייצר גם HTML)
   Future<void> _copyParagraphByIndex(int index) async {
     if (index < 0 || index >= widget.data.length) return;
 
     final text = widget.data[index];
     if (text.trim().isEmpty) return;
 
-    // קבלת ההגדרות הנוכחיות
+    // קבלת הsettings הcurrentות
     final settingsState = context.read<SettingsBloc>().state;
     final textBookState = context.read<TextBookBloc>().state;
 
@@ -570,12 +570,12 @@ class _CombinedViewState extends State<CombinedView> {
     await SystemClipboard.instance?.write([item]);
   }
 
-  /// העתקת הטקסט המוצג במסך ללוח
+  /// Copyת הtext המוצג במסך ללוח
   void _copyVisibleText() async {
     final state = context.read<TextBookBloc>().state;
     if (state is! TextBookLoaded || state.visibleIndices.isEmpty) return;
 
-    // איסוף כל הטקסט הנראה במסך
+    // איסוף כל הtext הנראה במסך
     final visibleTexts = <String>[];
     for (final index in state.visibleIndices) {
       if (index >= 0 && index < widget.data.length) {
@@ -587,7 +587,7 @@ class _CombinedViewState extends State<CombinedView> {
 
     final combinedText = visibleTexts.join('\n\n');
 
-    // קבלת ההגדרות הנוכחיות
+    // קבלת הsettings הcurrentות
     final settingsState = context.read<SettingsBloc>().state;
 
     String finalText = combinedText;
@@ -625,7 +625,7 @@ class _CombinedViewState extends State<CombinedView> {
     await SystemClipboard.instance?.write([item]);
   }
 
-  /// עיצוב טקסט כ-HTML עם הגדרות הגופן הנוכחיות
+  /// עיצוב text כ-HTML עם settings הגופן הcurrentות
   String _formatTextAsHtml(String text) {
     final settingsState = context.read<SettingsBloc>().state;
     return CopyUtils.buildStyledHtml(
@@ -635,16 +635,16 @@ class _CombinedViewState extends State<CombinedView> {
     );
   }
 
-  /// העתקת טקסט מעוצב (HTML) ללוח
+  /// Copyת text מעוצב (HTML) ללוח
   Future<void> _copyFormattedText() async {
-    // משתמש בטקסט השמור שנבחר לפני פתיחת התפריט
+    // user בtext הSave שselected לפני פתיחת התפריט
     final plainText = _savedSelectedText.value;
 
     debugPrint('_copyFormattedText called with: "$plainText"');
     debugPrint('_currentSelectedIndex: ${_currentSelectedIndex.value}');
 
     if (plainText == null || plainText.trim().isEmpty) {
-      UiSnack.show('אנא בחר טקסט להעתקה');
+      UiSnack.show('אנא בחר text לCopyה');
       return;
     }
 
@@ -664,26 +664,26 @@ class _CombinedViewState extends State<CombinedView> {
       );
     } catch (e) {
       if (mounted) {
-        UiSnack.showError('שגיאה בהעתקה מעוצבת: $e');
+        UiSnack.showError('error בCopyה מעוצבת: $e');
       }
     }
   }
 
-  /// הצגת עורך ההערות
+  /// הצגת עורך הnotes
   Future<void> _showNoteEditor() async {
-    // שמירת ה-state הנוכחי לפני פתיחת הדיאלוג
+    // save ה-state הcurrent לפני פתיחת הדיאלוג
     final state = _textBookBloc.state;
     if (state is! TextBookLoaded) return;
 
-    // שמירת הטקסט הנבחר לפני פתיחת הדיאלוג
+    // save הtext הselected לפני פתיחת הדיאלוג
     final selectedText = _savedSelectedText.value;
 
-    // משתמש בשורה שממנה הודגש טקסט (אם קיים), אחרת בשורה הנבחרת, אחרת בשורה הראשונה הנראית
+    // user בline שממנה הודגש text (אם קיים), אחרת בline הselectedת, אחרת בline הראשונה הנראית
     final currentIndex = _savedSelectedIndex.value ??
         state.selectedIndex ??
         (state.visibleIndices.isNotEmpty ? state.visibleIndices.first : 0);
 
-    // קבלת הטקסט המזהה של השורה - אם יש טקסט נבחר, משתמשים בו (אחרי הסרת ניקוד), אחרת בטקסט המזהה (כמו שיוצג ככותרת)
+    // קבלת הtext המזהה של הline - אם יש text selected, users בו (אחרי הסרת ניקוד), אחרת בtext המזהה (כמו שיוצג ככותרת)
     final referenceText = selectedText?.trim().isNotEmpty == true
         ? removeHebrewDiacritics(selectedText!.trim())
         : extractDisplayTextFromLines(
@@ -712,7 +712,7 @@ class _CombinedViewState extends State<CombinedView> {
               draft?.contentFormat ?? PersonalNoteContentFormat.plain,
         ));
 
-    // פתח את חלונית ההערות
+    // Open את חלונית הnotes
     widget.onOpenPersonalNotes?.call();
   }
 
@@ -762,7 +762,7 @@ class _CombinedViewState extends State<CombinedView> {
 
             return SelectionArea(
               key: _selectionAreaKey,
-              // SelectionArea אחד לכל הרשימה - מאפשר בחירה רציפה בין פסקאות
+              // SelectionArea אחד לכל הlist - מאפשר בחירה רציפה בין פסקאות
               contextMenuBuilder: (context, selectableRegionState) {
                 return const SizedBox.shrink();
               },
@@ -773,7 +773,7 @@ class _CombinedViewState extends State<CombinedView> {
                   _selectionManager.exitSelectionMode();
                   return;
                 }
-                // כניסה למצב בחירה כשיש טקסט נבחר
+                // כניסה למצב בחירה כשיש text selected
                 if (!_selectionManager.isInSelectionMode) {
                   // שימוש באינדקס הראשון הנראה במקום 0
                   final positions =
@@ -783,12 +783,12 @@ class _CombinedViewState extends State<CombinedView> {
                   _selectionManager.setAnchor(firstVisibleIndex);
                 }
 
-                // חשוב: כדי ש-Ctrl+C יעבוד מיד אחרי סימון טקסט עם העכבר
-                // נוודא שהפוקוס נמצא על אזור הקריאה.
+                // חשוב: כדי ש-Ctrl+C יעבוד מיד אחרי סימון text עם העכבר
+                // נוודא שהfocus נמצא על אזור הקריאה.
                 _focusNode.requestFocus();
 
-                // מחשב את מספר השורה המדויק של הטקסט המודגש
-                // משתמש באותה לוגיקה כמו בדיווח שגיאות
+                // מחשב את מbook הline המדויק של הtext המודגש
+                // user באותה לוגיקה כמו בדיווח errors
                 final TextBookLoaded? loadedState =
                     _textBookBloc.state is TextBookLoaded
                         ? _textBookBloc.state as TextBookLoaded
@@ -798,7 +798,7 @@ class _CombinedViewState extends State<CombinedView> {
 
                 if (loadedState != null) {
                   final settingsState = context.read<SettingsBloc>().state;
-                  // מקבל את השורה הראשונה הנראית
+                  // מקבל את הline הראשונה הנראית
                   final baseIndex = loadedState.visibleIndices.isNotEmpty
                       ? loadedState.visibleIndices.first
                       : 0;
@@ -812,17 +812,17 @@ class _CombinedViewState extends State<CombinedView> {
                     visibleLines: visibleLines,
                   );
 
-                  // מוצא את המיקום של הטקסט המודגש
+                  // מוצא את הlocation של הtext המודגש
                   final selectionStart = visibleText.indexOf(fixedPlain);
 
                   if (selectionStart >= 0) {
-                    // סופר כמה שורות יש לפני הטקסט המודגש
+                    // סופר כמה lines יש לפני הtext המודגש
                     final before = visibleText.substring(0, selectionStart);
                     final offset = '\n'.allMatches(before).length;
                     foundIndex = baseIndex + offset;
                   }
 
-                  // fallback: אם לא הצלחנו לחשב אינדקס, נשתמש בשורה שנבחרה (אם קיימת)
+                  // fallback: אם no הצלחנו לחשב אינדקס, נשתמש בline שselectedה (אם קיימת)
                   foundIndex ??= loadedState.selectedIndex;
                 }
 
@@ -832,7 +832,7 @@ class _CombinedViewState extends State<CombinedView> {
                   _currentSelectedIndex.value = foundIndex;
                   widget.onSelectedTextChanged?.call(fixedPlain);
 
-                  // שליחת event לפלאגינים עם ה-index המדויק
+                  // שליחת event לפnoגינים עם ה-index המדויק
                   final selectionText = fixedPlain?.trim() ?? '';
                   if (selectionText.isNotEmpty && loadedState != null) {
                     unawaited(PluginRuntimeDispatcher.instance.dispatchEvent(
@@ -863,7 +863,7 @@ class _CombinedViewState extends State<CombinedView> {
                       LogicalKeyboardKey.control,
                       LogicalKeyboardKey.insert,
                     ): const _CopySelectedTextIntent(),
-                    // macOS (למקרה שמריצים שם)
+                    // macOS (למקרה שמריצים name)
                     LogicalKeySet(
                       LogicalKeyboardKey.meta,
                       LogicalKeyboardKey.keyC,
@@ -1006,7 +1006,7 @@ class _CombinedViewState extends State<CombinedView> {
       key: PageStorageKey(widget.data[index]),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // הטקסט של הספר - ללא SelectionArea נפרד, כי יש SelectionArea כללי
+        // הtext של הbook - לno SelectionArea נפרד, כי יש SelectionArea general
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
@@ -1023,37 +1023,37 @@ class _CombinedViewState extends State<CombinedView> {
             },
             onSingleTap: () {
               _focusNode.requestFocus();
-              // מאפס את הטקסט השמור כשלוחצים על הפסקה
+              // מאפס את הtext הSave כשלוחצים על הפסקה
               if (mounted) {
                 _savedSelectedText.value = null;
                 _savedSelectedIndex.value = null;
                 _currentSelectedIndex.value = null;
                 widget.onSelectedTextChanged?.call(null);
               }
-              // פשוט מעדכן את selectedIndex - זה יגרום לבנייה מחדש
+              // פשוט מעדyes את selectedIndex - זה יגרום לבנייה again
               if (isSelected) {
                 _textBookBloc.add(const UpdateSelectedIndex(null));
               } else {
                 _textBookBloc.add(UpdateSelectedIndex(index));
 
-                // גלילה אוטומטית כך שהקטע יהיה בראש העמוד
-                // רק אם יש מפרשים להצגה ואנחנו במצב ExpansionTiles
+                // גלילה אוטומטית כך שהקטע יהיה בראש הpage
+                // רק אם יש Commentators להצגה ואנחנו במצב ExpansionTiles
                 if (widget.showCommentaryAsExpansionTiles &&
                     _hasCommentaries(state, index)) {
-                  // מחכים שה-UI יתעדכן עם פתיחת המפרש, ואז קופצים למיקום
+                  // מחכים שה-UI יתעדyes עם פתיחת הcommentator, ואז קופצים לlocation
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     Future.delayed(const Duration(milliseconds: 300), () {
                       if (mounted && widget.tab.scrollController.isAttached) {
-                        // גלילה חכמה: נגלול כך שהטקסט הבא (index + 1) יהיה בתחתית
-                        // המפרשים תופסים עד 75% מהבלוק
-                        // נרצה שהטקסט הבא יהיה ב-90% מהבלוק (כלומר 10% מלמטה)
-                        // כך נוודא שרואים: 15% טקסט למעלה, 75% מפרשים, 10% טקסט למטה
+                        // גלילה חכמה: נscroll כך שהtext next (index + 1) יהיה בתחתית
+                        // הCommentators תופסים עד 75% מהבלוק
+                        // נרצה שהtext next יהיה ב-90% מהבלוק (כלומר 10% מלמטה)
+                        // כך נוודא שרואים: 15% text למעלה, 75% Commentators, 10% text למטה
                         final nextIndex =
                             (index + 1).clamp(0, widget.data.length - 1);
                         widget.tab.scrollController.scrollTo(
                           index: nextIndex,
                           alignment:
-                              0.9, // הטקסט הבא יהיה ב-90% מלמעלה (כלומר 10% מלמטה)
+                              0.9, // הtext next יהיה ב-90% מלמעלה (כלומר 10% מלמטה)
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
@@ -1065,9 +1065,9 @@ class _CombinedViewState extends State<CombinedView> {
             },
             onDoubleTap: () {
               // Double-click → בחירת פסקה שלמה
-              // הערה: SelectionArea של Flutter לא תומך בבחירה פרוגרמטית,
-              // לכן הפיצ'ר הזה לא מומש במלואו. SelectionArea יבצע את פעולת
-              // ברירת המחדל שלו (בחירת מילה). לבחירת פסקה, המשתמש יכול
+              // note: SelectionArea של Flutter no תומך בבחירה פרוגרמטית,
+              // לyes הפיצ'ר הזה no מומש במלואו. SelectionArea יבצע את פעולת
+              // ברירת המחדל שלו (בחירת מילה). לבחירת פסקה, הuser יכול
               // להשתמש ב-Shift+Click או Drag.
               _focusNode.requestFocus();
               _selectionManager.enterDoubleClickMode(index);
@@ -1082,7 +1082,7 @@ class _CombinedViewState extends State<CombinedView> {
               // SelectionArea יטפל בבחירת הטווח
             },
             onSecondaryTapDown: (details) {
-              // שומר את האינדקס הנוכחי לשימוש בתפריט ההקשר
+              // שומר את the index הcurrent לשימוש בתפריט ההקשר
               if (mounted) {
                 _currentSelectedIndex.value = index;
               }
@@ -1097,7 +1097,7 @@ class _CombinedViewState extends State<CombinedView> {
                       builder: (context, settingsState) {
                         var textMaxWidth = settingsState.textMaxWidth;
 
-                        // אם הערך שלילי, זו רמה שצריך לחשב לפי גודל המסך
+                        // אם הvalue שלילי, זו רמה שצריך לחשב לפי גודל המסך
                         // למשל -2 = רמה 2 = 90% מרוחב המסך
                         if (textMaxWidth < 0) {
                           final level = (-textMaxWidth).toInt();
@@ -1108,7 +1108,7 @@ class _CombinedViewState extends State<CombinedView> {
                         String data = widget.data[index];
 
                         // הוספת קישורים מבוססי תווים לפני כל עיבוד אחר
-                        // כי start/end מתייחסים לטקסט המקורי
+                        // כי start/end מתייחסים לtext המקורי
                         String dataWithLinks = data;
                         if (settingsState.enableHtmlLinks) {
                           try {
@@ -1124,7 +1124,7 @@ class _CombinedViewState extends State<CombinedView> {
                                   addInlineLinksToText(data, linksForLine);
                             }
                           } catch (e) {
-                            // אם יש שגיאה, פשוט נשתמש בטקסט המקורי
+                            // אם יש error, פשוט נשתמש בtext המקורי
                             dataWithLinks = data;
                           }
                         }
@@ -1188,13 +1188,13 @@ class _CombinedViewState extends State<CombinedView> {
                               showDialog<void>(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: const Text('הערה לשורה זו'),
+                                  title: const Text('note לline זו'),
                                   content: PersonalNoteContentView(note: note),
                                   actions: [
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
-                                      child: const Text('סגור'),
+                                      child: const Text('closed'),
                                     ),
                                   ],
                                 ),
@@ -1233,7 +1233,7 @@ class _CombinedViewState extends State<CombinedView> {
             ),
           ),
         ),
-        // המפרשים - ללא SelectionArea נפרד, כי יש SelectionArea כללי
+        // הCommentators - לno SelectionArea נפרד, כי יש SelectionArea general
         if (widget.showCommentaryAsExpansionTiles &&
             isSelected &&
             _hasCommentaries(state, index))
@@ -1248,9 +1248,9 @@ class _CombinedViewState extends State<CombinedView> {
     );
   }
 
-  /// בדיקה אם יש מפרשים לאינדקס מסוים
+  /// check אם יש Commentators noינדקס מסוים
   bool _hasCommentaries(TextBookLoaded state, int index) {
-    // בדיקה אם יש קישורים רלוונטיים לאינדקס הזה
+    // check אם יש קישורים רלוונטיים noינדקס הזה
     final lineLinks = state.linksByLine[index + 1];
     if (lineLinks == null || lineLinks.isEmpty) return false;
 
@@ -1307,9 +1307,9 @@ class _CommentaryCardState extends State<_CommentaryCard> {
 
   @override
   Widget build(BuildContext context) {
-    // חישוב גובה המפרשים לפי גובה הבלוק בפועל (לא כל המסך):
-    // המפרשים יהיו 75% מגובה הבלוק
-    // השאר (25%) יתחלק: 15% למעלה (טקסט), 10% למטה (טקסט)
+    // חישוב גובה הCommentators לפי גובה הבלוק בפועל (no כל המסך):
+    // הCommentators יהיו 75% מגובה הבלוק
+    // השאר (25%) יתחלק: 15% למעלה (text), 10% למטה (text)
     final maxHeight = widget.viewportHeight > 0
         ? widget.viewportHeight * 0.75
         : MediaQuery.of(context).size.height * 0.75;
@@ -1318,10 +1318,10 @@ class _CommentaryCardState extends State<_CommentaryCard> {
       builder: (context, constraints) {
         return BlocBuilder<SettingsBloc, SettingsState>(
           builder: (context, settingsState) {
-            // שימוש באותו רוחב מקסימלי כמו הטקסט
+            // שימוש באותו רוחב מקסימלי כמו הtext
             var textMaxWidth = settingsState.textMaxWidth;
 
-            // אם הערך שלילי, זו רמה שצריך לחשב לפי גודל המסך
+            // אם הvalue שלילי, זו רמה שצריך לחשב לפי גודל המסך
             if (textMaxWidth < 0) {
               final level = (-textMaxWidth).toInt();
               final widthPercent = 1.0 - (level * 0.05);
@@ -1354,7 +1354,7 @@ class _CommentaryCardState extends State<_CommentaryCard> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: maxHeight,
-                    minHeight: 50, // מינימום גובה למניעת בעיות layout
+                    minHeight: 50, // מינימום גובה למניעת issues layout
                   ),
                   child: CommentaryListBase(
                     key: _commentaryKey,
@@ -1368,7 +1368,7 @@ class _CommentaryCardState extends State<_CommentaryCard> {
               ),
             );
 
-            // אם יש רוחב מקסימלי, נמרכז את המפרשים באותו רוחב כמו הטקסט
+            // אם יש רוחב מקסימלי, נמרכז את הCommentators באותו רוחב כמו הtext
             if (textMaxWidth > 0) {
               return Center(
                 child: ConstrainedBox(

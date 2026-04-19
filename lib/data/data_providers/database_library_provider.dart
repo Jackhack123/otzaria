@@ -96,7 +96,7 @@ Future<List<_DiscoveredBook>> _scanExternalFolderInIsolate(
   final books = <_DiscoveredBook>[];
   await _collectBookFilesRecursive(
     Directory(args.$1),
-    ['ספרים אישיים', args.$2],
+    ['books אישיים', args.$2],
     books,
     db,
   );
@@ -329,7 +329,7 @@ List<Map<String, dynamic>> _loadBookLinksRowsInRangeInIsolate({
       startLineIndex,
       endLineIndex,
     ];
-    // כשהפילטר ריק (אין מפרשים נבחרים) — עדיין מחזירים קישורי REFERENCE
+    // כשהפילטר empty (אין Commentators selectedים) — עדיין מחזירים קישורי REFERENCE
     final hasCommentaryFilter =
         targetBookTitles != null && targetBookTitles.isNotEmpty;
     final targetBookPlaceholders = hasCommentaryFilter
@@ -340,9 +340,9 @@ List<Map<String, dynamic>> _loadBookLinksRowsInRangeInIsolate({
     }
 
     // תנאי הפילטר:
-    // null     → ללא פילטר (כל הקישורים)
-    // ריק      → רק קישורי non-commentary (REFERENCE וכד׳)
-    // לא ריק   → קישורי non-commentary + המפרשים הנבחרים
+    // null     → לno פילטר (כל הקישורים)
+    // empty      → רק קישורי non-commentary (REFERENCE וכד׳)
+    // no empty   → קישורי non-commentary + הCommentators הselectedים
     final commentaryFilterClause = targetBookTitles == null
         ? ''
         : hasCommentaryFilter
@@ -404,23 +404,23 @@ List<Map<String, dynamic>> _loadAlternativeStructuresRowsInIsolate({
   }
 }
 
-/// מתאם כל פעולות הכתיבה לספרים האישיים: add-folder scan, rescan, toggle, remove.
+/// מתאם כל actions הכתיבה לbooks האישיים: add-folder scan, rescan, toggle, remove.
 ///
 /// תור סריאלי יחיד עם ספירת עסוקות נצפית.
-/// ה-singleton חי על [DatabaseLibraryProvider] ולכן שורד פירוק ויצירה של widgets.
+/// ה-singleton חי על [DatabaseLibraryProvider] ולyes שורד פירוק ויצירה של widgets.
 class PersonalBooksOperationQueue {
   Future<void> _tail = Future.value();
 
-  /// מספר הפעולות הממתינות או הרצות כרגע.
-  /// עולה ב-1 מיד כשמוסיפים לתור (לא רק כשמתחיל הביצוע),
-  /// כך שה-UI מציג מצב עסוק גם בזמן ההמתנה בתור.
+  /// מbook הactions הממתינות או הרצות כרגע.
+  /// עולה ב-1 מיד כשמוסיפים לתור (no רק כשמתחיל הביצוע),
+  /// כך שה-UI מציג מצב עסוק גם בtime ההמתנה בתור.
   final ValueNotifier<int> busyCount = ValueNotifier(0);
 
   bool get isBusy => busyCount.value > 0;
 
   /// מוסיף [operation] לתור הסריאלי ומחזיר את תוצאתה.
   ///
-  /// פעולות מבוצעות בסדר הוספה בלבד, לעולם לא במקביל.
+  /// actions מבוצעות בorder add בלבד, לעולם no במקביל.
   Future<T> enqueue<T>(Future<T> Function() operation) {
     busyCount.value++; // עולה מיד, עוד לפני הביצוע
     final result = _tail.then<T>((_) async {
@@ -430,19 +430,19 @@ class PersonalBooksOperationQueue {
         busyCount.value--;
       }
     });
-    // _tail לעולם לא נדחית; אחרת שרשרת ה-then תיקלע לדד-לוק.
+    // _tail לעולם no נדחית; אחרת שרשרת ה-then תיקלע לדד-לוק.
     _tail = result.then<void>((_) {}).catchError((_) {});
     return result;
   }
 }
 
-/// תוצאת סריקת תיקייה חיצונית.
+/// תוצאת סemptyת folder חיצונית.
 ///
-/// [addedBooks]  - מספר הספרים שנוספו ל-DB בהצלחה.
-/// [updatedBooks] - מספר הספרים שעודכנו (שינוי metadata).
-/// [failedBooks]  - מספר הספרים שנכשלו בעיבוד (שגיאה חלקית).
-/// [fatalError]   - שגיאה קטלנית שמנעה את הסריקה כולה (Isolate נפל וכד׳).
-///                  כאשר שגיאה זו קיימת, ספירות הספרים הן 0.
+/// [addedBooks]  - מbook הbooks שנוספו ל-DB בsuccess.
+/// [updatedBooks] - מbook הbooks שעודכנו (שינוי metadata).
+/// [failedBooks]  - מbook הbooks שנכשלו בעיבוד (error חלקית).
+/// [fatalError]   - error קטלנית שמנעה את הסemptyה כולה (Isolate נפל וכד׳).
+///                  כאשר error זו קיימת, ספירות הbooks הן 0.
 class ScanResult {
   final int addedBooks;
   final int updatedBooks;
@@ -471,7 +471,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
   String? _bundledTalmudBavliPathCache;
   bool? _bundledTalmudBavliExistsCache;
 
-  /// תור פעולות יחיד לכל כתיבות ה-DB של ספרים אישיים.
+  /// תור actions יחיד לכל כתיבות ה-DB של books אישיים.
   /// ה-static מאפשר גישה ישירה ב-DatabaseLibraryProvider.operationQueue
   /// גם ממסכים אחרים, בלי להצמד ל-instance.
   static final PersonalBooksOperationQueue operationQueue =
@@ -596,11 +596,11 @@ class DatabaseLibraryProvider implements LibraryProvider {
 
       // Place PDF in the sub-category of its matching TextBook.
       // Orphans (no matching TextBook) go into a dedicated sub-category
-      // appended after "סדר טהרות" so they don't float to the top.
+      // appended after "order טהרות" so they don't float to the top.
       if (orphanCategory == null && !titleToSubCategory.containsKey(title)) {
-        // Place right after "סדר טהרות" (order 30 in DB) → use 31.
+        // Place right after "order טהרות" (order 30 in DB) → use 31.
         final tohorotOrder = category.subCategories
-            .where((c) => c.title == 'סדר טהרות')
+            .where((c) => c.title == 'order טהרות')
             .firstOrNull
             ?.order;
         final orphanOrder = tohorotOrder != null ? tohorotOrder + 1 : 31;
@@ -778,7 +778,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
         ));
 
         final categoryName =
-            dbBook.topics.isNotEmpty ? dbBook.topics.first.name : 'ללא קטגוריה';
+            dbBook.topics.isNotEmpty ? dbBook.topics.first.name : 'לno category';
 
         final topics = _buildTopics(dbBook, categoryPath);
 
@@ -1170,7 +1170,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
     // Parse category rows into model objects (filtering debug-only categories)
     final allCategories = allCatRows
         .map((row) => db_models.Category.fromJson(row))
-        .where((cat) => cat.title != 'אודות התוכנה')
+        .where((cat) => cat.title != 'About התוכנה')
         .toList();
     _categoriesById
       ..clear()
@@ -1248,7 +1248,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
     if (categoryPath.isEmpty) {
       // Return default category
       final defaultCategory =
-          await repository.getCategoryByTitle('ללא קטגוריה');
+          await repository.getCategoryByTitle('לno category');
       if (defaultCategory != null) {
         return defaultCategory.id;
       }
@@ -1256,7 +1256,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
       return await repository.insertCategory(
         db_models.Category(
           id: 0,
-          title: 'ללא קטגוריה',
+          title: 'לno category',
           parentId: null,
           level: 0,
         ),
@@ -1484,7 +1484,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
       final List<String> path = [];
       final Set<Category> visited = {};
       while (cat != null && !visited.contains(cat)) {
-        if (cat.title == 'ספריית אוצריא') break;
+        if (cat.title == 'bookיית Otzaria') break;
         visited.add(cat);
         path.insert(0, cat.title);
         cat = cat.parent;
@@ -1675,28 +1675,28 @@ class DatabaseLibraryProvider implements LibraryProvider {
 
   @override
   Future<String> getLinkContent(Link link) async {
-    if (link.path2.isEmpty) return 'שגיאה: נתיב ריק';
-    if (link.index2 <= 0) return 'שגיאה: אינדקס לא תקין';
+    if (link.path2.isEmpty) return 'error: path empty';
+    if (link.index2 <= 0) return 'error: אינדקס no תקין';
 
     final targetTitle = link.path2.contains('/')
         ? link.path2.split('/').last.replaceAll('.txt', '')
         : link.path2;
 
     final repository = _sqliteProvider.repository;
-    if (repository == null) return 'שגיאה: מאגר לא מאותחל';
+    if (repository == null) return 'error: מאגר no מאותחל';
 
     try {
       final book = await repository.getBookByTitle(targetTitle);
-      if (book == null) return 'שגיאה: הספר לא נמצא במסד הנתונים';
+      if (book == null) return 'error: הbook no נמצא במסד הנתונים';
 
       // link.index2 is 1-based; lineIndex in DB is 0-based
       final line = await repository.getLineByIndex(book.id, link.index2 - 1);
-      if (line == null) return 'שגיאה: אינדקס מחוץ לטווח';
+      if (line == null) return 'error: אינדקס מחוץ לטווח';
 
       return line.content;
     } catch (e) {
       debugPrint('⚠️ Error in getLinkContent: $e');
-      return 'שגיאה בטעינת תוכן המפרש';
+      return 'error בטעינת content הcommentator';
     }
   }
 
@@ -1757,7 +1757,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
     );
   }
 
-  /// מחזיר רשימת (lineIndex, text) לכל ערכי כותרות משנה בעלי שורה מוגדרת
+  /// מחזיר רשימת (lineIndex, text) לכל ערכי כותרות מyear בעלי line מוגדרת
   Future<List<({int lineIndex, String text})>> getAltTocLineIndices(
       int structureId) async {
     return _dbOperation<List<({int lineIndex, String text})>>(
@@ -1846,15 +1846,15 @@ class DatabaseLibraryProvider implements LibraryProvider {
   /// This is called when a new custom folder is added.
   ///
   /// Fires the scan in the background and returns immediately.
-  /// סורקת תיקייה חיצונית ומוסיפה ספרים ל-DB.
+  /// סורקת folder חיצונית ומוסיפה books ל-DB.
   ///
-  /// מחזירה [Future<ScanResult>] עם ספירות ותוצאה. הסריקות מסודרות בתור
-  /// פנימי — סריקה חדשה מתחילה רק אחרי שהקודמת מסיימת, כך שאין
-  /// כתיבות מקביליות ל-DB גם אם ה-UI לא חוסם.
+  /// מחזירה [Future<ScanResult>] עם ספירות ותוצאה. הסemptyות מסודרות בתור
+  /// פנימי — סemptyה חדשה מתחילה רק אחרי שהקודמת מסיימת, כך שאין
+  /// כתיבות מקביליות ל-DB גם אם ה-UI no חוסם.
   ///
-  /// [folderPath] - הנתיב המלא לתיקייה לסריקה
-  /// [folderName] - שם התצוגה של התיקייה
-  /// [repository] - ה-repository לפעולות DB
+  /// [folderPath] - הpath הfull לfolder לסemptyה
+  /// [folderName] - name התצוגה של הfolder
+  /// [repository] - ה-repository לactions DB
   Future<ScanResult> scanAndAddExternalBooksFromFolder(
     String folderPath,
     String folderName,
@@ -1881,7 +1881,7 @@ class DatabaseLibraryProvider implements LibraryProvider {
       final dir = Directory(folderPath);
       if (!await dir.exists()) {
         debugPrint('⚠️ Folder does not exist: $folderPath');
-        return const ScanResult(fatalError: 'התיקייה לא נמצאה');
+        return const ScanResult(fatalError: 'הfolder no נמצאה');
       }
 
       // Phase 1 (background isolate): scan directory, check DB existence via a

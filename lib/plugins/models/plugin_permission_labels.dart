@@ -1,16 +1,16 @@
-/// מידע תצוגה עבור הרשאת תוסף — שם עברי ותיאור קצר
+/// מידע תצוגה עבור הרשאת תוסף — name עברי וdescription short
 class PluginPermissionInfo {
-  /// שם קצר בעברית (מוצג כותרת)
+  /// name short בעברית (מוצג כותרת)
   final String label;
 
-  /// תיאור מה ההרשאה מאפשרת (מוצג כsubtitle)
+  /// description מה ההרשאה מאפשרת (מוצג כsubtitle)
   final String description;
 
   const PluginPermissionInfo({required this.label, required this.description});
 }
 
 /// מחזיר מידע תצוגה עבור הרשאה בשמה הטכני.
-/// אם ההרשאה אינה מוכרת, מחזיר את שמה הטכני עם תיאור גנרי.
+/// אם ההרשאה אינה מוכרת, מחזיר את שמה הטכני עם description גנרי.
 PluginPermissionInfo getPermissionInfo(String permissionKey) {
   return _permissionLabels[permissionKey] ??
       PluginPermissionInfo(
@@ -19,38 +19,38 @@ PluginPermissionInfo getPermissionInfo(String permissionKey) {
       );
 }
 
-/// מיפוי מלא של כל ההרשאות התקפות לשם ותיאור בעברית
+/// מיפוי full של כל ההרשאות התקפות לname וdescription בעברית
 const Map<String, PluginPermissionInfo> _permissionLabels = {
   // ===== מידע על האפליקציה =====
   'app.info.read': PluginPermissionInfo(
     label: 'מידע אפליקציה',
-    description: 'קריאת מידע כללי על האפליקציה: גרסה, פלטפורמה, ערכת נושא',
+    description: 'קריאת מידע general על האפליקציה: גרסה, פלטפורמה, ערכת נושא',
   ),
   'app.user_email.read': PluginPermissionInfo(
     label: 'כתובת מייל',
-    description: 'גישה לכתובת המייל של המשתמש, לשימוש בדיווח שגיאות בלבד',
+    description: 'גישה לכתובת המייל של הuser, לשימוש בדיווח errors בלבד',
   ),
 
-  // ===== ספרייה =====
+  // ===== library =====
   'library.books.read': PluginPermissionInfo(
-    label: 'רשימת ספרים',
-    description: 'חיפוש וצפייה ברשימת כל הספרים בספרייה',
+    label: 'רשימת books',
+    description: 'search וצפייה ברשימת כל הbooks בlibrary',
   ),
   'library.content.read': PluginPermissionInfo(
-    label: 'תוכן ספרים',
-    description: 'קריאת תוכן הספרים מהספרייה',
+    label: 'content books',
+    description: 'קריאת content הbooks מthe library',
   ),
 
-  // ===== חיפוש =====
+  // ===== search =====
   'search.fulltext.read': PluginPermissionInfo(
-    label: 'חיפוש טקסט מלא',
-    description: 'ביצוע חיפושי טקסט ברחבי כל הספרייה',
+    label: 'search text full',
+    description: 'ביצוע searchי text ברחבי כל the library',
   ),
 
   // ===== קורא =====
   'reader.open': PluginPermissionInfo(
-    label: 'פתיחת ספרים',
-    description: 'פתיחת ספרים בקורא האפליקציה',
+    label: 'פתיחת books',
+    description: 'פתיחת books בקורא האפליקציה',
   ),
 
   // ===== ניווט =====
@@ -59,32 +59,32 @@ const Map<String, PluginPermissionInfo> _permissionLabels = {
     description: 'מעבר בין מסכים שונים באפליקציה',
   ),
 
-  // ===== הערות אישיות =====
+  // ===== notes אישיות =====
   'notes.read': PluginPermissionInfo(
-    label: 'צפייה בהערות',
-    description: 'קריאה וצפייה בהערות האישיות שלך',
+    label: 'צפייה בnotes',
+    description: 'קריאה וצפייה בnotes האישיות שלך',
   ),
   'notes.write': PluginPermissionInfo(
-    label: 'עריכת הערות',
-    description: 'יצירה, עריכה ומחיקה של הערות אישיות',
+    label: 'עריכת notes',
+    description: 'יצירה, עריכה וdelete של notes אישיות',
   ),
 
-  // ===== לוח שנה =====
+  // ===== לוח year =====
   'calendar.read': PluginPermissionInfo(
-    label: 'לוח שנה עברי',
-    description: 'גישה ללוח השנה העברי, זמנים הלכתיים ואירועים',
+    label: 'לוח year עברי',
+    description: 'גישה ללוח הyear העברי, זמנים הלכתיים ואירועים',
   ),
 
-  // ===== הגדרות =====
+  // ===== settings =====
   'settings.read': PluginPermissionInfo(
-    label: 'הגדרות האפליקציה',
-    description: 'קריאת הגדרות האפליקציה (רק הגדרות שאושרו לתוספים)',
+    label: 'settings האפליקציה',
+    description: 'קריאת settings האפליקציה (רק settings שאושרו לתוספים)',
   ),
 
-  // ===== ממשק משתמש =====
+  // ===== interface user =====
   'ui.feedback': PluginPermissionInfo(
     label: 'הודעות ודיאלוגים',
-    description: 'הצגת הודעות, דיאלוגים ועדכונים בממשק המשתמש',
+    description: 'הצגת הודעות, דיאלוגים ועדכונים בinterface הuser',
   ),
 
   // ===== אחסון תוסף =====
@@ -94,19 +94,19 @@ const Map<String, PluginPermissionInfo> _permissionLabels = {
   ),
   'plugin.storage.write': PluginPermissionInfo(
     label: 'אחסון מקומי — כתיבה',
-    description: 'שמירת נתוני התוסף על המכשיר',
+    description: 'save נתוני התוסף על המכשיר',
   ),
 
   // ===== פרסום נתונים =====
   'published_data.write': PluginPermissionInfo(
     label: 'שיתוף נתונים עם האפליקציה',
     description:
-        'פרסום נתונים מהתוסף לחלקים אחרים באפליקציה (כגון אירועי לוח שנה)',
+        'פרסום נתונים מהתוסף לחלקים אחרים באפליקציה (כגון אירועי לוח year)',
   ),
 
   // ===== רשת =====
   'network.access': PluginPermissionInfo(
-    label: 'גישה לאינטרנט',
+    label: 'גישה noינטרנט',
     description: 'שליחה וקבלה של מידע מרשת האינטרנט',
   ),
 
@@ -119,11 +119,11 @@ const Map<String, PluginPermissionInfo> _permissionLabels = {
   // ===== היסטוריית קריאה =====
   'history.read': PluginPermissionInfo(
     label: 'היסטוריית קריאה — צפייה',
-    description: 'צפייה בהיסטוריית הקריאה והחיפושים שלך',
+    description: 'צפייה בהיסטוריית הקריאה והsearchים שלך',
   ),
   'history.write': PluginPermissionInfo(
     label: 'היסטוריית קריאה — עריכה',
-    description: 'מחיקה ועריכה של היסטוריית הקריאה',
+    description: 'delete ועריכה של היסטוריית הקריאה',
   ),
 
   // ===== מסד נתונים =====
@@ -138,41 +138,41 @@ const Map<String, PluginPermissionInfo> _permissionLabels = {
     description: 'הצגת הודעות פופ-אפ בתוך האפליקציה',
   ),
   'notifications.system': PluginPermissionInfo(
-    label: 'התראות מערכת',
-    description: 'שליחת התראות למערכת ההפעלה (גם כשהאפליקציה סגורה)',
+    label: 'התראות System',
+    description: 'שליחת התראות לSystem הEnableה (גם כשהאפליקציה closedה)',
   ),
 
   // ===== אירועים =====
   'events.subscribe:navigation.changed': PluginPermissionInfo(
     label: 'אירועי ניווט',
-    description: 'קבלת עדכון בכל פעם שמשתמש עובר בין מסכים',
+    description: 'קבלת update בכל פעם שuser עובר בין מסכים',
   ),
   'events.subscribe:reader.current_book_changed': PluginPermissionInfo(
-    label: 'אירועי פתיחת ספר',
-    description: 'קבלת עדכון בכל פעם שנפתח ספר חדש בקורא',
+    label: 'אירועי פתיחת book',
+    description: 'קבלת update בכל פעם שנOpen new book בקורא',
   ),
   'events.subscribe:reader.current_ref_changed': PluginPermissionInfo(
-    label: 'אירועי שינוי מיקום',
-    description: 'קבלת עדכון בכל פעם שמיקום הקריאה משתנה (דף, פרק, סעיף)',
+    label: 'אירועי שינוי location',
+    description: 'קבלת update בכל פעם שlocation הקריאה variable (page, פרק, סעיף)',
   ),
   'events.subscribe:theme.changed': PluginPermissionInfo(
     label: 'אירועי ערכת נושא',
-    description: 'קבלת עדכון בכל פעם שמשתמש מחליף ערכת נושא',
+    description: 'קבלת update בכל פעם שuser מחליף ערכת נושא',
   ),
   'events.subscribe:settings.changed': PluginPermissionInfo(
-    label: 'אירועי הגדרות',
-    description: 'קבלת עדכון בכל פעם שמשתמש משנה הגדרה',
+    label: 'אירועי settings',
+    description: 'קבלת update בכל פעם שuser מyear setting',
   ),
   'events.subscribe:calendar.date_changed': PluginPermissionInfo(
-    label: 'אירועי שינוי תאריך',
-    description: 'קבלת עדכון בכל פעם שמשתמש מחליף תאריך בלוח השנה',
+    label: 'אירועי שינוי date',
+    description: 'קבלת update בכל פעם שuser מחליף date בלוח הyear',
   ),
   'events.subscribe:workspace.changed': PluginPermissionInfo(
     label: 'אירועי סביבת עבודה',
-    description: 'קבלת עדכון בכל פעם שמשתמש מחליף סביבת עבודה',
+    description: 'קבלת update בכל פעם שuser מחליף סביבת עבודה',
   ),
   'events.subscribe:plugin.permissions_changed': PluginPermissionInfo(
     label: 'אירועי שינוי הרשאות',
-    description: 'קבלת עדכון בכל פעם שהרשאות התוסף משתנות',
+    description: 'קבלת update בכל פעם שהרשאות התוסף משתנות',
   ),
 };

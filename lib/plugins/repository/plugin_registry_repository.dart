@@ -107,7 +107,7 @@ class PluginRegistryRepository {
     return _db.getPublishedRecordsByType(type);
   }
 
-  /// מחזיר האם התוסף מופעל. null = לא נמצא (=treat as disabled).
+  /// מחזיר האם התוסף active. null = no נמצא (=treat as disabled).
   Future<bool> getIsEnabled(String pluginId) async {
     final plugin = await _db.getInstalledPlugin(pluginId);
     return plugin?.enabled ?? false;

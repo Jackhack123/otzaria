@@ -43,7 +43,7 @@ class FileSyncResult {
   }
 }
 
-/// Service for syncing files from אוצריא and links folders to the database.
+/// Service for syncing files from Otzaria and links folders to the database.
 ///
 /// This service scans for new TXT files in the library path and adds them
 /// to the database automatically. It runs in the background after app startup.
@@ -323,7 +323,7 @@ class FileSyncService {
         final relativeCategories =
             _parsePathToCategories(filePath, folder.path);
         final categoryId = await _findExistingCategoryId([
-          'ספרים אישיים',
+          'books אישיים',
           folder.name,
           ...relativeCategories,
         ]);
@@ -387,13 +387,13 @@ class FileSyncService {
     return false;
   }
 
-  /// מוחק מה-DB תיקיות אישיות ישנות שכבר לא מוגדרות בהגדרות.
+  /// מוחק מה-DB folders אישיות ישנות שכבר no מוגדרות בsettings.
   Future<void> pruneRemovedCustomFoldersFromDatabase(
     List<CustomFolder> customFolders,
   ) async {
     final rootCategories = await _repository.getRootCategories();
     final personalCategory = rootCategories
-        .where((category) => category.title == 'ספרים אישיים')
+        .where((category) => category.title == 'books אישיים')
         .firstOrNull;
     if (personalCategory == null) {
       return;
@@ -635,7 +635,7 @@ class FileSyncService {
           : libraryPath;
       generator.initializeForSync(libraryRoot: libraryRoot);
 
-      _reportProgress(0.4, 'סורק תיקיות מותאמות אישית...');
+      _reportProgress(0.4, 'סורק folders מותאמות אישית...');
 
       if (customFolders.isNotEmpty) {
         _log.info('Found ${customFolders.length} custom folders to sync');
@@ -644,7 +644,7 @@ class FileSyncService {
           final folderDir = Directory(folder.path);
           if (!await folderDir.exists()) {
             _log.warning('Custom folder does not exist: ${folder.path}');
-            errors.add('תיקייה לא קיימת: ${folder.name}');
+            errors.add('folder no קיימת: ${folder.name}');
             continue;
           }
 
@@ -653,7 +653,7 @@ class FileSyncService {
 
           final result = await _scanAndImportPath(
             rootPath: folder.path,
-            categoryPrefix: ['ספרים אישיים', folder.name],
+            categoryPrefix: ['books אישיים', folder.name],
             insertContent: folder.addToDatabase,
             customSourceName: _buildCustomFolderSourceName(folder.path),
             generator: generator,
@@ -668,7 +668,7 @@ class FileSyncService {
       }
 
       if (addedCategories > 0) {
-        _reportProgress(0.95, 'מעדכן היררכיית קטגוריות...');
+        _reportProgress(0.95, 'מעדyes היררכיית categories...');
         await _repository.rebuildCategoryClosure();
       }
 

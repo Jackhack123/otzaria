@@ -133,7 +133,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
   void didUpdateWidget(TextBookSearchView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // עדכון שדה החיפוש אם initialQuery השתנה
+    // update field הsearch אם initialQuery השתנה
     final queryChanged = widget.initialQuery != oldWidget.initialQuery;
     final needsControllerSync =
         widget.initialQuery != searchTextController.text;
@@ -141,7 +141,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     if (queryChanged && needsControllerSync) {
       syncSearchControllerQuery(searchTextController, widget.initialQuery);
 
-      // הרצת חיפוש אם יש טקסט חדש
+      // הרצת search אם יש text חדש
       if (widget.initialQuery.isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
@@ -229,7 +229,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
       return;
     }
 
-    // הסרת ניקוד כברירת מחדל, אלא אם המשתמש לחץ על כפתור "עם ניקוד"
+    // הסרת ניקוד כברירת מחדל, אno אם הuser לחץ על button "עם ניקוד"
     if (!_searchWithNikud && utils.hasNikud(query)) {
       query = utils.removeVolwels(query);
     }
@@ -253,7 +253,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
 
     try {
       // The facet filter is a prefix filter in the underlying engine, so when a
-      // book is a parent facet (e.g. /.../ספר הזהר) it may also match child
+      // book is a parent facet (e.g. /.../book הזהר) it may also match child
       // facets like commentaries. We therefore post-filter by exact title.
       //
       // Use a higher raw limit to avoid losing relevant results that would have
@@ -263,7 +263,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
 
       final List<SearchResult> rawResults;
       if (_usesTypoTolerance) {
-        // חיפוש Levenshtein בתוך הספר — ללא regex/slop, רק מילים נקיות
+        // search Levenshtein בתוך הbook — לno regex/slop, רק מילים נקיות
         rawResults = await _searchRepository.searchTextsLevenshtein(
           query,
           [_bookPath!],
@@ -408,7 +408,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // יצירת רשימה מקובצת - כותרת מופיעה רק כשהיא משתנה
+    // יצירת list מקובצת - כותרת מופיעה רק כשהיא variable
     final List<_GroupedResultItem> items = [];
     String? lastAddress;
     for (var resultListIndex = 0;
@@ -438,7 +438,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
         resultToolbar:
             searchResults.isNotEmpty ? _buildSearchResultNavigationBar() : null,
         resultCountString: searchResults.isNotEmpty
-            ? 'נמצאו ${searchResults.length} תוצאות'
+            ? 'נמצאו ${searchResults.length} results'
             : null,
         resultsWidget: ListView.builder(
           padding: const EdgeInsets.all(16),
@@ -446,7 +446,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
           itemBuilder: (context, index) {
             final item = items[index];
 
-            // אם זו כותרת קבוצה
+            // אם זו כותרת group
             if (item.isHeader) {
               return BlocBuilder<SettingsBloc, SettingsState>(
                 builder: (context, settingsState) {
@@ -504,7 +504,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
                   maxChars: _maxResultSnippetChars,
                 );
 
-                // יצירת TextSpans עם הדגשה של מילות החיפוש
+                // יצירת TextSpans עם הדגשה של מילות הsearch
                 final highlightedSnippet = _buildHighlightedText(
                   snippet,
                   result.query,
@@ -594,9 +594,9 @@ class TextBookSearchViewState extends State<TextBookSearchView>
           });
         },
         additionalActions: [
-          // כפתור "כל הספר"
+          // button "כל הbook"
           _buildScopeButton(
-            message: 'חיפוש בכל הספר',
+            message: 'search בכל הbook',
             icon: FluentIcons.book_24_regular,
             isActive: !_searchInCurrentSection,
             onTap: () {
@@ -607,23 +607,23 @@ class TextBookSearchViewState extends State<TextBookSearchView>
             },
           ),
           const SizedBox(width: 4),
-          // כפתור "כותרת נוכחית"
+          // button "כותרת current"
           _buildScopeButton(
-            message: 'חיפוש בקטע נוכחי',
+            message: 'search בקטע current',
             icon: FluentIcons.text_align_right_24_regular,
             isActive: _searchInCurrentSection,
             onTap: () {
               setState(() {
                 _searchInCurrentSection = true;
               });
-              _updateCurrentSection(); // עדכן את הקטע הנוכחי
+              _updateCurrentSection(); // עדyes את הקטע הcurrent
               // Wait for the next frame to ensure _currentSectionBounds is updated
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 _searchTextUpdated();
               });
             },
           ),
-          // כפתור חיפוש עם ניקוד (רק אם יש ניקוד בטקסט)
+          // button search עם ניקוד (רק אם יש ניקוד בtext)
           if (utils.hasNikud(searchTextController.text)) ...[
             const SizedBox(width: 4),
             NikudSearchButton(
@@ -640,7 +640,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
         hintText: 'חפש כאן...',
         onAdvancedSearch: () {
           // Create a temporary SearchingTab to hold the state
-          final tempTab = SearchingTab("חיפוש", searchTextController.text);
+          final tempTab = SearchingTab("search", searchTextController.text);
           tempTab.searchOptions.addAll(_searchOptions);
           tempTab.alternativeWords.addAll(_alternativeWords);
           tempTab.spacingValues.addAll(_spacingValues);
@@ -716,7 +716,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
             const SizedBox(width: 4),
             _buildResultNavigationButton(
               icon: FluentIcons.chevron_down_24_regular,
-              tooltip: 'התוצאה הבאה',
+              tooltip: 'התוצאה nextה',
               onPressed: isAtLastResult ? null : () => _moveBetweenResults(1),
             ),
           ],
@@ -763,7 +763,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     );
   }
 
-  // פונקציה ליצירת טקסט מודגש
+  // function ליצירת text מודגש
   List<InlineSpan> _buildHighlightedText(
     String text,
     String query,
@@ -781,7 +781,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     final searchTerms =
         query.trim().split(RegExp(r'\s+')).where((s) => s.isNotEmpty).toList();
 
-    // בניית regex לכל מילה בנפרד + pattern לביטוי המלא
+    // בניית regex לכל מילה בנפרד + pattern לביטוי הfull
     final wordRegexList = <RegExp>[];
     final wordPatternStrings = <String>[];
 
@@ -820,12 +820,12 @@ class TextBookSearchViewState extends State<TextBookSearchView>
       color: Color(0xFFD32F2F),
     );
 
-    // regex משולב לכל מילה בכל סדר – לשימוש כ-fallback
+    // regex משולב לכל מילה בכל order – לשימוש כ-fallback
     final anyWordRegex = wordPatternStrings.isNotEmpty
         ? RegExp(wordPatternStrings.join('|'), caseSensitive: false)
         : null;
 
-    // פונקציה פנימית: הדגשת מילות חיפוש בודדות (כל סדר) בטקסט נתון
+    // function פנימית: הדגשת מילות search בודדות (כל order) בtext נתון
     void addIndividualWordHighlights(String segment) {
       if (anyWordRegex == null) {
         spans.add(TextSpan(text: segment));
@@ -845,7 +845,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     }
 
     final phraseMatches = phraseRegex.allMatches(text).toList();
-    // אם הביטוי לא נמצא כלל וחיפוש לא מדויק, ייתכן שהמילים בסדר הפוך – נדגיש בנפרד
+    // אם הביטוי no נמצא כלל וsearch no מדויק, ייתyes שהמילים בorder הפוך – נדגיש בנפרד
     if (phraseMatches.isEmpty && allowReverseOrderFallback) {
       addIndividualWordHighlights(text);
       return spans;
@@ -854,13 +854,13 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     int currentPosition = 0;
 
     for (final phraseMatch in phraseMatches) {
-      // טקסט לפני הביטוי – ללא הדגשה (בחיפוש רגיל)
+      // text לפני הביטוי – לno הדגשה (בsearch רגיל)
       if (phraseMatch.start > currentPosition) {
         spans.add(TextSpan(
             text: text.substring(currentPosition, phraseMatch.start)));
       }
 
-      // הדגשת מילות החיפוש בלבד בתוך הביטוי (בסדר המקורי)
+      // הדגשת מילות הsearch בלבד בתוך הביטוי (בorder המקורי)
       final phraseText = text.substring(phraseMatch.start, phraseMatch.end);
       int phraseOffset = 0;
 
@@ -872,7 +872,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
         final wordStart = phraseOffset + wordMatch.start;
         final wordEnd = phraseOffset + wordMatch.end;
 
-        // טקסט בין המילים (לא מודגש)
+        // text בין המילים (no מודגש)
         if (wordStart > phraseOffset) {
           spans.add(TextSpan(
               text: phraseText.substring(phraseOffset, wordStart)));
@@ -885,7 +885,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
         phraseOffset = wordEnd;
       }
 
-      // טקסט שנותר אחרי המילה האחרונה בביטוי
+      // text שנותר אחרי המילה האחרונה בביטוי
       if (phraseOffset < phraseText.length) {
         spans.add(TextSpan(text: phraseText.substring(phraseOffset)));
       }
@@ -893,7 +893,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
       currentPosition = phraseMatch.end;
     }
 
-    // טקסט אחרי ההדגשה האחרונה – ללא הדגשה
+    // text אחרי ההדגשה האחרונה – לno הדגשה
     if (currentPosition < text.length) {
       spans.add(TextSpan(text: text.substring(currentPosition)));
     }
@@ -990,7 +990,7 @@ class TextBookSearchViewState extends State<TextBookSearchView>
     return '$prefix${text.substring(start, end)}$suffix';
   }
 
-  /// בונה כפתור בחירת טווח חיפוש (כל הספר / קטע נוכחי)
+  /// בונה button בחירת טווח search (כל הbook / קטע current)
   Widget _buildScopeButton({
     required String message,
     required IconData icon,

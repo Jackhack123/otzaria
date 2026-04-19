@@ -1,4 +1,4 @@
-/// כלל join מותר בין שתי טבלאות
+/// כלל join מותר בין שתי טבnoות
 class PluginJoinRule {
   final String tableA;
   final String columnA;
@@ -21,28 +21,28 @@ class PluginJoinRule {
 
 /// מדיניות גישה למסד נתונים עבור תוסף
 class PluginDatabasePolicy {
-  /// שמות הטבלאות המותרות לקריאה
+  /// names הטבnoות המותרות לקריאה
   final Set<String> tables;
 
-  /// עמודות מותרות לפי שם טבלה
+  /// pageות מותרות לפי name טבלה
   final Map<String, Set<String>> columnsByTable;
 
-  /// כללי join מותרים
+  /// general join מותרים
   final List<PluginJoinRule> allowedJoins;
 
-  /// מספר שורות מקסימלי לשאילתה
+  /// מbook lines מקסימלי לשאילתה
   final int maxLimit;
 
-  /// מספר שאילתות מקסימלי ב-batch
+  /// מbook שאילתות מקסימלי ב-batch
   final int maxBatchQueries;
 
-  /// זמן ריצה מקסימלי לשאילתה
+  /// time ריצה מקסימלי לשאילתה
   final Duration maxQueryDuration;
 
-  /// מספר joins מקסימלי בשאילתה
+  /// מbook joins מקסימלי בשאילתה
   final int maxJoins;
 
-  /// מספר עמודות מקסימלי ב-select
+  /// מbook pageות מקסימלי ב-select
   final int maxColumns;
 
   const PluginDatabasePolicy({
@@ -59,24 +59,24 @@ class PluginDatabasePolicy {
   /// בודק אם טבלה מותרת
   bool isTableAllowed(String table) => tables.contains(table);
 
-  /// בודק אם עמודה מותרת בטבלה
+  /// בודק אם pageה מותרת בטבלה
   bool isColumnAllowed(String table, String column) =>
       columnsByTable[table]?.contains(column) ?? false;
 
-  /// בודק אם join מותר בין שתי עמודות
+  /// בודק אם join מותר בין שתי pageות
   bool isJoinAllowed(String t1, String c1, String t2, String c2) =>
       allowedJoins.any((rule) => rule.matches(t1, c1, t2, c2));
 }
 
-/// תיאור מקור נתונים SQLite שתוספים יכולים לגשת אליו
+/// description מקור נתונים SQLite שתוספים יכולים לגשת אליו
 class PluginDatabaseSource {
-  /// מזהה יחודי
+  /// מזהה יoverrideי
   final String sourceId;
 
-  /// שם תצוגה
+  /// name תצוגה
   final String label;
 
-  /// נתיב מוחלט לקובץ ה-DB
+  /// path מוחלט לfile ה-DB
   final String databasePath;
 
   /// פתיחה במצב קריאה בלבד (מומלץ תמיד true)

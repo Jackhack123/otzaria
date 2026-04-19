@@ -34,7 +34,7 @@ class PhoneReportService {
         debugPrint('Response body: ${response.body}');
 
         if (response.statusCode == 200) {
-          return PhoneReportResult.success('הדיווח נשלח בהצלחה');
+          return PhoneReportResult.success('הדיווח נשלח בsuccess');
         } else if (response.statusCode >= 400 && response.statusCode < 500) {
           // Client error - don't retry
           return PhoneReportResult.error(
@@ -50,39 +50,39 @@ class PhoneReportService {
           continue;
         } else {
           return PhoneReportResult.error(
-              'שגיאה לא צפויה: ${response.statusCode}');
+              'error no צפויה: ${response.statusCode}');
         }
       } on SocketException catch (e) {
         debugPrint('Network error on attempt $attempt: $e');
         if (attempt == _maxRetries) {
           return PhoneReportResult.error(
-              'אין חיבור לאינטרנט. בדוק את החיבור ונסה שוב');
+              'אין חיבור noינטרנט. בדוק את החיבור ונסה שוב');
         }
         await Future.delayed(Duration(seconds: attempt));
       } on http.ClientException catch (e) {
         debugPrint('HTTP client error on attempt $attempt: $e');
         if (attempt == _maxRetries) {
           return PhoneReportResult.error(
-              'שגיאה בשליחת הנתונים. נסה שוב מאוחר יותר');
+              'error בשליחת הנתונים. נסה שוב מאוחר יותר');
         }
         await Future.delayed(Duration(seconds: attempt));
       } on Exception catch (e) {
         debugPrint('Unexpected error on attempt $attempt: $e');
         if (attempt == _maxRetries) {
-          return PhoneReportResult.error('שגיאה לא צפויה. נסה שוב מאוחר יותר');
+          return PhoneReportResult.error('error no צפויה. נסה שוב מאוחר יותר');
         }
         await Future.delayed(Duration(seconds: attempt));
       }
     }
 
-    return PhoneReportResult.error('שגיאה לא צפויה');
+    return PhoneReportResult.error('error no צפויה');
   }
 
   /// Get user-friendly error message for client errors
   String _getClientErrorMessage(int statusCode) {
     switch (statusCode) {
       case 400:
-        return 'שגיאה בנתוני הדיווח. בדוק שכל השדות מלאים';
+        return 'error בנתוני הדיווח. בדוק שכל הfields fullים';
       case 401:
         return 'שגיאת הרשאה. פנה לתמיכה טכנית';
       case 403:
@@ -90,9 +90,9 @@ class PhoneReportService {
       case 404:
         return 'שירות הדיווח אינו זמין. פנה לתמיכה טכנית';
       case 429:
-        return 'יותר מדי בקשות. המתן מספר דקות ונסה שוב';
+        return 'יותר מדי בקשות. המתן מbook דקות ונסה שוב';
       default:
-        return 'שגיאה בשליחת הנתונים ($statusCode)';
+        return 'error בשליחת הנתונים ($statusCode)';
     }
   }
 

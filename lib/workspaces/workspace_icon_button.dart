@@ -42,21 +42,21 @@ class _WorkspaceIconButtonState extends State<WorkspaceIconButton>
       curve: Curves.easeOutCubic,
     ));
 
-    // טוען את workspaces כשהwidget נוצר
+    // טוען את workspaces כשהwidget created
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<WorkspaceBloc>().add(LoadWorkspaces());
       }
     });
 
-    // האזנה לשינויים בקיצורים
+    // האזנה לשינויים בShortcuts
     // context.watch<SettingsBloc>().state.shortcuts;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // האזנה לשינויים בקיצורים
+    // האזנה לשינויים בShortcuts
     context.watch<SettingsBloc>().state.shortcuts;
   }
 
@@ -96,10 +96,10 @@ class _WorkspaceIconButtonState extends State<WorkspaceIconButton>
       fontWeight: FontWeight.w500,
     );
 
-    // חישוב רוחב הטקסט
+    // חישוב רוחב הtext
     final textWidth = _calculateTextWidth(workspaceName, textStyle);
 
-    // חישוב הרוחב הכולל: אייקון (20) + רווח (8) + טקסט + padding (24)
+    // חישוב הרוחב הכולל: אייקון (20) + רווח (8) + text + padding (24)
     final expandedWidth = (20 + 8 + textWidth + 24 + 8).clamp(40.0, 180.0);
 
     // קריאת קיצור המקשים הדינמי

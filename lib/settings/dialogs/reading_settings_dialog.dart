@@ -4,7 +4,7 @@ import 'package:otzaria/core/ui_snack.dart';
 import 'package:otzaria/settings/engine/settings_engine_exports.dart';
 import 'package:otzaria/settings/tabs/text_settings_tab.dart';
 
-/// פונקציה גלובלית להצגת דיאלוג הגדרות תצוגת הספרים
+/// function גלובלית להצגת דיאלוג settings תצוגת הbooks
 /// ניתן לקרוא לה מכל מקום באפליקציה (למשל ממסך העיון)
 void showReadingSettingsDialog(BuildContext context) {
   final dialogContext = navigatorKey.currentContext;
@@ -20,7 +20,7 @@ void showReadingSettingsDialog(BuildContext context) {
           backgroundColor:
               Theme.of(context).colorScheme.surfaceContainerHigh,
           title: const Text(
-            'הגדרות תצוגת הספרים',
+            'settings תצוגת הbooks',
             style: TextStyle(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -32,7 +32,7 @@ void showReadingSettingsDialog(BuildContext context) {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('סגור'),
+              child: const Text('closed'),
             ),
           ],
         );

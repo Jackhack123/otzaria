@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// מנהל מצב בחירת טקסט זמני (Selection-only mode)
-/// מאפשר בחירת טקסט לצורך העתקה בלבד, ללא עריכה
+/// admin מצב בחירת text זמני (Selection-only mode)
+/// מאפשר בחירת text לצורך Copyה בלבד, לno עריכה
 class TextSelectionManager extends ChangeNotifier {
   /// נקודת העיגון לבחירה (anchor point)
   int? _anchorIndex;
@@ -12,7 +12,7 @@ class TextSelectionManager extends ChangeNotifier {
   int? get anchorIndex => _anchorIndex;
   bool get isInSelectionMode => _isInSelectionMode;
 
-  /// קביעת anchor point (נקודת התחלה לבחירה)
+  /// קביעת anchor point (נקודת start לבחירה)
   void setAnchor(int index) {
     _anchorIndex = index;
     _isInSelectionMode = true;
@@ -20,7 +20,7 @@ class TextSelectionManager extends ChangeNotifier {
   }
 
   /// כניסה למצב בחירה עם double-click
-  /// הערה: הפיצ'ר לא מומש במלואו בגלל מגבלות Flutter
+  /// note: הפיצ'ר no מומש במלואו בגלל מגבלות Flutter
   void enterDoubleClickMode(int index) {
     _anchorIndex = index;
     _isInSelectionMode = true;
@@ -34,10 +34,10 @@ class TextSelectionManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// בדיקה אם יש anchor פעיל
+  /// check אם יש anchor פעיל
   bool hasAnchor() => _anchorIndex != null;
 
-  /// איפוס מלא
+  /// איפוס full
   void reset() {
     _anchorIndex = null;
     _isInSelectionMode = false;

@@ -68,7 +68,7 @@ class FileSyncRepository {
           currentVersion < targetVersion &&
           (chain.isEmpty || chain.last.toVersion != targetVersion)) {
         throw Exception(
-          'לא נמצא רצף עדכונים מלא מגרסה $currentVersion לגרסה $targetVersion',
+          'no נמצא רצף עדכונים full מגרסה $currentVersion לגרסה $targetVersion',
         );
       }
 
@@ -140,7 +140,7 @@ class FileSyncRepository {
       return fallback;
     }
 
-    throw Exception('לא ניתן לזהות את גרסת מסד הנתונים הנוכחית');
+    throw Exception('no ניתן לזהות את גרסת מסד הנתונים הcurrent');
   }
 
   Future<List<DiffReleaseAsset>> fetchAvailableDiffAssets() async {
@@ -155,7 +155,7 @@ class FileSyncRepository {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('שגיאה בקבלת רשימת רליסים: ${response.statusCode}');
+      throw Exception('error בקבלת רשימת רליסים: ${response.statusCode}');
     }
 
     final decoded = jsonDecode(utf8.decode(response.bodyBytes));
@@ -275,7 +275,7 @@ class FileSyncRepository {
 
     if (response.statusCode != 200) {
       throw Exception(
-        'שגיאה בהורדת ${asset.assetName}: ${response.statusCode}',
+        'error בparentדת ${asset.assetName}: ${response.statusCode}',
       );
     }
 
@@ -285,7 +285,7 @@ class FileSyncRepository {
         : await _zstandard.decompress(compressedBytes);
 
     if (extractedBytes == null || extractedBytes.isEmpty) {
-      throw Exception('קובץ ה-DIFF שחולץ ריק: ${asset.assetName}');
+      throw Exception('file ה-DIFF שחולץ empty: ${asset.assetName}');
     }
 
     return utf8.decode(extractedBytes);
@@ -294,7 +294,7 @@ class FileSyncRepository {
   Future<void> _applyDiffSql(String sql) async {
     final statements = splitSqlStatements(sql);
     if (statements.isEmpty) {
-      throw Exception('קובץ ה-DIFF אינו מכיל פקודות SQL');
+      throw Exception('file ה-DIFF אינו מכיל פקודות SQL');
     }
 
     await SqliteDataProvider.instance.dispose();

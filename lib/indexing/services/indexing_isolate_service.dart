@@ -560,8 +560,8 @@ void _indexingWorkerMain(_WorkerBootstrapMessage bootstrap) {
 
         final bookmark = await refFromPageNumber(i + 1, outline, title);
         final ref = bookmark.isNotEmpty
-            ? '$title, $bookmark, עמוד ${i + 1}'
-            : '$title, עמוד ${i + 1}';
+            ? '$title, $bookmark, page ${i + 1}'
+            : '$title, page ${i + 1}';
 
         final rawLines = pageText.fullText.split('\n');
         for (final rawLine in rawLines) {
@@ -618,8 +618,8 @@ void _indexingWorkerMain(_WorkerBootstrapMessage bootstrap) {
             final bookmark =
                 await refFromPageNumber(pageIndex + 1, outline, title);
             final ref = bookmark.isNotEmpty
-                ? '$title, $bookmark, עמוד ${pageIndex + 1}'
-                : '$title, עמוד ${pageIndex + 1}';
+                ? '$title, $bookmark, page ${pageIndex + 1}'
+                : '$title, page ${pageIndex + 1}';
 
             final lines = pagesText[pageIndex].split('\n');
             for (final line in lines) {

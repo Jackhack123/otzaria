@@ -2,13 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// GestureDetector משופר שמזהה כוונת בחירה vs. פעולה רגילה
+/// GestureDetector משופר שמזהה כוונת בחירה vs. action רגילה
 ///
 /// תיעדוף Gestures:
 /// - Drag → מצב בחירה (SelectionArea מטפל)
 /// - Double-click → בחירת פסקה (SelectionArea מטפל)
 /// - Shift+Click → בחירת טווח (SelectionArea מטפל)
-/// - Single click (ללא Shift, ללא drag) → פעולה רגילה
+/// - Single click (לno Shift, לno drag) → action רגילה
 class EnhancedGestureDetector extends StatefulWidget {
   final Widget child;
   final VoidCallback? onSingleTap;
@@ -39,7 +39,7 @@ class _EnhancedGestureDetectorState extends State<EnhancedGestureDetector> {
   int? _tapDownButtons;
   int? _lastTapTime;
   int _tapCount = 0;
-  static const int _multiTapTimeout = 300; // זמן מקסימלי בין לחיצות רצופות
+  static const int _multiTapTimeout = 300; // time מקסימלי בין לחיצות רצופות
   static const double _dragThreshold = 5.0;
 
   @override
@@ -88,8 +88,8 @@ class _EnhancedGestureDetectorState extends State<EnhancedGestureDetector> {
       return;
     }
 
-    // בדיקה שהכפתור ששוחרר הוא הכפתור הראשי
-    // לאחר שחרור הכפתור, event.buttons הוא 0, אז אנחנו בודקים שהאירוע הוא מהכפתור הראשי
+    // check שהbutton ששוחרר הוא הbutton הראשי
+    // noחר שחרור הbutton, event.buttons הוא 0, אז אנחנו בודקים שהאירוע הוא מהbutton הראשי
     if (_tapDownPosition == null) {
       return;
     }
@@ -112,8 +112,8 @@ class _EnhancedGestureDetectorState extends State<EnhancedGestureDetector> {
     if (_lastTapTime != null && (now - _lastTapTime!) < _multiTapTimeout) {
       _tapCount++;
       if (_tapCount >= 3) {
-        // לחיצה משולשת - לא עושים כלום, נותנים ל-SelectionArea לטפל
-        // (SelectionArea בוחר את כל הקטע בלחיצה משולשת)
+        // tap משולשת - no עושים כלום, נותנים ל-SelectionArea לטפל
+        // (SelectionArea בוחר את כל הקטע בtap משולשת)
         _tapCount = 0;
         _lastTapTime = null;
         _tapDownPosition = null;
@@ -121,7 +121,7 @@ class _EnhancedGestureDetectorState extends State<EnhancedGestureDetector> {
       }
       if (_tapCount >= 2) {
         widget.onDoubleTap?.call();
-        // לא מאפסים את הספירה - ממשיכים לספור ללחיצה שלישית
+        // no מאפסים את הספירה - ממשיכים לספור לtap שלישית
         _lastTapTime = now;
         _tapDownPosition = null;
         return;

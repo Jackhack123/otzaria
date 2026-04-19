@@ -11,7 +11,7 @@ class LibraryState extends Equatable {
   final String? searchQuery;
   final List<String>? selectedTopics;
   final Book? previewBook;
-  /// ספרים חדשים שנמצאו ברענון ודורשים אינדוקס. מתאפס אחרי כל copyWith.
+  /// new books שנמצאו בrefresh ודורשים אינדוקס. מתאפס אחרי כל copyWith.
   final List<Book>? newBooksToIndex;
 
   const LibraryState({
@@ -27,7 +27,7 @@ class LibraryState extends Equatable {
   });
 
   factory LibraryState.initial() {
-    // יצירת ספרייה ראשונית עם כל הקטגוריות מה-DB
+    // יצירת library ראשונית עם כל הcategories מה-DB
     final placeholderCategories = [
       Category(
           title: 'תנ״ך',
@@ -38,7 +38,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'תלמוד בבלי',
+          title: 'Talmud בבלי',
           description: '',
           shortDescription: '',
           order: 5,
@@ -46,7 +46,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'משנה',
+          title: 'מyear',
           description: '',
           shortDescription: '',
           order: 10,
@@ -54,7 +54,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'תלמוד ירושלמי',
+          title: 'Talmud ירושלמי',
           description: '',
           shortDescription: '',
           order: 10,
@@ -86,7 +86,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'סדר התפילה',
+          title: 'order התפילה',
           description: '',
           shortDescription: '',
           order: 35,
@@ -118,7 +118,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'ספרי מוסר',
+          title: 'bookי מוסר',
           description: '',
           shortDescription: '',
           order: 55,
@@ -142,7 +142,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'מילונים וספרי יעץ',
+          title: 'מילונים וbookי יעץ',
           description: '',
           shortDescription: '',
           order: 70,
@@ -150,7 +150,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'ספרים מספריות חיצוניות',
+          title: 'books מbookיות חיצוניות',
           description: '',
           shortDescription: '',
           order: 75,
@@ -166,7 +166,7 @@ class LibraryState extends Equatable {
           books: [],
           parent: null),
       Category(
-          title: 'ספרות עזר',
+          title: 'bookות עזר',
           description: '',
           shortDescription: '',
           order: 999,
@@ -204,7 +204,7 @@ class LibraryState extends Equatable {
       searchQuery: searchQuery ?? this.searchQuery,
       selectedTopics: selectedTopics ?? this.selectedTopics,
       previewBook: previewBook ?? this.previewBook,
-      newBooksToIndex: newBooksToIndex, // null = אין ספרים לאינדוקס
+      newBooksToIndex: newBooksToIndex, // null = אין books noינדוקס
     );
   }
 

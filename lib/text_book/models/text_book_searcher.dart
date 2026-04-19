@@ -65,7 +65,7 @@ class TextBookSearcher {
       int index = section.indexOf(query);
       if (index >= 0) {
         // if there is a match
-        // מסנן את רמה 1 (<h1>) - שם הספר
+        // מסנן את רמה 1 (<h1>) - name הbook
         final filteredAddress =
             address.where((h) => !h.startsWith('<h1')).toList();
 

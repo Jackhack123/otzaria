@@ -44,13 +44,13 @@ class PluginManifestValidator {
       if (compareVersionsStrict(currentAppVersion, manifest.minAppVersion) <
           0) {
         throw Exception(
-            'התוסף דורש אוצריא בגרסה ${manifest.minAppVersion} לפחות, אך מותקנת $currentAppVersion');
+            'התוסף דורש Otzaria בגרסה ${manifest.minAppVersion} לפחות, אך מותקנת $currentAppVersion');
       }
       if (manifest.maxAppVersion != null &&
           compareVersionsStrict(currentAppVersion, manifest.maxAppVersion!) >
               0) {
         throw Exception(
-            'התוסף מיועד לאוצריא עד גרסה ${manifest.maxAppVersion} בלבד, אך מותקנת $currentAppVersion');
+            'התוסף מיועד לOtzaria עד גרסה ${manifest.maxAppVersion} בלבד, אך מותקנת $currentAppVersion');
       }
     }
 
@@ -58,16 +58,16 @@ class PluginManifestValidator {
       if (!pluginValidPermissions.contains(perm)) {
         final hint = apiCallToPermissionHint[perm];
         if (hint != null) {
-          throw Exception('הרשאה לא חוקית: "$perm". האם התכוונת ל-"$hint"?');
+          throw Exception('הרשאה no חוקית: "$perm". האם התכוונת ל-"$hint"?');
         }
-        throw Exception('הרשאה לא חוקית שנדרשת על ידי התוסף: $perm');
+        throw Exception('הרשאה no חוקית שנדרשת על ידי התוסף: $perm');
       }
     }
 
     if (manifest.databaseSources.isNotEmpty &&
         !manifest.permissions.contains('database.read')) {
       throw Exception(
-          'התוסף מצהיר על contributes.databaseSources אך לא מבקש את ההרשאה database.read');
+          'התוסף מצהיר על contributes.databaseSources אך no מבקש את ההרשאה database.read');
     }
 
     for (final source in manifest.databaseSources) {
@@ -77,30 +77,30 @@ class PluginManifestValidator {
 
       if (id is! String || id.isEmpty) {
         throw Exception(
-            'כל ערך ב-contributes.databaseSources חייב לכלול id מסוג string');
+            'כל value ב-contributes.databaseSources חייב לכלול id מסוג string');
       }
       if (!RegExp(r'^[a-z0-9_.-]+$').hasMatch(id)) {
         throw Exception('מזהה מקור מסד נתונים אינו תקין: "$id"');
       }
       if (label != null && label is! String) {
         throw Exception(
-            'השדה label ב-contributes.databaseSources חייב להיות string');
+            'הfield label ב-contributes.databaseSources חייב להיות string');
       }
       if (required != null && required is! bool) {
         throw Exception(
-            'השדה required ב-contributes.databaseSources חייב להיות bool');
+            'הfield required ב-contributes.databaseSources חייב להיות bool');
       }
     }
 
     if (manifest.toolTabIconVariant != null &&
         manifest.toolTabIconCodepoint == null) {
       throw Exception(
-          'toolTab.iconVariant הוגדר ללא toolTab.iconCodepoint תואם');
+          'toolTab.iconVariant הוגדר לno toolTab.iconCodepoint תואם');
     }
 
     if (manifest.toolTabIconCodepoint != null) {
       if (manifest.toolTabIconCodepoint! < 0) {
-        throw Exception('toolTab.iconCodepoint חייב להיות מספר חיובי');
+        throw Exception('toolTab.iconCodepoint חייב להיות מbook חיובי');
       }
 
       final variant = manifest.toolTabIconVariant;
@@ -114,10 +114,10 @@ class PluginManifestValidator {
         p.normalize(p.join(directoryPath, manifest.entrypoint));
     if (!p.isWithin(directoryPath, entrypointPath)) {
       throw Exception(
-          'נתיב קובץ הכניסה ${manifest.entrypoint} חורג מגבולות תיקיית התוסף');
+          'path file הכניסה ${manifest.entrypoint} חורג מגבולות תיקיית התוסף');
     }
     if (!File(entrypointPath).existsSync()) {
-      throw Exception('קובץ הכניסה ${manifest.entrypoint} לא נמצא בתיקייה');
+      throw Exception('file הכניסה ${manifest.entrypoint} no נמצא בfolder');
     }
   }
 }

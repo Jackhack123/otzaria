@@ -35,7 +35,7 @@ class Book {
   /// A short description of the book in Hebrew
   final String? heShortDesc;
 
-  /// Optional notes content: when a companion file named "הערות על <title>" exists,
+  /// Optional notes content: when a companion file named "notes על <title>" exists,
   /// its content is attached here instead of being inserted as a separate book.
   final String? notesContent;
 
@@ -115,7 +115,7 @@ class Book {
     this.volume,
   });
 
-  /// מחזיר האם תוכן הספר נטען מקובץ חיצוני במערכת הקבצים.
+  /// מחזיר האם content הbook נטען מfile חיצוני בSystem הfiles.
   bool get isFileBacked {
     final normalizedPath = filePath?.trim();
     if (normalizedPath == null || normalizedPath.isEmpty) {

@@ -10,7 +10,7 @@ import 'package:otzaria/navigation/main_window_screen.dart';
 import 'package:otzaria/settings/settings_exports.dart';
 import 'package:window_manager/window_manager.dart';
 
-// AppColors הועבר ל-lib/theme/app_colors.dart
+// AppColors moved to-lib/theme/app_colors.dart
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -59,7 +59,7 @@ class App extends StatelessWidget {
             Locale("he", "IL"),
           ],
           locale: const Locale("he", "IL"),
-          title: 'אוצריא',
+          title: 'Otzaria',
           theme: AppThemeData.light(lightColorScheme,
               compactMenuMode: state.compactMenuMode),
           darkTheme: AppThemeData.dark(state.darkSeedColor,

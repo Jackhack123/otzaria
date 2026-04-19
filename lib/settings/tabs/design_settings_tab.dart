@@ -12,7 +12,7 @@ import 'package:otzaria/widgets/custom_ui_components.dart';
 
 enum _SidebarMode { pinned, openOnBook, closed }
 
-/// טאב הגדרות עיצוב
+/// טאב settings עיצוב
 class DesignSettingsTab extends StatelessWidget {
   const DesignSettingsTab({super.key});
 
@@ -26,7 +26,7 @@ class DesignSettingsTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // מסך מלא (רק בדסקטופ)
+              // מסך full (רק בדסקטופ)
               if (!(Platform.isAndroid || Platform.isIOS))
                 SettingsCard(
                   title: 'תצוגה',
@@ -35,8 +35,8 @@ class DesignSettingsTab extends StatelessWidget {
                       leading: Icon(state.isFullscreen
                           ? FluentIcons.full_screen_minimize_24_regular
                           : FluentIcons.full_screen_maximize_24_regular),
-                      title: const Text('מסך מלא', style: kSettingsTitleStyle),
-                      subtitle: const Text('החלף מצב מסך מלא',
+                      title: const Text('מסך full', style: kSettingsTitleStyle),
+                      subtitle: const Text('החלף מצב מסך full',
                           style: kSettingsSubtitleStyle),
                       trailing: Switch(
                         value: state.isFullscreen,
@@ -59,10 +59,10 @@ class DesignSettingsTab extends StatelessWidget {
                 children: [
                   SwitchSettingsTile(
                     leading: const Icon(FluentIcons.settings_24_regular),
-                    title: const Text('מעקב אחר צבע המערכת',
+                    title: const Text('מעקב אחר צבע הSystem',
                         style: kSettingsTitleStyle),
                     subtitle: Text(
-                        state.followSystemTheme ? 'מופעל' : 'לא מופעל',
+                        state.followSystemTheme ? 'active' : 'no active',
                         style: kSettingsSubtitleStyle),
                     value: state.followSystemTheme,
                     onChanged: (value) {
@@ -74,7 +74,7 @@ class DesignSettingsTab extends StatelessWidget {
                   SwitchSettingsTile(
                     leading: const Icon(FluentIcons.weather_moon_24_regular),
                     title: const Text('מצב כהה', style: kSettingsTitleStyle),
-                    subtitle: Text(state.isDarkMode ? 'מופעל' : 'לא מופעל',
+                    subtitle: Text(state.isDarkMode ? 'active' : 'no active',
                         style: kSettingsSubtitleStyle),
                     value: state.isDarkMode,
                     enabled: !state.followSystemTheme,
@@ -122,16 +122,16 @@ class DesignSettingsTab extends StatelessWidget {
                 children: [
                   SwitchSettingsTile(
                     leading: const Icon(FluentIcons.book_open_24_regular),
-                    title: const Text('תצוגת ספר בPDF',
+                    title: const Text('תצוגת book בPDF',
                         style: kSettingsTitleStyle),
                     subtitle: Text(
                       state.enablePerBookSettings
                           ? state.pdfBookViewByDefault
-                              ? 'ספרי PDF ייפתחו בתצוגת ספר'
-                              : 'ספרי PDF ייפתחו בתצוגה רגילה'
+                              ? 'bookי PDF ייOpenו בתצוגת book'
+                              : 'bookי PDF ייOpenו בתצוגה רגילה'
                           : state.pdfBookViewByDefault
-                              ? 'כל ספרי ה-PDF ייפתחו בתצוגת ספר'
-                              : 'כל ספרי ה-PDF ייפתחו בתצוגה רגילה',
+                              ? 'כל bookי ה-PDF ייOpenו בתצוגת book'
+                              : 'כל bookי ה-PDF ייOpenו בתצוגה רגילה',
                       style: kSettingsSubtitleStyle,
                     ),
                     value: state.pdfBookViewByDefault,
@@ -146,9 +146,9 @@ class DesignSettingsTab extends StatelessWidget {
 
               kSettingsCardSpacing,
 
-              // הגדרות טאבים
+              // settings טאבים
               SettingsCard(
-                title: 'כרטיסיות הספרים',
+                title: 'כרטיסיות הbooks',
                 children: [
                   if (!(Platform.isAndroid || Platform.isIOS))
                     SwitchSettingsTile(
@@ -198,16 +198,16 @@ class DesignSettingsTab extends StatelessWidget {
                   SegmentedSettingsTile<_SidebarMode>(
                     title: 'חלונית ניווט בין כותרות',
                     subtitle: state.pinSidebar
-                        ? 'החלונית תוצג באופן קבוע'
+                        ? 'החלונית תוצג באופן constant'
                         : state.defaultSidebarOpen
-                            ? 'החלונית תוצג בפתיחת ספר ותיסגר בעת גלילה'
-                            : 'החלונית לא תוצג אוטומטית עם פתיחת הספר',
+                            ? 'החלונית תוצג בפתיחת book ותיסגר בעת גלילה'
+                            : 'החלונית no תוצג אוטומטית עם פתיחת הbook',
                     icon: FluentIcons.panel_left_24_regular,
                     options: const [
                       SegmentOption(value: _SidebarMode.pinned, label: 'הצגה'),
                       SegmentOption(
                           value: _SidebarMode.openOnBook, label: 'אוטומטי'),
-                      SegmentOption(value: _SidebarMode.closed, label: 'הסתרה'),
+                      SegmentOption(value: _SidebarMode.closed, label: 'hideה'),
                     ],
                     currentValue: state.pinSidebar
                         ? _SidebarMode.pinned
@@ -240,12 +240,12 @@ class DesignSettingsTab extends StatelessWidget {
                     },
                   ),
                   SwitchSettingsTile(
-                    title: const Text('פתיחת הערות אישיות במצב סגור',
+                    title: const Text('פתיחת notes אישיות במצב closed',
                         style: kSettingsTitleStyle),
                     subtitle: Text(
                         state.personalNotesCollapsedByDefault
-                            ? 'רשימות ההערות יוצגו כשהן סגורות'
-                            : 'רשימות ההערות יוצגו כשהן פתוחות',
+                            ? 'lists הnotes יוצגו כשהן closedות'
+                            : 'lists הnotes יוצגו כשהן openות',
                         style: kSettingsSubtitleStyle),
                     value: state.personalNotesCollapsedByDefault,
                     onChanged: (value) {
@@ -259,12 +259,12 @@ class DesignSettingsTab extends StatelessWidget {
                       final splitedView =
                           Settings.getValue<bool>('key-splited-view') ?? false;
                       return SwitchSettingsTile(
-                        title: const Text('הצגת המפרשים בחלונית בצד',
+                        title: const Text('הצגת הCommentators בחלונית בצד',
                             style: kSettingsTitleStyle),
                         subtitle: Text(
                             splitedView
-                                ? 'המפרשים יוצגו בחלונית מפוצלת'
-                                : 'המפרשים יוצגו בתוך הטקסט',
+                                ? 'הCommentators יוצגו בחלונית מפוצלת'
+                                : 'הCommentators יוצגו בתוך הtext',
                             style: kSettingsSubtitleStyle),
                         value: splitedView,
                         onChanged: (value) {

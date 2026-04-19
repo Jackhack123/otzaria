@@ -22,7 +22,7 @@ class IndexingWarning extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'אינדקס החיפוש בתהליך עדכון. יתכן שחלק מהספרים לא יוצגו בתוצאות החיפוש.',
+              'אינדקס הsearch בתהליך update. יתyes שחלק מהbooks no יוצגו בresults הsearch.',
               textAlign: TextAlign.right,
               style: TextStyle(color: colorScheme.onErrorContainer),
             ),

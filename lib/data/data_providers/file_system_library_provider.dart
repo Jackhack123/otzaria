@@ -47,7 +47,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
   String get providerId => 'file_system';
 
   @override
-  String get displayName => 'קבצים';
+  String get displayName => 'files';
 
   @override
   String get sourceIndicator => 'ק';
@@ -81,16 +81,16 @@ class FileSystemLibraryProvider implements LibraryProvider {
     // We can populate the key map here as well to ensure it's accurate
     final map = await keyToPath;
 
-    // NOTE: The main library folder (אוצריא) is now stored in the database
+    // NOTE: The main library folder (Otzaria) is now stored in the database
     // and loaded by DatabaseLibraryProvider. We do NOT scan it here to avoid duplicates.
 
-    // Load books from the built-in personal folder (אוצריא/אישי)
+    // Load books from the built-in personal folder (Otzaria/אישי)
     // This is NOT a custom folder, but a built-in location for personal books
     final personalBooksPath = getPersonalBooksPath();
     final personalBooksDir = Directory(personalBooksPath);
     if (await personalBooksDir.exists()) {
       await _loadBooksRecursively(
-          personalBooksDir, metadata, booksByCategory, ['ספרים אישיים'], map);
+          personalBooksDir, metadata, booksByCategory, ['books אישיים'], map);
     }
 
     await _loadBundledTalmudBavliBooks(metadata, booksByCategory, map);
@@ -163,7 +163,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
     final dirName = dir.path.split(Platform.pathSeparator).last;
 
     // Skip special directories (except in debug mode)
-    if (!kDebugMode && dirName == 'ספרים מספריות חיצוניות') return;
+    if (!kDebugMode && dirName == 'books מbookיות חיצוניות') return;
 
     await for (FileSystemEntity entity in dir.list()) {
       try {
@@ -177,7 +177,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
           final book = _createBookFromFile(entity, metadata, currentPath);
           if (book != null) {
             final categoryName =
-                currentPath.isNotEmpty ? currentPath.last : 'ללא קטגוריה';
+                currentPath.isNotEmpty ? currentPath.last : 'לno category';
             booksByCategory.putIfAbsent(categoryName, () => []);
             booksByCategory[categoryName]!.add(book);
 
@@ -343,16 +343,16 @@ class FileSystemLibraryProvider implements LibraryProvider {
       keyToPath[key] = path;
     }
 
-    // NOTE: The main library folder (אוצריא) is now stored in the database
+    // NOTE: The main library folder (Otzaria) is now stored in the database
     // and loaded by DatabaseLibraryProvider. We do NOT scan it here to avoid duplicates.
 
-    // Load from the built-in personal folder (אוצריא/אישי)
+    // Load from the built-in personal folder (Otzaria/אישי)
     // This is NOT a custom folder, but a built-in location for personal books
     final personalBooksPath = getPersonalBooksPath();
     if (await Directory(personalBooksPath).exists()) {
       final personalPaths = await _getAllBookPaths(personalBooksPath);
       for (var path in personalPaths) {
-        addPath(path, personalBooksPath, ['ספרים אישיים']);
+        addPath(path, personalBooksPath, ['books אישיים']);
       }
     }
 
@@ -460,7 +460,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
 
   /// Gets the path to the personal books folder
   String getPersonalBooksPath() {
-    return '$_libraryPath${Platform.pathSeparator}אוצריא${Platform.pathSeparator}אישי';
+    return '$_libraryPath${Platform.pathSeparator}Otzaria${Platform.pathSeparator}אישי';
   }
 
   /// Saves text content to a book file
@@ -612,7 +612,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
     // Split path into parts
     final parts = path.split('/').where((p) => p.isNotEmpty).toList();
     if (parts.isEmpty) {
-      parts.add('ללא קטגוריה');
+      parts.add('לno category');
     }
 
     Category currentParent = library;
@@ -740,11 +740,11 @@ class FileSystemLibraryProvider implements LibraryProvider {
 
     try {
       if (link.path2.isEmpty) {
-        return 'שגיאה: נתיב ריק';
+        return 'error: path empty';
       }
 
       if (link.index2 <= 0) {
-        return 'שגיאה: אינדקס לא תקין';
+        return 'error: אינדקס no תקין';
       }
 
       final title = getTitleFromPath(link.path2);
@@ -760,20 +760,20 @@ class FileSystemLibraryProvider implements LibraryProvider {
       }
 
       if (path == null) {
-        return 'שגיאה: הספר לא נמצא';
+        return 'error: הbook no נמצא';
       }
 
       final file = File(path);
       if (!await file.exists()) {
-        return 'שגיאה: הקובץ לא נמצא';
+        return 'error: הfile no נמצא';
       }
 
       return await _getLineFromFile(path, link.index2).timeout(
         const Duration(seconds: 3),
-        onTimeout: () => 'שגיאה: פג זמן קריאת הקובץ',
+        onTimeout: () => 'error: פג time קריאת הfile',
       );
     } catch (e) {
-      return 'שגיאה בטעינת תוכן המפרש: $e';
+      return 'error בטעינת content הcommentator: $e';
     }
   }
 
@@ -783,7 +783,7 @@ class FileSystemLibraryProvider implements LibraryProvider {
     final lines = await file.readAsLines();
 
     if (lineIndex < 1 || lineIndex > lines.length) {
-      return 'שגיאה: אינדקס מחוץ לטווח';
+      return 'error: אינדקס מחוץ לטווח';
     }
 
     return lines[lineIndex - 1];

@@ -620,13 +620,13 @@ class PluginBridgeAdapter {
         return true;
       case 'showConfirm':
         final result = await _dependencies.showConfirmDialog(
-          title: args['title'] as String? ?? 'אישור',
+          title: args['title'] as String? ?? 'confirm',
           content: args['content'] as String? ?? '',
         );
         return {'confirmed': result};
       case 'showWarning':
         final result = await _dependencies.showWarningDialog(
-          title: args['title'] as String? ?? 'אזהרה',
+          title: args['title'] as String? ?? 'Warning',
           content: args['content'] as String? ?? '',
           subtitle: args['subtitle'] as String? ?? '',
         );
@@ -755,7 +755,7 @@ class PluginBridgeAdapter {
         }
         await _pluginRepo.publishRecord(
             plugin.pluginId, type, scope, key, jsonEncode(payload), null);
-        // רענון חי של לוח השנה כשמדובר באירוע לוח
+        // refresh חי של לוח הyear כשמדובר באירוע לוח
         if (type == 'calendar.event') {
           _dependencies.calendarCubit.refreshPluginEvents(
             currentBookId: _currentBookId(),
@@ -771,7 +771,7 @@ class PluginBridgeAdapter {
           throw Exception('type and key required');
         }
         await _pluginRepo.unpublishRecord(plugin.pluginId, type, scope, key);
-        // רענון חי של לוח השנה
+        // refresh חי של לוח הyear
         if (type == 'calendar.event') {
           _dependencies.calendarCubit.refreshPluginEvents(
             currentBookId: _currentBookId(),
@@ -948,7 +948,7 @@ class PluginBridgeAdapter {
         return true;
 
       case 'sendSystem':
-        // התראה למערכת ההפעלה
+        // התראה לSystem הEnableה
         final title = args['title'] as String?;
         final body = args['body'] as String?;
         final id = args['id'] as int?;
@@ -957,12 +957,12 @@ class PluginBridgeAdapter {
           throw Exception('title and body required');
         }
 
-        // בדיקה אם השירות מאותחל
+        // check אם השירות מאותחל
         if (!_notificationService.isInitialized) {
           throw Exception('Notification service not initialized');
         }
 
-        // בדיקה אם יש הרשאות
+        // check אם יש הרשאות
         if (!_notificationService.hasPermissions) {
           throw Exception('Notification permissions not granted');
         }
@@ -977,13 +977,13 @@ class PluginBridgeAdapter {
           notificationDetails: _buildNotificationDetails(),
         );
 
-        // שמירת ה-ID לעקוב אחרי התראות התוסף
+        // save ה-ID לעקוב אחרי התראות התוסף
         await _trackNotificationId(notificationId);
 
         return {'id': notificationId};
 
       case 'scheduleSystem':
-        // תזמון התראה למערכת ההפעלה
+        // תזמון התראה לSystem הEnableה
         final title = args['title'] as String?;
         final body = args['body'] as String?;
         final scheduledTime = args['scheduledTime'] as String?;
@@ -1020,13 +1020,13 @@ class PluginBridgeAdapter {
           reminderMinutes: 0,
         );
 
-        // שמירת ה-ID לעקוב אחרי התראות התוסף
+        // save ה-ID לעקוב אחרי התראות התוסף
         await _trackNotificationId(notificationId);
 
         return {'id': notificationId};
 
       case 'cancel':
-        // ביטול התראה
+        // cancel התראה
         final id = args['id'] as int?;
         if (id == null) throw Exception('id required');
 
@@ -1039,7 +1039,7 @@ class PluginBridgeAdapter {
         return true;
 
       case 'cancelAll':
-        // ביטול כל ההתראות של התוסף
+        // cancel כל ההתראות של התוסף
         if (!_notificationService.isInitialized) {
           throw Exception('Notification service not initialized');
         }
@@ -1094,7 +1094,7 @@ class PluginBridgeAdapter {
     const androidDetails = AndroidNotificationDetails(
       'plugin_channel',
       'התראות תוספים',
-      channelDescription: 'התראות מתוספי אוצריא',
+      channelDescription: 'התראות מתוספי Otzaria',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
@@ -1207,7 +1207,7 @@ class PluginBridgeAdapter {
       final day = jewishCalendar.getJewishDayOfMonth();
       final idx = jewishCalendar.getYomTovIndex();
 
-      // לימים טובים של פסח יש שמות ספציפיים שהספרייה לא מבדילה ביניהם
+      // לימים טובים של פסח יש names specificים שthe library no מבדילה ביניהם
       if (idx == JewishCalendar.PESACH) {
         if (month == 1 && day == 21) {
           addHoliday('שביעי של פסח', 'yomTov');
@@ -1242,7 +1242,7 @@ class PluginBridgeAdapter {
 
   String _holidayKindForLabel(String label, JewishCalendar jewishCalendar) {
     final normalizedLabel = label.trim();
-    if (normalizedLabel.contains('ראש חודש') ||
+    if (normalizedLabel.contains('ראש month') ||
         normalizedLabel.contains('ר"ח')) {
       return 'roshChodesh';
     }

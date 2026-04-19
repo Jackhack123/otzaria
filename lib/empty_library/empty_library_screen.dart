@@ -53,7 +53,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
           }
           if (state is EmptyLibraryZipExtracted) {
             UiSnack.showSuccess(
-              'הקובץ "${state.extractedFileName}" חולץ בהצלחה!',
+              'הfile "${state.extractedFileName}" חולץ בsuccess!',
             );
           }
           if (state is EmptyLibraryError && state.errorMessage != null) {
@@ -94,13 +94,13 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
     });
   }
 
-  /// מציג דיאלוג המסביר למשתמש את מגבלת Android Scoped Storage.
-  /// המשתמש בוחר בין העתקה (שמירת מקור) להעברה (מחיקת מקור לפנית מקום).
+  /// מציג דיאלוג המסביר לuser את מגבלת Android Scoped Storage.
+  /// הuser בוחר בין Copyה (save מקור) להעברה (מחיקת מקור לפנית מקום).
   void _showDbCopyDialog(
       BuildContext context, EmptyLibraryAskingDbCopy state) {
     final sizeText = state.dbSizeBytes > 0
         ? '${(state.dbSizeBytes / 1024 / 1024).toStringAsFixed(1)} MB'
-        : 'לא ידוע';
+        : 'no ידוע';
 
     showDbCopyRequiredDialog(
       context: context,
@@ -131,11 +131,11 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('מחיקת קובץ דחוס'),
+        title: const Text('מחיקת file דחוס'),
         content: const Text(
-          'האם למחוק את הקובץ הדחוס המקורי?\n\n'
-          'הקובץ הדחוס אינו נצרך עבור פעילות התוכנה והוא רק תופס מקום.\n'
-          'מומלץ למחוק אותו.',
+          'האם לdeleted את הfile הדחוס המקורי?\n\n'
+          'הfile הדחוס אינו נצרך עבור פעילות התוכנה והוא רק תופס מקום.\n'
+          'מומלץ לdeleted אותו.',
           textDirection: TextDirection.rtl,
         ),
         actions: [
@@ -150,7 +150,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
                 ),
               );
             },
-            child: const Text('השאר את הקובץ'),
+            child: const Text('השאר את הfile'),
           ),
           FilledButton(
             onPressed: () {
@@ -163,7 +163,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
                 ),
               );
             },
-            child: const Text('מחק את הקובץ'),
+            child: const Text('Delete את הfile'),
           ),
         ],
       ),
@@ -175,12 +175,12 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('נמצאו מספר קבצים דחוסים'),
+        title: const Text('נמצאו מbook files דחוסים'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('נמצאו הקבצים הדחוסים הבאים:'),
+            const Text('נמצאו הfiles הדחוסים nextים:'),
             const SizedBox(height: 8),
             ...zipFiles.map((file) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
@@ -188,7 +188,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
                 )),
             const SizedBox(height: 16),
             const Text(
-              'אנא השאר רק קובץ דחוס אחד בתיקייה ונסה שוב.',
+              'אנא השאר רק file דחוס אחד בfolder ונסה שוב.',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -204,7 +204,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
   }
 
   Widget _buildContent(BuildContext context, EmptyLibraryState state) {
-    // אם בתהליך הורדה או חילוץ, נציג את ההתקדמות
+    // אם בתהליך parentדה או חילוץ, נציג את ההתקדמות
     if (state is EmptyLibraryDownloading) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +216,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
           ),
           const SizedBox(height: 24),
           const Text(
-            'מוריד ספרייה',
+            'מוריד library',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 32),
@@ -264,7 +264,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
           ),
           const SizedBox(height: 24),
           const Text(
-            'מחלץ ספרייה',
+            'מחלץ library',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 32),
@@ -310,14 +310,14 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
         ),
         const SizedBox(height: 24),
         const Text(
-          'לא נמצאה ספריית ספרים',
+          'no נמצאה bookיית books',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
           textDirection: TextDirection.rtl,
         ),
         const SizedBox(height: 16),
         Text(
-          'תוכל לבחור תיקייה קיימת המכילה את הספרייה (ניתן להעתיק ממחשב אחר), או לחלץ מקובץ דחוס (ZIP/ZST).',
+          'תוכל לselected folder קיימת המכילה את the library (ניתן להעתיק ממחשב אחר), או לחלץ מfile דחוס (ZIP/ZST).',
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -350,14 +350,14 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
             FilledButton.icon(
               onPressed: state.isLoading ? null : () => _pickDirectory(context),
               icon: const Icon(FluentIcons.folder_open_24_regular),
-              label: const Text('בחר תיקיית ספרייה'),
+              label: const Text('בחר תיקיית library'),
             ),
             const SizedBox(width: 16),
             ElevatedButton.icon(
               onPressed:
                   state.isLoading ? null : () => _pickArchiveFile(context),
               icon: const Icon(FluentIcons.folder_zip_24_regular),
-              label: const Text('חלץ מקובץ דחוס'),
+              label: const Text('חלץ מfile דחוס'),
             ),
           ],
         ),
@@ -371,7 +371,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
                 },
           icon: const Icon(FluentIcons.arrow_download_24_regular),
           label: const Text(
-            'עוד לא הורדת את קובץ הספרייה? לחץ כאן כדי להוריד אותה כעת',
+            'עוד no parentדת את file the library? לחץ כאן כדי לparentיד אותה כעת',
             textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
           ),
@@ -411,7 +411,7 @@ class _EmptyLibraryViewState extends State<_EmptyLibraryView> {
           const SizedBox(height: 24),
           const CircularProgressIndicator(),
           const SizedBox(height: 8),
-          const Text('בודק את התיקייה...'),
+          const Text('בודק את הfolder...'),
         ],
       ],
     );

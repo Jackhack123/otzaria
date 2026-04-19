@@ -88,7 +88,7 @@ class _PageNumberDisplayState extends State<PageNumberDisplay> {
               ),
             )
           : Tooltip(
-              message: "הזן מספר דף",
+              message: "הזן מbook page",
               child: InkWell(
                   mouseCursor: SystemMouseCursors.click,
                   child: TextButton(

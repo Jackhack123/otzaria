@@ -16,7 +16,7 @@ import 'package:otzaria/settings/services/nikud_display_service.dart';
 import 'package:otzaria/widgets/app_menu.dart';
 import 'package:otzaria/text_book/view/selection/selected_text_copy.dart';
 
-/// פונקציות עזר לתפריטי הקשר במפרשים
+/// functions עזר לתפריטי הקשר בCommentators
 class ContextMenuUtils {
   static TextBook _targetBookFromLink(Link link) {
     return TextBook(
@@ -26,11 +26,11 @@ class ContextMenuUtils {
     );
   }
 
-  /// בניית רשימת פריטי תפריט הקשר למפרש ספציפי.
+  /// בניית רשימת פריטי תפריט הקשר לcommentator specific.
   ///
   /// מחזיר [List<AppContextMenuEntry>] לשימוש עם [AppContextMenuRegion].
   ///
-  /// דוגמה:
+  /// example:
   /// ```dart
   /// AppContextMenuRegion(
   ///   menuBuilder: (ctx) => ContextMenuUtils.buildCommentaryContextMenu(
@@ -54,14 +54,14 @@ class ContextMenuUtils {
   }) {
     return [
       AppContextMenuEntry(
-        label: 'העתק',
+        label: 'Copy',
         icon: FluentIcons.copy_24_regular,
         enabled:
             savedSelectedText != null && savedSelectedText.trim().isNotEmpty,
         onTap: onCopySelected,
       ),
       AppContextMenuEntry(
-        label: 'העתק את כל הפסקה',
+        label: 'Copy את כל הפסקה',
         icon: FluentIcons.document_copy_24_regular,
         onTap: () => copyCommentaryParagraph(
           context: context,
@@ -71,7 +71,7 @@ class ContextMenuUtils {
       ),
       const AppContextMenuEntry.divider(),
       AppContextMenuEntry(
-        label: 'פתח ספר זה בחלון נפרד',
+        label: 'Open book זה בחלון נפרד',
         icon: FluentIcons.open_24_regular,
         onTap: () {
           openBookCallback(TextBookTab(
@@ -86,7 +86,7 @@ class ContextMenuUtils {
     ];
   }
 
-  /// העתקת פסקה שלמה של מפרש
+  /// Copyת פסקה שלמה של commentator
   static Future<void> copyCommentaryParagraph({
     required BuildContext context,
     required Link link,
@@ -97,7 +97,7 @@ class ContextMenuUtils {
 
       final content = await link.content;
       if (content.trim().isEmpty) {
-        UiSnack.show('אין תוכן להעתקה');
+        UiSnack.show('אין content לCopyה');
         return;
       }
 
@@ -159,15 +159,15 @@ class ContextMenuUtils {
         item.add(Formats.plainText(copyContent.plainText));
         item.add(Formats.htmlText(htmlText));
         await clipboard.write([item]);
-        UiSnack.show('הפסקה הועתקה בהצלחה');
+        UiSnack.show('הפסקה הועתקה בsuccess');
       }
     } catch (e) {
       debugPrint('Error copying commentary paragraph: $e');
-      UiSnack.showError('שגיאה בהעתקת הפסקה');
+      UiSnack.showError('error בCopyת הפסקה');
     }
   }
 
-  /// העתקת טקסט מעוצב (HTML) ללוח
+  /// Copyת text מעוצב (HTML) ללוח
   static Future<void> copyFormattedText({
     required BuildContext context,
     required String? savedSelectedText,
@@ -177,7 +177,7 @@ class ContextMenuUtils {
     final plainText = savedSelectedText;
 
     if (plainText == null || plainText.trim().isEmpty) {
-      UiSnack.show('אנא בחר טקסט להעתקה');
+      UiSnack.show('אנא בחר text לCopyה');
       return;
     }
 
@@ -218,11 +218,11 @@ class ContextMenuUtils {
         item.add(Formats.htmlText(htmlText));
 
         await clipboard.write([item]);
-        UiSnack.show('הטקסט הועתק');
+        UiSnack.show('הtext הועתק');
       }
     } catch (e) {
       debugPrint('Error copying text: $e');
-      UiSnack.showError('שגיאה בהעתקת הטקסט');
+      UiSnack.showError('error בCopyת הtext');
     }
   }
 }

@@ -47,9 +47,9 @@ class SearchModeToggle extends StatelessWidget {
             initialLabelIndex: currentIndex,
             totalSwitches: 3,
             labels: const [
-              'חיפוש מתקדם',
-              'חיפוש מדוייק',
-              'חיפוש מקורב',
+              'search מתקדם',
+              'search מדוייק',
+              'search מקורב',
             ],
             radiusStyle: true,
             onToggle: (index) {
@@ -118,7 +118,7 @@ class _FuzzyDistanceState extends State<FuzzyDistance> {
 
   void _onSpacingChanged() {
     setState(() {
-      // עדכון התצוגה כשמשתמש משנה מרווחים
+      // update התצוגה כשuser מyear מרווחים
     });
   }
 
@@ -126,7 +126,7 @@ class _FuzzyDistanceState extends State<FuzzyDistance> {
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        // בדיקה אם יש מרווחים מותאמים אישית
+        // check אם יש מרווחים מותאמים אישית
         final hasCustomSpacing = widget.tab.spacingValues.isNotEmpty;
         final isLevenshtein = state.isTypoToleranceEnabled;
         final isEnabled = !state.fuzzy && !hasCustomSpacing && !isLevenshtein;
@@ -137,7 +137,7 @@ class _FuzzyDistanceState extends State<FuzzyDistance> {
             enabled: isEnabled,
             decoration: InputDecoration(
               labelText: isLevenshtein
-                  ? 'מרווח בין מילים (לא רלוונטי)'
+                  ? 'מרווח בין מילים (no רלוונטי)'
                   : hasCustomSpacing
                       ? 'מרווח בין מילים (מושבת)'
                       : 'מרווח בין מילים',
@@ -178,7 +178,7 @@ class NumOfResults extends StatelessWidget {
       builder: (context, state) {
         return SizedBox(
           width: 154,
-          height: 52, // גובה קבוע
+          height: 52, // גובה constant
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: SpinBox(
@@ -189,7 +189,7 @@ class NumOfResults extends StatelessWidget {
               min: 10,
               max: 10000,
               decoration: const InputDecoration(
-                labelText: 'מספר תוצאות',
+                labelText: 'מbook results',
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 12.0,
                   vertical: 8.0,
@@ -221,38 +221,38 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
     _scrollController = ScrollController();
     // מאזין לשינויים בקונטרולר
     widget.tab.queryController.addListener(_onTextChanged);
-    // מאזין לשינויים באפשרויות החיפוש
+    // מאזין לשינויים באפשרויות הsearch
     _listenToSearchOptions();
   }
 
   void _listenToSearchOptions() {
-    // מאזין לשינויים באפשרויות החיפוש
+    // מאזין לשינויים באפשרויות הsearch
     widget.tab.searchOptionsChanged.addListener(_onSearchOptionsChanged);
     // מאזין לשינויים במילים החילופיות
     widget.tab.alternativeWordsChanged.addListener(_onAlternativeWordsChanged);
   }
 
   void _onSearchOptionsChanged() {
-    // עדכון התצוגה כשמשתמש משנה אפשרויות
+    // update התצוגה כשuser מyear אפשרויות
     setState(() {
-      // זה יגרום לעדכון של התצוגה
+      // זה יגרום לupdate של התצוגה
     });
   }
 
   void _onAlternativeWordsChanged() {
-    // עדכון התצוגה כשמשתמש משנה מילים חילופיות
+    // update התצוגה כשuser מyear מילים חילופיות
     setState(() {
-      // זה יגרום לעדכון של התצוגה
+      // זה יגרום לupdate של התצוגה
     });
   }
 
   double _calculateFormattedTextWidth(String text, BuildContext context) {
     if (text.trim().isEmpty) return 0.0;
 
-    // יצירת TextSpan עם הטקסט המעוצב
+    // יצירת TextSpan עם הtext המעוצב
     final spans = _buildFormattedTextSpans(text, context);
 
-    // שימוש ב-TextPainter למדידת הרוחב האמיתי
+    // שימוש ב-TextPainter לaccurateת הרוחב האמיתי
     final textPainter = TextPainter(
       text: TextSpan(children: spans),
       textDirection: TextDirection.rtl,
@@ -263,7 +263,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
     return textPainter.size.width;
   }
 
-  // פונקציה להמרת מספרים לתת-כתב Unicode
+  // function להמרת מbooks לתת-Font Unicode
   String _convertToSubscript(String number) {
     const Map<String, String> subscriptMap = {
       '0': '₀',
@@ -287,24 +287,24 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
     final words = text.trim().split(RegExp(r'\s+'));
     final List<TextSpan> spans = [];
 
-    // מיפוי אפשרויות לקיצורים
+    // מיפוי אפשרויות לShortcuts
     const Map<String, String> optionAbbreviations = {
       'קידומות': 'ק',
-      'סיומות': 'ס',
+      'endת': 'ס',
       'קידומות דקדוקיות': 'קד',
-      'סיומות דקדוקיות': 'סד',
-      'כתיב מלא/חסר': 'מח',
+      'endת דקדוקיות': 'סד',
+      'כתיב full/חסר': 'מח',
       'חלק ממילה': 'ש',
     };
 
-    // אפשרויות שמופיעות אחרי המילה (סיומות)
-    const Set<String> suffixOptions = {'סיומות', 'סיומות דקדוקיות'};
+    // אפשרויות שמופיעות אחרי המילה (endת)
+    const Set<String> suffixOptions = {'endת', 'endת דקדוקיות'};
 
     for (int i = 0; i < words.length; i++) {
       final word = words[i];
       final wordKey = '${word}_$i';
 
-      // בדיקה אם יש אפשרויות למילה הזו
+      // check אם יש אפשרויות למילה הזו
       final wordOptions = widget.tab.searchOptions[wordKey];
       final selectedOptions = wordOptions?.entries
               .where((entry) => entry.value)
@@ -312,10 +312,10 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
               .toList() ??
           [];
 
-      // בדיקה אם יש מילים חילופיות למילה הזו
+      // check אם יש מילים חילופיות למילה הזו
       final alternativeWords = widget.tab.alternativeWords[i] ?? [];
 
-      // הפרדה בין קידומות לסיומות
+      // הפרדה בין קידומות לendת
       final prefixes = selectedOptions
           .where((opt) => !suffixOptions.contains(opt))
           .map((opt) => optionAbbreviations[opt] ?? opt)
@@ -332,7 +332,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
           TextSpan(
             text: '(${prefixes.join(',')})',
             style: TextStyle(
-              fontSize: 10, // גופן קטן יותר לקיצורים
+              fontSize: 10, // גופן small יותר לShortcuts
               fontWeight: FontWeight.normal,
               color: Theme.of(context).primaryColor,
             ),
@@ -346,7 +346,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
         TextSpan(
           text: word,
           style: const TextStyle(
-            fontSize: 16, // גופן גדול יותר למילים
+            fontSize: 16, // גופן large יותר למילים
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -356,7 +356,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
       // הוספת מילים חילופיות אם יש
       if (alternativeWords.isNotEmpty) {
         for (final altWord in alternativeWords) {
-          // הוספת "או" בצבע הסיומות
+          // הוספת "או" בצבע הendת
           spans.add(const TextSpan(text: ' '));
           spans.add(
             TextSpan(
@@ -375,7 +375,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
             TextSpan(
               text: altWord,
               style: const TextStyle(
-                fontSize: 16, // גופן גדול יותר למילים
+                fontSize: 16, // גופן large יותר למילים
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -384,14 +384,14 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
         }
       }
 
-      // הוספת סיומות אחרי המילה (והמילים החילופיות)
+      // הוספת endת אחרי המילה (והמילים החילופיות)
       if (suffixes.isNotEmpty) {
         spans.add(const TextSpan(text: ' '));
         spans.add(
           TextSpan(
             text: '(${suffixes.join(',')})',
             style: TextStyle(
-              fontSize: 10, // גופן קטן יותר לקיצורים
+              fontSize: 10, // גופן small יותר לShortcuts
               fontWeight: FontWeight.normal,
               color: Theme.of(context).primaryColor,
             ),
@@ -399,9 +399,9 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
         );
       }
 
-      // הוספת + בין המילים (לא אחרי המילה האחרונה)
+      // הוספת + בין המילים (no אחרי המילה האחרונה)
       if (i < words.length - 1) {
-        // בדיקה אם יש מרווח מוגדר בין המילים
+        // check אם יש מרווח מוגדר בין המילים
         final spacingKey = '$i-${i + 1}';
         final spacingValue = widget.tab.spacingValues[spacingKey];
 
@@ -409,7 +409,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
           // הצגת + עם המרווח מתחת
           spans.add(const TextSpan(text: ' '));
 
-          // הוספת + עם המספר כתת-כתב
+          // הוספת + עם המbook כתת-Font
           spans.add(
             const TextSpan(
               text: '+',
@@ -420,13 +420,13 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
               ),
             ),
           );
-          // הוספת המספר כתת-כתב עם Unicode subscript characters
+          // הוספת המbook כתת-Font עם Unicode subscript characters
           final subscriptValue = _convertToSubscript(spacingValue);
           spans.add(
             TextSpan(
               text: subscriptValue,
               style: TextStyle(
-                fontSize: 14, // גופן מעט יותר גדול למספר המרווח
+                fontSize: 14, // גופן מעט יותר large למbook המרווח
                 fontWeight: FontWeight.normal,
                 color: Theme.of(context).primaryColor,
               ),
@@ -435,12 +435,12 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
 
           spans.add(const TextSpan(text: ' '));
         } else {
-          // + רגיל ללא מרווח
+          // + רגיל לno מרווח
           spans.add(
             const TextSpan(
               text: ' + ',
               style: TextStyle(
-                fontSize: 16, // גופן גדול יותר ל-+
+                fontSize: 16, // גופן large יותר ל-+
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -466,12 +466,12 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
 
   void _onTextChanged() {
     setState(() {
-      // עדכון התצוגה כשהטקסט משתנה
+      // update התצוגה כשהtext variable
     });
   }
 
   String _getDisplayText(String originalQuery) {
-    // כרגע נציג את הטקסט המקורי
+    // כרגע נציג את הtext המקורי
     // בעתיד נוסיף לוגיקה להצגת החלופות
     // למשל: "מאימתי או מתי ו קורין או קוראין"
     return originalQuery;
@@ -491,7 +491,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        // נציג את הטקסט מה-state של החיפוש (לא מה-controller שמשתנה)
+        // נציג את הtext מה-state של הsearch (no מה-controller שvariable)
         final displayText = _getDisplayText(state.searchQuery);
 
         if (displayText.isEmpty) {
@@ -505,7 +505,7 @@ class _SearchTermsDisplayState extends State<SearchTermsDisplay> {
               context,
             );
 
-            // תצוגה פשוטה ללא מסגרת - ללא width קבוע כדי לאפשר מרכוז
+            // תצוגה פשוטה לno מסגרת - לno width constant כדי noפשר מרכוז
             return formattedTextWidth <= (constraints.maxWidth - 20)
                 ? _buildFormattedText(displayText, context)
                 : SizedBox(
@@ -560,7 +560,7 @@ class OrderOfResults extends StatelessWidget {
                 ),
                 AppMenuEntry(
                   value: ResultsOrder.catalogue,
-                  label: 'לפי סדר קטלוגי',
+                  label: 'לפי order קטלוגי',
                 ),
               ],
               onSelected: (value) {

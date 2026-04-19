@@ -5,10 +5,10 @@ import 'package:otzaria/utils/zip_extractor_service.dart';
 class ZipExtractionProgressDialog {
   /// מציג דיאלוג התקדמות ומבצע חילוץ ZIP אם נדרש
   ///
-  /// [context] - הקונטקסט של המסך
-  /// [path] - נתיב התיקייה לבדיקה
-  /// [onSuccess] - פונקציה שתופעל בהצלחה (מקבלת את תוצאת החילוץ)
-  /// [onError] - פונקציה שתופעל בשגיאה (מקבלת הודעת שגיאה)
+  /// [context] - הקונtext של המסך
+  /// [path] - path הfolder לtest
+  /// [onSuccess] - function שתופעל בsuccess (מקבלת את תוצאת החילוץ)
+  /// [onError] - function שתופעל בerror (מקבלת הודעת error)
   static Future<void> showAndExtract({
     required BuildContext context,
     required String path,
@@ -16,14 +16,14 @@ class ZipExtractionProgressDialog {
     required Function(String) onError,
   }) async {
     final progressNotifier = ValueNotifier<double>(0.0);
-    final messageNotifier = ValueNotifier<String>('בודק תיקייה...');
+    final messageNotifier = ValueNotifier<String>('בודק folder...');
     final isExtractingNotifier = ValueNotifier<bool>(false);
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('מעבד תיקייה'),
+        title: const Text('מעבד folder'),
         content: ValueListenableBuilder<bool>(
           valueListenable: isExtractingNotifier,
           builder: (context, isExtracting, _) {
@@ -97,30 +97,30 @@ class ZipExtractionProgressDialog {
             Navigator.of(context).pop();
           }
 
-          // שאלת המשתמש
+          // שאלת הuser
           final shouldDelete = await showDialog<bool>(
             context: context,
             builder: (dialogContext) => AlertDialog(
-              title: const Text('מחיקת קובץ דחוס'),
+              title: const Text('מחיקת file דחוס'),
               content: const Text(
-                'האם למחוק את קובץ ה-ZIP המקורי?\n\n'
-                'הקובץ הדחוס אינו נצרך עבור פעילות התוכנה והוא רק תופס מקום.\n'
-                'מומלץ למחוק אותו.',
+                'האם לdeleted את file ה-ZIP המקורי?\n\n'
+                'הfile הדחוס אינו נצרך עבור פעילות התוכנה והוא רק תופס מקום.\n'
+                'מומלץ לdeleted אותו.',
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(dialogContext).pop(false),
-                  child: const Text('השאר את הקובץ'),
+                  child: const Text('השאר את הfile'),
                 ),
                 FilledButton(
                   onPressed: () => Navigator.of(dialogContext).pop(true),
-                  child: const Text('מחק את הקובץ'),
+                  child: const Text('Delete את הfile'),
                 ),
               ],
             ),
           );
 
-          // פתיחה מחדש של דיאלוג ההתקדמות
+          // פתיחה again של דיאלוג ההתקדמות
           if (context.mounted) {
             showDialog(
               context: context,
@@ -148,7 +148,7 @@ class ZipExtractionProgressDialog {
       }
 
       if (!extractionResult.success) {
-        onError(extractionResult.errorMessage ?? 'שגיאה לא ידועה');
+        onError(extractionResult.errorMessage ?? 'error no ידועה');
       } else {
         onSuccess(extractionResult);
       }

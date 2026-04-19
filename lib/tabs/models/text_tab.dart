@@ -37,14 +37,14 @@ class TextBookTab extends OpenedTab {
   final ItemScrollController scrollController = ItemScrollController();
   final ItemPositionsListener positionsListener =
       ItemPositionsListener.create();
-  // בקרים נוספים עבור תצוגה מפוצלת או רשימות מקבילות
+  // בקרים נוספים עבור תצוגה מפוצלת או lists מקבילות
   final ItemScrollController auxScrollController = ItemScrollController();
   final ItemPositionsListener auxPositionsListener =
       ItemPositionsListener.create();
   final ScrollOffsetController mainOffsetController = ScrollOffsetController();
   final ScrollOffsetController auxOffsetController = ScrollOffsetController();
 
-  /// הכותרת הנוכחית של המיקום בספר (למשל "בראשית פרק ד")
+  /// הכותרת הcurrent של הlocation בbook (למשל "בראשית פרק ד")
   final currentTitle = ValueNotifier<String>("");
 
   List<String>? commentators;
@@ -76,12 +76,12 @@ class TextBookTab extends OpenedTab {
     bool isPinned = false,
     String? dedupeKey,
   }) : super(book.title, isPinned: isPinned, dedupeKey: dedupeKey) {
-    // קביעת ברירת המחדל של splitedView מההגדרות אם לא סופק
+    // קביעת ברירת המחדל של splitedView מהsettings אם no סופק
     final bool effectiveSplitedView =
         splitedView ?? (Settings.getValue<bool>('key-splited-view') ?? false);
 
-    // מצב צורת הדף הוא פר-ספר - ברירת המחדל היא false (תצוגה רגילה)
-    // רק אם הספר כבר היה פתוח במצב צורת הדף, הוא יישאר כך
+    // מצב צורת הpage הוא פר-book - ברירת המחדל היא false (תצוגה רגילה)
+    // רק אם הbook כבר היה open במצב צורת הpage, הוא יישאר כך
     final bool effectiveShowPageShapeView = showPageShapeView ?? false;
 
     _lastSplitView = effectiveSplitedView;
@@ -111,13 +111,13 @@ class TextBookTab extends OpenedTab {
       positionsListener: positionsListener,
     );
 
-    // הוספת listener לעדכון האינדקס כשה-state משתנה
+    // הוספת listener לupdate the index כשה-state variable
     _stateSubscription = bloc.stream.listen((state) {
       if (state is TextBookLoaded && state.visibleIndices.isNotEmpty) {
         index = state.visibleIndices.first;
         _lastSplitView = state.showSplitView;
         _lastShowPageShapeView = state.showPageShapeView;
-        // עדכון הכותרת הנוכחית
+        // update הכותרת הcurrent
         if (state.currentTitle != null && state.currentTitle!.isNotEmpty) {
           currentTitle.value = state.currentTitle!;
         }
@@ -141,7 +141,7 @@ class TextBookTab extends OpenedTab {
   factory TextBookTab.fromJson(Map<String, dynamic> json) {
     final bool shouldOpenLeftPane = resolveRestoredReadingLeftPaneState(json);
 
-    // שחזור מצב התצוגה המפוצלת מה-JSON
+    // שBack מצב התצוגה המפוצלת מה-JSON
     final bool splitedView = json['splitedView'] ??
         (Settings.getValue<bool>('key-splited-view') ?? false);
 
@@ -170,17 +170,17 @@ class TextBookTab extends OpenedTab {
     List<String> commentators = [];
     bool splitedView = _lastSplitView;
     bool showPageShapeView = _lastShowPageShapeView;
-    int currentIndex = index; // שמירת האינדקס הנוכחי כברירת מחדל
+    int currentIndex = index; // save the index הcurrent כברירת מחדל
 
     if (bloc.state is TextBookLoaded) {
       final loadedState = bloc.state as TextBookLoaded;
       commentators = loadedState.activeCommentators;
       splitedView = loadedState.showSplitView;
       showPageShapeView = loadedState.showPageShapeView;
-      // עדכון האינדקס מה-state הנטען - תמיד לוקחים את האינדקס האחרון שנראה
+      // update the index מה-state הנטען - תמיד לוקחים את the index האחרון שנראה
       if (loadedState.visibleIndices.isNotEmpty) {
         currentIndex = loadedState.visibleIndices.first;
-        // עדכון גם את ה-index של הטאב עצמו כדי שישמר
+        // update גם את ה-index של הטאב עצמו כדי שישמר
         index = currentIndex;
       }
     }

@@ -65,7 +65,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) async {
     final settings = await _repository.loadSettings();
 
-    // בדסקטופ: אם המשתמש בחר גופן מערכת בעבר, נטען אותו כדי שיהיה זמין ב-TextStyle.
+    // בדסקטופ: אם הuser בחר גופן System בעבר, נטען אותו כדי שיהיה זמין ב-TextStyle.
     await AppFonts.ensureFontLoaded(settings['fontFamily'] as String);
     await AppFonts.ensureFontLoaded(
         settings['commentatorsFontFamily'] as String);
@@ -478,17 +478,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   /// ניקוי קבצי per_book_settings שהפכו למיותרים
   void _cleanupRedundantPerBookSettings() {
-    // הרצה אסינכרונית ללא המתנה כדי לא לחסום את ה-UI
-    // בטסטים, זה עלול להיכשל בגלל חוסר פלאגין, אז נתפוס שגיאות
+    // הרצה אסינכרונית לno המתנה כדי no לחסום את ה-UI
+    // בטסטים, זה עלול להיכשל בגלל חוסר פnoגין, אז נתפוס errors
     try {
       PerBookSettings.cleanupRedundantSettings(
         defaultFontSize: state.fontSize,
         defaultRemoveNikud: state.defaultRemoveNikud,
-        defaultShowSplitView: false, // ערך ברירת מחדל
+        defaultShowSplitView: false, // value ברירת מחדל
       );
     } catch (e) {
-      // בטסטים או בסביבות ללא פלאגין, זה בסדר להתעלם
-      // השגיאה לא קריטית
+      // בטסטים או בסביבות לno פnoגין, זה בorder להתעלם
+      // הerror no קריטית
     }
   }
 }

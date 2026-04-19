@@ -70,7 +70,7 @@ class MarkdownToolbar extends StatelessWidget {
           _ToolbarButton(
             icon: FluentIcons.text_header_1_24_regular,
             tooltip:
-                hasLinksFile ? 'כותרת 1 - מושבת בספר עם לינקים' : 'כותרת 1',
+                hasLinksFile ? 'כותרת 1 - מושבת בbook עם לינקים' : 'כותרת 1',
             onPressed: hasLinksFile ? () {} : onHeader1,
             text: 'H1',
             enabled: !hasLinksFile,
@@ -78,7 +78,7 @@ class MarkdownToolbar extends StatelessWidget {
           _ToolbarButton(
             icon: FluentIcons.text_header_1_24_regular,
             tooltip:
-                hasLinksFile ? 'כותרת 2 - מושבת בספר עם לינקים' : 'כותרת 2',
+                hasLinksFile ? 'כותרת 2 - מושבת בbook עם לינקים' : 'כותרת 2',
             onPressed: hasLinksFile ? () {} : onHeader2,
             text: 'H2',
             enabled: !hasLinksFile,
@@ -86,7 +86,7 @@ class MarkdownToolbar extends StatelessWidget {
           _ToolbarButton(
             icon: FluentIcons.text_header_1_24_regular,
             tooltip:
-                hasLinksFile ? 'כותרת 3 - מושבת בספר עם לינקים' : 'כותרת 3',
+                hasLinksFile ? 'כותרת 3 - מושבת בbook עם לינקים' : 'כותרת 3',
             onPressed: hasLinksFile ? () {} : onHeader3,
             text: 'H3',
             enabled: !hasLinksFile,
@@ -98,16 +98,16 @@ class MarkdownToolbar extends StatelessWidget {
           _ToolbarButton(
             icon: FluentIcons.text_bullet_list_24_regular,
             tooltip: hasLinksFile
-                ? 'רשימה לא ממוספרת - מושבת בספר עם לינקים'
-                : 'רשימה לא ממוספרת',
+                ? 'list no ממוbookת - מושבת בbook עם לינקים'
+                : 'list no ממוbookת',
             onPressed: hasLinksFile ? () {} : onUnorderedList,
             enabled: !hasLinksFile,
           ),
           _ToolbarButton(
             icon: FluentIcons.text_number_list_ltr_24_regular,
             tooltip: hasLinksFile
-                ? 'רשימה ממוספרת - מושבת בספר עם לינקים'
-                : 'רשימה ממוספרת',
+                ? 'list ממוbookת - מושבת בbook עם לינקים'
+                : 'list ממוbookת',
             onPressed: hasLinksFile ? () {} : onOrderedList,
             enabled: !hasLinksFile,
           ),
@@ -127,7 +127,7 @@ class MarkdownToolbar extends StatelessWidget {
           ),
           _ToolbarButton(
             icon: FluentIcons.text_quote_24_regular,
-            tooltip: hasLinksFile ? 'ציטוט - מושבת בספר עם לינקים' : 'ציטוט',
+            tooltip: hasLinksFile ? 'ציטוט - מושבת בbook עם לינקים' : 'ציטוט',
             onPressed: hasLinksFile ? () {} : onQuote,
             enabled: !hasLinksFile,
           ),
@@ -137,7 +137,7 @@ class MarkdownToolbar extends StatelessWidget {
           // Search and navigation
           _ToolbarButton(
             icon: FluentIcons.search_24_regular,
-            tooltip: 'חיפוש (Ctrl+F)',
+            tooltip: 'search (Ctrl+F)',
             onPressed: onSearch,
           ),
 
@@ -151,7 +151,7 @@ class MarkdownToolbar extends StatelessWidget {
           ),
           _ToolbarButton(
             icon: FluentIcons.arrow_redo_24_regular,
-            tooltip: 'חזור (Ctrl+Y)',
+            tooltip: 'Back (Ctrl+Y)',
             onPressed: onRedo,
           ),
 
@@ -175,7 +175,7 @@ class MarkdownToolbar extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'ספר עם קישורים - אין לשנות מבנה שורות',
+                    'book עם קישורים - אין לשנות מבנה lines',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.orange.shade700,
@@ -212,7 +212,7 @@ class _ToolbarButton extends StatelessWidget {
     // ================== התחלת הקוד החדש ==================
     Widget content;
     if (text != null) {
-      // אם יש טקסט (כמו H1), הצג רק אותו
+      // אם יש text (כמו H1), הצג רק אותו
       content = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Text(
@@ -242,7 +242,7 @@ class _ToolbarButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         child: Opacity(
           opacity: enabled ? 1.0 : 0.5,
-          child: content, // הצגת התוכן שיצרנו
+          child: content, // הצגת הcontent שיצרנו
         ),
       ),
     );

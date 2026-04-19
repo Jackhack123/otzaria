@@ -446,7 +446,7 @@ class LibraryProviderManager {
     if (provider != null) {
       try {
         final content = await provider.getLinkContent(link);
-        if (content.isNotEmpty && !content.startsWith('שגיאה')) {
+        if (content.isNotEmpty && !content.startsWith('error')) {
           return content;
         }
       } catch (_) {
@@ -458,7 +458,7 @@ class LibraryProviderManager {
     for (final p in _providers) {
       try {
         final content = await p.getLinkContent(link);
-        if (content.isNotEmpty && !content.startsWith('שגיאה')) {
+        if (content.isNotEmpty && !content.startsWith('error')) {
           return content;
         }
       } catch (_) {
@@ -466,7 +466,7 @@ class LibraryProviderManager {
       }
     }
 
-    return 'שגיאה: לא נמצא תוכן';
+    return 'error: no נמצא content';
   }
 
   /// Gets statistics from all providers
@@ -498,7 +498,7 @@ class LibraryProviderManager {
   /// while the file system provider builds from the folder hierarchy.
   ///
   /// [metadata] - Book metadata for enriching book information
-  /// [rootPath] - The root path of the library (e.g., 'אוצריא' folder)
+  /// [rootPath] - The root path of the library (e.g., 'Otzaria' folder)
   Future<Library> buildLibraryCatalog(
     Map<String, Map<String, dynamic>> metadata,
     String rootPath,
@@ -537,9 +537,9 @@ class LibraryProviderManager {
   /// PdfBooks are always mapped to FileSystemLibraryProvider since they're file-based.
   /// TextBooks are mapped based on whether they exist in the database or file system.
   ///
-  /// **שים לב:** פונקציה זו קוראת ל-`getAvailableBookTitles()` שמבצעת שאילתה ל-DB.
-  /// היא נקראת פעם אחת בלבד מ-`_updateBookToProviderMapping` בזמן בניית הקטלוג.
-  /// אין לקרוא לה ממקומות נוספים כדי לא ליצור שאילתות מיותרות.
+  /// **שים לב:** function זו קוראת ל-`getAvailableBookTitles()` שמבצעת שאילתה ל-DB.
+  /// היא נקראת פעם אחת בלבד מ-`_updateBookToProviderMapping` בtime בניית הקטלוג.
+  /// אין לקרוא לה ממקומות נוספים כדי no ליצור שאילתות מיותרות.
   Future<void> _mapBooksRecursive(Category category) async {
     final dbRawKeys = await databaseProvider.getAvailableBookTitles();
     final dbKeys = dbRawKeys

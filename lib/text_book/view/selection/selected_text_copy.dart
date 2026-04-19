@@ -3,7 +3,7 @@ import 'package:otzaria/settings/engine/settings_state.dart';
 import 'package:otzaria/text_book/bloc/text_book_state.dart';
 import 'package:otzaria/utils/copy_utils.dart';
 
-/// בוחר את תוכן ה-HTML המתאים ביותר לטקסט שנבחר.
+/// בוחר את content ה-HTML המתאים ביותר לtext שselected.
 String resolveHtmlTextForSelection({
   required String plainText,
   required int? selectedIndex,
@@ -33,7 +33,7 @@ String resolveHtmlTextForSelection({
   return plainText;
 }
 
-/// מעתיק טקסט נבחר מספר טקסט תוך שמירה על כותרות ועיצוב.
+/// מעתיק text selected מbook text תוך save על כותרות ועיצוב.
 Future<void> copySelectedTextForBook({
   required String plainText,
   required int? selectedIndex,

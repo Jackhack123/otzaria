@@ -56,16 +56,16 @@ class BookmarkView extends StatelessWidget {
           ),
           onDelete: (ctx, originalIndex) {
             ctx.read<BookmarkBloc>().removeBookmark(originalIndex);
-            UiSnack.show('הסימניה נמחקה');
+            UiSnack.show('הסימניה נDeleteה');
           },
           onClearAll: (ctx) {
             ctx.read<BookmarkBloc>().clearBookmarks();
-            UiSnack.show('כל הסימניות נמחקו');
+            UiSnack.show('כל הסימניות נDeleteו');
           },
           hintText: 'חפש בסימניות...',
           emptyText: 'אין סימניות',
-          notFoundText: 'לא נמצאו תוצאות',
-          clearAllText: 'מחק את כל הסימניות',
+          notFoundText: 'no נמצאו results',
+          clearAllText: 'Delete את כל הסימניות',
           leadingIconBuilder: (item) => item.book is PdfBook
               ? const Icon(FluentIcons.document_pdf_24_regular)
               : null,

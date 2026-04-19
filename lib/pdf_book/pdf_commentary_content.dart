@@ -8,7 +8,7 @@ import 'package:otzaria/tabs/models/text_tab.dart';
 import 'package:otzaria/utils/text_manipulation.dart' as utils;
 import 'package:otzaria/widgets/smart_text/smart_text.dart';
 
-/// תוכן מפרש/קישור עבור PDF - מבוסס על CommentaryContent מטקסט
+/// content commentator/קישור עבור PDF - מבוסס על CommentaryContent מtext
 class PdfCommentaryContent extends StatefulWidget {
   const PdfCommentaryContent({
     super.key,
@@ -45,7 +45,7 @@ class _PdfCommentaryContentState extends State<PdfCommentaryContent> {
   @override
   void didUpdateWidget(PdfCommentaryContent oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // עדכון תוכן הפירוש כאשר הקישור משתנה
+    // update content הפירוש כאשר הקישור variable
     if (oldWidget.link.path2 != widget.link.path2 ||
         oldWidget.link.index2 != widget.link.index2 ||
         oldWidget.link.heRef != widget.link.heRef) {
@@ -88,7 +88,7 @@ class _PdfCommentaryContentState extends State<PdfCommentaryContent> {
           if (snapshot.hasData) {
             final text = snapshot.data!;
 
-            // ספירת תוצאות חיפוש
+            // ספירת results search
             if (widget.searchQuery.isNotEmpty) {
               final searchCount = TextRendererService.countSearchMatches(
                   text, widget.searchQuery);
@@ -115,7 +115,7 @@ class _PdfCommentaryContentState extends State<PdfCommentaryContent> {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Text('שגיאה בטעינת הפרשן: ${snapshot.error}'),
+              child: Text('error בטעינת הפרשן: ${snapshot.error}'),
             );
           }
           return _buildSkeletonLoading(context);
@@ -124,7 +124,7 @@ class _PdfCommentaryContentState extends State<PdfCommentaryContent> {
     );
   }
 
-  /// בניית skeleton loading לתוכן פרשנות - שלוש שורות
+  /// בניית skeleton loading לcontent פרשנות - שלוש lines
   Widget _buildSkeletonLoading(BuildContext context) {
     final baseColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
@@ -160,7 +160,7 @@ class _PdfCommentaryContentState extends State<PdfCommentaryContent> {
   }
 }
 
-/// Widget של שורה סטטית לשלד טעינה
+/// Widget של line סטטית לשלד loading
 class _SkeletonLine extends StatelessWidget {
   final double width;
   final double height;

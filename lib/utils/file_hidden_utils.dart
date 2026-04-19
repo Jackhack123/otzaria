@@ -19,15 +19,15 @@ final _GetFileAttributesDart? _getFileAttributes = Platform.isWindows
             'GetFileAttributesW')
     : null;
 
-/// מחזיר true אם הקובץ/תיקייה מוסתרים או קובץ מערכת.
-/// בודק גם לפי שם (נקודה / $ / שמות מערכת) וגם לפי מאפייני Windows.
+/// מחזיר true אם הfile/folder מוסתרים או file System.
+/// בודק גם לפי name (נקודה / $ / names System) וגם לפי מאפייני Windows.
 bool isHiddenOrSystem(String entityPath) {
   final name = entityPath.split(Platform.pathSeparator).last;
 
-  // בדיקה לפי שם
+  // check לפי name
   if (_isHiddenOrSystemName(name)) return true;
 
-  // בדיקה לפי מאפייני Windows
+  // check לפי מאפייני Windows
   if (Platform.isWindows) {
     final ptr = entityPath.toNativeUtf16();
     try {

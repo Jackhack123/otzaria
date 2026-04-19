@@ -6,7 +6,7 @@ import 'package:otzaria/plugins/models/installed_plugin.dart';
 import 'plugin_database_source.dart';
 import 'plugin_database_registry.dart';
 
-/// שגיאה מובנית בשירות מסד הנתונים לתוספים
+/// error מובנית בשירות מסד הנתונים לתוספים
 class PluginDatabaseException implements Exception {
   final String code;
   final String message;
@@ -26,12 +26,12 @@ class _CachedResult {
 
 /// שירות מרכזי לגישת תוספים למסדי נתונים SQLite.
 ///
-/// מנהל:
+/// admin:
 /// - רזולוציה של מקורות
 /// - ולידציה של בקשות מול policy
 /// - קומפילציה ל-SQL פרמטרי
 /// - ביצוע ב-read-only
-/// - cache תוצאות קצר-מועד
+/// - cache results short-מועד
 class PluginDatabaseService {
   final PluginDatabaseRegistry _registry;
 
@@ -138,7 +138,7 @@ class PluginDatabaseService {
 
     final List<dynamic> rows;
     if (rowFormat == 'object') {
-      // בדיקת ייחוד שמות עמודות בפועל (לאחר ש-SQLite קבע את השמות)
+      // בדיקת ייoverride names pageות בפועל (noחר ש-SQLite קבע את הnames)
       final seen = <String>{};
       for (final col in columns) {
         if (!seen.add(col)) {
@@ -345,7 +345,7 @@ class PluginDatabaseService {
       }
     }
 
-    // ייחוד שמות פלט — רלוונטי במיוחד ל-rowFormat: object
+    // ייoverride names פלט — רלוונטי במיוחד ל-rowFormat: object
     final outputNames = <String>{};
     for (final sel in select) {
       final sm = sel as Map<String, dynamic>;
@@ -469,7 +469,7 @@ class PluginDatabaseService {
     }
   }
 
-  /// מפרש ref בפורמט alias.column ומאמת מול policy.
+  /// commentator ref בפורמט alias.column ומאמת מול policy.
   /// מחזיר (tableName, columnName).
   (String, String) _resolveRef(
       String ref, Map<String, String> aliasMap, PluginDatabasePolicy policy) {

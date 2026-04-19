@@ -67,11 +67,11 @@ extension TextBookViewModeExtension on TextBookViewMode {
   String get displayName {
     switch (this) {
       case TextBookViewMode.split:
-        return 'מפרשים בצד';
+        return 'Commentators בצד';
       case TextBookViewMode.combined:
-        return 'מפרשים מתחת';
+        return 'Commentators מתחת';
       case TextBookViewMode.pageShape:
-        return 'צורת הדף';
+        return 'צורת הpage';
     }
   }
 }

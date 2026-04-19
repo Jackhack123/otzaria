@@ -1,23 +1,23 @@
 import 'package:otzaria/utils/text_manipulation.dart' as utils;
 import 'package:otzaria/widgets/smart_text/render_settings.dart';
 
-/// שירות מרכזי לעיבוד טקסט
+/// שירות מרכזי לעיבוד text
 ///
-/// מחלקה זו מרכזת את כל הלוגיקה של עיבוד טקסט לפני הצגתו,
-/// כולל הסרת ניקוד, טעמים, החלפת שמות קדושים, והדגשת חיפוש.
+/// class זו מרכזת את כל הלוגיקה של עיבוד text לפני הצגתו,
+/// כולל הסרת ניקוד, טעמים, החלפת names קדושים, והדגשת search.
 class TextRendererService {
-  /// מעבד טקסט לפי הגדרות הרינדור
+  /// מעבד text לפי settings הרינדור
   ///
-  /// [rawText] - הטקסט המקורי
-  /// [settings] - הגדרות הרינדור
+  /// [rawText] - הtext המקורי
+  /// [settings] - settings הרינדור
   ///
-  /// מחזיר את הטקסט המעובד כ-HTML מוכן להצגה
+  /// מחזיר את הtext המעובד כ-HTML מוyes להצגה
   static String processText(String rawText, RenderSettings settings) {
     String processed = rawText;
 
-    // 0. תיקון סדר סימוני הערות (<sup>) ב-RTL
+    // 0. תיקון order סימוני notes (<sup>) ב-RTL
     processed = _fixFootnoteMarkers(processed);
-    // 0b. הסתרת טקסט ההערות המודפסות בתוך השורה (למשל "מ: ...")
+    // 0b. hideת text הnotes המודפסות בתוך הline (למשל "מ: ...")
     processed = _hideInlineFootnotes(processed);
 
     // 1. הסרת טעמים (אם נדרש)
@@ -35,12 +35,12 @@ class TextRendererService {
       processed = utils.removePunctuation(processed);
     }
 
-    // 3. החלפת שמות קדושים (אם נדרש)
+    // 3. החלפת names קדושים (אם נדרש)
     if (settings.replaceHolyNames) {
       processed = utils.replaceHolyNames(processed);
     }
 
-    // 4. הדגשת טקסט חיפוש (אם יש)
+    // 4. הדגשת text search (אם יש)
     if (settings.searchText.isNotEmpty) {
       processed = utils.highLight(
         processed,
@@ -61,11 +61,11 @@ class TextRendererService {
     return processed;
   }
 
-  /// מתקן תגי <sup> כדי למנוע היפוך סדר ב-RTL
+  /// מתקן תגי <sup> כדי למנוע היפוך order ב-RTL
   ///
-  /// כאשר יש מספר תגי <sup> ברצף, האלגוריתם של bidi עלול להציג אותם בסדר הפוך.
+  /// כאשר יש מbook תגי <sup> ברצף, האלגוריתם של bidi עלול להציג אותם בorder הפוך.
   /// הפתרון: בידוד כל <sup> באמצעות סימני בידוד דו־כיווניות (LRI/RLI + PDI)
-  /// בהתאם לתוכן (מספרים/לטינית -> LTR, עברית/ערבית -> RTL).
+  /// בהתאם לcontent (מbooks/לטינית -> LTR, עברית/ערבית -> RTL).
   static String _fixFootnoteMarkers(String text) {
     final supRegex = RegExp(
       r'<sup(\s[^>]*)?>(.*?)</sup>',
@@ -148,37 +148,37 @@ class TextRendererService {
     return '$dirMark$isolateStart$isolatedText$isolateEnd$dirMark';
   }
 
-  /// עוטף טקסט ב-div עם כיווניות RTL ו-justify
+  /// עוטף text ב-div עם כיווניות RTL ו-justify
   static String wrapWithRtlDiv(String text, {bool justifyText = true}) {
     final textAlign = justifyText ? 'justify' : 'right';
     return '<div style="text-align: $textAlign; direction: rtl;">$text</div>';
   }
 
-  /// מעבד ועוטף טקסט בפעולה אחת
+  /// מעבד ועוטף text בaction אחת
   ///
-  /// זהו ה-entry point העיקרי לשימוש - מקבל טקסט גולמי והגדרות,
-  /// ומחזיר HTML מוכן להצגה ב-HtmlWidget
+  /// זהו ה-entry point העיקרי לשימוש - מקבל text גולמי וsettings,
+  /// ומחזיר HTML מוyes להצגה ב-HtmlWidget
   static String render(String rawText, RenderSettings settings) {
     final processed = processText(rawText, settings);
     return wrapWithRtlDiv(processed, justifyText: settings.justifyText);
   }
 
-  /// ספירת התאמות חיפוש בטקסט
+  /// ספירת התאמות search בtext
   ///
-  /// [text] - הטקסט לחיפוש בו
-  /// [searchQuery] - מחרוזת החיפוש
+  /// [text] - הtext לsearch בו
+  /// [searchQuery] - מחרוזת הsearch
   ///
-  /// מחזיר את מספר ההתאמות שנמצאו
+  /// מחזיר את מbook ההתאמות שנמצאו
   static int countSearchMatches(String text, String searchQuery) {
     return utils.countMatches(text, searchQuery);
   }
 
-  /// הסרת תגי HTML מטקסט
+  /// הסרת תגי HTML מtext
   static String stripHtml(String text) {
     return utils.stripHtmlIfNeeded(text);
   }
 
-  /// קיצור טקסט לאורך מקסימלי
+  /// קיצור text noורך מקסימלי
   static String truncate(String text, int maxLength) {
     return utils.truncate(text, maxLength);
   }

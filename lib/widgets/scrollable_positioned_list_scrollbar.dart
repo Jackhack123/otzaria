@@ -27,7 +27,7 @@ class _ScrollablePositionedListScrollbarState
   double _thumbHeight = 0.1; // יחס גובה ברירת מחדל
   bool _isDragging = false;
 
-  // להחלקת הקפיצות במיקום
+  // להחלקת הקפיצות בlocation
   int _lastFirstIndex = 0;
 
   @override
@@ -50,7 +50,7 @@ class _ScrollablePositionedListScrollbarState
     final positions = widget.itemPositionsListener.itemPositions.value;
     if (positions.isEmpty || widget.itemCount == 0) return;
 
-    // מציאת האינדקסים הראשונים והאחרונים הנראים
+    // מציאת the indexים הראשונים והאחרונים הנראים
     int minIndex = positions.first.index;
     int maxIndex = positions.first.index;
 
@@ -72,10 +72,10 @@ class _ScrollablePositionedListScrollbarState
     // נניח באופן שמרני שרצוי לפחות 5%
     final newHeight = proportion.clamp(0.05, 1.0);
 
-    // חישוב המיקום היחסי (0.0 למעלה, 1.0 למטה)
-    // האינדקסים הם 0-based.
+    // חישוב הlocation היחסי (0.0 למעלה, 1.0 למטה)
+    // the indexים הם 0-based.
     // אם minIndex הוא 0 -> top 0.
-    // אם maxIndex הוא itemCount-1 -> bottom 1.0 (בערך)
+    // אם maxIndex הוא itemCount-1 -> bottom 1.0 (בvalue)
 
     final maxScrollableIndex = max(widget.itemCount - visibleItems, 1);
     final newPosition =
@@ -96,7 +96,7 @@ class _ScrollablePositionedListScrollbarState
 
     final int targetIndex = (_thumbPosition * widget.itemCount).round();
 
-    // אופטימיזציה: לא לקפוץ אם השינוי קטן מדי כדי למנוע ריצוד
+    // אופטימיזציה: no לקפוץ אם השינוי small מדי כדי למנוע ריצוד
     if ((targetIndex - _lastFirstIndex).abs() > widget.itemCount * 0.001) {
       widget.scrollController.jumpTo(index: targetIndex);
       _lastFirstIndex = targetIndex;
@@ -107,7 +107,7 @@ class _ScrollablePositionedListScrollbarState
     setState(() {
       _isDragging = false;
     });
-    // עדכון סופי ליתר ביטחון
+    // update סופי ליתר ביטחון
     _updateScrollPosition();
   }
 
@@ -163,7 +163,7 @@ class _ScrollablePositionedListScrollbarState
                         // ה"אגודל" (Thumb) עצמו
                         Positioned(
                           top: thumbPixelTop,
-                          left: 2, // רווח קטן מהקצה
+                          left: 2, // רווח small מהקצה
                           right: 2,
                           height: thumbPixelHeight,
                           child: Container(

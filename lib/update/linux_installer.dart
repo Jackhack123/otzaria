@@ -13,7 +13,7 @@ set -e
 DEB_FILE="${debFile.absolute.path}"
 echo "מתקין את אוצריה..."
 pkexec apt install -y "\$DEB_FILE"
-echo "✓ ההתקנה הושלמה בהצלחה!"
+echo "✓ ההתקנה הושלמה בsuccess!"
 ''');
 
   // Make it executable

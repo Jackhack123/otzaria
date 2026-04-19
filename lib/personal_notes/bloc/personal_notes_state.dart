@@ -17,7 +17,7 @@ class PersonalNotesState extends Equatable {
   final bool showOnlyVisible;
   final List<int> visibleLineIndices;
 
-  // מצב יצירת הערה חדשה
+  // מצב יצירת note חדשה
   final bool isCreatingNewNote;
   final int? newNoteLineNumber;
   final String? newNoteReferenceText;

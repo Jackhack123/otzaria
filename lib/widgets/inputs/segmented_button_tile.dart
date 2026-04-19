@@ -14,9 +14,9 @@ class SegmentOption<T> {
   });
 }
 
-/// פקד סגמנטד גנרי לשימוש בסרגלי כלים
+/// פקד סגמנטד גנרי לשימוש בסרגלי Tools
 ///
-/// דוגמה:
+/// example:
 /// ```dart
 /// AppSegmentedControl<String>(
 ///   options: const [

@@ -409,7 +409,7 @@ class _AltTocSidebarViewState extends State<AltTocSidebarView>
         _openLink(links.first);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('לא נמצא קישור לכותרת זו')));
+            const SnackBar(content: Text('no נמצא קישור לכותרת זו')));
       }
     } catch (e) {
       debugPrint('Error handling leaf click: $e');
@@ -429,7 +429,7 @@ class _AltTocSidebarViewState extends State<AltTocSidebarView>
       _handleLeafClick(structure.id, roots.first);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('לא נמצאו כותרות למבנה זה')));
+          const SnackBar(content: Text('no נמצאו כותרות למבנה זה')));
     }
   }
 
@@ -540,7 +540,7 @@ class _AltTocSidebarViewState extends State<AltTocSidebarView>
     if (matches.isEmpty) {
       return const Center(
         child: Text(
-          'לא נמצאו תוצאות',
+          'no נמצאו results',
           textDirection: TextDirection.rtl,
         ),
       );

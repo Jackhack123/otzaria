@@ -109,7 +109,7 @@ class WorkspaceBloc extends Bloc<WorkspaceEvent, WorkspaceState> {
     try {
       // Can't remove the active workspace
       if (state.activeWorkspaceId == event.workspaceId) {
-        emit(state.copyWith(error: 'לא ניתן למחוק שולחן עבודה פעיל'));
+        emit(state.copyWith(error: 'no ניתן לdeleted שולחן עבודה פעיל'));
         return;
       }
 
@@ -239,12 +239,12 @@ class WorkspaceBloc extends Bloc<WorkspaceEvent, WorkspaceState> {
       final currentId = state.activeWorkspaceId;
       if (currentId == null) return;
 
-      // מעדכן את שני שולחנות העבודה:
-      // 1. מסיר את הטאב משולחן העבודה הנוכחי
+      // מעדyes את שני שולחנות העבודה:
+      // 1. מסיר את הטאב משולחן העבודה הcurrent
       // 2. מוסיף את הטאב לשולחן העבודה היעד
       final updatedWorkspaces = state.workspaces.map((w) {
         if (w.id == currentId) {
-          // מסיר את הטאב משולחן העבודה הנוכחי
+          // מסיר את הטאב משולחן העבודה הcurrent
           return w.copyWith(
             tabs: _cloneTabs(event.currentTabs),
             activeTabIndex: event.currentTabIndex,

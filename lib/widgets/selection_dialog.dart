@@ -5,7 +5,7 @@ import 'package:otzaria/widgets/mixins/dialog_navigation_mixin.dart';
 import 'package:otzaria/widgets/otzaria_search_field.dart';
 import 'package:otzaria/widgets/tool_empty_state.dart';
 
-/// דיאלוג בחירה עם חיפוש
+/// דיאלוג בחירה עם search
 class SelectionDialog<T> extends StatefulWidget {
   final String title;
   final List<SelectionItem<T>> items;
@@ -17,7 +17,7 @@ class SelectionDialog<T> extends StatefulWidget {
     required this.title,
     required this.items,
     this.initialValue,
-    this.searchHint = 'חיפוש...',
+    this.searchHint = 'search...',
   });
 
   @override
@@ -91,7 +91,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>>
                 child: filteredItems.isEmpty
                     ? const ToolEmptyState(
                         icon: FluentIcons.search_24_regular,
-                        message: 'לא נמצאו תוצאות',
+                        message: 'no נמצאו results',
                       )
                     : ListView.builder(
                         itemCount: filteredItems.length,
@@ -120,7 +120,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>>
         ),
         actions: [
           NeutralActionButton(
-            text: 'ביטול',
+            text: 'cancel',
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -129,13 +129,13 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>>
   }
 }
 
-/// פונקציה להצגת דיאלוג בחירה עם חיפוש
+/// function להצגת דיאלוג בחירה עם search
 Future<T?> showSelectionDialog<T>({
   required BuildContext context,
   required String title,
   required List<SelectionItem<T>> items,
   T? initialValue,
-  String searchHint = 'חיפוש...',
+  String searchHint = 'search...',
   bool barrierDismissible = true,
 }) {
   return showDialog<T>(
@@ -150,7 +150,7 @@ Future<T?> showSelectionDialog<T>({
   );
 }
 
-/// מחלקה לייצוג פריט בחירה
+/// class לייצוג פריט בחירה
 class SelectionItem<T> {
   final String label;
   final String searchValue;

@@ -7,8 +7,8 @@ import 'package:otzaria/core/app_paths.dart';
 import 'package:otzaria/personal_notes/models/personal_note.dart';
 
 class PersonalNotesStorage {
-  static const _notesFolderName = 'הערות';
-  static const _txtPrefix = 'הערות אישיות על ';
+  static const _notesFolderName = 'notes';
+  static const _txtPrefix = 'notes אישיות על ';
   static const _txtExtension = '.txt';
   static const _jsonSuffix = '_annotations.json';
   static const _noteHeaderPrefix = '### NOTE ';
@@ -20,14 +20,14 @@ class PersonalNotesStorage {
 
   static String safeFileName(String bookId) {
     final sanitized = bookId.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_').trim();
-    return sanitized.isEmpty ? 'ספר_ללא_שם' : sanitized;
+    return sanitized.isEmpty ? 'book_לno_name' : sanitized;
   }
 
   /// Returns the path to the notes directory.
   /// Does NOT create the directory - only returns the path.
   Future<String> notesDirectoryPath() async {
     final libraryPath = await AppPaths.getLibraryPath();
-    return p.join(libraryPath, 'אוצריא', _notesFolderName);
+    return p.join(libraryPath, 'Otzaria', _notesFolderName);
   }
 
   /// Returns the path to the notes directory if it exists, null otherwise.

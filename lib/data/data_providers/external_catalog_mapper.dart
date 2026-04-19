@@ -1,8 +1,8 @@
-// כלי עזר למיפוי ספרי קטלוגים חיצוניים.
+// כלי עזר למיפוי bookי קטלוגים חיצוניים.
 enum ExternalCatalogType { otzar, hebrew }
 
 class ExternalCatalogMapper {
-  /// קובע את סוג הקטלוג לפי קישור/מזהה חיצוני/נתיב קובץ.
+  /// קובע את סוג הקטלוג לפי קישור/מזהה חיצוני/path file.
   static ExternalCatalogType? catalogFromLinkOrId({
     String? link,
     String? externalLibraryId,
@@ -47,7 +47,7 @@ class ExternalCatalogMapper {
     return null;
   }
 
-  /// מנסה לחלץ מזהה מספרי מתוך מזהה חיצוני או קישור.
+  /// מנסה לחלץ מזהה מbookי מתוך מזהה חיצוני או קישור.
   static int? extractExternalId({
     String? externalLibraryId,
     String? link,

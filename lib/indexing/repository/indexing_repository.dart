@@ -33,7 +33,7 @@ class IndexingRepository {
   ///
   /// [library] The library containing books to index
   /// [onProgress] Callback function to report progress
-  /// מבצע אינדוקס ומחזיר true אם הסתיים בהצלחה, false אם בוטל
+  /// מבצע אינדוקס ומחזיר true אם הסתיים בsuccess, false אם בוטל
   Future<bool> indexAllBooks(
     Library library, {
     void Function()? onActualIndexingStarted,
@@ -70,13 +70,13 @@ class IndexingRepository {
       int skipped = 0;
       int errors = 0;
 
-      debugPrint('📚 התחלת אינדוקס: $totalBooks ספרים');
+      debugPrint('📚 התחלת אינדוקס: $totalBooks books');
       debugPrint(
-          '📊 ספרים שכבר מאונדקסים: ${_tantivyDataProvider.booksDone.length}');
+          '📊 books שכבר מאונדקסים: ${_tantivyDataProvider.booksDone.length}');
 
       for (Book book in allBooks) {
         if (!_tantivyDataProvider.isIndexing.value) {
-          debugPrint('⚠️ אינדוקס בוטל על ידי המשתמש');
+          debugPrint('⚠️ אינדוקס בוטל על ידי הuser');
           cancelled = true;
           break;
         }
@@ -85,7 +85,7 @@ class IndexingRepository {
           final indexedBookKey = catalogueOrderKey(book);
           if (book is TextBook) {
             if (!_tantivyDataProvider.booksDone.contains(indexedBookKey)) {
-              debugPrint('📖 מאנדקס ספר טקסט ב-isolate: ${book.title}');
+              debugPrint('📖 מאנדקס book text ב-isolate: ${book.title}');
               await _indexTextBook(
                 book,
                 isolateService,
@@ -101,7 +101,7 @@ class IndexingRepository {
               _tantivyDataProvider.booksDone.add(indexedBookKey);
               actuallyIndexed++;
             } else {
-              debugPrint('⏭️ דילוג על ספר טקסט שכבר מאונדקס: ${book.title}');
+              debugPrint('⏭️ דילוג על book text שכבר מאונדקס: ${book.title}');
               skipped++;
             }
           } else if (book is PdfBook) {
@@ -137,13 +137,13 @@ class IndexingRepository {
 
           if (processedBooks % 50 == 0) {
             debugPrint(
-                '📈 התקדמות: $processedBooks/$totalBooks (מאונדקסים: $actuallyIndexed, דולגו: $skipped, שגיאות: $errors)');
+                '📈 התקדמות: $processedBooks/$totalBooks (מאונדקסים: $actuallyIndexed, דולגו: $skipped, errors: $errors)');
           }
 
           onProgress(processedBooks, totalBooks);
         } catch (e) {
           await Future.microtask(() {
-            debugPrint('❌ שגיאה באינדוקס של ${book.title}: $e');
+            debugPrint('❌ error באינדוקס של ${book.title}: $e');
           });
           errors++;
           processedBooks++;
@@ -156,18 +156,18 @@ class IndexingRepository {
 
       if (!cancelled) {
         debugPrint('✅ אינדוקס הושלם!');
-        debugPrint('   📊 סה"כ: $totalBooks ספרים');
+        debugPrint('   📊 סה"כ: $totalBooks books');
         debugPrint('   ✅ מאונדקסים: $actuallyIndexed');
         debugPrint('   ⏭️ דולגו: $skipped');
-        debugPrint('   ❌ שגיאות: $errors');
+        debugPrint('   ❌ errors: $errors');
 
         debugPrint('💾 שומר אינדקס סופי (final commit)...');
         final index = await _tantivyDataProvider.engine;
         await index.commit();
         saveIndexedBooks();
-        debugPrint('⚙️ מבצע optimize לאינדקס...');
+        debugPrint('⚙️ מבצע optimize noינדקס...');
         await optimizeIndexBestEffort(index.optimize);
-        debugPrint('✅ אינדקס נשמר בהצלחה!');
+        debugPrint('✅ אינדקס נשמר בsuccess!');
       }
     } finally {
       _activeIsolateService = null;
@@ -181,7 +181,7 @@ class IndexingRepository {
 
   Future<void> _resetExistingIndexBeforeFullReindex() async {
     final indexPath = await AppPaths.getIndexPath();
-    debugPrint('🧹 זוהתה בנייה מחדש מלאה - מוחק אינדקס ישן לפני אינדוקס');
+    debugPrint('🧹 זוהתה בנייה again fullה - מוחק אינדקס ישן לפני אינדוקס');
     await _tantivyDataProvider.resetIndex(indexPath);
     await _tantivyDataProvider.reopenIndex();
   }
@@ -250,7 +250,7 @@ class IndexingRepository {
 
     if (text.isEmpty) {
       debugPrint(
-          '⚠️ ספר ריק: ${book.title} (categoryId: ${book.categoryId}) - מדלג');
+          '⚠️ book empty: ${book.title} (categoryId: ${book.categoryId}) - מדלג');
       return null;
     }
 
@@ -354,7 +354,7 @@ class IndexingRepository {
       if (onFailure != null) {
         onFailure(error, stackTrace);
       } else {
-        debugPrint('⚠️ optimize נכשל אחרי commit; האינדקס כבר נשמר: $error');
+        debugPrint('⚠️ optimize נכשל אחרי commit; the index כבר נשמר: $error');
         debugPrintStack(
           label: 'optimize failed after final commit',
           stackTrace: stackTrace,
@@ -413,7 +413,7 @@ class IndexingRepository {
 
   /// Indexes a specific list of books (e.g. newly added personal books).
   ///
-  /// מבצע אינדוקס ומחזיר true אם הסתיים בהצלחה, false אם בוטל
+  /// מבצע אינדוקס ומחזיר true אם הסתיים בsuccess, false אם בוטל
   Future<bool> indexBooks(
     List<Book> books,
     Library library, {
@@ -427,8 +427,8 @@ class IndexingRepository {
         _isolateService ?? await IndexingIsolateService.create();
     _activeIsolateService = isolateService;
 
-    // בנה מפת סדר קטלוג מהספרייה הטרייה שהועברה כפרמטר
-    // חשוב: משתמשים בספרייה המלאה כדי שהסדר הגלובלי יהיה נכון לכל הספרים
+    // בנה מפת order קטלוג מthe library הטרייה שהועברה כפרמטר
+    // חשוב: users בlibrary הfullה כדי שהorder הגלובלי יהיה true לכל הbooks
     final catalogueOrderByBookKey = SearchCatalogueOrderHelper.buildKeyOrderMap(
       library,
       keyOf: (book) => catalogueOrderKey(book as Book),
@@ -442,9 +442,9 @@ class IndexingRepository {
     var didStartActualIndexing = false;
 
     try {
-      // לא קוראים ל-ensureIndexStateMatchesCatalogue כאן בכוונה:
-      // indexBooks מוסיף ספרים חדשים לאינדקס קיים תקין.
-      // ניהול חתימת הקטלוג ואיפוס מלא הם אחריות indexAllBooks שרץ בסטארטאפ.
+      // no קוראים ל-ensureIndexStateMatchesCatalogue כאן בכוונה:
+      // indexBooks מוסיף new books noינדקס קיים תקין.
+      // ניהול חתימת הקטלוג ואיפוס full הם אחריות indexAllBooks שרץ בסטארטאפ.
       for (final book in books) {
         if (!_tantivyDataProvider.isIndexing.value) {
           cancelled = true;
@@ -455,7 +455,7 @@ class IndexingRepository {
           final indexedBookKey = catalogueOrderKey(book);
           if (book is TextBook) {
             if (!_tantivyDataProvider.booksDone.contains(indexedBookKey)) {
-              debugPrint('📖 מאנדקס ספר טקסט חדש: ${book.title}');
+              debugPrint('📖 מאנדקס book text חדש: ${book.title}');
               await _indexTextBook(
                 book,
                 isolateService,
@@ -490,7 +490,7 @@ class IndexingRepository {
           processedBooks++;
           onProgress(processedBooks, totalBooks);
         } catch (e) {
-          debugPrint('❌ שגיאה באינדוקס של ${book.title}: $e');
+          debugPrint('❌ error באינדוקס של ${book.title}: $e');
           errors++;
           processedBooks++;
           onProgress(processedBooks, totalBooks);
@@ -501,7 +501,7 @@ class IndexingRepository {
 
       if (!cancelled) {
         debugPrint(
-            '✅ אינדוקס ספרים ספציפיים הושלם! (מאונדקסים: $actuallyIndexed, שגיאות: $errors)');
+            '✅ אינדוקס books specificים הושלם! (מאונדקסים: $actuallyIndexed, errors: $errors)');
         final index = await _tantivyDataProvider.engine;
         await index.commit();
         saveIndexedBooks();

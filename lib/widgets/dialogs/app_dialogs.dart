@@ -3,15 +3,15 @@
 // דיאלוגים גנריים של האפליקציה — M3-styled.
 //
 // מכיל:
-//  • [SingleActionDialog] — דיאלוג עם כפתור אישור בלבד
-//  • [TwoActionsDialog]   — דיאלוג עם ביטול + אישור (M3 FilledButton)
-//  • [WarningDialog]      — דיאלוג אזהרה: ביטול (primary), אישור (error/שקוף)
+//  • [SingleActionDialog] — דיאלוג עם button confirm בלבד
+//  • [TwoActionsDialog]   — דיאלוג עם cancel + confirm (M3 FilledButton)
+//  • [WarningDialog]      — דיאלוג Warning: cancel (primary), confirm (error/שקוף)
 //
 // **הבדל מ-ConfirmationDialog:**
-//  [ConfirmationDialog] (confirmation_dialog.dart) משתמש ב-TextButton ומאפשר
-//  [isDangerous] / [confirmColor] — מתאים לניווט מקלדת עם הדגשת פוקוס.
+//  [ConfirmationDialog] (confirmation_dialog.dart) user ב-TextButton ומאפשר
+//  [isDangerous] / [confirmColor] — מתאים לניווט מקלדת עם הדגשת focus.
 //  [TwoActionsDialog] / [WarningDialog] כאן מסוגננים לחלוטין בסגנון M3
-//  FilledButton ומתאימים לדיאלוגים פשוטים ללא ניווט מקלדת מיוחד.
+//  FilledButton ומתאימים לדיאלוגים פשוטים לno ניווט מקלדת מיוחד.
 //
 // **שימוש:**
 // ```dart
@@ -25,7 +25,7 @@ import 'package:otzaria/widgets/keyboard_dialog_navigation.dart';
 
 // ── SingleActionDialog ────────────────────────────────────────────────────────
 
-/// דיאלוג עם פעולה אחת (כפתור אישור בלבד)
+/// דיאלוג עם action אחת (button confirm בלבד)
 class SingleActionDialog extends StatefulWidget {
   final dynamic title;
   final String? content;
@@ -37,7 +37,7 @@ class SingleActionDialog extends StatefulWidget {
     required this.title,
     this.content,
     this.customContent,
-    this.confirmText = 'אישור',
+    this.confirmText = 'confirm',
   }) : assert(
           content != null || customContent != null,
           'content או customContent חייבים להיות מוגדרים',
@@ -74,7 +74,7 @@ class _SingleActionDialogState extends State<SingleActionDialog>
 
 // ── TwoActionsDialog ──────────────────────────────────────────────────────────
 
-/// דיאלוג עם שתי פעולות (ביטול ואישור) — סגנון M3 FilledButton
+/// דיאלוג עם שתי actions (cancel וconfirm) — סגנון M3 FilledButton
 class TwoActionsDialog extends StatefulWidget {
   final dynamic title;
   final String content;
@@ -85,8 +85,8 @@ class TwoActionsDialog extends StatefulWidget {
     super.key,
     required this.title,
     required this.content,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'אישור',
+    this.cancelText = 'cancel',
+    this.confirmText = 'confirm',
   });
 
   @override
@@ -127,7 +127,7 @@ class _TwoActionsDialogState extends State<TwoActionsDialog>
 
 // ── WarningDialog ─────────────────────────────────────────────────────────────
 
-/// דיאלוג אזהרה — כפתור ביטול כהה (הפעולה הבטוחה), אישור אדום (מסוכן)
+/// דיאלוג Warning — button cancel כהה (הaction הבטוחה), confirm אדום (מסוyes)
 class WarningDialog extends StatefulWidget {
   final dynamic title;
   final String content;
@@ -140,7 +140,7 @@ class WarningDialog extends StatefulWidget {
     required this.title,
     required this.content,
     this.subtitle,
-    this.cancelText = 'ביטול',
+    this.cancelText = 'cancel',
     this.confirmText = 'המשך',
   });
 
@@ -196,7 +196,7 @@ Future<bool?> showSingleActionDialog({
   required String title,
   String? content,
   Widget? customContent,
-  String confirmText = 'אישור',
+  String confirmText = 'confirm',
   bool barrierDismissible = true,
 }) =>
     showDialog<bool>(
@@ -213,8 +213,8 @@ Future<bool?> showTwoActionsDialog({
   required BuildContext context,
   required String title,
   required String content,
-  String cancelText = 'ביטול',
-  String confirmText = 'אישור',
+  String cancelText = 'cancel',
+  String confirmText = 'confirm',
   bool barrierDismissible = true,
 }) =>
     showDialog<bool>(
@@ -232,7 +232,7 @@ Future<bool?> showWarningDialog({
   required String title,
   required String content,
   String? subtitle,
-  String cancelText = 'ביטול',
+  String cancelText = 'cancel',
   String confirmText = 'המשך',
   bool barrierDismissible = true,
 }) =>
@@ -253,11 +253,11 @@ Future<bool?> showRestartRequiredDialog({
 }) {
   return showTwoActionsDialog(
     context: context,
-    title: 'נדרשת הפעלה מחדש',
+    title: 'נדרשת restart',
     content:
-        'כדי להשלים את השינוי יש לסגור ולהפעיל מחדש את התוכנה. האם לסגור עכשיו?',
+        'כדי להשלים את השינוי יש לclosed ולהפעיל again את התוכנה. האם לclosed עכשיו?',
     cancelText: 'אחר כך',
-    confirmText: 'סגור עכשיו',
+    confirmText: 'closed עכשיו',
     barrierDismissible: barrierDismissible,
   );
 }
@@ -271,16 +271,16 @@ Future<bool?> showDbCopyRequiredDialog({
     context: context,
     barrierDismissible: barrierDismissible,
     builder: (dialogContext) => AlertDialog(
-      title: const Text('נדרשת בחירה כיצד לשמור את מסד הנתונים'),
+      title: const Text('נדרשת בחירה כיצד לSave את מסד הנתונים'),
       content: Text(
         'גודל מסד הנתונים הוא $sizeText.\n\n'
-        'ניתן להעביר את הקובץ למיקום החדש, או להעתיק אותו ולהשאיר את המקור.',
+        'ניתן להעביר את הfile לlocation החדש, או להעתיק אותו ולהשאיר את המקור.',
         textDirection: TextDirection.rtl,
       ),
       actions: [
         FilledButton.tonal(
           onPressed: () => Navigator.of(dialogContext).pop(false),
-          child: const Text('העתק'),
+          child: const Text('Copy'),
         ),
         FilledButton(
           onPressed: () => Navigator.of(dialogContext).pop(true),

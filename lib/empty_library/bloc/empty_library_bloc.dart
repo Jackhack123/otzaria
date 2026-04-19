@@ -38,21 +38,21 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     on<DeleteZipAnswered>(_onDeleteZipAnswered);
     on<PickDbFileRequested>(_onPickDbFileRequested);
     on<CheckDiskSpaceRequested>(_onCheckDiskSpaceRequested);
-    // בדיקת מקום פנוי מתבצעת מיד — כפתור ההורדה מושבת עד להשלמתה
+    // בדיקת מקום פנוי מתבצעת מיד — button הparentדה מושבת עד להשלמתה
     add(CheckDiskSpaceRequested());
   }
 
   final http.Client _httpClient;
   final Future<void> Function(String archivePath, String outputPath)
       _extractCompressedDatabase;
-  // סיבת השבתת כפתור ההורדה — נשמרת כ-instance field כדי להישמר בין state transitions
+  // סיבת השבתת button הparentדה — נשמרת כ-instance field כדי להישמר בין state transitions
   String? _downloadDisabledReason = 'בודק מקום פנוי...';
   final String? _defaultLibraryPathOverride;
 
   Future<void> _onPickDirectoryRequested(
       PickDirectoryRequested event, Emitter<EmptyLibraryState> emit) async {
     final result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'בחר את תיקיית הספרייה (התיקייה שמכילה את seforim.db)',
+      dialogTitle: 'בחר את תיקיית the library (הfolder שמכילה את seforim.db)',
     );
 
     if (result == null) return;
@@ -66,7 +66,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['zip', 'zst'],
-      dialogTitle: 'בחר קובץ דחוס (ZIP או ZST)',
+      dialogTitle: 'בחר file דחוס (ZIP או ZST)',
     );
 
     if (result == null || result.files.isEmpty) return;
@@ -82,7 +82,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       await _handleZstFile(selectedFile, emit);
     } else {
       emit(_error(
-        errorMessage: 'סוג קובץ לא נתמך. בחר קובץ .zip או .zst',
+        errorMessage: 'סוג file no נתמך. בחר file .zip או .zst',
         selectedPath: selectedFile,
       ));
     }
@@ -94,13 +94,13 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       final directory = Directory(directoryPath);
       if (!await directory.exists()) {
         emit(_error(
-          errorMessage: 'התיקייה לא קיימת: $directoryPath',
+          errorMessage: 'הfolder no קיימת: $directoryPath',
           selectedPath: directoryPath,
         ));
         return;
       }
 
-      // מחפש את המסד בתיקייה שנבחרה (ללא חיפוש עמוק)
+      // מחפש את המסד בfolder שselectedה (לno search עמוק)
       final dbFilePath =
           path.join(directoryPath, DatabaseConstants.databaseFileName);
       final dbFile = File(dbFilePath);
@@ -108,15 +108,15 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       if (!await dbFile.exists()) {
         emit(_error(
           errorMessage:
-              'לא נמצא מסד הנתונים ${DatabaseConstants.databaseFileName} בתיקייה שנבחרה.',
+              'no נמצא מסד הנתונים ${DatabaseConstants.databaseFileName} בfolder שselectedה.',
           selectedPath: directoryPath,
         ));
         return;
       }
 
-      // Android: בדוק אם sqlite3 native יכול לפתוח את הקובץ ישירות.
+      // Android: בדוק אם sqlite3 native יכול לopen את הfile ישירות.
       // אחסון Scoped Storage (כגון /storage/emulated/0/...) נגיש ל-dart:io
-      // בחלק מהמכשירים אבל לא לספריית sqlite3 native.
+      // בחלק מהמכשירים אבל no לbookיית sqlite3 native.
       if (Platform.isAndroid && !_isPathNativeAccessible(dbFilePath)) {
         final internalDbPath = await _getInternalDbPath();
         final dbStat = await dbFile.stat();
@@ -124,8 +124,8 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         final appDir = await getApplicationDocumentsDirectory();
         final freeSpace = await _getFreeInternalSpace(appDir.path);
 
-        // בדיקת מקום פנוי לפני ניסיון ההעתקה
-        // (גם "העבר" לא יעזור — הוא מעתיק לפנימי לפני מחיקת החיצוני)
+        // בדיקת מקום פנוי לפני ניסיון הCopyה
+        // (גם "העבר" no יעזור — הוא מעתיק לפנימי לפני מחיקת החיצוני)
         if (freeSpace > 0 && dbSize > freeSpace) {
           final needed = (dbSize / 1024 / 1024).toStringAsFixed(1);
           final free = (freeSpace / 1024 / 1024).toStringAsFixed(1);
@@ -139,14 +139,14 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           return;
         }
 
-        // נסה להעתיק ישירות — עובד אם לאפליקציה יש READ_EXTERNAL_STORAGE
+        // נסה להעתיק ישירות — עובד אם noפליקציה יש READ_EXTERNAL_STORAGE
         emit(EmptyLibraryLoading(selectedPath: directoryPath));
         try {
           final destFile = File(internalDbPath);
           await destFile.parent.create(recursive: true);
           await File(dbFilePath).openRead().pipe(destFile.openWrite());
 
-          // העתקה הצליחה — שמור הגדרות והמשך
+          // Copyה הצליחה — Save settings והמשך
           await Settings.setValue(
               SettingsRepository.keyLibraryPath, directoryPath);
           await Settings.setValue(SettingsRepository.keyLibraryFolderName, '');
@@ -155,18 +155,18 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           emit(EmptyLibraryDirectorySelected(selectedPath: directoryPath));
           return;
         } on PathAccessException {
-          // dart:io לא יכול לגשת לקובץ — צריך FilePicker (SAF)
+          // dart:io no יכול לגשת לfile — צריך FilePicker (SAF)
           // ממשיכים למטה להצגת הדיאלוג
         } catch (copyError) {
           // שגיאת I/O שאינה הרשאה (למשל ENOSPC, שגיאת קריאה)
-          // מנקים קובץ יעד חלקי אם נוצר
+          // מנקים file יעד חלקי אם created
           try { await File(internalDbPath).delete(); } catch (_) {}
           final isNoSpace = copyError.toString().contains('No space') ||
               copyError.toString().contains('ENOSPC');
           emit(_error(
             errorMessage: isNoSpace
                 ? 'אין מספיק מקום פנוי. יש לפנות מקום ולנסות שוב.'
-                : 'שגיאה בהעתקת קובץ הספרייה: $copyError',
+                : 'error בCopyת file the library: $copyError',
             selectedPath: directoryPath,
           ));
           return;
@@ -184,19 +184,19 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       await Settings.setValue(SettingsRepository.keyLibraryPath, directoryPath);
       await Settings.setValue(SettingsRepository.keyLibraryFolderName, '');
-      // נקה override קודם אם קיים
+      // נקה override previous אם קיים
       await Settings.setValue(SettingsRepository.keyDbEffectivePath, '');
 
       emit(EmptyLibraryDirectorySelected(selectedPath: directoryPath));
     } catch (e) {
       emit(_error(
-        errorMessage: 'שגיאה בבדיקת התיקייה: $e',
+        errorMessage: 'error בבדיקת הfolder: $e',
         selectedPath: directoryPath,
       ));
     }
   }
 
-  /// מחזיר את הנתיב הראשון בעץ ההורים שקיים בפועל, לצורך בדיקת df.
+  /// מחזיר את הpath הראשון בעץ הparents שקיים בפועל, לצורך בדיקת df.
   static String _findExistingAncestor(String dirPath) {
     var dir = Directory(dirPath);
     while (!dir.existsSync() && dir.parent.path != dir.path) {
@@ -205,31 +205,31 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     return dir.path;
   }
 
-  /// בודק אם נתיב נגיש לספריית sqlite3 native ב-Android.
+  /// בודק אם path נגיש לbookיית sqlite3 native ב-Android.
   ///
   /// ב-Android Scoped Storage, רק אחסון פנימי (/data/) ואחסון חיצוני
-  /// ייעודי לאפליקציה (Android/data/PACKAGE_NAME/) נגיש לגישה native.
-  /// נתיבים כגון /storage/emulated/0/Download/ אינם נגישים.
+  /// ייעודי noפליקציה (Android/data/PACKAGE_NAME/) נגיש לגישה native.
+  /// paths כגון /storage/emulated/0/Download/ אינם נגישים.
   static bool _isPathNativeAccessible(String filePath) {
     if (!Platform.isAndroid) return true;
     // אחסון פנימי
     if (filePath.startsWith('/data/')) return true;
-    // אחסון חיצוני ייעודי לאפליקציה
+    // אחסון חיצוני ייעודי noפליקציה
     if (filePath.contains('/Android/data/')) return true;
     // אחסון חיצוני ייעודי אחר
     if (filePath.contains('/Android/obb/')) return true;
     return false;
   }
 
-  /// מחזיר את הנתיב הפנימי שאליו יועתק seforim.db ב-Android.
+  /// מחזיר את הpath הפנימי שאליו יועתק seforim.db ב-Android.
   static Future<String> _getInternalDbPath() async {
     final appDir = await getApplicationDocumentsDirectory();
     return path.join(
         appDir.path, 'otzaria', DatabaseConstants.databaseFileName);
   }
 
-  /// מחזיר מידע df עבור נתיב נתון: filesystem ומקום פנוי בבייטים.
-  /// מחזיר freeBytes = -1 אם לא ניתן לקבוע.
+  /// מחזיר מידע df עבור path נתון: filesystem ומקום פנוי בבייטים.
+  /// מחזיר freeBytes = -1 אם no ניתן לconstant.
   static Future<_DfInfo> _getDfInfo(String dirPath) async {
     if (!Platform.isAndroid) return const _DfInfo(filesystem: null, freeBytes: -1);
     try {
@@ -254,9 +254,9 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
   static Future<int> _getFreeInternalSpace(String dirPath) async =>
       (await _getDfInfo(dirPath)).freeBytes;
 
-  /// בודק אם יש מספיק מקום פנוי להורדה ולחילוץ הספרייה.
-  /// מחזיר הודעת שגיאה אם אין מספיק מקום, או null אם הכל תקין.
-  /// מטפל גם בתרחיש שבו temp ותיקיית הספרייה חולקים אותו volume.
+  /// בודק אם יש מספיק מקום פנוי לparentדה ולחילוץ the library.
+  /// מחזיר הודעת error אם אין מספיק מקום, או null אם הכל תקין.
+  /// מטפל גם בתרחיש שבו temp ותיקיית the library חולקים אותו volume.
   Future<String?> _checkSpaceForDownload() async {
     if (!Platform.isAndroid) return null;
     const int kDownloadSize = 1610612736; // 1.5 GB
@@ -275,27 +275,27 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         tempInfo.filesystem == extractInfo.filesystem;
 
     if (sameVolume) {
-      // שני הנתיבים על אותו volume: צריך מקום לשניהם יחד (1.5 + 6.5 = 8 GB)
+      // שני הpaths על אותו volume: צריך מקום לשניהם יחד (1.5 + 6.5 = 8 GB)
       final free = tempInfo.freeBytes;
       if (free > 0 && free < kDownloadSize + kExtractSize) {
         final freeGb = (free / 1024 / 1024 / 1024).toStringAsFixed(1);
-        return 'אין מספיק מקום פנוי להורדה ולחילוץ הספרייה.\n'
+        return 'אין מספיק מקום פנוי לparentדה ולחילוץ the library.\n'
             'נדרש: לפחות 8 GB, פנוי: $freeGb GB.\n'
             'יש לפנות מקום ולנסות שוב.';
       }
     } else {
-      // volumes נפרדים: בדיקה לכל אחד בנפרד
+      // volumes נפרדים: check לכל אחד בנפרד
       if (tempInfo.freeBytes > 0 && tempInfo.freeBytes < kDownloadSize) {
         final freeGb =
             (tempInfo.freeBytes / 1024 / 1024 / 1024).toStringAsFixed(1);
-        return 'אין מספיק מקום פנוי להורדת הקובץ הדחוס.\n'
+        return 'אין מספיק מקום פנוי לparentדת הfile הדחוס.\n'
             'נדרש: לפחות 1.5 GB, פנוי: $freeGb GB.\n'
             'יש לפנות מקום ולנסות שוב.';
       }
       if (extractInfo.freeBytes > 0 && extractInfo.freeBytes < kExtractSize) {
         final freeGb =
             (extractInfo.freeBytes / 1024 / 1024 / 1024).toStringAsFixed(1);
-        return 'אין מספיק מקום פנוי לחילוץ הספרייה.\n'
+        return 'אין מספיק מקום פנוי לחילוץ the library.\n'
             'נדרש: לפחות 6.5 GB, פנוי: $freeGb GB.\n'
             'יש לפנות מקום ולנסות שוב.';
       }
@@ -309,7 +309,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     emit(EmptyLibraryInitial(downloadDisabledReason: _downloadDisabledReason));
   }
 
-  /// מייצר EmptyLibraryError תמיד עם downloadDisabledReason הנוכחי.
+  /// מייצר EmptyLibraryError תמיד עם downloadDisabledReason הcurrent.
   EmptyLibraryError _error({
     String? errorMessage,
     String? selectedPath,
@@ -322,21 +322,21 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         downloadDisabledReason: _downloadDisabledReason,
       );
 
-  /// בוחר את קובץ seforim.db ישירות דרך FilePicker (SAF-aware).
+  /// בוחר את file seforim.db ישירות דרך FilePicker (SAF-aware).
   ///
-  /// משמש כאשר הנתיב הפיזי אינו נגיש ל-dart:io ב-Android Scoped Storage.
-  /// FilePicker.pickFiles() מטפל ב-SAF ומחזיר נתיב נגיש (מ-cache אם נדרש).
+  /// משמש כאשר הpath הפיזי אינו נגיש ל-dart:io ב-Android Scoped Storage.
+  /// FilePicker.pickFiles() מטפל ב-SAF ומחזיר path נגיש (מ-cache אם נדרש).
   Future<void> _onPickDbFileRequested(
       PickDbFileRequested event, Emitter<EmptyLibraryState> emit) async {
     try {
       final result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
         type: FileType.any,
-        dialogTitle: 'בחר את קובץ ${DatabaseConstants.databaseFileName}',
+        dialogTitle: 'בחר את file ${DatabaseConstants.databaseFileName}',
       );
 
       if (result == null || result.files.isEmpty) {
-        // המשתמש ביטל — חזרה לדיאלוג ההעתקה
+        // הuser ביטל — חזרה לדיאלוג הCopyה
         final internalDbPath = await _getInternalDbPath();
         emit(EmptyLibraryAskingDbCopy(
           externalDbPath: '',
@@ -350,7 +350,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       final pickedFile = result.files.first;
 
-      // וודא שנבחר הקובץ הנכון — אם לא, חזור לדיאלוג עם הסבר
+      // וודא שselected הfile הtrue — אם no, Back לדיאלוג עם הסבר
       if (pickedFile.name != DatabaseConstants.databaseFileName) {
         final internalDbPath = await _getInternalDbPath();
         emit(EmptyLibraryAskingDbCopy(
@@ -360,8 +360,8 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           dbSizeBytes: 0,
           freeSpaceBytes: -1,
           errorMessage:
-              'יש לבחור את הקובץ ${DatabaseConstants.databaseFileName}. '
-              'נבחר: "${pickedFile.name}" — נסה שוב.',
+              'יש לselected את הfile ${DatabaseConstants.databaseFileName}. '
+              'selected: "${pickedFile.name}" — נסה שוב.',
         ));
         return;
       }
@@ -373,18 +373,18 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       await destFile.parent.create(recursive: true);
 
       if (sourcePath == null) {
-        throw Exception('FilePicker לא החזיר נתיב נגיש לקובץ שנבחר');
+        throw Exception('FilePicker no החזיר path נגיש לfile שselected');
       }
 
-      // העתק תוך שימוש ב-streams (FilePicker מספק נתיב נגיש מ-cache SAF)
+      // Copy תוך שימוש ב-streams (FilePicker מספק path נגיש מ-cache SAF)
       await File(sourcePath).openRead().pipe(destFile.openWrite());
 
-      // אם בחר להעביר — מחק את קובץ המקור החיצוני האמיתי
+      // אם בחר להעביר — Delete את file המקור החיצוני האמיתי
       if (event.shouldMove && event.externalDbPath.isNotEmpty) {
         try {
           await File(event.externalDbPath).delete();
         } catch (_) {
-          // dart:io עשוי להיכשל על Scoped Storage — לא קריטי, ה-DB כבר הועתק
+          // dart:io עשוי להיכשל על Scoped Storage — no קריטי, ה-DB כבר הועתק
         }
       }
 
@@ -396,14 +396,14 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       emit(EmptyLibraryDirectorySelected(selectedPath: event.libraryPath));
     } catch (e) {
-      // זיהוי שגיאת חוסר מקום (ENOSPC / No space left)
+      // identify שגיאת חוסר מקום (ENOSPC / No space left)
       final isNoSpace = e.toString().contains('No space') ||
           e.toString().contains('ENOSPC') ||
           e.toString().contains('28');
       final msg = isNoSpace
           ? 'אין מספיק מקום פנוי. בחר "העבר" (מחיקת מקור) כדי לפנות מקום, '
               'או פנה מקום ידנית ונסה שוב.'
-          : 'שגיאה בהעתקת קובץ הספרייה: $e';
+          : 'error בCopyת file the library: $e';
       emit(_error(
         errorMessage: msg,
         selectedPath: event.libraryPath,
@@ -422,7 +422,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       emit(EmptyLibraryExtracting(
         selectedPath: zstFilePath,
         progress: 0.0,
-        message: 'מחלץ קובץ DB דחוס...',
+        message: 'מחלץ file DB דחוס...',
       ));
 
       await _extractCompressedDatabase(zstFilePath, outputPath);
@@ -439,7 +439,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       ));
     } catch (e) {
       emit(_error(
-        errorMessage: 'שגיאה בחילוץ קובץ דחוס: $e',
+        errorMessage: 'error בחילוץ file דחוס: $e',
         selectedPath: zstFilePath,
       ));
     }
@@ -469,13 +469,13 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       if (!extractionResult.success) {
         emit(_error(
-          errorMessage: extractionResult.errorMessage ?? 'שגיאה בחילוץ',
+          errorMessage: extractionResult.errorMessage ?? 'error בחילוץ',
           zipFiles: extractionResult.zipFiles,
         ));
         return;
       }
 
-      // אם החילוץ הצליח, נשאל את המשתמש אם למחוק את ה-ZIP
+      // אם החילוץ הצליח, נשאל את הuser אם לdeleted את ה-ZIP
       if (extractionResult.successfullyExtracted) {
         emit(EmptyLibraryAskingDeleteZip(
           zipPath: zipFilePath,
@@ -484,11 +484,11 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         return;
       }
 
-      // אם לא היה חילוץ, נמשיך ישירות לבדיקת הקובץ
+      // אם no היה חילוץ, נמשיך ישירות לבדיקת הfile
       await _checkAndSaveExtractedDatabase(path.dirname(zipFilePath), emit);
     } catch (e) {
       emit(_error(
-        errorMessage: 'שגיאה: $e',
+        errorMessage: 'error: $e',
       ));
     }
   }
@@ -496,7 +496,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
   Future<void> _checkAndSaveExtractedDatabase(
       String extractedDirectory, Emitter<EmptyLibraryState> emit) async {
     try {
-      // חיפוש קובץ seforim.db בתיקייה המחולצת
+      // search file seforim.db בfolder המחולצת
       final directory = Directory(extractedDirectory);
       final dbFiles = await directory
           .list(recursive: true)
@@ -511,7 +511,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       if (dbFiles.isEmpty) {
         emit(_error(
           errorMessage:
-              'לא נמצא קובץ ${DatabaseConstants.databaseFileName} בקובץ הדחוס',
+              'no נמצא file ${DatabaseConstants.databaseFileName} בfile הדחוס',
           selectedPath: extractedDirectory,
         ));
         return;
@@ -522,13 +522,13 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       await Settings.setValue(SettingsRepository.keyLibraryPath, rootPath);
       await Settings.setValue(SettingsRepository.keyLibraryFolderName, '');
-      // ניקוי override Android — ה-DB החדש נמצא ישירות בספרייה
+      // ניקוי override Android — ה-DB החדש נמצא ישירות בlibrary
       await Settings.setValue(SettingsRepository.keyDbEffectivePath, '');
 
       emit(EmptyLibraryDirectorySelected(selectedPath: rootPath));
     } catch (e) {
       emit(_error(
-        errorMessage: 'שגיאה: $e',
+        errorMessage: 'error: $e',
       ));
     }
   }
@@ -536,7 +536,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
   Future<void> _onDownloadLibraryRequested(
       DownloadLibraryRequested event, Emitter<EmptyLibraryState> emit) async {
     try {
-      // בדיקת מקום פנוי (safety net — מכסה מצב שהדיסק התמלא אחרי טעינת המסך)
+      // בדיקת מקום פנוי (safety net — מכסה מצב שהדיסק התfull אחרי טעינת המסך)
       final spaceError = await _checkSpaceForDownload();
       if (spaceError != null) {
         _downloadDisabledReason = spaceError;
@@ -548,25 +548,25 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           _defaultLibraryPathOverride ?? await AppPaths.getDefaultLibraryPath();
       final latestAsset = await _fetchLatestDatabaseAsset();
 
-      // קובץ temp קבוע — נשמר בין ניסיונות לצורך resume
+      // file temp constant — נשמר בין ניסיונות לצורך resume
       final tempArchivePath = path.join(
         Directory.systemTemp.path,
         'otzaria_${latestAsset.assetName}',
       );
       final tempArchive = File(tempArchivePath);
 
-      // בדיקת כמה כבר הורדנו (resume)
+      // בדיקת כמה כבר parentדנו (resume)
       var alreadyDownloaded =
           await tempArchive.exists() ? await tempArchive.length() : 0;
 
       emit(EmptyLibraryDownloading(
         progress: 0.0,
         message: alreadyDownloaded > 0
-            ? 'ממשיך הורדה מ-${(alreadyDownloaded / 1024 / 1024).toStringAsFixed(1)} MB...'
+            ? 'continue parentדה מ-${(alreadyDownloaded / 1024 / 1024).toStringAsFixed(1)} MB...'
             : 'מתחבר לשרת...',
       ));
 
-      // פותרים redirect ידנית כדי לשמור על Range header
+      // פותרים redirect ידנית כדי לSave על Range header
       // (package:http מאבד headers בעת redirect)
       final resolvedUrl = await _resolveRedirect(latestAsset.downloadUrl);
 
@@ -576,19 +576,19 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       }
       final response = await _httpClient.send(request);
 
-      // 200 = הורדה מלאה מחדש, 206 = המשך (partial content)
+      // 200 = parentדה fullה again, 206 = המשך (partial content)
       if (response.statusCode == 200) {
-        // השרת לא תומך ב-Range — מתחילים מחדש
+        // השרת no תומך ב-Range — מתחילים again
         alreadyDownloaded = 0;
         await tempArchive.delete().catchError((_) => tempArchive);
       } else if (response.statusCode != 206) {
         emit(EmptyLibraryError(
-          errorMessage: 'שגיאה בהורדה: ${response.statusCode}',
+          errorMessage: 'error בparentדה: ${response.statusCode}',
         ));
         return;
       }
 
-      // וידוא שה-resume אכן עבד לפי Content-Range header
+      // וידוא שה-resume אyes עבד לפי Content-Range header
       // אם השרת החזיר 206 אבל מ-0, נתאים את alreadyDownloaded
       if (response.statusCode == 206) {
         final contentRange = response.headers['content-range'];
@@ -598,7 +598,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
           if (match != null) {
             final serverStart = int.tryParse(match.group(1)!) ?? 0;
             if (serverStart == 0 && alreadyDownloaded > 0) {
-              // השרת התחיל מ-0 למרות הבקשה — מחיקת הקובץ החלקי
+              // השרת התחיל מ-0 למרות הבקשה — מחיקת הfile החלקי
               alreadyDownloaded = 0;
               await tempArchive.delete().catchError((_) => tempArchive);
             }
@@ -634,7 +634,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         await sink.close();
       }
 
-      // יצירת תיקיית הספרייה אם לא קיימת
+      // יצירת תיקיית the library אם no קיימת
       final libraryDir = Directory(libraryPath);
       if (!await libraryDir.exists()) {
         await libraryDir.create(recursive: true);
@@ -648,12 +648,12 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
       emit(EmptyLibraryExtracting(
         selectedPath: tempArchivePath,
         progress: 0.0,
-        message: 'מחלץ קובץ DB דחוס...',
+        message: 'מחלץ file DB דחוס...',
       ));
 
       await _extractCompressedDatabase(tempArchivePath, outputPath);
 
-      // מחיקת קובץ ה-temp לאחר חילוץ מוצלח
+      // מחיקת file ה-temp noחר חילוץ מוצלח
       await tempArchive.delete().catchError((_) => tempArchive);
 
       emit(EmptyLibraryExtracting(
@@ -664,20 +664,20 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       await Settings.setValue(SettingsRepository.keyLibraryPath, libraryPath);
       await Settings.setValue(SettingsRepository.keyLibraryFolderName, '');
-      // ניקוי override Android — ה-DB החדש נמצא ישירות בספרייה
+      // ניקוי override Android — ה-DB החדש נמצא ישירות בlibrary
       await Settings.setValue(SettingsRepository.keyDbEffectivePath, '');
 
-      // הורדת תלמוד בבלי
+      // parentדת Talmud בבלי
       await _downloadAndExtractAsset(
         url: 'https://github.com/Otzaria/otzaria-library/releases/latest/download/talmud_bavli_latest.tar.zst',
         tempFileName: 'otzaria_talmud_bavli.tar.zst',
-        statusMessage: 'מוריד תלמוד בבלי...',
+        statusMessage: 'מוריד Talmud בבלי...',
         outputDir: libraryPath,
         isTar: true,
         emit: emit,
       );
 
-      // הורדת קטלוגים
+      // parentדת קטלוגים
       await _downloadAndExtractAsset(
         url: 'https://github.com/Otzaria/otzar-HB_catalog/releases/latest/download/otzar-HB_catalog.db.zst',
         tempFileName: 'otzaria_otzar-HB_catalog.db.zst',
@@ -690,9 +690,9 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
       emit(EmptyLibraryDirectorySelected(selectedPath: libraryPath));
     } catch (e) {
-      // קובץ ה-temp נשמר בכוונה — ישמש ל-resume בניסיון הבא
+      // file ה-temp נשמר בכוונה — ישמש ל-resume בניסיון next
       emit(EmptyLibraryError(
-        errorMessage: 'שגיאה בהורדה: $e\nניתן ללחוץ שוב כדי להמשיך מהנקודה שנעצרה.',
+        errorMessage: 'error בparentדה: $e\nניתן ללחוץ שוב כדי להמשיך מהנקודה שנעצרה.',
       ));
     }
   }
@@ -707,18 +707,18 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         }
       }
 
-      // המשך לבדיקת הקובץ המחולץ
+      // המשך לבדיקת הfile המחולץ
       await _checkAndSaveExtractedDatabase(event.extractedPath, emit);
     } catch (e) {
       emit(_error(
-        errorMessage: 'שגיאה: $e',
+        errorMessage: 'error: $e',
       ));
     }
   }
 
-  /// עוזר כללי: מוריד קובץ (עם resume), מחלץ אותו ומוחק את ה-temp.
-  /// [isTar] = true → מחלץ tar.zst לתיקייה [outputDir]
-  /// [isTar] = false → מחלץ .zst לקובץ [outputDir]/[outputFileName]
+  /// עוזר general: מוריד file (עם resume), מחלץ אותו ומוחק את ה-temp.
+  /// [isTar] = true → מחלץ tar.zst לfolder [outputDir]
+  /// [isTar] = false → מחלץ .zst לfile [outputDir]/[outputFileName]
   Future<void> _downloadAndExtractAsset({
     required String url,
     required String tempFileName,
@@ -737,7 +737,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     emit(EmptyLibraryDownloading(
       progress: alreadyDownloaded > 0 ? 0.0 : 0.0,
       message: alreadyDownloaded > 0
-          ? '$statusMessage (ממשיך מ-${(alreadyDownloaded / 1024 / 1024).toStringAsFixed(1)} MB)'
+          ? '$statusMessage (continue מ-${(alreadyDownloaded / 1024 / 1024).toStringAsFixed(1)} MB)'
           : statusMessage,
     ));
 
@@ -758,7 +758,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         if (match != null) {
           final serverStart = int.tryParse(match.group(1)!) ?? 0;
           if (serverStart == 0 && alreadyDownloaded > 0) {
-            // השרת התחיל מ-0 למרות הבקשה — מחיקת הקובץ החלקי
+            // השרת התחיל מ-0 למרות הבקשה — מחיקת הfile החלקי
             alreadyDownloaded = 0;
             await tempFile.delete().catchError((_) => tempFile);
           } else {
@@ -768,8 +768,8 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         }
       }
     } else {
-      // שגיאת HTTP — זורקים כדי שהמשתמש יידע
-      throw Exception('שגיאה בהורדת $statusMessage: ${response.statusCode}');
+      // שגיאת HTTP — זורקים כדי שהuser יידע
+      throw Exception('error בparentדת $statusMessage: ${response.statusCode}');
     }
 
     final contentLength = response.contentLength ?? 0;
@@ -813,8 +813,8 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     await tempFile.delete().catchError((_) => tempFile);
   }
 
-  /// מחלץ קובץ tar.zst לתיקיית היעד.
-  /// רץ ב-isolate נפרד כדי למנוע חסימת UI וכדי שהזיכרון ישוחרר בסיום.
+  /// מחלץ file tar.zst לתיקיית היעד.
+  /// רץ ב-isolate נפרד כדי למנוע חסימת UI וכדי שהזיכרון ישוחרר בfinish.
   static Future<void> _extractTarZst(
       String archivePath, String outputDir) async {
     await compute(_extractTarZstIsolate, [archivePath, outputDir]);
@@ -875,7 +875,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('שגיאה בקבלת הרליס האחרון: ${response.statusCode}');
+      throw Exception('error בקבלת הרליס האחרון: ${response.statusCode}');
     }
 
     final decoded = jsonDecode(utf8.decode(response.bodyBytes));
@@ -885,7 +885,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
     final asset = parseLatestDatabaseAsset(decoded);
     if (asset == null) {
-      throw Exception('לא נמצא קובץ seforim.db.zst ברליס האחרון');
+      throw Exception('no נמצא file seforim.db.zst ברליס האחרון');
     }
 
     return asset;
@@ -893,7 +893,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
 
   @visibleForTesting
 
-  /// מחלץ מתוך JSON של רליס את קובץ ה-DB הדחוס של הספרייה.
+  /// מחלץ מתוך JSON של רליס את file ה-DB הדחוס של the library.
   static DatabaseReleaseAsset? parseLatestDatabaseAsset(
       Map<String, dynamic> releaseJson) {
     final assets = releaseJson['assets'];
@@ -924,9 +924,9 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     String outputPath,
   ) async {
     if (Platform.isAndroid) {
-      // ב-Android טוענים את כל הקובץ לזיכרון RAM (1.5 GB דחוס + 6.5 GB פרוס)
+      // ב-Android טוענים את כל הfile לזיכרון RAM (1.5 GB דחוס + 6.5 GB פרוס)
       // גורם לקריסה על מכשירים עם 4-6 GB RAM.
-      // במקום זאת, משתמשים ב-ZSTD streaming API שמעבד בנתחים של ~128 KB.
+      // במקום זאת, users ב-ZSTD streaming API שמעבד בנתחים של ~128 KB.
       await Isolate.run(
           () => _decompressZstStreaming(archivePath, outputPath));
       return;
@@ -934,7 +934,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
     final compressedBytes = await File(archivePath).readAsBytes();
     final decompressed = await Zstandard().decompress(compressedBytes);
     if (decompressed == null) {
-      throw Exception('חילוץ קובץ ZST נכשל: $archivePath');
+      throw Exception('חילוץ file ZST נכשל: $archivePath');
     }
     final outputFile = File(outputPath);
     if (await outputFile.exists()) {
@@ -944,7 +944,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
   }
 
   /// חילוץ ZST streaming דרך ZSTD FFI — רץ ב-isolate נפרד.
-  /// מעבד את הקובץ בנתחים של ~128 KB ישירות לדיסק.
+  /// מעבד את הfile בנתחים של ~128 KB ישירות לדיסק.
   /// שימוש ב-RAM: כמה מאות KB בלבד (במקום ~8 GB).
   static void _decompressZstStreaming(
       String archivePath, String outputPath) {
@@ -977,7 +977,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
         try {
           final inView = inNative.asTypedList(inBufSize);
 
-          // 0 = frame הושלם, >0 = עדיין נתונים בממתנה, <0 = שגיאה
+          // 0 = frame הושלם, >0 = עדיין נתונים בממתנה, <0 = error
           int lastRet = 0;
 
           while (true) {
@@ -1007,10 +1007,10 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
             }
           }
 
-          // לפי תיעוד ZSTD: ערך חזרה > 0 אחרי EOF = frame לא הושלם (קובץ קטוע/פגום)
+          // לפי תיעוד ZSTD: value חזרה > 0 אחרי EOF = frame no הושלם (file קטוע/פגום)
           if (lastRet != 0) {
             throw Exception(
-              'קובץ ה-ZST קטוע או פגום: ה-frame לא הושלם (נותרו $lastRet bytes לפענוח)',
+              'file ה-ZST קטוע או פגום: ה-frame no הושלם (נותרו $lastRet bytes לפענוח)',
             );
           }
 
@@ -1031,7 +1031,7 @@ class EmptyLibraryBloc extends Bloc<EmptyLibraryEvent, EmptyLibraryState> {
   }
 }
 
-/// תוצאת קריאת df עבור נתיב נתון.
+/// תוצאת קריאת df עבור path נתון.
 class _DfInfo {
   const _DfInfo({required this.filesystem, required this.freeBytes});
   final String? filesystem;

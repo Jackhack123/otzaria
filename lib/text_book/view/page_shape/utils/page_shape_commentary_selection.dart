@@ -1,29 +1,29 @@
 import 'dart:convert';
 
-/// ערך מיוחד שמציין שבחלונית השמאלית יש להציג את כל המפרשים
-/// שלא שובצו בחלוניות האחרות.
+/// value מיוחד שמציין שבחלונית השמאלית יש להציג את כל הCommentators
+/// שno שובצו בחלוניות האחרות.
 const String pageShapeRemainingCommentatorsValue =
     '__PAGE_SHAPE_REMAINING_COMMENTATORS__';
 
-/// התווית המוצגת למשתמש עבור אפשרות שאר המפרשים.
-const String pageShapeRemainingCommentatorsLabel = 'שאר המפרשים';
+/// התווית המוצגת לuser עבור אפשרות שאר הCommentators.
+const String pageShapeRemainingCommentatorsLabel = 'שאר הCommentators';
 
-/// ערך מיוחד שמציין שהטור משתמש בבחירת מפרשים מרובים מתוך החלונית.
+/// value מיוחד שמציין שהטור user בבחירת Commentators מרובים מתוך החלונית.
 const String pageShapeMultipleCommentatorsModeValue =
     '__PAGE_SHAPE_MULTIPLE_COMMENTATORS_MODE__';
 
-/// התווית המוצגת למשתמש עבור מצב בחירה מרובה.
-const String pageShapeMultipleCommentatorsModeLabel = 'מפרשים מרובים';
+/// התווית המוצגת לuser עבור מצב בחירה מרובה.
+const String pageShapeMultipleCommentatorsModeLabel = 'Commentators מרובים';
 
 const String _pageShapeMultiCommentatorsPrefix =
     '__PAGE_SHAPE_MULTI_COMMENTATORS__:';
 
-/// מחזיר האם [value] מייצג את אפשרות "שאר המפרשים".
+/// מחזיר האם [value] מייצג את אפשרות "שאר הCommentators".
 bool isPageShapeRemainingCommentatorsValue(String? value) {
   return value == pageShapeRemainingCommentatorsValue;
 }
 
-/// מחזיר האם [value] מייצג בחירה מרובה מפורשת של מפרשים.
+/// מחזיר האם [value] מייצג בחירה מרובה מפורשת של Commentators.
 bool isPageShapeMultiCommentatorsValue(String? value) {
   return value?.startsWith(_pageShapeMultiCommentatorsPrefix) ?? false;
 }
@@ -34,7 +34,7 @@ bool isPageShapeMultipleCommentatorsMode(String? value) {
       isPageShapeMultiCommentatorsValue(value);
 }
 
-/// מחפש את שם המפרש המלא מתוך רשימת המפרשים הזמינים.
+/// מחפש את name הcommentator הfull מתוך רשימת הCommentators הזמינים.
 String? findMatchingPageShapeCommentator(
   String? selection,
   List<String> availableCommentators,
@@ -74,7 +74,7 @@ List<String> _decodeMultiCommentators(String value) {
   return parsed.whereType<String>().toList();
 }
 
-/// מקודד בחירת מפרשים לשמירה בהגדרות.
+/// מקודד בחירת Commentators לsave בsettings.
 String? encodePageShapeCommentatorsSelection(
   Iterable<String> commentators, {
   bool forceMultipleMode = false,
@@ -102,7 +102,7 @@ String? encodePageShapeCommentatorsSelection(
   return '$_pageShapeMultiCommentatorsPrefix$payload';
 }
 
-/// מחזיר את רשימת המפרשים המפורשת שנשמרה בבחירה.
+/// מחזיר את רשימת הCommentators המפורשת שנשמרה בבחירה.
 List<String> decodePageShapeCommentatorsSelection(String? value) {
   if (value == null ||
       isPageShapeRemainingCommentatorsValue(value) ||
@@ -113,7 +113,7 @@ List<String> decodePageShapeCommentatorsSelection(String? value) {
   return _decodeMultiCommentators(value);
 }
 
-/// ממיר בחירה שמורה לשמות המלאים מתוך רשימת המפרשים הזמינים.
+/// ממיר בחירה Saveה לnames הfullים מתוך רשימת הCommentators הזמינים.
 String? resolvePageShapeCommentatorSelection({
   required String? selection,
   required List<String> availableCommentators,
@@ -149,7 +149,7 @@ String? resolvePageShapeCommentatorSelection({
   );
 }
 
-/// מחזיר את רשימת המפרשים שיש להציג בפועל עבור הבחירה השמורה.
+/// מחזיר את רשימת הCommentators שיש להציג בפועל עבור הבחירה הSaveה.
 List<String> resolvePageShapeSelectedCommentators({
   required String? selection,
   required List<String> availableCommentators,
@@ -199,11 +199,11 @@ String? _resolvePageShapeSingleCommentator({
   return resolved;
 }
 
-/// מחזיר את כל המפרשים שמוצגים בפועל בחלוניות צורת הדף.
+/// מחזיר את כל הCommentators שמוצגים בפועל בחלוניות צורת הpage.
 ///
-/// הפונקציה מיישרת את הלוגיקה של טעינת הקישורים עם הלוגיקה של המסך עצמו:
-/// טורים מוסתרים אינם נכללים, ובטור הימני נלקחים בחשבון רק המפרשים שנבחרו
-/// בפועל לאחר החרגת המפרשים ששובצו בחלוניות הייעודיות.
+/// הfunction מיישרת את הלוגיקה של טעינת הקישורים עם הלוגיקה של המסך עצמו:
+/// טורים מוסתרים אינם נgeneralם, ובטור הימני נלקחים בחשבון רק הCommentators שselectedו
+/// בפועל noחר החרגת הCommentators ששובצו בחלוניות הייעודיות.
 List<String> resolvePageShapeDisplayedCommentators({
   required String? leftSelection,
   required String? rightSelection,
@@ -275,7 +275,7 @@ List<String> resolvePageShapeDisplayedCommentators({
   return displayedCommentators;
 }
 
-/// מחזיר את התווית המוצגת למשתמש עבור בחירת מפרש בצורת הדף.
+/// מחזיר את התווית המוצגת לuser עבור בחירת commentator בצורת הpage.
 String formatPageShapeCommentatorSelection(String? value) {
   if (isPageShapeRemainingCommentatorsValue(value)) {
     return pageShapeRemainingCommentatorsLabel;
@@ -293,13 +293,13 @@ String formatPageShapeCommentatorSelection(String? value) {
     if (commentators.length <= 2) {
       return commentators.join(', ');
     }
-    return '${commentators.length} מפרשים';
+    return '${commentators.length} Commentators';
   }
 
-  return value ?? 'ללא מפרש';
+  return value ?? 'לno commentator';
 }
 
-/// מחשב את כל המפרשים שלא שובצו כבר בחלוניות האחרות.
+/// מחשב את כל הCommentators שno שובצו כבר בחלוניות האחרות.
 List<String> resolveRemainingPageShapeCommentators({
   required List<String> availableCommentators,
   required Iterable<String?> excludedCommentators,

@@ -84,7 +84,7 @@ class _WorkspaceSwitcherDialogState extends State<WorkspaceSwitcherDialog> {
                   }
 
                   if (state.error != null) {
-                    return Center(child: Text('שגיאה: ${state.error}'));
+                    return Center(child: Text('error: ${state.error}'));
                   }
 
                   return GridView.builder(
@@ -240,7 +240,7 @@ class _WorkspaceSwitcherDialogState extends State<WorkspaceSwitcherDialog> {
                                 ),
                                 const SizedBox(width: 6),
                                 IconButton(
-                                  tooltip: 'שמור',
+                                  tooltip: 'Save',
                                   icon: const Icon(
                                       FluentIcons.checkmark_24_regular),
                                   onPressed: commitRenameAndClose,
@@ -291,13 +291,13 @@ class _WorkspaceSwitcherDialogState extends State<WorkspaceSwitcherDialog> {
               onPressed: () {
                 // Remove the workspace
                 if (isActive) {
-                  UiSnack.showError('לא ניתן למחוק שולחן עבודה פעיל');
+                  UiSnack.showError('no ניתן לdeleted שולחן עבודה פעיל');
                   return;
                 }
                 context
                     .read<WorkspaceBloc>()
                     .add(RemoveWorkspace(workspace.id));
-                UiSnack.show('שולחן העבודה נמחק');
+                UiSnack.show('שולחן העבודה נDelete');
               },
             ),
           ),

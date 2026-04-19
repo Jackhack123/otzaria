@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// מסנכרנת שאילתת חיפוש אל [controller] בלי לדרוס בחירה קיימת
-/// כאשר הטקסט כבר תואם לערך המבוקש.
+/// מסנכרנת שאילתת search אל [controller] בלי לדרוס בחירה קיימת
+/// כאשר הtext כבר תואם לvalue המבוקש.
 void syncSearchControllerQuery(
   TextEditingController controller,
   String query,
@@ -17,7 +17,7 @@ void syncSearchControllerQuery(
   );
 }
 
-/// מחילה שאילתת חיפוש שמגיעה ממסלול פרוגרמטי, כגון חיפוש מתקדם,
+/// מחילה שאילתת search שמגיעה ממסלול פרוגרמטי, כגון search מתקדם,
 /// ומסנכרנת גם את ה-state החיצוני דרך [onQueryChanged].
 void applyInBookSearchQuery({
   required TextEditingController controller,

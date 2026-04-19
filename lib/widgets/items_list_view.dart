@@ -198,7 +198,7 @@ class _ItemsListViewState extends State<ItemsListView> {
                               ),
                             IconButton(
                               icon: const Icon(FluentIcons.delete_24_regular),
-                              tooltip: 'מחק',
+                              tooltip: 'Delete',
                               onPressed: () =>
                                   widget.onDelete(context, originalIndex),
                             ),

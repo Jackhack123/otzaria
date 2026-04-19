@@ -30,7 +30,7 @@ class DialogKeyboardNavigator extends StatelessWidget {
           return KeyEventResult.ignored;
         }
 
-        // אם הפוקוס בשדה הטקסט, אנטר שולח את הטופס
+        // אם הfocus בfield הtext, אנטר שולח את הטופס
         if (textFieldFocusNode?.hasFocus ?? false) {
           if (event.logicalKey == LogicalKeyboardKey.enter) {
             onConfirm?.call();
@@ -39,14 +39,14 @@ class DialogKeyboardNavigator extends StatelessWidget {
           return KeyEventResult.ignored;
         }
 
-        // חיצים - מעבר בין כפתורים
+        // חיצים - מעבר בין buttons
         if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
             event.logicalKey == LogicalKeyboardKey.arrowRight) {
           onFocusChange(focusedIndex == 0 ? 1 : 0);
           return KeyEventResult.handled;
         }
 
-        // אנטר - לחיצה על הכפתור הממוקד
+        // אנטר - tap על הbutton המfocus
         if (event.logicalKey == LogicalKeyboardKey.enter) {
           if (focusedIndex == 1) {
             onConfirm?.call();
@@ -56,7 +56,7 @@ class DialogKeyboardNavigator extends StatelessWidget {
           return KeyEventResult.handled;
         }
 
-        // Escape - ביטול
+        // Escape - cancel
         if (event.logicalKey == LogicalKeyboardKey.escape) {
           onCancel?.call();
           return KeyEventResult.handled;

@@ -10,10 +10,10 @@ import 'package:otzaria/theme/app_tokens.dart';
 // ════════════════════════════════════════════════════════════════════════════
 //
 //  שינויים:
-//  • Hover גלובלי M3 — צבע primary (לא אפור) להתאמה לצבעי האפליקציה
-//  • TabBarTheme אחיד — secondaryContainer, padding מתאים, ללא קו תחתון
-//  • IconButton hover = primary (לא onSurfaceVariant)
-//  • Menus בסגנון Chrome — רקע ניטרלי, רדיוס קטן, elevation עדין
+//  • Hover גלובלי M3 — צבע primary (no אפור) להתאמה לצבעי האפליקציה
+//  • TabBarTheme אחיד — secondaryContainer, padding מתאים, לno קו תחתון
+//  • IconButton hover = primary (no onSurfaceVariant)
+//  • Menus בסגנון Chrome — רקע ניטרלי, רדיוס small, elevation עדין
 
 class AppThemeData {
   AppThemeData._();
@@ -283,7 +283,7 @@ class AppThemeData {
   // ══════════════════════════════════════════════════════════════════════════
   //
   //  M3: hover = 8% overlay, pressed/focused = 12%
-  //  צבע: primary (לא אפור) — מתאים לפלטת הצבעים החמה של האפליקציה
+  //  צבע: primary (no אפור) — מתאים לפלטת הצבעים החמה של האפליקציה
   // ──────────────────────────────────────────────────────────────────────────
 
   static IconButtonThemeData _iconButtonTheme(ColorScheme cs) =>
@@ -295,7 +295,7 @@ class AppThemeData {
               borderRadius: BorderRadius.circular(AppTokens.radiusXL),
             ),
           ),
-          // primary (לא אפור) — hover תואם את צבעי האפליקציה
+          // primary (no אפור) — hover תואם את צבעי האפליקציה
           overlayColor: WidgetStateProperty.resolveWith((s) {
             if (s.contains(WidgetState.hovered)) {
               return cs.primary.withValues(alpha: 0.08);
@@ -394,7 +394,7 @@ class AppThemeData {
           fontSize: AppTokens.fontMD,
           fontWeight: FontWeight.w400,
         ),
-        // primary (לא אפור) — hover תואם את צבעי האפליקציה
+        // primary (no אפור) — hover תואם את צבעי האפליקציה
         overlayColor: WidgetStateProperty.resolveWith((s) {
           if (s.contains(WidgetState.hovered)) {
             return cs.primary.withValues(alpha: 0.08);

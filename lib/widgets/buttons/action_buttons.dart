@@ -1,18 +1,18 @@
 // lib/widgets/buttons/action_buttons.dart
 //
-// כפתורי פעולה גנריים בסגנון M3.
+// buttonי action גנריים בסגנון M3.
 //
 // **שינויים v4:**
-// • ToolbarActionButton — selected משתמש ב-primary/onPrimary
+// • ToolbarActionButton — selected user ב-primary/onPrimary
 //   כדי לבלוט בצורה ברורה על סרגל secondaryContainer.
-// • מצב לא נבחר נשאר שקט יותר עם surface containers.
+// • מצב no selected נשאר שקט יותר עם surface containers.
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 // ── RecommendedActionButton ───────────────────────────────────────────────────
 
-/// כפתור פעולה מומלצת — Primary FilledButton
+/// button action מומלצת — Primary FilledButton
 class RecommendedActionButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -50,7 +50,7 @@ class RecommendedActionButton extends StatelessWidget {
     }
     if (leading != null) {
       if (textAlign == TextAlign.center) {
-        // מירכוז אמיתי: הטקסט ממורכז יחסית לרוחב הכפתור המלא,
+        // מירכוז אמיתי: הtext ממורכז יחסית לרוחב הbutton הfull,
         // האייקון צף בצד ה-start (ימין ב-RTL)
         return FilledButton(
           onPressed: onPressed,
@@ -91,7 +91,7 @@ class RecommendedActionButton extends StatelessWidget {
 
 // ── NeutralActionButton ───────────────────────────────────────────────────────
 
-/// כפתור פעולה ניטרלית — Tonal/SecondaryContainer FilledButton
+/// button action ניטרלית — Tonal/SecondaryContainer FilledButton
 class NeutralActionButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -137,9 +137,9 @@ class NeutralActionButton extends StatelessWidget {
 
 // ── _BalancedText ─────────────────────────────────────────────────────────────
 
-/// מציג טקסט עם חלוקה מאוזנת בין שורות:
+/// מציג text עם חלוקה מאוזנת בין lines:
 /// בודק את כל נקודות השבירה האפשריות (בין מילים) ובוחר את זו
-/// שמביאה לשורות בעלות רוחב שווה ככל האפשר.
+/// שמביאה לlines בעלות רוחב שווה ככל האפשר.
 class _BalancedText extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
@@ -157,7 +157,7 @@ class _BalancedText extends StatelessWidget {
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
 
-        // בדוק אם הטקסט נכנס בשורה אחת
+        // בדוק אם הtext נכנס בline אחת
         final singleLinePainter = TextPainter(
           text: TextSpan(text: text, style: effectiveStyle),
           maxLines: 1,
@@ -170,7 +170,7 @@ class _BalancedText extends StatelessWidget {
               textDirection: TextDirection.rtl);
         }
 
-        // מצא את נקודת השבירה שנותנת שורות שוות ביותר
+        // מצא את נקודת השבירה שנותנת lines שוות ביותר
         final words = text.split(' ');
         if (words.length <= 1) {
           return Text(text,
@@ -191,7 +191,7 @@ class _BalancedText extends StatelessWidget {
             textDirection: TextDirection.rtl,
           )..layout(maxWidth: double.infinity);
 
-          // אם שורה 1 רחבה מהמקום הפנוי — לא ניתן לשבור כאן
+          // אם line 1 רחבה מהמקום הפנוי — no ניתן לשבור כאן
           if (p1.width > maxWidth) continue;
 
           final p2 = TextPainter(
@@ -224,7 +224,7 @@ class ToolCopyButton extends StatelessWidget {
   const ToolCopyButton({
     super.key,
     required this.onPressed,
-    this.tooltip = 'העתק',
+    this.tooltip = 'Copy',
   });
 
   @override
@@ -254,7 +254,7 @@ class ToolNavigateButton extends StatelessWidget {
   const ToolNavigateButton({
     super.key,
     required this.onPressed,
-    this.tooltip = 'פתח מקור',
+    this.tooltip = 'Open מקור',
   });
 
   @override
@@ -279,11 +279,11 @@ class ToolNavigateButton extends StatelessWidget {
 
 // ── ToolbarActionButton ──────────────────────────────────────────────────────
 
-/// כפתור סרגל כלים בסגנון M3 עם נראות מוגברת למצב נבחר.
+/// button סרגל Tools בסגנון M3 עם נראות מוגברת למצב selected.
 ///
 /// **2 מצבים:**
-/// • [compact] = false (touch):   כפתור עגול/pill גדול, icon 20px
-/// • [compact] = true (desktop):  כפתור עגול/pill קטן, icon 16px
+/// • [compact] = false (touch):   button עגול/pill large, icon 20px
+/// • [compact] = true (desktop):  button עגול/pill small, icon 16px
 ///
 /// **צבעים:**
 /// • selected prominent: primary / onPrimary
@@ -300,7 +300,7 @@ class ToolbarActionButton extends StatelessWidget {
   final String? label;
   final ToolbarActionButtonEmphasis emphasis;
 
-  /// true = desktop — כפתור קטן ועגול
+  /// true = desktop — button small ועגול
   final bool compact;
 
   const ToolbarActionButton({

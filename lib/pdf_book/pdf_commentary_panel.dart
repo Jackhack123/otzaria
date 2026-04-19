@@ -25,16 +25,16 @@ import 'package:pdfrx/pdfrx.dart';
 import 'dart:async'; // Added for Timer
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-/// Type alias לתאימות - משתמש ב-LinkGroup מה-Service
+/// Type alias לתאימות - user ב-LinkGroup מה-Service
 typedef CommentaryGroup = LinkGroup;
 
-/// מקבץ רשימת קישורים לקבוצות לפי שם הספר (רק קטעים רצופים)
-/// משתמש ב-CommentaryService
+/// מקבץ רשימת קישורים לgroups לפי name הbook (רק קטעים רצופים)
+/// user ב-CommentaryService
 List<CommentaryGroup> _groupConsecutiveLinks(List<Link> links) {
   return CommentaryService.groupConsecutiveLinks(links);
 }
 
-/// Widget שמציג מפרשים וקישורים עבור PDF
+/// Widget שמציג Commentators וקישורים עבור PDF
 class PdfCommentaryPanel extends StatefulWidget {
   final PdfBookTab tab;
   final Function(OpenedTab) openBookCallback;
@@ -139,7 +139,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 3, // מפרשים, קישורים, הערות
+      length: 3, // Commentators, קישורים, notes
       vsync: this,
       initialIndex: widget.initialTabIndex ?? 0,
     );
@@ -157,13 +157,13 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     final availableCommentators = commentatorsSet.toList();
     final eras = await utils.splitByEra(availableCommentators);
     final known = <String>{
-      ...?eras['תורה שבכתב'],
+      ...?eras['תורה שבFont'],
       ...?eras['חז"ל'],
       ...?eras['ראשונים'],
       ...?eras['אחרונים'],
       ...?eras['מחברי זמננו'],
     };
-    final others = (eras['מפרשים נוספים'] ?? [])
+    final others = (eras['Commentators נוספים'] ?? [])
         .toSet()
         .union(availableCommentators.where((c) => !known.contains(c)).toSet())
         .toList();
@@ -171,7 +171,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     setState(() {
       _commentatorGroups = [
         CommentatorGroup(
-            title: 'תורה שבכתב', commentators: eras['תורה שבכתב'] ?? const []),
+            title: 'תורה שבFont', commentators: eras['תורה שבFont'] ?? const []),
         CommentatorGroup(title: 'חז"ל', commentators: eras['חז"ל'] ?? const []),
         CommentatorGroup(
             title: 'ראשונים', commentators: eras['ראשונים'] ?? const []),
@@ -180,7 +180,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
         CommentatorGroup(
             title: 'מחברי זמננו',
             commentators: eras['מחברי זמננו'] ?? const []),
-        CommentatorGroup(title: 'שאר מפרשים', commentators: others),
+        CommentatorGroup(title: 'שאר Commentators', commentators: others),
       ];
     });
   }
@@ -188,7 +188,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
   @override
   void didUpdateWidget(PdfCommentaryPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // אם initialTabIndex השתנה, מעדכן את הטאב
+    // אם initialTabIndex השתנה, מעדyes את הטאב
     if (oldWidget.initialTabIndex != widget.initialTabIndex &&
         widget.initialTabIndex != null) {
       _tabController.animateTo(widget.initialTabIndex!);
@@ -253,7 +253,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     });
   }
 
-  /// העתקת טקסט מעוצב (HTML) ללוח
+  /// Copyת text מעוצב (HTML) ללוח
   Future<void> _copyFormattedText() async {
     await ContextMenuUtils.copyFormattedText(
       context: context,
@@ -262,7 +262,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     );
   }
 
-  /// בניית תפריט הקשר למפרש ספציפי
+  /// בניית תפריט הקשר לcommentator specific
   List<AppContextMenuEntry> _buildCommentaryContextMenuEntries(
       BuildContext menuCtx, Link link) {
     return ContextMenuUtils.buildCommentaryContextMenu(
@@ -293,7 +293,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
               icon: Icon(FluentIcons.book_24_regular, size: 18),
               iconMargin: EdgeInsets.only(bottom: 2),
               height: 48,
-              child: Text('מפרשים', style: TextStyle(fontSize: 12)),
+              child: Text('Commentators', style: TextStyle(fontSize: 12)),
             ),
             Tab(
               icon: Icon(FluentIcons.link_24_regular, size: 18),
@@ -305,11 +305,11 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
               icon: Icon(FluentIcons.note_24_regular, size: 18),
               iconMargin: EdgeInsets.only(bottom: 2),
               height: 48,
-              child: Text('הערות', style: TextStyle(fontSize: 12)),
+              child: Text('notes', style: TextStyle(fontSize: 12)),
             ),
           ],
         ),
-        // תוכן הכרטיסיות - עטוף ב-SelectionArea כדי לאפשר בחירת טקסט
+        // content הכרטיסיות - עטוף ב-SelectionArea כדי noפשר בחירת text
         Expanded(
           child: SelectionArea(
             contextMenuBuilder: (context, selectableRegionState) {
@@ -357,9 +357,9 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
       onBack: () {
         setState(() {
           _showFilterTab = false;
-          // כפיית rebuild של התצוגה אחרי שינוי מפרשים
+          // כפיית rebuild של התצוגה אחרי שינוי Commentators
         });
-        // עדכון נוסף אחרי frame אחד כדי לוודא שהתצוגה מתעדכנת
+        // update נוסף אחרי frame אחד כדי לוודא שהתצוגה מתעדכנת
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             setState(() {});
@@ -415,7 +415,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
             child: RtlTextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'חפש בתוך המפרשים המוצגים...',
+                hintText: 'חפש בתוך הCommentators המוצגים...',
                 prefixIcon: const Icon(FluentIcons.search_24_regular),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? Row(
@@ -502,13 +502,13 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
                     : FluentIcons.arrow_expand_all_24_regular,
               ),
               tooltip:
-                  _allExpanded ? 'כווץ את כל המפרשים' : 'הרחב את כל המפרשים',
+                  _allExpanded ? 'כווץ את כל הCommentators' : 'הרחב את כל הCommentators',
               onPressed: () {
                 setState(() {
                   final nextExpanded = !_allExpanded;
                   _allExpanded = nextExpanded;
 
-                  // החל על כל הקבוצות שכבר נצפו/נטענו כדי שהלחצן ישפיע מיידית
+                  // החל על כל הgroups שכבר נצפו/נטענו כדי שהלחצן ישפיע מיידית
                   for (final key in _expansionStates.keys.toList()) {
                     _expansionStates[key] = nextExpanded;
                   }
@@ -545,7 +545,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'טוען מפרשים...',
+            'טוען Commentators...',
             style: TextStyle(
               fontSize: widget.fontSize * 0.9,
               color: Colors.grey,
@@ -569,7 +569,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
         return const Center(child: CircularProgressIndicator());
       }
 
-      // אין מפרשים בכלל לקטע הזה, או שיש מפרשים נבחרים אבל הם לא רלוונטיים לדף
+      // אין Commentators בכלל לקטע הזה, או שיש Commentators selectedים אבל הם no רלוונטיים לpage
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -578,8 +578,8 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
             children: [
               Text(
                 hasCommentaryLinks
-                    ? 'לא נמצאו מפרשים מהנבחרים לדף זה'
-                    : 'לא נמצאו מפרשים לקטע הנבחר',
+                    ? 'no נמצאו Commentators מהselectedים לpage זה'
+                    : 'no נמצאו Commentators לקטע הselected',
                 style: TextStyle(
                   fontSize: widget.fontSize * 0.9,
                   color: Colors.grey,
@@ -595,7 +595,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
                     });
                   },
                   icon: const Icon(FluentIcons.apps_list_24_regular),
-                  label: const Text('בחר מפרשים'),
+                  label: const Text('בחר Commentators'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -666,7 +666,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     int cumulativeIndex = 0;
     Link? targetLink;
 
-    // 1. מוצא את ה-link שמכיל את תוצאת החיפוש הנוכחית
+    // 1. מוצא את ה-link שמכיל את תוצאת הsearch הcurrent
     for (final link in _orderedLinks) {
       final linkKey = _getLinkKey(link);
       final itemResults = _searchResultsPerLink[linkKey] ?? 0;
@@ -697,7 +697,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
 
     if (targetGroupIndex == -1 || targetGroup == null) return;
 
-    // 3. מבטיח שה-ExpansionTile של הקבוצה פתוח
+    // 3. מבטיח שה-ExpansionTile של הgroup open
     final groupKey = targetGroup.bookTitle;
     final bool isCurrentlyExpanded = _expansionStates[groupKey] ?? _allExpanded;
 
@@ -831,7 +831,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'לא נמצאו קישורים לדף זה',
+            'no נמצאו קישורים לpage זה',
             style: TextStyle(
               fontSize: widget.fontSize * 0.9,
               color: Colors.grey,
@@ -848,7 +848,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'לא נמצאו קישורים לדף זה',
+            'no נמצאו קישורים לpage זה',
             style: TextStyle(
               fontSize: widget.fontSize * 0.9,
               color: Colors.grey,
@@ -975,7 +975,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
                           debugPrint(
                               'Error loading link content: ${snapshot.error}');
                           debugPrint('Stack trace: ${snapshot.stackTrace}');
-                          return Text('שגיאה: ${snapshot.error}');
+                          return Text('error: ${snapshot.error}');
                         }
                         return BlocBuilder<SettingsBloc, SettingsState>(
                           builder: (context, settingsState) {
@@ -1148,7 +1148,7 @@ class _PdfCommentaryPanelState extends State<PdfCommentaryPanel>
     );
   }
 
-  // מוצא את העמוד של כותרת מסוימת
+  // מוצא את הpage של כותרת מסוימת
   int? _findPageForHeading(String heading) {
     final outline = widget.tab.outline.value;
     if (outline == null) return null;
@@ -1205,8 +1205,8 @@ class _KeepAliveTabState extends State<_KeepAliveTab>
   }
 }
 
-/// Widget מותאם אישית להצגת קבוצת מפרשים עם אפשרות כיווץ/הרחבה
-/// שלא מפריע לבחירת טקסט והעתקה (במקום ExpansionTile)
+/// Widget מותאם אישית להצגת קבוצת Commentators עם אפשרות כיווץ/הרחבה
+/// שno מפריע לבחירת text וCopyה (במקום ExpansionTile)
 class _CollapsibleCommentaryGroup extends StatefulWidget {
   final CommentaryGroup group;
   final SettingsState settingsState;
@@ -1249,7 +1249,7 @@ class _CollapsibleCommentaryGroupState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // כותרת הקבוצה - ניתנת ללחיצה להרחבה/כיווץ
+        // כותרת הgroup - ניתנת לtap להרחבה/כיווץ
         InkWell(
           onTap: () {
             widget.onExpansionChanged(!widget.isExpanded);
@@ -1286,7 +1286,7 @@ class _CollapsibleCommentaryGroupState
             ),
           ),
         ),
-        // תוכן המפרשים - מוצג רק כשמורחב
+        // content הCommentators - מוצג רק כSaveחב
         if (widget.isExpanded)
           ...widget.group.links.map((link) {
             return Padding(

@@ -4,41 +4,41 @@ import 'package:otzaria/core/app_restart.dart';
 import 'package:otzaria/widgets/mixins/dialog_navigation_mixin.dart';
 import 'package:otzaria/theme/app_theme.dart';
 
-// ── קבועי סגנון גלובליים ─────────────────────────────────────────────────────
-/// סגנון כותרת בשורת הגדרה — alias ל-[AppTextStyles.settingTitle]
+// ── constantי סגנון גלובליים ─────────────────────────────────────────────────────
+/// סגנון כותרת בשורת setting — alias ל-[AppTextStyles.settingTitle]
 const kSettingsTitleStyle = AppTextStyles.settingTitle;
 
-/// סגנון תת-כותרת בשורת הגדרה — alias ל-[AppTextStyles.settingSubtitle]
+/// סגנון תת-כותרת בשורת setting — alias ל-[AppTextStyles.settingSubtitle]
 const kSettingsSubtitleStyle = AppTextStyles.settingSubtitle;
 
-/// רווח אנכי סטנדרטי בין כרטיסי הגדרות
+/// רווח אנכי סטנדרטי בין כרטיסי settings
 const kSettingsCardSpacing = SizedBox(height: AppTokens.spaceMD);
 
-// ── קבועי גודל SegmentedButton ────────────────────────────────────────────────
-/// רוחב בסיס לכפתור עם אייקון (px)
+// ── constantי גודל SegmentedButton ────────────────────────────────────────────────
+/// רוחב בסיס לbutton עם אייקון (px)
 const _kSegmentBaseWidthWithIcon = 80.0;
 
-/// רוחב בסיס לכפתור ללא אייקון (px)
+/// רוחב בסיס לbutton לno אייקון (px)
 const _kSegmentBaseWidthNoIcon = 60.0;
 
 /// הכפלת אורך תווי התווית לחישוב רוחב (px לתו)
 const _kSegmentCharWidthMultiplier = 8.0;
 
-/// ריפוד כולל נוסף לרוחב הכולל של כל הכפתורים (px)
+/// ריפוד כולל נוסף לרוחב הכולל של כל הbuttons (px)
 const _kSegmentGroupPadding = 24.0;
 
-/// רוחב מינימלי לקבוצת הכפתורים (px)
+/// רוחב מינימלי לקבוצת הbuttons (px)
 const _kSegmentMinTotalWidth = 180.0;
 
-/// רוחב מקסימלי לקבוצת הכפתורים (px)
+/// רוחב מקסימלי לקבוצת הbuttons (px)
 const _kSegmentMaxTotalWidth = 400.0;
 
-/// סף רוחב להחלטה על פריסה צרה (px נוסף מעבר לרוחב הכפתורים)
+/// סף רוחב להחלטה על פריסה צרה (px נוסף מעבר לרוחב הbuttons)
 const _kSegmentNarrowLayoutThreshold = 200.0;
 
 // ── דיאלוגים ─────────────────────────────────────────────────────────────────
 
-/// דיאלוג עם פעולה אחת (כפתור אישור בלבד)
+/// דיאלוג עם action אחת (button confirm בלבד)
 class SingleActionDialog extends StatefulWidget {
   final dynamic title;
   final String content;
@@ -50,7 +50,7 @@ class SingleActionDialog extends StatefulWidget {
     required this.title,
     required this.content,
     this.customContent,
-    this.confirmText = 'אישור',
+    this.confirmText = 'confirm',
   });
 
   @override
@@ -81,7 +81,7 @@ class _SingleActionDialogState extends State<SingleActionDialog>
   }
 }
 
-/// דיאלוג עם שתי פעולות (ביטול ואישור)
+/// דיאלוג עם שתי actions (cancel וconfirm)
 class TwoActionsDialog extends StatefulWidget {
   final dynamic title;
   final String content;
@@ -94,8 +94,8 @@ class TwoActionsDialog extends StatefulWidget {
     required this.title,
     required this.content,
     this.customContent,
-    this.cancelText = 'ביטול',
-    this.confirmText = 'אישור',
+    this.cancelText = 'cancel',
+    this.confirmText = 'confirm',
   });
 
   @override
@@ -114,7 +114,7 @@ class _TwoActionsDialogState extends State<TwoActionsDialog>
         title: widget.title is String ? Text(widget.title) : widget.title,
         content: widget.customContent ?? Text(widget.content),
         actions: [
-          // כפתור ביטול — tonal
+          // button cancel — tonal
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(false),
             style: FilledButton.styleFrom(
@@ -122,7 +122,7 @@ class _TwoActionsDialogState extends State<TwoActionsDialog>
                 foregroundColor: cs.onSecondaryContainer),
             child: Text(widget.cancelText),
           ),
-          // כפתור אישור — primary
+          // button confirm — primary
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: FilledButton.styleFrom(
@@ -135,7 +135,7 @@ class _TwoActionsDialogState extends State<TwoActionsDialog>
   }
 }
 
-/// דיאלוג אזהרה — כפתור ביטול כהה (הפעולה הבטוחה), אישור אדום
+/// דיאלוג Warning — button cancel כהה (הaction הבטוחה), confirm אדום
 class WarningDialog extends StatefulWidget {
   final dynamic title;
   final String content;
@@ -148,7 +148,7 @@ class WarningDialog extends StatefulWidget {
     required this.title,
     required this.content,
     this.subtitle,
-    this.cancelText = 'ביטול',
+    this.cancelText = 'cancel',
     this.confirmText = 'המשך',
   });
 
@@ -179,14 +179,14 @@ class _WarningDialogState extends State<WarningDialog>
           ],
         ),
         actions: [
-          // ביטול — כהה (primary), "הפעולה הבטוחה"
+          // cancel — כהה (primary), "הaction הבטוחה"
           FilledButton(
             onPressed: () => Navigator.of(context).pop(false),
             style: FilledButton.styleFrom(
                 backgroundColor: cs.primary, foregroundColor: cs.onPrimary),
             child: Text(widget.cancelText),
           ),
-          // אישור — שקוף אדום (מסוכן)
+          // confirm — שקוף אדום (מסוyes)
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: cs.error),
@@ -198,9 +198,9 @@ class _WarningDialogState extends State<WarningDialog>
   }
 }
 
-// ── כפתורים ───────────────────────────────────────────────────────────────────
+// ── buttons ───────────────────────────────────────────────────────────────────
 
-/// כפתור פעולה מומלצת (Primary)
+/// button action מומלצת (Primary)
 class RecommendedActionButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -241,7 +241,7 @@ class RecommendedActionButton extends StatelessWidget {
   }
 }
 
-/// כפתור פעולה ניטרלית (Tonal)
+/// button action ניטרלית (Tonal)
 class NeutralActionButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -284,14 +284,14 @@ class NeutralActionButton extends StatelessWidget {
   }
 }
 
-// ── פונקציות עזר לדיאלוגים ────────────────────────────────────────────────────
+// ── functions עזר לדיאלוגים ────────────────────────────────────────────────────
 
 Future<bool?> showSingleActionDialog({
   required BuildContext context,
   required String title,
   String content = '',
   Widget? customContent,
-  String confirmText = 'אישור',
+  String confirmText = 'confirm',
   bool barrierDismissible = true,
 }) =>
     showDialog<bool>(
@@ -309,8 +309,8 @@ Future<bool?> showTwoActionsDialog({
   required String title,
   required String content,
   Widget? customContent,
-  String cancelText = 'ביטול',
-  String confirmText = 'אישור',
+  String cancelText = 'cancel',
+  String confirmText = 'confirm',
   bool barrierDismissible = true,
 }) =>
     showDialog<bool>(
@@ -329,7 +329,7 @@ Future<bool?> showWarningDialog({
   required String title,
   required String content,
   String? subtitle,
-  String cancelText = 'ביטול',
+  String cancelText = 'cancel',
   String confirmText = 'המשך',
 }) =>
     showDialog<bool>(
@@ -344,7 +344,7 @@ Future<bool?> showWarningDialog({
 
 Future<bool?> showRestartRequiredDialog({
   required BuildContext context,
-  String title = 'נדרשת הפעלה מחדש',
+  String title = 'נדרשת restart',
   String? content,
   String? confirmText,
 }) =>
@@ -353,12 +353,12 @@ Future<bool?> showRestartRequiredDialog({
       title: title,
       content: content ??
           (canRestartApplication()
-              ? 'הספרייה נמצאה בהצלחה.\nלחץ על הכפתור להפעלה מחדש של התוכנה.'
-              : 'הספרייה נמצאה בהצלחה.\nלחץ על הכפתור לסגירת האפליקציה, ולאחר מכן פתח אותה מחדש.'),
+              ? 'the library נמצאה בsuccess.\nלחץ על הbutton לrestart של התוכנה.'
+              : 'the library נמצאה בsuccess.\nלחץ על הbutton לסגירת האפליקציה, וnoחר מyes Open אותה again.'),
       confirmText: confirmText ??
           (canRestartApplication()
-              ? 'הפעל מחדש את התוכנה'
-              : 'סגור את האפליקציה'),
+              ? 'Enable again את התוכנה'
+              : 'closed את האפליקציה'),
       barrierDismissible: false,
     );
 
@@ -369,27 +369,27 @@ Future<bool?> showDbCopyRequiredDialog({
 }) =>
     showTwoActionsDialog(
       context: context,
-      title: 'נדרשת העתקה של קובץ הספרייה',
+      title: 'נדרשת Copyה של file the library',
       content: '',
       barrierDismissible: barrierDismissible,
-      cancelText: 'העתק (שמור מקור)',
-      confirmText: 'העתק + נסה מחק מקור',
+      cancelText: 'Copy (Save מקור)',
+      confirmText: 'Copy + נסה Delete מקור',
       customContent: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'לא ניתן לגשת ישירות לקובץ seforim.db (גודל: $sizeText) מכיוון שהוא נמצא באחסון חיצוני ב-Android.',
+            'no ניתן לגשת ישירות לfile seforim.db (גודל: $sizeText) מכיוון שהוא נמצא באחסון חיצוני ב-Android.',
             textDirection: TextDirection.rtl,
           ),
           const SizedBox(height: 12),
           const Text(
-            'לחץ על כפתור למטה, נווט לאותה תיקייה ובחר את הקובץ seforim.db — האפליקציה תעתיק אותו לאחסון הפנימי.',
+            'לחץ על button למטה, נווט noותה folder ובחר את הfile seforim.db — האפליקציה תעתיק אותו noחסון הפנימי.',
             textDirection: TextDirection.rtl,
           ),
           const SizedBox(height: 6),
           const Text(
-            '(אפשרות "נסה מחק מקור" — ניסיון למחוק לאחר העתקה. עשויה שלא להצליח בכל גרסאות Android.)',
+            '(אפשרות "נסה Delete מקור" — ניסיון לdeleted noחר Copyה. עשויה שno להצליח בכל גרסאות Android.)',
             style: TextStyle(fontSize: 12),
             textDirection: TextDirection.rtl,
           ),
@@ -399,13 +399,13 @@ Future<bool?> showDbCopyRequiredDialog({
 
 // ── SegmentedSettingsTile ─────────────────────────────────────────────────────
 
-// Widget להגדרה עם [SegmentedButton] — בהתאם לספציפיקציית M3:
+// Widget לsetting עם [SegmentedButton] — בהתאם לspecificקציית M3:
 // https://m3.material.io/components/segmented-buttons/overview
 //
-// - ✓ מסמן את האפשרות הנבחרת
-// - גבולות חיצוניים קבועים (מונע קפיצת פריסה בעת בחירה)
+// - ✓ מסמן את האפשרות הselectedת
+// - גבולות חיצוניים constants (מונע קפיצת פריסה בעת בחירה)
 // - פריסה אדפטיבית: כותרת מעל ב-narrow (כולל אייקון), ListTile ב-wide
-// - ניווט מקלדת: חצים ← → לבחירה, Enter/Space לאישור
+// - ניווט מקלדת: חצים ← → לבחירה, Enter/Space לconfirm
 //
 // **שימוש:**
 // ```dart
@@ -479,7 +479,7 @@ class _SegmentedSettingsTileState<T> extends State<SegmentedSettingsTile<T>> {
       final button = _buildButton(cs, hasIcons, totalW);
 
       if (isNarrow) {
-        // ── פריסה צרה: כותרת + תת-כותרת מעל הכפתור, אייקון בשורה עם הכותרת
+        // ── פריסה צרה: כותרת + תת-כותרת מעל הbutton, אייקון בline עם הכותרת
         return Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: AppTokens.spaceMD, vertical: 12),
@@ -535,7 +535,7 @@ class _SegmentedSettingsTileState<T> extends State<SegmentedSettingsTile<T>> {
     });
   }
 
-  /// מחזיר **רק** את הכותרת (title) — ללא תת-כותרת.
+  /// מחזיר **רק** את הכותרת (title) — לno תת-כותרת.
   /// נדרש כדי למנוע כפילות ב-ListTile שמציג subtitle בעצמו.
   Widget _titleOnlyWidget(BuildContext context) {
     if (widget.title is! String) return widget.title as Widget;
@@ -544,7 +544,7 @@ class _SegmentedSettingsTileState<T> extends State<SegmentedSettingsTile<T>> {
 
   // M3 SegmentedButton: secondaryContainer = selected, surface = unselected
   // Tokens: https://m3.material.io/components/segmented-buttons/specs
-  // AppTokens.radiusSM חייב להיות שווה ל-8. אם לא — הפינות ישתנו ויזואלית.
+  // AppTokens.radiusSM חייב להיות שווה ל-8. אם no — הפינות ישתנו ויזואלית.
   Widget _buildButton(ColorScheme cs, bool hasIcons, double totalW) {
     return Focus(
       focusNode: _focusNode,
@@ -628,7 +628,7 @@ class SegmentOption<T> {
 // [Switch] תואם M3 עם thumb/track/overlay מוגדרים לפי:
 // https://m3.material.io/components/switch/specs
 //
-// תיקון hover במצב כהה: ברירת המחדל של Flutter משתמשת ב-primary חזק מדי.
+// תיקון hover במצב כהה: ברירת המחדל של Flutter userת ב-primary חזק מדי.
 // הפתרון: overlayColor מינימלי שמכסה רק hovered — 8% שקיפות דינמי לפי מצב המתג.
 class CustomSwitch extends StatelessWidget {
   final bool value;
@@ -688,7 +688,7 @@ class CustomSwitch extends StatelessWidget {
 
 // ── SwitchSettingsTile ────────────────────────────────────────────────────────
 
-/// [ListTile] עם [CustomSwitch] — עקבי עם כל שורות on/off בהגדרות.
+/// [ListTile] עם [CustomSwitch] — עקבי עם כל lines on/off בsettings.
 class SwitchSettingsTile extends StatelessWidget {
   final Widget? leading;
   final Widget title;

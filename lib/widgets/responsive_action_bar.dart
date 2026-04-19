@@ -3,31 +3,31 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 import 'package:otzaria/widgets/app_menu.dart';
 
-/// רכיב שמציג כפתורי פעולה עם יכולת הסתרה במסכים צרים
-/// כשחלק מהכפתורים נסתרים, מוצג כפתור "..." שפותח תפריט
+/// רכיב שמציג buttonי action עם יכולת hideה במסכים צרים
+/// כשחלק מהbuttons נסתרים, מוצג button "..." שפותח תפריט
 ///
 /// תומך בשני מצבי עבודה:
-/// 1. מצב חדש: `actions` + `alwaysInMenu` - כפתורים נעלמים בסדר ההצגה, ותמיד יש תפריט עם כפתורים קבועים
-/// 2. מצב ישן: `actions` + `originalOrder` - כפתורים נעלמים לפי עדיפות, תפריט רק אם צריך
+/// 1. מצב חדש: `actions` + `alwaysInMenu` - buttons נעלמים בorder ההצגה, ותמיד יש תפריט עם buttons constants
+/// 2. מצב ישן: `actions` + `originalOrder` - buttons נעלמים לפי עדיפות, תפריט רק אם צריך
 class ResponsiveActionBar extends StatefulWidget {
-  /// רשימת כפתורי הפעולה.
-  /// במצב חדש: סדר ההצגה (מימין לשמאל ב-RTL)
-  /// במצב ישן: סדר עדיפות (החשוב ביותר ראשון)
+  /// רשימת buttonי הaction.
+  /// במצב חדש: order ההצגה (מימין לשמאל ב-RTL)
+  /// במצב ישן: order עדיפות (החשוב ביותר ראשון)
   final List<ActionButtonData> actions;
 
-  /// [מצב חדש] כפתורים שתמיד יהיו בתפריט "..." (גם במסכים רחבים)
+  /// [מצב חדש] buttons שתמיד יהיו בתפריט "..." (גם במסכים רחבים)
   final List<ActionButtonData>? alwaysInMenu;
 
-  /// [מצב ישן] הסדר המקורי של הכפתורים (לתצוגה עקבית)
+  /// [מצב ישן] הorder המקורי של הbuttons (לתצוגה עקבית)
   final List<ActionButtonData>? originalOrder;
 
-  /// מספר מקסימלי של כפתורים להציג לפני מעבר לתפריט "..."
+  /// מbook מקסימלי של buttons להציג לפני מעבר לתפריט "..."
   final int maxVisibleButtons;
 
-  /// האם כפתור "..." יהיה בצד ימין (ברירת מחדל: false - שמאל)
+  /// האם button "..." יהיה בצד ימין (ברירת מחדל: false - שמאל)
   final bool overflowOnRight;
 
-  /// היסט מיקום לתפריט ה-"..." ביחס לכפתור.
+  /// היסט location לתפריט ה-"..." ביחס לbutton.
   final Offset overflowMenuOffset;
 
   const ResponsiveActionBar({
@@ -50,7 +50,7 @@ class ResponsiveActionBar extends StatefulWidget {
 class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
   @override
   Widget build(BuildContext context) {
-    // בדיקה אם יש כפתורים בכלל
+    // check אם יש buttons בכלל
     final hasAlwaysInMenu =
         widget.alwaysInMenu != null && widget.alwaysInMenu!.isNotEmpty;
 
@@ -72,13 +72,13 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
     }
   }
 
-  /// מצב חדש: כפתורים נעלמים בסדר ההצגה, תמיד יש תפריט עם כפתורים קבועים
+  /// מצב חדש: buttons נעלמים בorder ההצגה, תמיד יש תפריט עם buttons constants
   Widget _buildNewMode(BuildContext context) {
     final totalButtons = widget.actions.length;
     int effectiveMaxVisible = widget.maxVisibleButtons;
 
-    // אם צריך להסתיר רק כפתור אחד, אין טעם להציג תפריט שתופס מקום בעצמו.
-    // עדיף פשוט להציג את כל הכפתורים.
+    // אם צריך להסתיר רק button אחד, אין טעם להציג תפריט שתופס מקום בעצמו.
+    // עדיף פשוט להציג את כל הbuttons.
     if (totalButtons - widget.maxVisibleButtons == 1) {
       effectiveMaxVisible = totalButtons;
     }
@@ -86,30 +86,30 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
     List<ActionButtonData> visibleActions;
     List<ActionButtonData> hiddenActions;
 
-    // אם יש מקום לכל הכפתורים, נציג את כולם
+    // אם יש מקום לכל הbuttons, נציג את כולם
     if (effectiveMaxVisible >= totalButtons) {
       visibleActions = List.from(widget.actions);
       hiddenActions = [];
     } else {
-      // מסתירים כפתורים מהסוף לתחילה (הימני ביותר יעלם אחרון)
+      // מסתירים buttons מהסוף לתחילה (הימני ביותר יעלם אחרון)
       final numToShow = effectiveMaxVisible;
       visibleActions = widget.actions.take(numToShow).toList();
       hiddenActions = widget.actions.skip(numToShow).toList();
     }
 
-    // תמיד מוסיפים את הכפתורים שצריכים להיות בתפריט
+    // תמיד מוסיפים את הbuttons שצריכים להיות בתפריט
     final allHiddenActions = [...hiddenActions, ...widget.alwaysInMenu!];
 
     final visibleWidgets =
         visibleActions.map((action) => action.widget).toList();
     final List<Widget> children = [];
 
-    // מסך הספר: תפריט בצד שמאל, כפתורים מימין לשמאל (RTL)
-    // תמיד מציגים כפתור "..." אם יש כפתורים בתפריט
+    // מסך הbook: תפריט בצד שמאל, buttons מימין לשמאל (RTL)
+    // תמיד מציגים button "..." אם יש buttons בתפריט
     if (allHiddenActions.isNotEmpty) {
       children.add(_buildOverflowButton(allHiddenActions));
     }
-    // הופכים את הסדר כך שהכפתור הראשון ברשימה (PDF) יהיה ימני ביותר
+    // הופכים את הorder כך שהbutton הראשון בlist (PDF) יהיה ימני ביותר
     children.addAll(visibleWidgets.reversed);
 
     return Row(
@@ -119,13 +119,13 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
     );
   }
 
-  /// מצב ישן: כפתורים נעלמים לפי עדיxxxxxxפריט רק אם צריך
+  /// מצב ישן: buttons נעלמים לפי עדיxxxxxxפריט רק אם צריך
   Widget _buildOldMode(BuildContext context) {
     final totalButtons = widget.originalOrder!.length;
     int effectiveMaxVisible = widget.maxVisibleButtons;
 
-    // אם צריך להסתיר רק כפתור אחד, אין טעם להציג תפריט שתופס מקום בעצמו.
-    // עדיף פשוט להציג את כל הכפתורים.
+    // אם צריך להסתיר רק button אחד, אין טעם להציג תפריט שתופס מקום בעצמו.
+    // עדיף פשוט להציג את כל הbuttons.
     if (totalButtons - widget.maxVisibleButtons == 1) {
       effectiveMaxVisible = totalButtons;
     }
@@ -133,21 +133,21 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
     List<ActionButtonData> visibleActions;
     List<ActionButtonData> hiddenActions;
 
-    // אם יש מקום לכל הכפתורים, נציג את כולם וללא תפריט "..."
+    // אם יש מקום לכל הbuttons, נציג את כולם ולno תפריט "..."
     if (effectiveMaxVisible >= totalButtons) {
       visibleActions = List.from(widget.originalOrder!);
       hiddenActions = [];
     } else {
       final numToHide = totalButtons - effectiveMaxVisible;
 
-      // ניקח את הכפתורים הפחות חשובים מרשימת העדיפויות
+      // ניקח את הbuttons הפחות חשובים מרשימת העדיפויות
       final Set<ActionButtonData> actionsToHide =
           widget.actions.reversed.take(numToHide).toSet();
 
       visibleActions = [];
       hiddenActions = [];
 
-      // נחלק את הכפתורים (לפי הסדר המקורי!) לגלויים ונסתרים
+      // נחלק את הbuttons (לפי הorder המקורי!) לגלויים ונסתרים
       for (final action in widget.originalOrder!) {
         if (actionsToHide.contains(action)) {
           hiddenActions.add(action);
@@ -165,7 +165,7 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
     final allHiddenActions = [...hiddenActions, ...alwaysInMenu];
 
     if (widget.overflowOnRight) {
-      // מסך הספרייה: תפריט בצד ימין. הסדר החזותי R->L דורש היפוך הרשימה.
+      // מסך the library: תפריט בצד ימין. הorder החזותי R->L דורש היפוך הlist.
       children.addAll(visibleWidgets.reversed);
       if (allHiddenActions.isNotEmpty) {
         children.add(_buildOverflowButton(allHiddenActions));
@@ -186,7 +186,7 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
   }
 
   Widget _buildOverflowButton(List<ActionButtonData> hiddenActions) {
-    // יצירת key ייחודי על סמך הכפתורים הנסתרים כדי למנוע בעיות context
+    // יצירת key ייoverrideי על סמך הbuttons הנסתרים כדי למנוע issues context
     final uniqueKey =
         'overflow_${hiddenActions.map((a) => a.tooltip).join('_')}';
 
@@ -197,7 +197,7 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
             AppMenuMetrics.create(compactMenus: false);
         return AppPopupMenuButton<ActionButtonData>(
           icon: const Icon(FluentIcons.more_vertical_24_regular),
-          tooltip: 'עוד פעולות',
+          tooltip: 'עוד actions',
           position: PopupMenuPosition.under,
           offset: widget.overflowMenuOffset,
           onSelected: (action) {
@@ -232,7 +232,7 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
                 );
               }
 
-              // פריט רגיל ללא submenu
+              // פריט רגיל לno submenu
               return buildAppPopupMenuItem<ActionButtonData>(
                 context,
                 AppMenuEntry<ActionButtonData>(
@@ -252,18 +252,18 @@ class _ResponsiveActionBarState extends State<ResponsiveActionBar> {
   }
 }
 
-/// נתוני כפתור פעולה
+/// נתוני button action
 class ActionButtonData {
-  /// הווידג'ט של הכפתור
+  /// הווידג'ט של הbutton
   final Widget widget;
 
-  /// האייקון (לשימוש בתפריט הנפתח)
+  /// האייקון (לשימוש בתפריט הנOpen)
   final IconData? icon;
 
-  /// הטקסט להצגה בתפריט הנפתח
+  /// הtext להצגה בתפריט הנOpen
   final String? tooltip;
 
-  /// הפעולה לביצוע כשלוחצים על הכפתור בתפריט
+  /// הaction לביצוע כשלוחצים על הbutton בתפריט
   final VoidCallback? onPressed;
 
   /// רשימת פריטי תת-תפריט (אם קיימת, זה יהיה submenu)

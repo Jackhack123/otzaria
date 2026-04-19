@@ -70,11 +70,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     try {
       await _pruneRemovedCustomFoldersIfNeeded();
 
-      // שמירת המיקום הנוכחי בספרייה
+      // save the current location in the library
       final currentCategoryPath =
           _getCurrentCategoryPath(state.currentCategory);
 
-      // צלם את מפתחות הספרים לפני הרענון לצורך זיהוי ספרים חדשים
+      // save the book keys before the refresh to identify new books
       final keysBeforeRefresh = state.library
               ?.getAllBooks()
               .map((b) => IndexingRepository.catalogueOrderKey(b))
@@ -87,7 +87,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         FileSystemData.instance.libraryPath = libraryPath;
       }
 
-      // רענון הספרייה מהמערכת קבצים
+      // refresh the library from the file system
       DataRepository.instance.library = FileSystemData.instance.getLibrary();
       DataRepository.instance.invalidateExternalBooksCache();
       final library = await _repository.library;
@@ -95,20 +95,20 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       try {
         await TantivyDataProvider.instance.reopenIndex();
       } catch (e) {
-        // אם יש בעיה עם פתיחת האינדקס מחדש, נמשיך בלי זה
-        // הספרייה עדיין תתרענן אבל החיפוש עלול לא לעבוד עד להפעלה מחדש
+        // if there is an issue with reopening the index, continue without it
+        // the library will still refresh but search may not work until restart
         developer.log('Warning: Could not reopen search index',
             name: 'LibraryBloc', error: e);
       }
 
-      // זיהוי ספרים חדשים שנוספו ברענון
+      // identify new books שנוספו בrefresh
       final newBooksToIndex = library
           .getAllBooks()
           .where((b) => !keysBeforeRefresh
               .contains(IndexingRepository.catalogueOrderKey(b)))
           .toList();
 
-      // חזרה לאותה תיקייה שהיתה פתוחה קודם
+      // return to the folder that was open previously
       final targetCategory = _findCategoryByPath(library, currentCategoryPath);
 
       emit(state.copyWith(
@@ -148,18 +148,18 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     await syncService.refreshSourcesAndPruneRemovedCustomFolders(customFolders);
   }
 
-  /// מחזיר את הנתיב של התיקייה הנוכחית
+  /// מחזיר את הpath של הfolder הcurrent
   List<String> _getCurrentCategoryPath(Category? category) {
     if (category == null) return [];
 
     final path = <String>[];
     Category? current = category;
-    final visited = <Category>{}; // למניעת לולאות אינסופיות
+    final visited = <Category>{}; // למניעת לוnoות אינסופיות
 
     while (current != null &&
         current.parent != null &&
         current.parent != current) {
-      // בדיקה שלא ביקרנו כבר בקטגוריה הזו (למניעת לולאה אינסופית)
+      // check שno ביקרנו כבר בcategory הזו (למניעת לוnoה אינסופית)
       if (visited.contains(current)) {
         break;
       }
@@ -172,7 +172,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     return path;
   }
 
-  /// מוצא תיקייה לפי נתיב
+  /// מוצא folder לפי path
   Category? _findCategoryByPath(Category rootCategory, List<String> path) {
     if (path.isEmpty) return rootCategory;
 
@@ -185,7 +185,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
             .first;
         current = found;
       } catch (e) {
-        // אם לא מצאנו את התיקייה, נחזיר את הקרובה ביותר
+        // אם no מצאנו את הfolder, נחזיר את הקרובה ביותר
         return current;
       }
     }
@@ -199,19 +199,19 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
-      // בדיקה וחילוץ קובץ ZIP אם קיים
+      // check וחילוץ file ZIP אם קיים
       final extractionResult =
           await ZipExtractorService.checkAndExtractZipIfNeeded(event.path);
 
       if (!extractionResult.success) {
         emit(state.copyWith(
-          error: extractionResult.errorMessage ?? 'שגיאה בחילוץ קובץ דחוס',
+          error: extractionResult.errorMessage ?? 'error בחילוץ file דחוס',
           isLoading: false,
         ));
         return;
       }
 
-      // אם חולץ קובץ, נמתין רגע
+      // אם חולץ file, נמתין רגע
       if (extractionResult.successfullyExtracted) {
         developer.log(
             'ZIP file extracted: ${extractionResult.extractedFileName}',
@@ -223,7 +223,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
           SettingsRepository.keyLibraryPath, event.path);
       await Settings.setValue<String>(
           SettingsRepository.keyLibraryFolderName, '');
-      // ניקוי override Android — DB החדש נמצא ישירות בספרייה
+      // ניקוי override Android — DB החדש נמצא ישירות בlibrary
       await Settings.setValue<String>(
           SettingsRepository.keyDbEffectivePath, '');
 
@@ -231,7 +231,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       DataRepository.instance.library = FileSystemData.instance.getLibrary();
       DataRepository.instance.invalidateExternalBooksCache();
 
-      // פתיחה מחדש של אינדקס החיפוש
+      // פתיחה again של אינדקס הsearch
       try {
         await TantivyDataProvider.instance.reopenIndex();
       } catch (e) {
@@ -263,19 +263,19 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
-      // בדיקה וחילוץ קובץ ZIP אם קיים
+      // check וחילוץ file ZIP אם קיים
       final extractionResult =
           await ZipExtractorService.checkAndExtractZipIfNeeded(event.path);
 
       if (!extractionResult.success) {
         emit(state.copyWith(
-          error: extractionResult.errorMessage ?? 'שגיאה בחילוץ קובץ דחוס',
+          error: extractionResult.errorMessage ?? 'error בחילוץ file דחוס',
           isLoading: false,
         ));
         return;
       }
 
-      // אם חולץ קובץ, נמתין רגע
+      // אם חולץ file, נמתין רגע
       if (extractionResult.successfullyExtracted) {
         developer.log(
             'ZIP file extracted: ${extractionResult.extractedFileName}',
@@ -285,7 +285,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
 
       await Settings.setValue<String>('key-hebrew-books-path', event.path);
 
-      // רענון הספרייה כדי לטעון את הספרים החדשים
+      // refresh the library כדי לטעון את הbooks החדשים
       DataRepository.instance.library = FileSystemData.instance.getLibrary();
       DataRepository.instance.invalidateExternalBooksCache();
 
@@ -360,10 +360,10 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         includeHebrewBooks: event.showHebrewBooks ?? false,
       );
 
-      // בחירת הספר הראשון מתוצאות החיפוש לתצוגה מקדימה
+      // בחירת הbook הראשון מresults הsearch לתצוגה מקדימה
       Book? firstBook;
       if (results.isNotEmpty) {
-        // העדפה לספר טקסט על פני PDF
+        // העדפה לbook text על פני PDF
         firstBook = results.firstWhere(
           (book) => book is TextBook,
           orElse: () => results.first,
@@ -386,8 +386,8 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     SelectTopics event,
     Emitter<LibraryState> emit,
   ) {
-    // כשמשנים את הנושאים, צריך לעדכן את הספר המוצג
-    // אם יש תוצאות חיפוש, נבחר את הספר הראשון מהרשימה המסוננת
+    // כשמשנים את הנושאים, צריך לעדyes את הbook המוצג
+    // אם יש results search, selected את הbook הראשון מהlist המסוננת
     Book? firstBook;
     if (state.searchResults != null && state.searchResults!.isNotEmpty) {
       final filteredResults = event.topics.isEmpty

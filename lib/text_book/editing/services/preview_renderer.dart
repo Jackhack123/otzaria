@@ -58,7 +58,7 @@ class PreviewRenderer {
       return Container(
         padding: const EdgeInsets.all(16),
         child: Text(
-          'שגיאה בתצוגה מקדימה: ${e.toString()}',
+          'error בתצוגה מקדימה: ${e.toString()}',
           style: textStyle.copyWith(color: Colors.red),
           textDirection: TextDirection.rtl,
         ),
@@ -100,8 +100,8 @@ class PreviewRenderer {
       case 'h1':
         styles['font-size'] = '${baseStyle.fontSize! * 1.5}px';
         styles['font-weight'] = 'bold';
-        styles['margin-top'] = '6px'; // רווח קטן לפני הכותרת
-        styles['margin-bottom'] = '3px'; // רווח קטן אחרי הכותרת
+        styles['margin-top'] = '6px'; // רווח small לפני הכותרת
+        styles['margin-bottom'] = '3px'; // רווח small אחרי הכותרת
         break;
 
       case 'h2':

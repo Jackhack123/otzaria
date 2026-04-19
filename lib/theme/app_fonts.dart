@@ -10,13 +10,13 @@ import 'package:otzaria/utils/font_file_reader.dart';
 class AppFonts {
   AppFonts._();
 
-  /// גופן ברירת מחדל לטקסט ראשי
+  /// גופן ברירת מחדל לtext ראשי
   static const String defaultFont = 'FrankRuhlCLM';
 
-  /// גופן ברירת מחדל למפרשים
+  /// גופן ברירת מחדל לCommentators
   static const String defaultCommentatorsFont = 'NotoRashiHebrew';
 
-  /// גופן לעריכת טקסט עם טעמים
+  /// גופן לעריכת text עם טעמים
   static const String editorFont = 'TaameyAshkenaz';
 
   static bool get _supportsSystemFonts {
@@ -27,7 +27,7 @@ class AppFonts {
   }
 
   /// רשימת הגופנים המובנים (מוטמעים באפליקציה / רשימת ברירת מחדל)
-  /// הערה: לא כוללת גופני מערכת כלל; בדסקטופ הם נטענים/מסוננים אוטומטית.
+  /// note: no כוללת גופני System כלל; בדסקטופ הם נטענים/מסוננים אוטומטית.
   static const List<FontInfo> _bundledFonts = [
     FontInfo(value: 'TaameyDavidCLM', label: 'דוד'),
     FontInfo(value: 'FrankRuhlCLM', label: 'פרנק-רוהל'),
@@ -43,8 +43,8 @@ class AppFonts {
   static List<FontInfo>? _systemFontsHebrewCache;
 
   /// רשימת כל הגופנים הזמינים לבחירה ב-UI.
-  /// בדסקטופ: מתווספים גם גופנים שמותקנים במערכת (באמצעות system_fonts).
-  /// בשאר הפלטפורמות: נשארים עם הרשימה המובנית.
+  /// בדסקטופ: מתווספים גם גופנים namesקנים בSystem (באמצעות system_fonts).
+  /// בשאר הפלטפורמות: נשארים עם הlist המובנית.
   static List<FontInfo> get availableFonts {
     final fonts = <FontInfo>[..._bundledFonts];
 
@@ -72,7 +72,7 @@ class AppFonts {
         }
       }
     } catch (_) {
-      // אם אין גישה לגופני מערכת מסיבה כלשהי, נחזיר רשימה ריקה.
+      // אם אין גישה לגופני System מסיבה כלשהי, נחזיר list emptyה.
     }
 
     _systemFontsHebrewCache = result;
@@ -247,8 +247,8 @@ class AppFonts {
     return false;
   }
 
-  /// מיפוי גופנים לנתיבי קבצים (לשימוש בהדפסה)
-  /// הערה: רק גופנים עם קבצים בתיקיית fonts נתמכים בהדפסה
+  /// מיפוי גופנים לpathי files (לשימוש בהדפסה)
+  /// note: רק גופנים עם files בתיקיית fonts נתמכים בהדפסה
   static const Map<String, String> fontPaths = {
     'TaameyDavidCLM': 'fonts/TaameyDavidCLM-Medium.ttf',
     'FrankRuhlCLM': 'fonts/FrankRuehlCLM-Medium.ttf',
@@ -261,8 +261,8 @@ class AppFonts {
     'Rubik': 'fonts/Rubik-VariableFont_wght.ttf',
   };
 
-  /// מיפוי גופנים לשמות בעברית (לשימוש בהדפסה)
-  /// מחושב אוטומטית מ-availableFonts, רק עבור גופנים עם קבצים
+  /// מיפוי גופנים לnames בעברית (לשימוש בהדפסה)
+  /// מחושב אוטומטית מ-availableFonts, רק עבור גופנים עם files
   static Map<String, String> get fontLabels => {
         for (final font in availableFonts)
           if (fontPaths.containsKey(font.value)) font.value: font.label
@@ -276,7 +276,7 @@ class AppFonts {
         child: Text(
           font.label,
           // הצגת תצוגה מקדימה רק לגופנים מוטמעים.
-          // גופני מערכת נטענים בזמן בחירה (כדי לא לטעון מאות גופנים מראש).
+          // גופני System נטענים בtime בחירה (כדי no לטעון מאות גופנים מראש).
           style: fontPaths.containsKey(font.value)
               ? TextStyle(fontFamily: font.value)
               : null,
@@ -285,8 +285,8 @@ class AppFonts {
     }).toList();
   }
 
-  /// טוען גופן מערכת (אם קיים) כדי שניתן יהיה להשתמש בו ב-TextStyle.
-  /// אם הגופן כבר מוטמע באפליקציה או שאין תמיכה בגופני מערכת - לא עושה כלום.
+  /// טוען גופן System (אם קיים) כדי שניתן יהיה להשתמש בו ב-TextStyle.
+  /// אם הגופן כבר מוטמע באפליקציה או שאין תמיכה בגופני System - no עושה כלום.
   static Future<void> ensureFontLoaded(String fontFamily) async {
     if (fontFamily.isEmpty) return;
     if (fontPaths.containsKey(fontFamily)) return;
@@ -295,7 +295,7 @@ class AppFonts {
     try {
       await SystemFonts().loadFont(fontFamily);
     } catch (_) {
-      // אם לא ניתן לטעון, נשאיר את fallback של Flutter לעשות את שלו.
+      // אם no ניתן לטעון, נשאיר את fallback של Flutter לעשות את שלו.
     }
   }
 }

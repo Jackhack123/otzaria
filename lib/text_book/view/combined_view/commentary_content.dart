@@ -47,7 +47,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
   void _loadContent() {
     // Validate link before loading content
     if (widget.link.path2.isEmpty || widget.link.index2 <= 0) {
-      content = Future.value('שגיאה: קישור לא תקין');
+      content = Future.value('error: קישור no תקין');
     } else {
       content = widget.link.content;
     }
@@ -56,7 +56,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
   @override
   void didUpdateWidget(CommentaryContent oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // עדכון תוכן הפירוש כאשר הקישור משתנה
+    // update content הפירוש כאשר הקישור variable
     // בודקים אם הקישור השתנה על ידי השוואת המאפיינים המזהים שלו
     if (oldWidget.link.path2 != widget.link.path2 ||
         oldWidget.link.index2 != widget.link.index2 ||
@@ -104,7 +104,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
           future: content,
           loadingWidget: _buildSkeletonLoading(context),
           errorBuilder: (context, error) => Center(
-                child: Text('שגיאה בטעינת הפרשן: $error'),
+                child: Text('error בטעינת הפרשן: $error'),
               ),
           builder: (context, data) {
             return BlocBuilder<SettingsBloc, SettingsState>(
@@ -148,7 +148,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
     );
   }
 
-  /// בניית skeleton loading לתוכן פרשנות - שלוש שורות
+  /// בניית skeleton loading לcontent פרשנות - שלוש lines
   Widget _buildSkeletonLoading(BuildContext context) {
     final baseColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
@@ -184,7 +184,7 @@ class _CommentaryContentState extends State<CommentaryContent> {
   }
 }
 
-/// Widget של שורה סטטית לשלד טעינה
+/// Widget של line סטטית לשלד loading
 class _SkeletonLine extends StatelessWidget {
   final double width;
   final double height;

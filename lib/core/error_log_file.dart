@@ -23,7 +23,7 @@ class ErrorLogFile {
     _appVersion = normalized.isEmpty ? 'unknown' : normalized;
   }
 
-  /// מחזירה מופע קובץ עבור לוג השגיאות המקומי.
+  /// מחזירה מופע file עבור לוג הerrors המקומי.
   static File resolveFile({
     Map<String, String>? environment,
     ErrorLogPlatform? platform,
@@ -36,9 +36,9 @@ class ErrorLogFile {
     ));
   }
 
-  /// מחזירה את הנתיב המלא לקובץ השגיאות של האפליקציה.
+  /// מחזירה את הpath הfull לfile הerrors של האפליקציה.
   ///
-  /// ברירת המחדל היא תיקייה כתיבה פר-משתמש, כדי להימנע
+  /// ברירת המחדל היא folder כתיבה פר-user, כדי להימנע
   /// מכתיבה לתיקיית ההתקנה שעלולה להיות חסומה להרשאות כתיבה.
   static String resolvePath({
     Map<String, String>? environment,
@@ -62,7 +62,7 @@ class ErrorLogFile {
     return p.join(baseDir, 'logs', fileName);
   }
 
-  /// מבטיחה שתיקיית הלוג והקובץ עצמו קיימים.
+  /// מבטיחה שתיקיית הלוג והfile עצמו קיימים.
   static void ensureExists({
     Map<String, String>? environment,
     ErrorLogPlatform? platform,
@@ -83,7 +83,7 @@ class ErrorLogFile {
     }
   }
 
-  /// מוסיפה טקסט שכבר פורמט ללוג המקומי.
+  /// מוסיפה text שכבר פורמט ללוג המקומי.
   static void appendText(
     String formattedMessage, {
     Map<String, String>? environment,
@@ -109,7 +109,7 @@ class ErrorLogFile {
     );
   }
 
-  /// מוסיפה רשומת שגיאה לקובץ הלוג המקומי.
+  /// מוסיפה רשומת error לfile הלוג המקומי.
   static void append({
     required String title,
     required Object error,
@@ -136,7 +136,7 @@ class ErrorLogFile {
     );
   }
 
-  /// בונה את תוכן הרשומה שתישמר בקובץ הלוג.
+  /// בונה את content הרשומה שתישמר בfile הלוג.
   static String formatEntry({
     required String title,
     required Object error,

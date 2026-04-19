@@ -44,7 +44,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
       if (lineNumber == null || lineNumber <= 0) return;
       final bookId = widget.bookId ?? '';
       final label = _labelController.text.trim().isEmpty
-          ? 'שורה $lineNumber'
+          ? 'line $lineNumber'
           : _labelController.text.trim();
       final url = 'otzaria://book?bookId=$bookId&line=$lineNumber';
       Navigator.of(context).pop(
@@ -58,7 +58,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
     final label = _labelController.text.trim().isEmpty
         ? (note.displayTitle?.trim().isNotEmpty == true
             ? note.displayTitle!.trim()
-            : 'הערה')
+            : 'note')
         : _labelController.text.trim();
     final url = 'otzaria://note?id=${note.id}';
     Navigator.of(context).pop(PersonalNoteLinkTarget(label: label, url: url));
@@ -75,7 +75,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
     }).toList();
 
     return AlertDialog(
-      title: const Text('הוסף קישור'),
+      title: const Text('Add קישור'),
       content: SizedBox(
         width: 460,
         child: Column(
@@ -93,11 +93,11 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
               children: const [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('קישור לספר'),
+                  child: Text('קישור לbook'),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('קישור להערה'),
+                  child: Text('קישור לnote'),
                 ),
               ],
             ),
@@ -109,7 +109,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
                     controller: _lineController,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      labelText: 'מספר שורה',
+                      labelText: 'מbook line',
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
@@ -118,7 +118,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
                   RtlTextField(
                     controller: _labelController,
                     decoration: const InputDecoration(
-                      labelText: 'טקסט לקישור (אופציונלי)',
+                      labelText: 'text לקישור (אופציונלי)',
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
@@ -131,7 +131,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
                   RtlTextField(
                     controller: _searchController,
                     decoration: const InputDecoration(
-                      labelText: 'חיפוש הערה',
+                      labelText: 'search note',
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
@@ -168,7 +168,7 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
                   RtlTextField(
                     controller: _labelController,
                     decoration: const InputDecoration(
-                      labelText: 'טקסט לקישור (אופציונלי)',
+                      labelText: 'text לקישור (אופציונלי)',
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
@@ -181,11 +181,11 @@ class _PersonalNoteLinkDialogState extends State<PersonalNoteLinkDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('ביטול'),
+          child: const Text('cancel'),
         ),
         FilledButton(
           onPressed: _submit,
-          child: const Text('הוסף'),
+          child: const Text('Add'),
         ),
       ],
     );

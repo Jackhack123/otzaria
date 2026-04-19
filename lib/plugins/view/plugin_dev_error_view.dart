@@ -35,14 +35,14 @@ class PluginDevErrorView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'שגיאה בטעינת תוסף פיתוח',
+              'error בטעינת תוסף פיתוח',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'נתיב: ${plugin.resolvedRootPath}',
+              'path: ${plugin.resolvedRootPath}',
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
               textDirection: TextDirection.ltr,
@@ -65,14 +65,14 @@ class PluginDevErrorView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RecommendedActionButton(
-                  text: 'נסה קריאה מחדש',
+                  text: 'נסה קריאה again',
                   onPressed: () {
                     context.read<PluginSystemBloc>().add(ReloadDevelopmentPluginRequested(plugin.pluginId));
                   },
                 ),
                 const SizedBox(width: 16),
                 NeutralActionButton(
-                  text: 'הגדרות תוסף',
+                  text: 'settings תוסף',
                   onPressed: () async {
                     final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PluginSettingsScreen(plugin: plugin),

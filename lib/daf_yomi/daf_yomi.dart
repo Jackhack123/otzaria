@@ -28,9 +28,9 @@ class DafYomi extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // חלק הטקסטים - פותח את הדף היומי
+              // חלק הtextים - פותח את הpage היומי
               Tooltip(
-                message: 'פתח דף יומי',
+                message: 'Open page יומי',
                 child: InkWell(
                   onTap: () => onDafYomiTap(
                     tractate,
@@ -58,7 +58,7 @@ class DafYomi extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'דף היומי: $tractate ${formatAmud(dafAmud)}',
+                          'page היומי: $tractate ${formatAmud(dafAmud)}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 11,
@@ -81,9 +81,9 @@ class DafYomi extends StatelessWidget {
                     .withValues(alpha: 0.3),
               ),
 
-              // אייקון לוח שנה - פותח את הלוח שנה
+              // אייקון לוח year - פותח את הלוח year
               Tooltip(
-                message: 'פתח לוח שנה',
+                message: 'Open לוח year',
                 child: InkWell(
                   onTap: onCalendarTap,
                   borderRadius: const BorderRadius.only(

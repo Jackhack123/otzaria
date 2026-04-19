@@ -1,9 +1,9 @@
-// Barrel re-export — כל הווידג'טים שהיו כאן פוצלו לקבצים נפרדים.
+// Barrel re-export — כל הווידג'טים שהיו כאן פוצלו לfiles נפרדים.
 //
 // דיאלוגים M3:
 //   → lib/widgets/dialogs/app_dialogs.dart
 //
-// כפתורי פעולה (RecommendedActionButton, NeutralActionButton,
+// buttonי action (RecommendedActionButton, NeutralActionButton,
 // ToolCopyButton, ToolNavigateButton):
 //   → lib/widgets/buttons/action_buttons.dart
 //
@@ -25,11 +25,11 @@ export 'package:otzaria/widgets/tool_ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:otzaria/theme/theme_exports.dart';
 
-/// סגנון כותרת בשורת הגדרה — alias לתאימות לאחור.
+/// סגנון כותרת בשורת setting — alias לתאימות noחור.
 const kSettingsTitleStyle = AppTextStyles.settingTitle;
 
-/// סגנון תת-כותרת בשורת הגדרה — alias לתאימות לאחור.
+/// סגנון תת-כותרת בשורת setting — alias לתאימות noחור.
 const kSettingsSubtitleStyle = AppTextStyles.settingSubtitle;
 
-/// רווח אנכי סטנדרטי בין כרטיסי הגדרות.
+/// רווח אנכי סטנדרטי בין כרטיסי settings.
 const kSettingsCardSpacing = SizedBox(height: AppTokens.spaceMD);

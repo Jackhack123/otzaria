@@ -57,8 +57,8 @@ class DirectErrorReportService {
   static const Duration _timeout = Duration(seconds: 10);
   static const Duration _flushInterval = Duration(minutes: 5);
   static const int _maxQueuedFlushPerRun = 20;
-  static const String _otzariaDirectReportTarget = 'אוצריא';
-  static const String _sefariaDirectReportTarget = 'ספריא';
+  static const String _otzariaDirectReportTarget = 'Otzaria';
+  static const String _sefariaDirectReportTarget = 'bookיא';
 
   static Timer? _flushTimer;
   static bool _isFlushing = false;
@@ -179,8 +179,8 @@ exit /b %OTZARIA_EXIT_CODE%
       );
       return DirectReportDeliveryResult.queued(
         'אין כרגע חיבור. הדיווח נשמר ויישלח אוטומטית '
-        'ל$directReportTargetLabel כשהתוכנה תחזור להיות מקוונת. '
-        'ניתן לנהל את הדיווחים השמורים בהגדרות.',
+        'ל$directReportTargetLabel כשהתוכנה תBack להיות מקוונת. '
+        'ניתן לנהל את הדיווחים הSaveים בsettings.',
       );
     }
 
@@ -189,12 +189,12 @@ exit /b %OTZARIA_EXIT_CODE%
       unawaited(flushPendingReports(onlyAutomaticRetry: true));
       if (_isSefariaReport(report)) {
         return DirectReportDeliveryResult.sent(
-          'הדיווח נשלח בהצלחה לספריא.',
+          'הדיווח נשלח בsuccess לbookיא.',
         );
       }
 
       return DirectReportDeliveryResult.sent(
-        'הדיווח נשלח בהצלחה לצוות אוצריא.',
+        'הדיווח נשלח בsuccess לצוות Otzaria.',
       );
     }
 
@@ -207,9 +207,9 @@ exit /b %OTZARIA_EXIT_CODE%
       queueType: DirectErrorReportQueueType.automaticRetry,
     );
     return DirectReportDeliveryResult.queued(
-      'השליחה לא הצליחה כרגע. הדיווח נשמר להמשך ויישלח אוטומטית '
-      'ל$directReportTargetLabel בניסיון הבא. ניתן לנהל את הדיווחים '
-      'השמורים בהגדרות.',
+      'השליחה no הצליחה כרגע. הדיווח נשמר להמשך ויישלח אוטומטית '
+      'ל$directReportTargetLabel בניסיון next. ניתן לנהל את הדיווחים '
+      'הSaveים בsettings.',
     );
   }
 
@@ -337,7 +337,7 @@ exit /b %OTZARIA_EXIT_CODE%
 
       if (_isPermanentHttpFailure(response.statusCode)) {
         return _SendAttemptResult.permanentFailure(
-          'שרת הדיווחים החזיר ${response.statusCode}. הדיווח לא נשמר להמשך כי נראה שיש בעיה קבועה בנתונים שנשלחו.',
+          'שרת הדיווחים החזיר ${response.statusCode}. הדיווח no נשמר להמשך כי נראה שיש issue constantה בנתונים שנשלחו.',
         );
       }
 
@@ -347,21 +347,21 @@ exit /b %OTZARIA_EXIT_CODE%
     } on SocketException catch (e) {
       debugPrint('Direct report network error: $e');
       return _SendAttemptResult.transientFailure(
-        'אין כרגע חיבור לאינטרנט.',
+        'אין כרגע חיבור noינטרנט.',
       );
     } on http.ClientException catch (e) {
       debugPrint('Direct report client error: $e');
       return _SendAttemptResult.transientFailure(
-        'שגיאה בשליחת הדיווח.',
+        'error בשליחת הדיווח.',
       );
     } on TimeoutException {
       return _SendAttemptResult.transientFailure(
-        'השרת לא הגיב בזמן.',
+        'השרת no הגיב בtime.',
       );
     } catch (e) {
       debugPrint('Direct report unexpected error: $e');
       return _SendAttemptResult.transientFailure(
-        'אירעה שגיאה לא צפויה בשליחת הדיווח.',
+        'אירעה error no צפויה בשליחת הדיווח.',
       );
     }
   }
@@ -405,7 +405,7 @@ foreach ($payload in @($payloads)) {
 }
 
 Write-Host ''
-Write-Host ('נשלחו בהצלחה: ' + $sent)
+Write-Host ('נשלחו בsuccess: ' + $sent)
 Write-Host ('נכשלו: ' + $failed)
 ''';
 

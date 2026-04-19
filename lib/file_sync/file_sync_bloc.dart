@@ -25,8 +25,8 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
     on<StopSync>(_onStopSync);
     on<UpdateProgress>(_onUpdateProgress);
     on<ResetState>(_onResetState);
-    // הסינכרון האוטומטי מופעל ע"י MainWindowScreen לאחר טעינת הספרייה,
-    // ולא כאן - כדי למנוע התנגשות DB בזמן הטעינה.
+    // הסינכרון האוטומטי active ע"י MainWindowScreen noחר טעינת the library,
+    // וno כאן - כדי למנוע התנגשות DB בtime הloading.
   }
 
   Future<void> _onStartSync(
@@ -35,7 +35,7 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
     if (_isOffline) {
       emit(state.copyWith(
         status: FileSyncStatus.initial,
-        message: 'מצב אופליין מופעל',
+        message: 'מצב אופליין active',
       ));
       return;
     }
@@ -43,7 +43,7 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
     if (!_softwareAndBookUpdatesEnabled) {
       emit(state.copyWith(
         status: FileSyncStatus.initial,
-        message: 'עדכוני תוכנה וספרים מושבתים',
+        message: 'עדכוני תוכנה וbooks מושבתים',
       ));
       return;
     }
@@ -84,14 +84,14 @@ class FileSyncBloc extends Bloc<FileSyncEvent, FileSyncState> {
         emit(state.copyWith(
           status: FileSyncStatus.completed,
           hasNewSync: false,
-          message: 'הספרייה מעודכנת',
+          message: 'the library מעודכנת',
         ));
       }
     } catch (e) {
       _progressTimer?.cancel();
       emit(state.copyWith(
         status: FileSyncStatus.error,
-        message: 'שגיאה בסנכרון: ${e.toString()}',
+        message: 'error בסנכרון: ${e.toString()}',
         errorMessage: e.toString(),
       ));
     }

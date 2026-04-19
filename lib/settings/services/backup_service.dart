@@ -293,7 +293,7 @@ class BackupService {
   static Future<void> restoreFromBackup(String backupPath) async {
     final file = File(backupPath);
     if (!await file.exists()) {
-      throw Exception('קובץ הגיבוי לא נמצא');
+      throw Exception('file הגיבוי no נמצא');
     }
 
     final content = await file.readAsString();
@@ -302,7 +302,7 @@ class BackupService {
     // Validate backup version
     final version = backupData['version'] as String?;
     if (version != '1.0') {
-      throw Exception('גרסת גיבוי לא נתמכת');
+      throw Exception('גרסת גיבוי no נתמכת');
     }
 
     final includes = backupData['includes'] as Map<String, dynamic>;
@@ -367,8 +367,8 @@ class BackupService {
   static Future<void> _restoreSettings(Map<String, dynamic> settings) async {
     for (final entry in settings.entries) {
       // keyDbEffectivePath הוא setting פנימי ל-Android בלבד.
-      // אם backup נוצר ב-Android ומשוחזר על macOS/Windows — מדלגים,
-      // כדי למנוע נתיב /data/user/0/... להחליף את ה-DB path הנכון.
+      // אם backup created ב-Android ומשוחזר על macOS/Windows — מדלגים,
+      // כדי למנוע path /data/user/0/... להחליף את ה-DB path הtrue.
       if (entry.key == SettingsRepository.keyDbEffectivePath &&
           !Platform.isAndroid) {
         continue;

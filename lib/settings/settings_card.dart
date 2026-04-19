@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:otzaria/theme/app_theme.dart';
 
-/// Divider זהה לסגנון הפנימי של SettingsCard — לשימוש בתוכן מורחב (AnimatedSize וכד')
+/// Divider זהה לסגנון הפנימי של SettingsCard — לשימוש בcontent מורחב (AnimatedSize וכד')
 ///
 /// שימוש:
 ///   settingsCardDivider(context)
@@ -13,7 +13,7 @@ Divider settingsCardDivider(BuildContext context) => Divider(
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
     );
 
-/// כרטיס הגדרות מעוצב בסגנון Material 3 / Google Account
+/// כרטיס settings מעוצב בסגנון Material 3 / Google Account
 class SettingsCard extends StatelessWidget {
   final dynamic title; // יכול להיות String או Widget
   final String? subtitle;
@@ -74,7 +74,7 @@ class SettingsCard extends StatelessWidget {
             ],
           ),
         ),
-        // הכרטיס המכיל את ההגדרות
+        // הכרטיס המכיל את הsettings
         Card(
           elevation: 0,
           margin: EdgeInsets.zero,

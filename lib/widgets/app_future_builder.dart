@@ -31,7 +31,7 @@ class AppFutureBuilder<T> extends StatelessWidget {
           }
           return Center(
             child: Text(
-              'שגיאה: ${snapshot.error}',
+              'error: ${snapshot.error}',
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           );

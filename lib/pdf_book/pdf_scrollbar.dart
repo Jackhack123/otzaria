@@ -5,7 +5,7 @@ import 'package:pdfrx/pdfrx.dart';
 
 typedef PdfScrollBoundsBuilder = Rect? Function(PdfViewerController controller);
 
-/// פס גלילה מותאם אישית ל-PDF עם track מלא.
+/// פס גלילה מותאם אישית ל-PDF עם track full.
 class PdfScrollbar extends StatelessWidget {
   final PdfViewerController controller;
   final ScrollbarOrientation orientation;
@@ -193,7 +193,7 @@ class PdfScrollbar extends StatelessWidget {
   }
 }
 
-/// פס גלילה אופקי דינמי שמתאים את גודלו לפי יחס התוכן הנראה.
+/// פס גלילה אופקי דינמי שמתאים את גודלו לפי יחס הcontent הנראה.
 class PdfHorizontalScrollbar extends StatelessWidget {
   static const double _minThumbRatio = 0.15;
   static const double _maxThumbRatio = 0.85;

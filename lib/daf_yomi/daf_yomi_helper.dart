@@ -8,7 +8,7 @@ import 'package:pdfrx/pdfrx.dart';
 import 'package:otzaria/utils/open_book.dart';
 import 'package:otzaria/core/ui_snack.dart';
 
-// Cache של outlines - מפתח: title של הספר, ערך: outline
+// Cache של outlines - key: title של הbook, value: outline
 final Map<String, List<PdfOutlineNode>> _outlineCache = {};
 
 // Lock mechanism למניעת טעינות מרובות במקביל
@@ -34,7 +34,7 @@ Future<T?> findEntryInTree<T>(Future<List<T>> rootEntries, String daf,
 }
 
 void openDafYomiBook(BuildContext context, String tractate, String daf,
-    {String categoryName = 'תלמוד בבלי'}) async {
+    {String categoryName = 'Talmud בבלי'}) async {
   _openDafYomiBookInCategory(context, tractate, daf, categoryName);
 }
 
@@ -45,7 +45,7 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
 
   if (library == null) return;
 
-  // מחפש את הקטגוריה הרלוונטית
+  // מחפש את הcategory הרלוונטית
   Category? talmudCategory;
   for (var category in library.getAllCategories()) {
     if (category.title == categoryName) {
@@ -55,16 +55,16 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
   }
 
   if (talmudCategory == null) {
-    // נסה לחפש בכל הקטגוריות אם לא נמצאה הקטגוריה הספציפית
+    // נסה לחפש בכל הcategories אם no נמצאה הcategory הspecificת
     final allBooks = library.getAllBooks();
     Book? book;
 
-    // חיפוש מדויק יותר - גם בשם המלא וגם בחיפוש חלקי
+    // search מדויק יותר - גם בname הfull וגם בsearch חלקי
     for (var bookInLibrary in allBooks) {
       if (bookInLibrary.title == tractate ||
           bookInLibrary.title.contains(tractate) ||
           tractate.contains(bookInLibrary.title)) {
-        // בדוק אם הספר נמצא בקטגוריה הנכונה על ידי בדיקת הקטגוריה
+        // בדוק אם הbook נמצא בcategory הנכונה על ידי בדיקת הcategory
         if (bookInLibrary.category?.title == categoryName) {
           book = bookInLibrary;
           break;
@@ -73,21 +73,21 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
     }
 
     if (book == null) {
-      UiSnack.showError('לא נמצאה קטגוריה: $categoryName');
+      UiSnack.showError('no נמצאה category: $categoryName');
       return;
     } else {
-      // נמצא ספר, נמשיך עם הפתיחה
+      // נמצא book, נמשיך עם הפתיחה
       await _openBook(context, book, daf);
       return;
     }
   }
 
-  // מחפש את הספר בקטגוריה הספציפית - מעדיף PDF על TXT
+  // מחפש את הbook בcategory הspecificת - מעדיף PDF על TXT
   Book? book;
   Book? textBookFallback;
   final allBooksInCategory = talmudCategory.getAllBooks();
 
-  // חיפוש מדויק יותר - מעדיף PDF
+  // search מדויק יותר - מעדיף PDF
   for (var bookInCategory in allBooksInCategory) {
     if (bookInCategory.title == tractate ||
         bookInCategory.title.contains(tractate) ||
@@ -97,28 +97,28 @@ void _openDafYomiBookInCategory(BuildContext context, String tractate,
         book = bookInCategory;
         break;
       } else {
-        // שומרים את ה-TextBook כגיבוי (רק אם עוד לא שמרנו)
+        // שומרים את ה-TextBook כגיבוי (רק אם עוד no שמרנו)
         textBookFallback ??= bookInCategory;
       }
     }
   }
 
-  // אם לא מצאנו PDF, נשתמש ב-TextBook
+  // אם no מצאנו PDF, נשתמש ב-TextBook
   book ??= textBookFallback;
 
   if (book != null) {
     await _openBook(context, book, daf);
   } else {
-    // הצג רשימת ספרים זמינים לדיבוג
+    // הצג רשימת books זמינים לדיבוג
     final availableBooks =
         allBooksInCategory.map((b) => b.title).take(5).join(', ');
     UiSnack.showError(
-        'לא נמצא ספר: $tractate ב$categoryName\nספרים זמינים: $availableBooks...');
+        'no נמצא book: $tractate ב$categoryName\nbooks זמינים: $availableBooks...');
   }
 }
 
 Future<void> _openBook(BuildContext context, Book book, String daf) async {
-  final index = await findReference(book, 'דף ${daf.trim()}') ?? 0;
+  final index = await findReference(book, 'page ${daf.trim()}') ?? 0;
   if (!context.mounted) return;
   openBook(context, book, index, '', ignoreHistory: true);
 }
@@ -148,20 +148,20 @@ Future<TocEntry?> _findDafInToc(TextBook book, String daf) async {
 Future<PdfOutlineNode?> getDafYomiOutline(PdfBook book, String daf) async {
   List<PdfOutlineNode> outlines = const [];
   try {
-    // בדיקה אם ה-outline כבר ב-cache
+    // check אם ה-outline כבר ב-cache
     if (_outlineCache.containsKey(book.title)) {
       outlines = _outlineCache[book.title]!;
     } else if (_loadingOutlines.containsKey(book.title)) {
-      // אם כבר בתהליך טעינה, נחכה לתוצאה
+      // אם כבר בתהליך loading, נחכה לתוצאה
       outlines = await _loadingOutlines[book.title]!;
     } else {
-      // יצירת Future לטעינה ושמירה ב-map
+      // יצירת Future לloading וsave ב-map
       final loadFuture = _loadOutlineFromFile(book);
       _loadingOutlines[book.title] = loadFuture;
 
       try {
         outlines = await loadFuture;
-        // שמירה ב-cache
+        // save ב-cache
         _outlineCache[book.title] = outlines;
       } finally {
         // ניקוי ה-loading map

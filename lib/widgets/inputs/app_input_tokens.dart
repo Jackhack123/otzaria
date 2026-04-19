@@ -1,6 +1,6 @@
 // lib/widgets/inputs/app_input_tokens.dart
 //
-// Tokens משותפים לכל שדות הקלט באפליקציה.
+// Tokens משותפים לכל fields הקלט באפליקציה.
 // מגדיר גבהים, רדיוסים, גדלי פונט ו-alpha values אחידים.
 
 import 'package:otzaria/theme/theme_exports.dart';
@@ -33,7 +33,7 @@ abstract class AppInputTokens {
   static const double regularIconSize = 20.0;
   static const double compactIconSize = 18.0;
 
-  // ── פונקציות עזר ───────────────────────────────────────────────────────────
+  // ── functions עזר ───────────────────────────────────────────────────────────
 
   static double height(bool isCompact) =>
       isCompact ? compactHeight : regularHeight;

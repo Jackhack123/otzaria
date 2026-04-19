@@ -27,17 +27,17 @@ class DataSourceIndicator extends StatelessWidget {
       backgroundColor = colorScheme.tertiaryContainer;
       borderColor = colorScheme.tertiary;
       textColor = colorScheme.onTertiaryContainer;
-      tooltip = 'ספר אישי - לא יועבר למסד נתונים';
+      tooltip = 'book אישי - no יועבר למסד נתונים';
     } else if (isDb) {
       backgroundColor = colorScheme.primaryContainer;
       borderColor = colorScheme.primary;
       textColor = colorScheme.onPrimaryContainer;
-      tooltip = 'ספר זה נשמר במסד הנתונים';
+      tooltip = 'book זה נשמר במסד הנתונים';
     } else {
       backgroundColor = colorScheme.secondaryContainer;
       borderColor = colorScheme.secondary;
       textColor = colorScheme.onSecondaryContainer;
-      tooltip = 'ספר זה נשמר כקובץ';
+      tooltip = 'book זה נשמר כfile';
     }
 
     return Tooltip(

@@ -6,26 +6,26 @@ import 'package:otzaria/library/models/library.dart';
 import 'package:otzaria/data/data_providers/sqlite_data_provider.dart';
 import 'package:otzaria/migration/core/models/book.dart' as migration_book;
 
-/// מתווך מרכזי לאיתור ספרים במערכת
+/// מתווך מרכזי noיתור books בSystem
 ///
-/// פונקציה זו מקבלת שם ספר וקטגוריה, ומחפשת את הספר
-/// גם ב-DB וגם בתיקיות, ומחזירה את הספר המתאים.
+/// function זו מקבלת name book וcategory, ומחפשת את הbook
+/// גם ב-DB וגם בfolders, ומחזירה את הbook המתאים.
 ///
 /// זהו המתווך היחיד בין הקוד לבין הנתונים האמיתיים.
 class BookLocator {
-  /// איתור ספר לפי שם וקטגוריה
+  /// איתור book לפי name וcategory
   ///
-  /// [bookTitle] - שם הספר
-  /// [category] - הקטגוריה שבה נמצא הספר (אופציונלי)
+  /// [bookTitle] - name הbook
+  /// [category] - הcategory שבה נמצא הbook (אופציונלי)
   ///
-  /// מחזיר את המיקום של הספר אם נמצא, או null אם לא נמצא
+  /// מחזיר את הlocation של הbook אם נמצא, או null אם no נמצא
   static Future<BookLocation?> locateBook(
     String bookTitle, {
     Category? category,
     int? categoryId,
   }) async {
     try {
-      // קודם ננסה למצוא ב-DB
+      // previous ננסה למצוא ב-DB
       final dbLocation = await _locateInDatabase(
         bookTitle,
         category,
@@ -35,7 +35,7 @@ class BookLocator {
         return dbLocation;
       }
 
-      // אם לא נמצא ב-DB, נחפש בתיקיות
+      // אם no נמצא ב-DB, נחפש בfolders
       final fileLocation = await _locateInFileSystem(
         bookTitle,
         category,
@@ -48,7 +48,7 @@ class BookLocator {
     }
   }
 
-  /// איתור ספר במסד הנתונים
+  /// איתור book במסד הנתונים
   static Future<BookLocation?> _locateInDatabase(
     String bookTitle,
     Category? category, {
@@ -77,7 +77,7 @@ class BookLocator {
         return null;
       }
 
-      // אם יש קטגוריה, נחפש לפי קטגוריה
+      // אם יש category, נחפש לפי category
       if (category != null) {
         final dbBook = await _findBookInDatabaseByCategory(
           repository,
@@ -96,7 +96,7 @@ class BookLocator {
         return null;
       }
 
-      // אם לא מצאנו לפי קטגוריה, נחפש לפי שם בלבד
+      // אם no מצאנו לפי category, נחפש לפי name בלבד
       final dbBook = await repository.getBookByTitle(bookTitle);
       if (dbBook != null) {
         return BookLocation(
@@ -113,14 +113,14 @@ class BookLocator {
     return null;
   }
 
-  /// חיפוש ספר במסד הנתונים לפי קטגוריה
+  /// search book במסד הנתונים לפי category
   static Future<migration_book.Book?> _findBookInDatabaseByCategory(
     dynamic repository,
     String bookTitle,
     Category category,
   ) async {
     try {
-      // מציאת ID של הקטגוריה ב-DB
+      // מציאת ID של הcategory ב-DB
       final categories = await repository.getRootCategories();
       final categoryId = await _findCategoryIdByPath(
         repository,
@@ -129,7 +129,7 @@ class BookLocator {
       );
 
       if (categoryId != null) {
-        // חיפוש הספר בקטגוריה הספציפית
+        // search הbook בcategory הspecificת
         final booksInCategory = await repository.getBooksByCategory(categoryId);
         for (final dbBook in booksInCategory) {
           if (dbBook.title == bookTitle) {
@@ -144,7 +144,7 @@ class BookLocator {
     return null;
   }
 
-  /// חיפוש ID של קטגוריה לפי נתיב
+  /// search ID של category לפי path
   static Future<int?> _findCategoryIdByPath(
     dynamic repository,
     List<dynamic> categories,
@@ -157,7 +157,7 @@ class BookLocator {
         if (pathParts.length == 1) {
           return category.id;
         }
-        // חיפוש רקורסיבי בתת-קטגוריות
+        // search רקורסיבי בתת-categories
         final subCategories = await repository.getCategoryChildren(category.id);
         final remainingPath = pathParts.sublist(1).join('/');
         return await _findCategoryIdByPath(
@@ -170,7 +170,7 @@ class BookLocator {
     return null;
   }
 
-  /// איתור ספר במערכת הקבצים
+  /// איתור book בSystem הfiles
   static Future<BookLocation?> _locateInFileSystem(
     String bookTitle,
     Category? category, {
@@ -218,7 +218,7 @@ class BookLocator {
         return null;
       }
 
-      // בדיקה שהקובץ קיים
+      // check שהfile קיים
       final file = File(filePath);
       if (!await file.exists()) {
         return null;
@@ -236,12 +236,12 @@ class BookLocator {
     }
   }
 
-  /// מחיקת ספר (מ-DB או מהקובץ)
+  /// מחיקת book (מ-DB או מהfile)
   ///
-  /// [bookTitle] - שם הספר
-  /// [category] - הקטגוריה שבה נמצא הספר (אופציונלי)
+  /// [bookTitle] - name הbook
+  /// [category] - הcategory שבה נמצא הbook (אופציונלי)
   ///
-  /// מחזיר true אם המחיקה הצליחה, false אחרת
+  /// מחזיר true אם הdelete הצליחה, false אחרת
   static Future<bool> deleteBook(
     String bookTitle, {
     Category? category,
@@ -269,7 +269,7 @@ class BookLocator {
     }
   }
 
-  /// מחיקת ספר ממסד הנתונים
+  /// מחיקת book ממסד הנתונים
   static Future<bool> _deleteFromDatabase(BookLocation location) async {
     final repository = SqliteDataProvider.instance.repository;
     if (repository == null || location.book == null) {
@@ -286,7 +286,7 @@ class BookLocator {
     }
   }
 
-  /// מחיקת קובץ ספר
+  /// מחיקת file book
   static Future<bool> _deleteFromFileSystem(BookLocation location) async {
     if (location.filePath == null) {
       return false;
@@ -308,12 +308,12 @@ class BookLocator {
     }
   }
 
-  /// בדיקה אם ספר קיים
+  /// check אם book קיים
   ///
-  /// [bookTitle] - שם הספר
-  /// [category] - הקטגוריה שבה נמצא הספר (אופציונלי)
+  /// [bookTitle] - name הbook
+  /// [category] - הcategory שבה נמצא הbook (אופציונלי)
   ///
-  /// מחזיר true אם הספר קיים, false אחרת
+  /// מחזיר true אם הbook קיים, false אחרת
   static Future<bool> bookExists(
     String bookTitle, {
     Category? category,
@@ -327,12 +327,12 @@ class BookLocator {
     return location != null;
   }
 
-  /// קבלת ספר מ-DB (אם קיים)
+  /// קבלת book מ-DB (אם קיים)
   ///
-  /// [bookTitle] - שם הספר
-  /// [category] - הקטגוריה שבה נמצא הספר (אופציונלי)
+  /// [bookTitle] - name הbook
+  /// [category] - הcategory שבה נמצא הbook (אופציונלי)
   ///
-  /// מחזיר את הספר מ-DB אם נמצא, או null אחרת
+  /// מחזיר את הbook מ-DB אם נמצא, או null אחרת
   static Future<migration_book.Book?> getBookFromDatabase(
     String bookTitle, {
     Category? category,
@@ -350,18 +350,18 @@ class BookLocator {
   }
 }
 
-/// מיקום ספר במערכת
+/// location book בSystem
 class BookLocation {
-  /// הספר מ-DB (אם נמצא ב-DB)
+  /// הbook מ-DB (אם נמצא ב-DB)
   final migration_book.Book? book;
 
-  /// מקור הספר
+  /// מקור הbook
   final BookSource source;
 
-  /// נתיב הקובץ (אם נמצא בתיקיות)
+  /// path הfile (אם נמצא בfolders)
   final String? filePath;
 
-  /// ID של הקטגוריה ב-DB (אם נמצא ב-DB)
+  /// ID של הcategory ב-DB (אם נמצא ב-DB)
   final int? categoryId;
 
   BookLocation({
@@ -372,11 +372,11 @@ class BookLocation {
   });
 }
 
-/// מקור הספר
+/// מקור הbook
 enum BookSource {
-  /// ספר נמצא במסד הנתונים
+  /// book נמצא במסד הנתונים
   database,
 
-  /// ספר נמצא במערכת הקבצים
+  /// book נמצא בSystem הfiles
   fileSystem,
 }

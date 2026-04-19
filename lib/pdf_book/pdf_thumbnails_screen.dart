@@ -82,7 +82,7 @@ class _ThumbnailsViewState extends State<ThumbnailsView>
     return Container(
       color: Theme.of(context)
           .colorScheme
-          .surface, // צבע הרקע בכרטיסיית 'דפים' בתפריט הצידי
+          .surface, // צבע הרקע בכרטיסיית 'pages' בתפריט הצידי
       child: widget.documentRef == null
           ? null
           : PdfDocumentViewBuilder(

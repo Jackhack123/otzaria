@@ -41,7 +41,7 @@ class SplitedViewScreen extends StatefulWidget {
 }
 
 class _SplitedViewScreenState extends State<SplitedViewScreen> {
-  // קבועים לאינדקסים של הטאבים
+  // constants noינדקסים של הטאבים
   static const int _commentaryTabIndex = 0;
   static const int _linksTabIndex = 1;
   static const int _notesTabIndex = 2;
@@ -52,7 +52,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
   late double _leftPaneWidth;
   bool _isHovering = false; // מצב ריחוף על הטאב
   final ValueNotifier<String?> _savedSelectedText =
-      ValueNotifier<String?>(null); // טקסט נבחר לתפריט הקשר
+      ValueNotifier<String?>(null); // text selected לתפריט הקשר
 
   @override
   void initState() {
@@ -62,14 +62,14 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
     if (widget.initialTabIndex != null) {
       _paneOpen = true;
     }
-    // טען את רוחב הפאנל מההגדרות
+    // טען את רוחב הפאנל מהsettings
     _leftPaneWidth = context.read<SettingsBloc>().state.commentaryPaneWidth;
   }
 
   @override
   void didUpdateWidget(SplitedViewScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // אם showSplitView השתנה או initialTabIndex השתנה, מעדכן את הטאב
+    // אם showSplitView השתנה או initialTabIndex השתנה, מעדyes את הטאב
     if (oldWidget.showSplitView != widget.showSplitView ||
         oldWidget.initialTabIndex != widget.initialTabIndex) {
       setState(() {
@@ -79,7 +79,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
             !_paneOpen) {
           _paneOpen = true;
         }
-        // אם עוברים למצב של מפרשים מתחת הטקסט (showSplitView = false), סוגרים את הפאנל הימני
+        // אם עוברים למצב של Commentators מתחת הtext (showSplitView = false), סוגרים את הפאנל הימני
         if (!widget.showSplitView && _paneOpen) {
           _paneOpen = false;
         }
@@ -89,23 +89,23 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
 
   int _getInitialTabIndex() {
     // קביעת הטאב הראשוני
-    // הטאבים בטור השמאלי: 0=מפרשים, 1=קישורים, 2=הערות אישיות
+    // הטאבים בטור השמאלי: 0=Commentators, 1=קישורים, 2=notes אישיות
     if (widget.initialTabIndex != null) {
       debugPrint('DEBUG: Using initialTabIndex: ${widget.initialTabIndex}');
-      // וידוא שהאינדקס תקף (0-2)
+      // וידוא שthe index תקף (0-2)
       return widget.initialTabIndex!.clamp(0, 2);
     } else {
-      // ברירת מחדל - מפרשים (0)
+      // ברירת מחדל - Commentators (0)
       final saved = Settings.getValue<int>('key-sidebar-tab-index-combined');
       debugPrint('DEBUG: saved: $saved, returning: ${saved ?? 0}');
-      // וידוא שהערך השמור תקף (0-2)
+      // וידוא שהvalue הSave תקף (0-2)
       return (saved ?? 0).clamp(0, 2);
     }
   }
 
   void _togglePane() {
     if (!_paneOpen) {
-      // פתיחת הטור - בחר את הטאב הנכון
+      // פתיחת הטור - בחר את הטאב הtrue
       _openPaneWithSmartTab();
     } else {
       // סגירת הטור
@@ -116,7 +116,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
     }
   }
 
-  // פונקציה ציבורית לפתיחה/סגירה מבחוץ
+  // function ציבורית לפתיחה/סגירה מבחוץ
   void togglePane() {
     _togglePane();
   }
@@ -131,10 +131,10 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
     int targetTab;
 
     if (widget.showSplitView) {
-      // מצב "מפרשים בצד" - תמיד פתח על מפרשים
+      // מצב "Commentators בצד" - תמיד Open על Commentators
       targetTab = _commentaryTabIndex;
     } else {
-      // מצב "מפרשים מתחת הטקסט" - פתח קישורים (אם יש)
+      // מצב "Commentators מתחת הtext" - Open קישורים (אם יש)
       final hasLinks = state.visibleLinks.isNotEmpty;
       if (hasLinks) {
         targetTab = _linksTabIndex;
@@ -168,7 +168,7 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
   Widget build(BuildContext context) {
     return BlocListener<TextBookBloc, TextBookState>(
       listenWhen: (previous, current) {
-        // האזן רק אם הוספנו מפרשים (לא אם הסרנו)
+        // האזן רק אם הוספנו Commentators (no אם הסרנו)
         if (previous is TextBookLoaded && current is TextBookLoaded) {
           return current.activeCommentators.length >
               previous.activeCommentators.length;
@@ -176,8 +176,8 @@ class _SplitedViewScreenState extends State<SplitedViewScreen> {
         return false;
       },
       listener: (context, state) {
-        // מפרשים עברו לטור הימני, אז לא צריך לפתוח את הטור השמאלי
-        // כשמוסיפים מפרשים
+        // Commentators עברו לטור הימני, אז no צריך לopen את הטור השמאלי
+        // כשמוסיפים Commentators
       },
       child: TextBookStateBuilder(
         buildWhen: (previous, current) {
